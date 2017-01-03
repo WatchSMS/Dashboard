@@ -1,0 +1,88 @@
+From https://github.com/jeonwoosung/zabirepo
+   c5d2d7c..b0dc02c  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   b0dc02c..859cc37  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   859cc37..0658e2e  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   18f7cb4..ae64bff  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   ae64bff..805990f  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   805990f..832045c  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   832045c..9cbe234  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   9cbe234..8c45a77  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   8c45a77..e8390b0  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   e8390b0..cd6015c  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   cd6015c..98f3add  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   98f3add..d8d7f6d  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   d8d7f6d..5bce4ce  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   5bce4ce..cf98ca1  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   cf98ca1..088346f  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   088346f..bfa3d11  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   bfa3d11..0a8223e  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   0a8223e..dd56610  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   dd56610..3ed9f90  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   3ed9f90..f014d4c  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   f014d4c..3b2e202  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   3b2e202..c0960ae  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   c0960ae..dc58200  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   dc58200..89cf718  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   89cf718..aac590b  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   aac590b..79ba819  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   79ba819..18b7141  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   18b7141..fdbdb76  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   fdbdb76..89c16fd  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   89c16fd..8f699a8  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   8f699a8..e2ca0e2  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   e2ca0e2..ff5a70b  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   ff5a70b..d09513b  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   d09513b..2bdbacf  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   2bdbacf..6874d75  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   6874d75..96e5f67  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   96e5f67..89e4318  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   89e4318..37e9ec1  master     -> origin/master
+From https://github.com/jeonwoosung/zabirepo
+   37e9ec1..6b368fc  master     -> origin/master
+error: Ref refs/remotes/origin/master is at fbb1de3f9df536b27b4a016c47081fab2119c60a but expected 6b368fc693b770cb4fa6b40c839b881dceda6cf4
+From https://github.com/jeonwoosung/zabirepo
+ ! 6b368fc..fbb1de3  master     -> origin/master  (unable to update local ref)
+From https://github.com/jeonwoosung/zabirepo
+   fbb1de3..daf1d27  master     -> origin/master
+error: Ref refs/remotes/origin/master is at 07fbdb1e3533fbfd736b65507d76a0bc98ad2b9e but expected daf1d270bc57d3f459cfe8b7b07b95ad537db058
+From https://github.com/jeonwoosung/zabirepo
+ ! daf1d27..07fbdb1  master     -> origin/master  (unable to update local ref)
+From https://github.com/jeonwoosung/zabirepo
+   07fbdb1..594e921  master     -> origin/master

@@ -1,0 +1,155 @@
+					<section class="content-header">
+						<h1>Setting</h1>
+					</section>
+					<section class="content">
+
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab_event_setting"
+								data-toggle="tab">Events</a></li>
+							<li><a href="#tab_graph_setting" data-toggle="tab">Graphs</a>
+							</li>
+							<li><a href="#tab_etc_setting" data-toggle="tab">Etc</a></li>
+
+						</ul>
+
+						<div id="settingTabContent" class="tab-content">
+
+							<div class="tab-pane fade in active" id="tab_event_setting">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<h6 class="panel-title">Events Period</h6>
+									</div>
+									<div class="panel-body">
+
+										<form role="form">
+											<div class="form-group">
+												<div class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
+													<label class="control-label settingInfoLabel">Target
+														from XX days before</label>
+												</div>
+												<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+													<input type="text" class="form-control" id="form_beforeDay">
+												</div>
+											</div>
+										</form>
+
+									</div>
+								</div>
+
+								<button type="submit" class="btn btn-primary"
+									id="submit_form_beforeDay">Submit</button>
+								<button type="submit" class="btn btn-default"
+									id="cancel_form_beforeDay">Cancel</button>
+								<span class="alert alert-success" id="alert_form_beforeDay">Success</span>
+
+							</div>
+
+							<div class="tab-pane fade" id="tab_graph_setting">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<h6 class="panel-title">Zabbix Item Key</h6>
+									</div>
+									<div class="panel-body">
+
+										<td style="width: 210px; word-break: break-all;">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+
+												<div class="settingInfoLabel">Select target Zabbix
+													Item Key</div>
+
+											</div>
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+												<form name="myForm">
+													<table id="graph_setting-table"
+														class="table table-striped table-responsive">
+														<thead>
+															<tr>
+																<th></th>
+																<th class="text-center">Item Key Name</th>
+																<th></th>
+																<th class="text-center">split</th>
+															</tr>
+														</thead>
+														<tbody id="graph_setting-tbody">
+															<tr>
+																<td>
+																	<p class="ui-state-default ui-corner-all">
+																		<span
+																			class="ui-icon ui-icon-arrowthick-2-n-s graph_setting-icon"></span>
+																	</p>
+																</td>
+																<td><input type="text" size="60px"
+																	class="form-control input_zbx_key"></td>
+																<td>
+																	<button type="button" class="btn btn-info addList">
+																		Add</button>
+																	<button type="button" class="btn btn-danger removeList"
+																		disabled>Delete</button>
+																</td>
+																<td></td>
+																<td>
+																	<div class="checkbox">
+																		<input class="input_zbx_split" type="checkbox"
+																			value="1" checked="checked">
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</form>
+											</div>
+									</div>
+								</div>
+
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<h6 class="panel-title">Zabbix Group</h6>
+									</div>
+									<div class="panel-body">
+
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+											<div class="settingInfoLabel">Select target Zabbix
+												Group</div>
+										</div>
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
+											<select id='zbxGroup' multiple='multiple'></select> <br>
+											<a href='#' id='select-all-zbxGroup'>select all</a> / <a
+												href='#' id='deselect-all-zbxGroup'>deselect all</a>
+										</div>
+
+									</div>
+								</div>
+
+								<button type="submit" class="btn btn-primary"
+									id="submit_graph_setting">Submit</button>
+								<button type="submit" class="btn btn-default"
+									id="cancel_graph_setting">Cancel</button>
+								<span class="alert alert-success" id="alert_graph_setting">Success</span>
+								<div></div>
+
+							</div>
+
+							<div class="tab-pane fade" id="tab_etc_setting">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<h6 class="panel-title">Setting</h6>
+									</div>
+									<div class="panel-body">
+
+										<button id="allClear" type="button" class="btn btn-default">
+											Setting All Clear</button>
+										<!-- <button id="export" type="button" class="btn btn-default">
+										Setting Export
+										</button>
+										<button id="import" type="button" class="btn btn-default">
+										Setting Import
+										</button> -->
+
+									</div>
+
+									<div id="timeSelect"></div>
+								</div>
+							</div>
+
+						</div>
+					</section>
