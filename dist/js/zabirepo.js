@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	if (typeof localStorage == "undefined") {
 		window.alert("This browser does not support.");
 		return;
@@ -20,19 +19,116 @@ $(document).ready(function() {
 
 	$("#submit_login").click(function() {
 		int.ready();
-	});
-	
+	});	
 	
 	$("#base_dashboard").load("base_dashboard.html");
 	$("#base_event").load("base_event.html");
 	$("#base_graph").load("base_graph.html");
 	$("#base_setting").load("base_setting.html");
 	$("#base_hostinfo").load("base_hostinfo.html");
-
+	
+	/* 전체 서버 상태 2017-01-02 */
+	$("#base_server").load("base_server.html");
 });
 
 var zbxApi = {
-	// for Test
+	// for Test 
+	getHistory : {
+		get : function(itemId,startTime) {
+			var method = "history.get";
+			var params = {
+				"output" : "extend",
+				"history" : 0,
+				"sortfield" : "clock",
+				"sortorder" : "ASC",
+				"itemids" : itemId,
+				"time_from": startTime
+				//"limit" : 72
+			};
+			return server.sendAjaxRequest(method, params);
+		},
+		success : function(data) {
+			console.log("getHistory data : " + data);
+			//console.log(data);
+			return data;
+		}
+	},
+
+	getItem : {
+		get : function(hostId,key_) {
+			var method = "item.get";
+			var params = {
+				// "output" : "extend",
+				"output" : [ "key_","name", "lastvalue"],
+				"hostids": hostId,
+				"search" : { "key_": key_ }
+			};
+			return server.sendAjaxRequest(method, params);
+		},
+		success : function(data) {
+			console.log("getItem data : " + data);
+			//console.log(data.result);
+			//console.log(Object.keys(data.result).length);
+			//console.log(data.result[0]);
+			//console.log(data.result[0].hostid);
+			
+			$.each(data.result, function(k,v) {
+				console.log(v);
+				console.log(v.name + ", "+ v.key_ + ", " + v.lastvalue);
+				//("#infobox_alertTrigger").text(data.result);
+			})
+			return data;
+		}
+	},
+
+	host : {
+		get : function() {
+			var method = "host.get";
+			var params = {
+				// "output" : "extend",
+				"output" : [ "host" ],
+				"selectInterfaces" : [ "ip" ],
+				"selectInventory" : [ "name" ]
+			};
+			return server.sendAjaxRequest(method, params);
+		},
+		success : function(data) {
+			console.log("host data : " + data);
+            //console.log(data.result);
+            //console.log(Object.keys(data.result).length);
+            //console.log(data.result[0]);
+            //console.log(data.result[0].hostid);
+			
+			$.each(data.result, function(k,v) {
+				console.log("host JSON > " + JSON.stringify(v));
+				console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
+			})
+			return data;q
+		}
+	},
+
+	/* 전체 서버 상태 2017-01-02 */
+    serverOverview : {
+        get : function() {
+            var method = "host.get";
+            var params = {
+                "output" : "extend",
+                "selectInterfaces": "extend"
+                //"selectInterfaces" : [ "ip" ]
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success : function(data) {
+            //console.log("serverOverview data : " + JSON.stringify(data));
+
+            $.each(data.result, function(k, v) {
+                console.log("serverOverview JSON > " + JSON.stringify(v));
+                console.log("serverOverview > " + v.hostid + ", " + v.name + ", " + v.interfaces[0].ip);
+            })
+            return data;
+        }
+    },
+
 	apiTest : {
 		get : function() {
 			var method = "item.get";
@@ -50,7 +146,8 @@ var zbxApi = {
 			return server.sendAjaxRequest(method, params);
 		},
 		success : function(data) {
-			console.log(data);
+			//console.log("item.get success");
+			console.log("apiTest : " + data);
 
 			$.each(data.result, function(result_index, result_value) {
 				$.each(result_value.hosts, function(host_index, host_value) {
@@ -59,19 +156,17 @@ var zbxApi = {
 			});
 		}
 	},
+
 	auth : {
 		get : function() {
 			return server.userLogin();
 		},
-
 		success : function(data) {
-
 			Cookies.set('zbx_sessionid', data.result, {
 				expires : 7,
 				path : '/zabbix',
 				domain : (baseURL.split('/')[2]).split(':')[0]
 			});
-
 			// db.set("zbxsession", data.result)
 			return data;
 		}
@@ -89,7 +184,6 @@ var zbxApi = {
 				},
 				"limit" : "50000"
 			};
-
 			return server.sendAjaxRequest(method, params);
 		},
 		success_all : function(data) {
@@ -137,6 +231,7 @@ var zbxApi = {
 			return server.sendAjaxRequest(method, params);
 		}
 	},
+	
 	alertTrigger : {
 		get : function() {
 			var method = "trigger.get";
@@ -157,8 +252,8 @@ var zbxApi = {
 		success : function(data) {
 			$("#infobox_alertTrigger").text(data.result);
 		}
-
 	},
+	
 	unAckknowledgeEvent : {
 		get : function() {
 			var method = "trigger.get";
@@ -177,7 +272,6 @@ var zbxApi = {
 		success : function(data) {
 			$("#unAcknowledgedEvents").text(data.result);
 		}
-
 	},
 
 	event : {
@@ -198,21 +292,18 @@ var zbxApi = {
 		},
 
 		success : function(data) {
-
 			var resultArray = [];
 			resultArray.push([ "Date", "Host", "Description", "Status", "Severity" ]);
-
 			$.each(data.result, function(top_index, top_value) {
 				if (top_value.hosts.length !== 0) {
 					var innerArray = [ convTime(top_value.clock), top_value.hosts[0].host, top_value.relatedObject.description, convStatus(top_value.value), convPriority(top_value.relatedObject.priority) ];
 					resultArray.push(innerArray);
 				}
-
 			});
-
 			return resultArray;
 		}
 	},
+	
 	triggerInfo : {
 		get : function() {
 			var method = "trigger.get";
@@ -235,14 +326,10 @@ var zbxApi = {
 				"selectLastEvent" : "true",
 				"limit" : "10000"
 			};
-
 			return server.sendAjaxRequest(method, params);
-
 		},
 		success : function(data) {
-
 			var resultArray = [];
-
 			if (data.result.length === 0) {
 				var innerArray = {
 					"host" : "No Problem host",
@@ -252,13 +339,10 @@ var zbxApi = {
 					"description" : "No Problem trigger",
 					"lastchange" : convTime(),
 					"age" : "00d 00h 00m"
-
 				};
 				resultArray.push(innerArray);
 			} else {
-
 				// console.log(data);
-
 				$.each(data.result, function(top_index, top_value) {
 					if (top_value.hosts.length !== 0 && top_value.groups.length !== 0) {
 
@@ -285,9 +369,7 @@ var zbxApi = {
 					}
 				});
 			}
-
 			// console.log(resultArray);
-
 			return resultArray;
 		}
 	}
@@ -330,13 +412,20 @@ var int = {
 		}).then(function() {
 			// DOM event attach
 			int.createEvents();
-
 			$.unblockUI(blockUI_opt_all);
+		}).then(function() {
+			// for suggest
+			//return zbxApi.getHost.get();
+			//return zbxApi.getItem.get();
+		}).then(function(data) {
+			//zbxApi.getHost.success(data);
+			//zbxApi.getItem.success(data);
+		}).then(function(data){
+			int.hostInfoView(); //host 정보 호출
 		});
 	},
 
 	createEvents : function() {
-
 		// ##### Window resize #####
 		var timer = false;
 		$(window).resize(function() {
@@ -355,7 +444,6 @@ var int = {
 		});
 
 		// ##### Menu Link #####
-
 		var ret_settingCheck = int.settingCheck();
 		if (ret_settingCheck === true) {
 			int.createGraphMenu();
@@ -418,26 +506,21 @@ var int = {
 			$("#contents_top > div").hide();
 			$("#form_beforeDay").val(db.get("beforeDay"));
 			$("#setting").show();
-		});
-
+		});		
+		
 		$("#menu_serverlist").click(function() {
-			
-			
-			$("#serverlist").append('<li><a href="#" id="server_a"><i class="fa fa-bar-chart"></i>host1</a></li>');  
-
-			$("#server_a").click(function() {
-				$("[id^=base]").hide();
-				$("#base_hostinfo").show();
-				hostinfoView();
-			});
-
-		    $("#serverlist").append('<li><a href="#" id="menu_overview"><i class="fa fa-bar-chart"></i>host2</a></li>');  
-			
-			
+			console.log("Click Menu ServerList");	
 		});
-
+		
+		/* 전체 서버 상태 2017-01-02 */
+		$("#menu_overview").click(function() {
+			console.log("Click Menu OverView");
+			$("[id^=base]").hide();
+			$("#base_server").show();
+			int.serverOverView();
+		});
+		
 		// ##### dashboard #####
-
 		$("#reload_dashboard").click(function() {
 			int.dashboardView();
 		});
@@ -461,7 +544,6 @@ var int = {
 		});
 
 		// ##### events #####
-
 		var filterDisp = {
 			on : function(labelName) {
 				$("#label_" + labelName).removeClass("label-info").addClass("label-warning").text("Filter ON");
@@ -520,7 +602,6 @@ var int = {
 		});
 
 		// ##### graphs #####
-
 		$("#reflesh_graph").click(function() {
 			int.createGraphTable();
 		});
@@ -584,7 +665,6 @@ var int = {
 		});
 
 		// ##### Setting #####
-
 		// ##### Setting => events
 		$("#submit_form_beforeDay").click(function() {
 
@@ -603,7 +683,6 @@ var int = {
 		});
 
 		// ##### Setting => graphs
-
 		$('a[href="#tab_graph_setting"]').click(function() {
 			int.settingTabGraph();
 		});
@@ -622,7 +701,6 @@ var int = {
 		});
 
 		$("#submit_graph_setting").click(function() {
-
 			// keySetting
 			var itemKeys = [];
 			$("#graph_setting-tbody > tr").each(function() {
@@ -665,21 +743,16 @@ var int = {
 		});
 
 		// ##### Setting => etc
-
 		$("#allClear").click(function() {
 			localStorage.clear();
 			infoDiag("Success:Setting All Clear");
 		});
 
-		// TODO 保存した設定をダウンロードできるようにする。
 		$("#export").click(function() {
-
-			// 指定されたデータを保持するBlobを作成する。
 			var blob = new Blob([ content ], {
 				"type" : "application/x-msdownload"
 			});
 
-			// Aタグのhref属性にBlobオブジェクトを設定し、リンクを生成
 			window.URL = window.URL || window.webkitURL;
 			$("#" + id).attr("href", window.URL.createObjectURL(blob));
 			$("#" + id).attr("download", "tmp.txt");
@@ -695,12 +768,9 @@ var int = {
 
 			var exportLink = document.getElementById('export-link');
 			exportLink.appendChild(a);
-
 		});
 
-		// TODO 設定をインポートできるようにする。
 		$("#import").click(function() {
-
 			infoDiag("Success:Setting Import");
 		});
 
@@ -717,7 +787,6 @@ var int = {
 				});
 			});
 		});
-
 	},
 
 	createGraphMenu : function() {
@@ -760,7 +829,6 @@ var int = {
 				i++;
 			}
 		});
-
 	},
 
 	createGraphArray : function(clickText, type) {
@@ -820,7 +888,6 @@ var int = {
 		}
 	},
 	createGraphTable : function() {
-
 		// TODO ホスト別に選択可能にする
 		// $("#multiSelectSample1").multiselect({
 		// enableFiltering : true,
@@ -946,13 +1013,10 @@ var int = {
 				i = i + 1;
 			}
 		});
-
 		$(".graphCell").css('width', width_val);
-
 	},
 
 	dashboardView : function() {
-
 		$(".info-box-content").block(blockUI_opt_el);
 
 		$.when(zbxApi.alertTrigger.get(), zbxApi.unAckknowledgeEvent.get()).done(function(data_a, data_b) {
@@ -963,14 +1027,126 @@ var int = {
 		}).fail(function() {
 			console.log("dashboardView : Network Error");
 			alertDiag("Network Error");
-		}).always(function() {
-			$(".info-box-content").unblock(blockUI_opt_el);
 		});
 		int.dcCreate();
 	},
 
-	dcCreate : function() {
+	/* 전체 서버 상태 2017-01-02 */
+	serverOverView : function(){
+		console.log("Test serverOverView");
+
+		zbxApi.serverOverview.get().done(function(data, status, jqXHR){
+			console.log("IN zbxApi.host.get()");
+
+            var server_data = zbxApi.serverOverview.success(data);
+            var serverName = ''; //서버명
+            var serverIP = ''; //IP주소
+            var serverCPU = ''; //CPU
+            var serverMemory = ''; //메모리
+            var serverRisc = ''; //리스크
+            var serverOS = ''; //운영체제
+
+            $.each(server_data.result, function(k,v){
+            	serverName = v.name; 
+                serverIP = v.interfaces[0].ip; 
+
+                console.log("serverName : " + serverName + " / serverIP : " + serverIP + " / serverCPU : " + serverCPU + " / serverMemory : " + serverMemory + " / serverRisc : " + serverRisc + " / serverOS : " + serverOS);
+            })
+		}).fail(function(){
+            console.log("serverOverView : Network Error");
+            alertDiag("Network Error");
+        }).always(function(){
+            $(".info-box-content").unblock(blockUI_opt_el);
+        });
+	},
+
+	//host 정보 호출
+	hostInfoView : function() {
+		console.log("IN function hostInfoView");
+		if($("#serverlist > li").size() > 0){
+			return;
+		}
 		
+		zbxApi.host.get().done(function(data, status, jqXHR) {
+			var host_data = zbxApi.host.success(data);
+			var tagId = '';
+			var tagText = '';
+			var tagText2 ='';
+			
+			$.each(host_data.result, function(k,v){
+				tagText = '';
+				tagText2 = '';
+				//console.log(v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
+				tagId = "host_" + v.hostid;
+				tagText = '<li><a href="#" id="' + tagId + '"><i class="fa fa-bar-chart"></i>';
+				tagText += v.host;
+				tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
+				//console.log("tagText : " + tagText);
+				$("#serverlist").append(tagText); 
+				
+				tagText2 += '<li><a class="treeview-menu" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
+				tagText2 += '<li><a class="treeview-menu" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
+				tagText2 += '<li><a class="treeview-menu" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
+				tagText2 += '<li><a class="treeview-menu" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
+				tagText2 += '<li><a class="treeview-menu" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
+				tagText2 += '<li><a class="treeview-menu" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
+				
+				$("#" + tagId + "_performlist").append(tagText2);
+				
+				$("#info_" + v.hostid).click(function() { //요약
+					alert("IN OverView");					
+				});
+				
+				$("#cpu_" + v.hostid).click(function(){ //CPU
+					$("[id^=base]").hide();
+					$("#base_hostinfo").show();
+					var dataItem = null;
+					var data_loadavg1 = null;	
+						
+					zbxApi.getItem.get(v.hostid,"system.cpu.util[,system]").then(function(data) {
+						dataItem = zbxApi.getItem.success(data);
+						console.log("dataItem : " + JSON.stringify(dataItem));
+					}).then(function() {
+						// for suggest
+						return zbxApi.getItem.get(v.hostid,"system.cpu.load[percpu,avg1]");
+					}).then(function(data) {
+						data_loadavg1 = zbxApi.getItem.success(data);
+						console.log(data_loadavg1);
+						hostinfoView(dataItem, data_loadavg1);
+					});
+				});
+					
+				$("#memory_" + v.hostid).click(function() { //Memory						
+					alert("IN Memory");
+				});
+
+                $("#process_" + v.hostid).click(function() { //Process
+                    alert("IN Process");
+                });
+
+                $("#disk_" + v.hostid).click(function() { //Disk
+                    alert("IN Disk");
+                });
+
+                $("#traffic_" + v.hostid).click(function() { //Traffic
+                    alert("IN Traffic");
+                });
+					
+				$("#" + tagId).click(function() {
+					$("[id^=base]").hide();
+					$("#base_hostinfo").show();					
+					hostinfoView();
+				});
+			})
+		}).fail(function(){
+			console.log("dashboardView : Network Error");
+			alertDiag("Network Error");
+		}).always(function(){
+			$(".info-box-content").unblock(blockUI_opt_el);
+		});
+	},
+
+	dcCreate : function() {
 		// for SystemStatus
 		zbxApi.triggerInfo.get().done(function(data, status, jqXHR) {
 
@@ -1055,11 +1231,9 @@ var int = {
 			addDcTableColor();
 
 		});
-
 	},
 
 	createMultiSelectHostGroupNames : function() {
-
 		zbxApi.multiSelectHostGroupNames.get().done(function(data, status, jqXHR) {
 			$('#zbxGroup').empty();
 			$.each(data.result, function(key, value) {
@@ -1189,162 +1363,238 @@ var int = {
 };
 
 
-var hostinfoView = function() {
-
-	console.log("fff");
+var hostinfoView = function(dataItem, data_loadavg1) {
+	var systemCpuArr = [];
+	var loadAvg1Arr = [];
+	var keyName = '';
+	var keyName2 = '';
+	console.log("hostinfoView");
+	var d = new Date();
+	var startTime = d.getTime();
+	startTime = String(Math.round((startTime - 43200000)/1000));
 	
-
-
-
-$(function () {
-    Highcharts.chart('hostinfo_cpuusage', {
-        chart: {
-            type: 'area'
-        },
-        title: {
-            text: 'CPU사용량'
-        },
-        subtitle: {
-            text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                'thebulletin.metapress.com</a>'
-        },
-        xAxis: {
-            allowDecimals: false,
-            labels: {
-                formatter: function () {
-                    return this.value; // clean, unformatted number for year
-                }
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'Nuclear weapon states'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value / 1000 + 'k';
-                }
-            }
-        },
-        tooltip: {
-            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
-        },
-        plotOptions: {
-            area: {
-                pointStart: 1940,
-                marker: {
-                    enabled: false,
-                    symbol: 'circle',
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
-                    }
-                }
-            }
-        },
-        series: [{
-            name: 'USA',
-            data: [null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
-                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
-                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
-                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
-                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
-                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
-        }, {
-            name: 'USSR/Russia',
-            data: [null, null, null, null, null, null, null, null, null, null,
-                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
-                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
-                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
-                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
-                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-                21000, 20000, 19000, 18000, 18000, 17000, 16000]
-        }]
-    });
-});
-
-
-
-
-$(function () {
-    Highcharts.chart('serverinfo_memusage', {
-        chart: {
-            type: 'area'
-        },
-        title: {
-            text: '메모리 사용량'
-        },
-        subtitle: {
-            text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                'thebulletin.metapress.com</a>'
-        },
-        xAxis: {
-            allowDecimals: false,
-            labels: {
-                formatter: function () {
-                    return this.value; // clean, unformatted number for year
-                }
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'Nuclear weapon states'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value / 1000 + 'k';
-                }
-            }
-        },
-        tooltip: {
-            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
-        },
-        plotOptions: {
-            area: {
-                pointStart: 1940,
-                marker: {
-                    enabled: false,
-                    symbol: 'circle',
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
-                    }
-                }
-            }
-        },
-        series: [{
-            name: 'USA',
-            data: [null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
-                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
-                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
-                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
-                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
-                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
-        }, {
-            name: 'USSR/Russia',
-            data: [null, null, null, null, null, null, null, null, null, null,
-                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
-                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
-                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
-                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
-                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-                21000, 20000, 19000, 18000, 18000, 17000, 16000]
-        }]
-    });
-});
-
-
-
-
-
-
-
+	var dataHistory = null;
+	var history_loadavg1 = null;
+	
+	zbxApi.getHistory.get(dataItem.result[0].itemid,startTime).then(function(data) {
+		dataHistory = zbxApi.getHistory.success(data);
+		keyName = dataItem.result[0].key_;
+		$.each(dataHistory.result, function(k,v) {
+			systemCpuArr[k]=parseFloat(v.value);
+		});
+	}).then(function() {
+		// for suggest
+		return zbxApi.getHistory.get(data_loadavg1.result[0].itemid,startTime);
+		//return zbxApi.getItem.get();
+	}).then(function(data) {
+		history_loadavg1 = zbxApi.getHistory.success(data);
+		keyName2 = data_loadavg1.result[0].key_;
+		$.each(history_loadavg1.result, function(k,v) {
+			loadAvg1Arr[k]=parseFloat(v.value);
+		});		
+		
+		$(function () {		
+			Highcharts.chart('hostinfo_cpuusage', {
+		        chart: {
+		            type: 'area'
+		        },
+		        title: {
+		            text: 'CPU 사용량'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		            allowDecimals: false,
+		            labels: {
+		                formatter: function () {
+		                    return this.value; // clean, unformatted number for year
+		                }
+		            }
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Nuclear weapon states'
+		            },
+		            labels: {
+		                formatter: function () {
+		                    //return this.value / 1000 + 'k';
+		                	return this.value;
+		                }
+		            }
+		        },
+		        tooltip: {
+		            pointFormat: '{series.name} produced <b>{point.y}</b><br/>warheads in {point.x}'
+		        },
+		        plotOptions: {
+		            area: {
+		                pointStart: 1940,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		            name: keyName,
+		            data: systemCpuArr
+//		            	[null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
+//		                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
+//		                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
+//		                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
+//		                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
+//		                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
+//		                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
+		        }, {
+		            name: keyName,
+		            data: systemCpuArr
+//		            	[null, null, null, null, null, null, null, null, null, null,
+//		                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
+//		                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
+//		                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
+//		                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
+//		                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
+//		                21000, 20000, 19000, 18000, 18000, 17000, 16000]
+		        }]
+		    });
+		});		
+		
+		$(function () {
+		    Highcharts.chart('serverinfo_memusage', {
+		        chart: {
+		            //type: 'area'
+		        },
+		        title: {
+		            text: 'Load Average'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		            allowDecimals: false,
+		            labels: {
+		                formatter: function () {
+		                    return this.value; // clean, unformatted number for year
+		                }
+		            }
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Nuclear weapon states'
+		            },
+		            labels: {
+		                formatter: function () {
+		                    return this.value / 1000 + 'k';
+		                }
+		            }
+		        },
+		        tooltip: {
+		            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+		        },
+		        plotOptions: {
+		            area: {
+		                pointStart: 1940,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		        	name: keyName2,
+		            data: loadAvg1Arr
+		        }, {
+		        	name: keyName2,
+		            data: loadAvg1Arr
+		        }]
+		    });
+		});
+		
+		$(function () {
+			
+			Highcharts.chart('hostinfo_cpuusage1', {
+		        chart: {
+		            type: 'area'
+		        },
+		        title: {
+		            text: 'CPU 사용량'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		            allowDecimals: false,
+		            labels: {
+		                formatter: function () {
+		                    return this.value; // clean, unformatted number for year
+		                }
+		            }
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Nuclear weapon states'
+		            },
+		            labels: {
+		                formatter: function () {
+		                    //return this.value / 1000 + 'k';
+		                	return this.value;
+		                }
+		            }
+		        },
+		        tooltip: {
+		            pointFormat: '{series.name} produced <b>{point.y}</b><br/>warheads in {point.x}'
+		        },
+		        plotOptions: {
+		            area: {
+		                pointStart: 1940,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		            name: keyName,
+		            data: systemCpuArr
+//		            	[null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
+//		                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
+//		                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
+//		                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
+//		                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
+//		                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
+//		                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
+		        }, {
+		            name: keyName,
+		            data: systemCpuArr
+//		            	[null, null, null, null, null, null, null, null, null, null,
+//		                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
+//		                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
+//		                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
+//		                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
+//		                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
+//		                21000, 20000, 19000, 18000, 18000, 17000, 16000]
+		        }]
+		    });
+		});
+	});
 
 //	$.blockUI(blockUI_opt_all);
 //	var beforeDay = db.get("beforeDay");
@@ -1362,7 +1612,6 @@ $(function () {
 //		console.log("pivotDisplay : Network Error");
 //		alertDiag("Network Error");
 //	});
-
 };
 
 
@@ -1372,14 +1621,11 @@ function type(d, i, columns) {
 	  return d;
 }
 
-
 var pivotDisplay = function() {
-
 	$.blockUI(blockUI_opt_all);
 	var beforeDay = db.get("beforeDay");
 
 	zbxApi.event.get().done(function(data, statusText, jqXHR) {
-
 		var Latest_events = zbxApi.event.success(data);
 		pivotMain(Latest_events, "event_histogram");
 		pivotMain(Latest_events, "event_pivot");
@@ -1395,7 +1641,6 @@ var pivotDisplay = function() {
 };
 
 var pivotMain = function(Latest_events, event_type) {
-
 	var derivers = $.pivotUtilities.derivers;
 	var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers);
 	var dateFormat = $.pivotUtilities.derivers.dateFormat;
@@ -1533,12 +1778,10 @@ var sortObjectStr = function(object, key) {
 			}
 		});
 	});
-
 	return sorted;
 }
 
 var blockUI_opt_all = {
-
 	message : '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',
 	fadeIn : 200,
 	fadeOut : 200,
@@ -1573,7 +1816,6 @@ var db = {
 };
 
 var setting = {
-
 	graphAutocomp : function() {
 		$(".input_zbx_key").autocomplete({
 			source : itemKeyNamesUniqArray,
@@ -1592,7 +1834,6 @@ var setting = {
 };
 
 var convTime = function(date) {
-
 	if (date === undefined) {
 		var d = new Date();
 	} else {
@@ -1611,7 +1852,6 @@ var convTime = function(date) {
 };
 
 var convDeltaTime = function(lastchange) {
-
 	var SECOND_MILLISECOND = 1000;
 	var MINUTE_MILLISECOND = 60 * SECOND_MILLISECOND;
 	var HOUR_MILLISECOND = 60 * MINUTE_MILLISECOND;
@@ -1640,13 +1880,11 @@ var convDeltaTime = function(lastchange) {
 	if (deltaSec !== 0 && deltaDay === 0) {
 		deltaDate += deltaSec + "s";
 	}
-
 	return deltaDate;
 
 };
 
 var convStatus = function(status) {
-
 	if (status === "0") {
 		return "OK";
 	} else {
@@ -1656,7 +1894,6 @@ var convStatus = function(status) {
 };
 
 var convAck = function(ack) {
-
 	if (ack === "0") {
 		return "Unacked";
 	} else {
@@ -1666,7 +1903,6 @@ var convAck = function(ack) {
 };
 
 var convPriority = function(priority) {
-
 	switch (priority) {
 	case "0":
 		return "not classified";
