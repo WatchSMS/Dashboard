@@ -19,20 +19,20 @@ $(document).ready(function() {
 
 	$("#submit_login").click(function() {
 		int.ready();
-	});	
-	
+	});
+
 	$("#base_dashboard").load("base_dashboard.html");
 	$("#base_event").load("base_event.html");
 	$("#base_graph").load("base_graph.html");
 	$("#base_setting").load("base_setting.html");
 	$("#base_hostinfo").load("base_hostinfo.html");
-	
+
 	/* 전체 서버 상태 2017-01-02 */
 	$("#base_server").load("base_server.html");
 });
 
 var zbxApi = {
-	// for Test 
+	// for Test
 	getHistory : {
 		get : function(itemId,startTime) {
 			var method = "history.get";
@@ -71,7 +71,7 @@ var zbxApi = {
 			//console.log(Object.keys(data.result).length);
 			//console.log(data.result[0]);
 			//console.log(data.result[0].hostid);
-			
+
 			$.each(data.result, function(k,v) {
 				console.log(v);
 				console.log(v.name + ", "+ v.key_ + ", " + v.lastvalue);
@@ -98,7 +98,7 @@ var zbxApi = {
             //console.log(Object.keys(data.result).length);
             //console.log(data.result[0]);
             //console.log(data.result[0].hostid);
-			
+
 			$.each(data.result, function(k,v) {
 				console.log("host JSON > " + JSON.stringify(v));
 				console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
@@ -231,7 +231,7 @@ var zbxApi = {
 			return server.sendAjaxRequest(method, params);
 		}
 	},
-	
+
 	alertTrigger : {
 		get : function() {
 			var method = "trigger.get";
@@ -253,7 +253,7 @@ var zbxApi = {
 			$("#infobox_alertTrigger").text(data.result);
 		}
 	},
-	
+
 	unAckknowledgeEvent : {
 		get : function() {
 			var method = "trigger.get";
@@ -303,7 +303,7 @@ var zbxApi = {
 			return resultArray;
 		}
 	},
-	
+
 	triggerInfo : {
 		get : function() {
 			var method = "trigger.get";
@@ -506,12 +506,12 @@ var int = {
 			$("#contents_top > div").hide();
 			$("#form_beforeDay").val(db.get("beforeDay"));
 			$("#setting").show();
-		});		
-		
-		$("#menu_serverlist").click(function() {
-			console.log("Click Menu ServerList");	
 		});
-		
+
+		$("#menu_serverlist").click(function() {
+			console.log("Click Menu ServerList");
+		});
+
 		/* 전체 서버 상태 2017-01-02 */
 		$("#menu_overview").click(function() {
 			console.log("Click Menu OverView");
@@ -519,7 +519,7 @@ var int = {
 			$("#base_server").show();
 			int.serverOverView();
 		});
-		
+
 		// ##### dashboard #####
 		$("#reload_dashboard").click(function() {
 			int.dashboardView();
@@ -1047,8 +1047,8 @@ var int = {
             var serverOS = ''; //운영체제
 
             $.each(server_data.result, function(k,v){
-            	serverName = v.name; 
-                serverIP = v.interfaces[0].ip; 
+            	serverName = v.name;
+                serverIP = v.interfaces[0].ip;
 
                 console.log("serverName : " + serverName + " / serverIP : " + serverIP + " / serverCPU : " + serverCPU + " / serverMemory : " + serverMemory + " / serverRisc : " + serverRisc + " / serverOS : " + serverOS);
             })
@@ -1066,13 +1066,13 @@ var int = {
 		if($("#serverlist > li").size() > 0){
 			return;
 		}
-		
+
 		zbxApi.host.get().done(function(data, status, jqXHR) {
 			var host_data = zbxApi.host.success(data);
 			var tagId = '';
 			var tagText = '';
 			var tagText2 ='';
-			
+
 			$.each(host_data.result, function(k,v){
 				tagText = '';
 				tagText2 = '';
@@ -1082,27 +1082,27 @@ var int = {
 				tagText += v.host;
 				tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
 				//console.log("tagText : " + tagText);
-				$("#serverlist").append(tagText); 
-				
+				$("#serverlist").append(tagText);
+
 				tagText2 += '<li><a class="treeview-menu" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
 				tagText2 += '<li><a class="treeview-menu" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
 				tagText2 += '<li><a class="treeview-menu" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
 				tagText2 += '<li><a class="treeview-menu" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
 				tagText2 += '<li><a class="treeview-menu" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
 				tagText2 += '<li><a class="treeview-menu" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
-				
+
 				$("#" + tagId + "_performlist").append(tagText2);
-				
+
 				$("#info_" + v.hostid).click(function() { //요약
-					alert("IN OverView");					
+					alert("IN OverView");
 				});
-				
+
 				$("#cpu_" + v.hostid).click(function(){ //CPU
 					$("[id^=base]").hide();
 					$("#base_hostinfo").show();
 					var dataItem = null;
-					var data_loadavg1 = null;	
-						
+					var data_loadavg1 = null;
+
 					zbxApi.getItem.get(v.hostid,"system.cpu.util[,system]").then(function(data) {
 						dataItem = zbxApi.getItem.success(data);
 						console.log("dataItem : " + JSON.stringify(dataItem));
@@ -1115,8 +1115,8 @@ var int = {
 						hostinfoView(dataItem, data_loadavg1);
 					});
 				});
-					
-				$("#memory_" + v.hostid).click(function() { //Memory						
+
+				$("#memory_" + v.hostid).click(function() { //Memory
 					alert("IN Memory");
 				});
 
@@ -1131,10 +1131,10 @@ var int = {
                 $("#traffic_" + v.hostid).click(function() { //Traffic
                     alert("IN Traffic");
                 });
-					
+
 				$("#" + tagId).click(function() {
 					$("[id^=base]").hide();
-					$("#base_hostinfo").show();					
+					$("#base_hostinfo").show();
 					hostinfoView();
 				});
 			})
@@ -1334,11 +1334,11 @@ var int = {
 			scroll : true,
 			helper : "original"
 		});
-		
+
 		$("#graph_setting-tbody").bind('click.sortable mousedown.sortable',function(ev){
 		    ev.target.focus();
 		});
-		
+
 		$("#graph_setting-tbody").disableSelection();
 
 	},
@@ -1351,6 +1351,8 @@ var int = {
 
 		var groupNames = db.get("groupNamesArray");
 		var keyNames = db.get("keyNamesArray");
+
+/*
 		if (groupNames === null || $.isEmptyObject(groupNames) === true || keyNames === null || $.isEmptyObject(keyNames) === true) {
 			$("#form_beforeDay").val(db.get("beforeDay"));
 			$("[id^=base]").hide();
@@ -1358,6 +1360,7 @@ var int = {
 			infoDiag("Please First Setting");
 			return false;
 		}
+*/
 		return true;
 	}
 };
@@ -1372,10 +1375,10 @@ var hostinfoView = function(dataItem, data_loadavg1) {
 	var d = new Date();
 	var startTime = d.getTime();
 	startTime = String(Math.round((startTime - 43200000)/1000));
-	
+
 	var dataHistory = null;
 	var history_loadavg1 = null;
-	
+
 	zbxApi.getHistory.get(dataItem.result[0].itemid,startTime).then(function(data) {
 		dataHistory = zbxApi.getHistory.success(data);
 		keyName = dataItem.result[0].key_;
@@ -1391,9 +1394,9 @@ var hostinfoView = function(dataItem, data_loadavg1) {
 		keyName2 = data_loadavg1.result[0].key_;
 		$.each(history_loadavg1.result, function(k,v) {
 			loadAvg1Arr[k]=parseFloat(v.value);
-		});		
-		
-		$(function () {		
+		});
+
+		$(function () {
 			Highcharts.chart('hostinfo_cpuusage', {
 		        chart: {
 		            type: 'area'
@@ -1463,8 +1466,8 @@ var hostinfoView = function(dataItem, data_loadavg1) {
 //		                21000, 20000, 19000, 18000, 18000, 17000, 16000]
 		        }]
 		    });
-		});		
-		
+		});
+
 		$(function () {
 		    Highcharts.chart('serverinfo_memusage', {
 		        chart: {
@@ -1521,9 +1524,9 @@ var hostinfoView = function(dataItem, data_loadavg1) {
 		        }]
 		    });
 		});
-		
+
 		$(function () {
-			
+
 			Highcharts.chart('hostinfo_cpuusage1', {
 		        chart: {
 		            type: 'area'
