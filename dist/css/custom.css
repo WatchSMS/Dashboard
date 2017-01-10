@@ -31,7 +31,6 @@
 	padding-left: 15px;
 }
 
-
 .col-c50-block{
 	min-height: 1px;
 	padding-top: 15px;
@@ -39,7 +38,6 @@
 	padding-left: 7px;
 	height: 40%;
 }
-
 
 .col-c25-block{
 	width: 50%;
@@ -49,4 +47,25 @@
 	padding-top: 15px;
 	padding-right: 7px;
 	padding-left: 7px;
+}
+
+/* 2017.01.09 */
+.table-server {
+	width: 100%;
+}
+
+.progress-background{
+	margin-right: 2px;
+	margin-left: 2px;
+	position:relative;
+	background-color:rgba(192,192,192,0.3);
+	border-radius:16px!important;
+}
+
+.progress-bar{
+	padding-bottom: 2px;
+	padding-top: 2px;
+	position:relative;
+	background-color:rgba(0,0,255,0.3);
+	border-radius:16px!important;
 }
