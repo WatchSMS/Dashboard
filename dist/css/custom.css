@@ -55,8 +55,8 @@
 }
 
 .progress-background{
-	margin-right: 2px;
-	margin-left: 2px;
+	margin-right: 5px;
+	margin-left: 5px;
 	position:relative;
 	background-color:rgba(192,192,192,0.3);
 	border-radius:16px!important;
@@ -68,4 +68,33 @@
 	position:relative;
 	background-color:rgba(0,0,255,0.3);
 	border-radius:16px!important;
+	color: #000000;
+}
+
+/* 2017.01.11 */
+.col-60{
+	width : 60%;
+	position: relative;
+	float: left;
+	margin-top: 10px;
+	min-height: 20px;
+}
+
+.col-40{
+	width : 40%;
+	position: relative;
+	float: left;
+	margin-top: 10px;
+	min-height: 20px;
+}
+
+.col-50{
+	width : 50%;
+	position: relative;
+	float: left;
+}
+
+.font-title{
+	font-family: Monospace;
+	font-weight: bold;
 }
