@@ -1583,12 +1583,8 @@ var int = {
                 $("#" + tagId + "_performlist").append(tagText2);
 
                 $("#info_" + v.hostid).click(function () { /* 서버 정보 요약 */
-                    //$.blockUI(blockUI_opt_all);
-
                     $("[id^=base]").hide();
                     $("#base_serverInfo").show();
-                    $("#base_networkInfo").hide();
-                    $("#base_diskInfo").hide();
 
                     var serverCpuSystem = null;
                     var serverCpuUser = null;
@@ -1740,7 +1736,6 @@ var int = {
                 $("#disk_" + v.hostid).click(function () { //Disk
                     $("[id^=base]").hide();
                     $("#base_diskInfo").show();
-                    $("#base_networkInfo").hide();
 
                     if ($("#diskList > h4").size() > 0) {
                         return;
@@ -1776,7 +1771,6 @@ var int = {
                 $("#traffic_" + v.hostid).click(function () {
                     $("[id^=base]").hide();
                     $("#base_networkInfo").show();
-                    $("#base_diskInfo").hide();
 
                     if ($("#networkList > h4").size() > 0) {
                         return;
