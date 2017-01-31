@@ -854,8 +854,6 @@ var int = {
             int.hostInfoView(); //host 정보 호출
         }).then(function (data) {
             int.allServerViewHost(); //전체 서버 상태 호출
-        }).then(function (data){
-            int.serOverviewHost(); //서버 요약 정보
         });
     },
 
@@ -1585,6 +1583,8 @@ var int = {
                 $("#info_" + v.hostid).click(function () { /* 서버 정보 요약 */
                     $("[id^=base]").hide();
                     $("#base_serverInfo").show();
+                    var hostid = v.hostid;
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
 
                     var serverCpuSystem = null;
                     var serverCpuUser = null;
@@ -1596,7 +1596,7 @@ var int = {
                     var serverTraOutEth0 = null;
                     var serverTraTotalEth0 = null;
 
-                    var serverProcess = null;
+                    //var serverProcess = null;
 
                     zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,system]").then(function (data){
                         serverCpuSystem = zbxApi.serverViewGraph.success(data);
@@ -1635,10 +1635,7 @@ var int = {
                         serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0);
                     });
 
-                    zbxApi.getItem.get(v.hostid,"system.run[\"ps -eo cmd,user,pmem,pcpu --sort=-pcpu\"]").done(function (data, status, jqXHR){
-                        serverProcess = zbxApi.getItem.success(data);
-                        serverProcessView(serverProcess);
-                    });
+                    serverProcessView(hostid, startTime);
 
                     zbxApi.serverViewHost.get(v.hostid).done(function(data, status, jqXHR){
                         var server_host = zbxApi.serverViewHost.success(data);
@@ -2506,6 +2503,10 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     })
 }
 
+var serverProcessView = function(hostid, startTime){
+    console.log("serverProcessView : " + hostid);
+}
+/*
 function serverProcessView(serverProcess) {
     $("#serverProcessList").empty();
 
@@ -2565,7 +2566,7 @@ function serverProcessView(serverProcess) {
     processTbl += "</tbody>";
     $("#serverProcessList").append(processTbl);
 }
-
+*/
 var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion){
     $("#serverInfo").empty();
 
@@ -3469,7 +3470,6 @@ var callApiForCpuLoadAvg = function (hostid,startTime){
 
 	return dataSet;
 }
-
 
 var callApiForCpuUsedProcess = function(hostid){
 	return zbxSyncApi.getItem(hostid,"system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
