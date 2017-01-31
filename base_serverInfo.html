@@ -3,12 +3,12 @@
 </section>
 
 <section class="content">
-    <div class="col-55">
+    <div class="col-60">
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
                 <div class="pull-left">
-                    <span class="font-title">CPU 사용량</span>
+                    <span class="font-title"> CPU 사용량 </span>
                 </div>
                 <div class="box-body" id="cpuUse"></div>
             </div>
@@ -18,7 +18,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
                 <div class="pull-left">
-                    <span class="font-title">전체 메모리</span>
+                    <span class="font-title"> 전체메모리 </span>
                 </div>
 
                 <div class="box-body" id="memoryAll"></div>
@@ -29,7 +29,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
                 <div class="pull-left">
-                    <span class="font-title">디스크 사용량</span>
+                    <span class="font-title"> 디스크 사용량 </span>
                 </div>
 
                 <div class="box-body" id="diskUse"></div>
@@ -40,7 +40,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
                 <div class="pull-left">
-                    <span class="font-title">트래픽 사용량</span>
+                    <span class="font-title"> 트래픽 사용량 </span>
                 </div>
 
                 <div class="box-body" id="trafficUse"></div>
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="col-45">
+    <div class="col-40">
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="box-body">
-                    <table class="table-server no-margin table-condensed table-hover table-striped">
+                    <table class="table-server no-margin table-condensed table-hover table-striped" id="serverProcessList">
                         <thead>
                         <tr style="border-collapse: collapse;">
                             <th>이름</th>
@@ -81,8 +81,6 @@
                             <th>수</th>
                         </tr>
                         </thead>
-                        <tbody id="serverProcessList">
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -96,21 +94,18 @@
                 </div>
 
                 <div class="box-body">
-                    <table class="table-server no-margin table-condensed table-hover table-striped">
+                    <table class="table-server no-margin table-condensed table-hover table-striped" id="serverEventList">
                         <thead>
                         <tr style="border-collapse: collapse;">
-                            <th style="width: 8%;">이벤트<br>등급</th>
-                            <th style="width: 8%;">상태</th>
-                            <th>발생<br>시간</th>
-                            <th>지속<br>시간</th>
+                            <th>이벤트 등급</th>
+                            <th>상태</th>
+                            <th>발생시간</th>
+                            <th>지속시간</th>
                             <th>인지</th>
-                            <th style="width: 8%;">호스트명</th>
-                            <th style="width: 20%;">비고</th>
+                            <th>호스트명</th>
+                            <th>비고</th>
                         </tr>
                         </thead>
-                        <tbody id="serverEventList">
-
-                        </tbody>
                     </table>
                 </div>
             </div>
