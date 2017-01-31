@@ -1596,7 +1596,7 @@ var int = {
                     var serverTraOutEth0 = null;
                     var serverTraTotalEth0 = null;
 
-                    //var serverProcess = null;
+                    var serverProcess = null;
 
                     zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,system]").then(function (data){
                         serverCpuSystem = zbxApi.serverViewGraph.success(data);
@@ -1632,10 +1632,13 @@ var int = {
                         return zbxApi.serverViewGraph.get(v.hostid, "net.if.total[eth0]");
                     }).then(function (data){
                         serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
-                        serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0);
+                        serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
                     });
 
-                    serverProcessView(hostid, startTime);
+                    zbxApi.getItem.get(v.hostid,"system.run[\"ps -eo cmd,user,pmem,pcpu --sort=-pcpu\"]").done(function (data, status, jqXHR){
+                        serverProcess = zbxApi.getItem.success(data);
+                        serverProcessView(serverProcess);
+                    });
 
                     zbxApi.serverViewHost.get(v.hostid).done(function(data, status, jqXHR){
                         var server_host = zbxApi.serverViewHost.success(data);
@@ -2028,10 +2031,7 @@ var int = {
     }
 };
 
-var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0){
-    var date1 = new Date();
-    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
-
+var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
     showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
     showServerMemory(serverMemoryUse, startTime);
     showServerDisk(serverDiskUseRoot, startTime);
@@ -2097,7 +2097,7 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
                     spacingRight: 0
                 },
                 title: {
-                    text: ''
+                    text: 'CPU 사용량'
                 },
                 subtitle: { text:  '' },
                 xAxis: {
@@ -2206,7 +2206,7 @@ function showServerMemory(serverMemoryUse, startTime){
                     spacingRight: 0
                 },
                 title: {
-                    text: ''
+                    text: '전체메모리'
                 },
                 subtitle: { text:  '' },
                 xAxis: {
@@ -2306,7 +2306,7 @@ function showServerDisk(serverDiskUseRoot, startTime){
                     spacingRight: 0
                 },
                 title: {
-                    text: ''
+                    text: '디스크 사용량'
                 },
                 subtitle: { text:  '' },
                 xAxis: {
@@ -2426,9 +2426,8 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
                     spacingRight: 0
                 },
                 title: {
-                    text: ''
+                    text: '트래픽 사용량'
                 },
-                subtitle: { text:  '' },
                 xAxis: {
                     labels: {
                         formatter: function () {
@@ -2503,10 +2502,6 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     })
 }
 
-var serverProcessView = function(hostid, startTime){
-    console.log("serverProcessView : " + hostid);
-}
-/*
 function serverProcessView(serverProcess) {
     $("#serverProcessList").empty();
 
@@ -2546,7 +2541,7 @@ function serverProcessView(serverProcess) {
         var processCpu = 0;
         var processMemory = 0;
         var processCount = 0;
-        //if(k>0 && k<10){
+
         var temp = processArrFinal[k].split(" ");
         var temp2 = processArrFinal[k].split(" ");
         if(k>0 && k<5){
@@ -2566,7 +2561,7 @@ function serverProcessView(serverProcess) {
     processTbl += "</tbody>";
     $("#serverProcessList").append(processTbl);
 }
-*/
+
 var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion){
     $("#serverInfo").empty();
 
