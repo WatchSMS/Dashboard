@@ -1780,13 +1780,28 @@ var int = {
                     networkTbl += '<h4><a href="#" style="color:black; font-weight: bold;" name="eth1" id="eth1_' + v.hostid + '">eth1</h4>';
                     $("#networkList").append(networkTbl);
 
-                    //var trafficId = document.getElementsByName('eth0')[0].id;
-
-                    //$("#eth0_" + v.hostid).click(function () {
                     var trafficEth0In= null;
                     var trafficEth0Out= null;
                     var trafficEth0Total= null;
-                    console.log("#eth0_" + v.hostid);
+
+                    $("#btn_cpu.btn").click(function() {
+                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+
+                        zbxApi.serverViewGraph.get(v.hostid, "net.if.in[eth0]").then(function (data){
+                            trafficEth0In = zbxApi.serverViewGraph.success(data);
+                        }).then(function (){
+                            return zbxApi.serverViewGraph.get(v.hostid, "net.if.out[eth0]");
+                        }).then(function (data){
+                            trafficEth0Out = zbxApi.serverViewGraph.success(data);
+                        }).then(function (){
+                            return zbxApi.serverViewGraph.get(v.hostid, "net.if.total[eth0]");
+                        }).then(function (data){
+                            trafficEth0Total = zbxApi.serverViewGraph.success(data);
+                            trafficViewEth0(trafficEth0In, trafficEth0Out, trafficEth0Total, startTime);
+                        });
+                    });
+
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     zbxApi.serverViewGraph.get(v.hostid, "net.if.in[eth0]").then(function (data){
                         trafficEth0In = zbxApi.serverViewGraph.success(data);
                     }).then(function (){
@@ -1797,7 +1812,7 @@ var int = {
                         return zbxApi.serverViewGraph.get(v.hostid, "net.if.total[eth0]");
                     }).then(function (data){
                         trafficEth0Total = zbxApi.serverViewGraph.success(data);
-                        trafficViewEth0(trafficEth0In, trafficEth0Out, trafficEth0Total);
+                        trafficViewEth0(trafficEth0In, trafficEth0Out, trafficEth0Total, startTime);
                     });
                 });
 
@@ -2798,10 +2813,8 @@ function showDiskRootUse(diskRootUsed, startTime){
     })
 }
 
-var trafficViewEth0 = function(trafficEth0In, trafficEth0Out, trafficEth0Total){
-    var date1 = new Date();
-    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
-
+var trafficViewEth0 = function(trafficEth0In, trafficEth0Out, trafficEth0Total, startTime){
+    console.log("startTime : " + startTime + " 입니다.");
     showTrafficEth0Io(trafficEth0In, trafficEth0Out, startTime);
     showTrafficEth0Total(trafficEth0Total, startTime);
     $.unblockUI(blockUI_opt_all);
