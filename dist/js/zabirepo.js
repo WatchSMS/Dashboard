@@ -1733,6 +1733,8 @@ var int = {
                     $("[id^=base]").hide();
                     $("#base_diskInfo").show();
 
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+
                     if ($("#diskList > h4").size() > 0) {
                         return;
                     }
@@ -1743,25 +1745,21 @@ var int = {
                     diskTbl += '<h4><a href="#" style="color:black; font-weight: bold;" id="root_' + v.hostid + '">ROOT</h4>';
                     $("#diskList").append(diskTbl);
 
-                    $("#root_" + v.hostid).click(function () {
-                        var diskRootWrite= null;
-                        var diskRootRead= null;
+                    $("#btn_cpu.btn").click(function() {
+                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
                         var diskRootUsed= null;
-                        console.log("#eth0_" + v.hostid);
-                        zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,wired]").then(function (data){
-                            diskRootWrite = zbxApi.serverViewGraph.success(data);
-                        }).then(function (){
-                            return zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,anon]");
-                        }).then(function (data){
-                            diskRootRead = zbxApi.serverViewGraph.success(data);
-                            diskRootRead = 100-diskRootRead;
-                        }).then(function (){
-                            return zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]");
-                        }).then(function (data){
+                        zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]").then(function (data){
                             diskRootUsed = zbxApi.serverViewGraph.success(data);
-                            diskViewRoot(diskRootWrite, diskRootRead, diskRootUsed);
+                            diskViewRoot(diskRootUsed, startTime);
                         })
                     });
+
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                    var diskRootUsed= null;
+                    zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]").then(function (data){
+                        diskRootUsed = zbxApi.serverViewGraph.success(data);
+                        diskViewRoot(diskRootUsed, startTime);
+                    })
                 });
 
                 $("#traffic_" + v.hostid).click(function () {
@@ -2533,10 +2531,10 @@ var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
 
     processTbl += "<thead>";
     processTbl += "<tr role='row'>";
-    processTbl += "<th class='sorting_desc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='CPU: 오름차순 정렬' aria-sort='descending'>이름</th>";
-    processTbl += "<th width='15%' class='sorting_asc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='이름: 오름차순 정렬'>cpu</th>";
-    processTbl += "<th class='sorting_desc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='메모리: 오름차순 정렬'>메모리</th>";
-    processTbl += "<th class='text-center sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='수: 오름차순 정렬'>수</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>이름</th>";
+    processTbl += "<th width='15%' tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>cpu</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>메모리</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>수</th>";
     processTbl += "</tr>";
     processTbl += "</thead>";
 
@@ -2556,10 +2554,10 @@ var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
             }
 
             processTbl += "<tr id='" + procName + "' role='row' class='odd'>";
-            processTbl += "<td class='sorting_1'><span class='ellipsis' title='" + procName + "'>" + procName + "</span></td>";
-            processTbl += "<td class='sorting_3'>" + procCpuValue + "</td>";
-            processTbl += "<td class='sorting_2'>" + procCpuValue + "<span class='smaller'>MB</span></td>";
-            processTbl += "<td class='text-center'>" + v.procCnt + "</td>";
+            processTbl += "<td><span class='ellipsis' title='" + procName + "'>" + procName + "</span></td>";
+            processTbl += "<td>" + procCpuValue + "</td>";
+            processTbl += "<td>" + procCpuValue + "<span class='smaller'>MB</span></td>";
+            processTbl += "<td>" + v.procCnt + "</td>";
             processTbl += "</tr>";
         }
     });
@@ -2599,121 +2597,10 @@ var serverOverViewEvent = function(host, group, status, severity, description, l
     $("#serverEventList").append(serverEventTbl);
 };
 
-var diskViewRoot = function(diskRootWrite, diskRootRead, diskRootUsed){
-    var date1 = new Date();
-    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
-
-    //showDiskRootIo(diskRootWrite, diskRootRead, startTime);
+var diskViewRoot = function(diskRootUsed, startTime){
     showDiskRootUse(diskRootUsed, startTime);
     $.unblockUI(blockUI_opt_all);
 };
-
-function showDiskRootIo(diskRootWrite, diskRootRead, startTime){
-    var diskRootWriteArr = [];
-    var diskRootReadArr = [];
-
-    var history_diskRootWrite = null;
-    var history_diskRootRead = null;
-
-    zbxApi.getHistory.get(diskRootWrite.result[0].itemid, startTime).then(function(data){
-        history_diskRootWrite = zbxApi.getHistory.success(data);
-        $.each(history_diskRootWrite.result, function (k, v) {
-            diskRootWriteArr[k] = new Array();
-            diskRootWriteArr[k][0] = parseInt(v.clock) * 1000;
-            diskRootWriteArr[k][1] = parseFloat(v.value);
-        });
-    }).then(function(){
-        return zbxApi.getHistory.get(diskRootRead.result[0].itemid, startTime);
-    }).then(function(data){
-        history_diskRootRead = zbxApi.getHistory.success(data);
-        $.each(history_diskRootRead.result, function(k, v){
-            diskRootReadArr[k] = new Array();
-            diskRootReadArr[k][0] = parseInt(v.clock) * 1000;
-            diskRootReadArr[k][1] = parseFloat(v.value);
-        });
-        $(function () {
-            Highcharts.chart('chart_diskIo', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '디스크 I/O',
-                    align: 'left'
-                },
-                subtitle: { text:  '' },
-                xAxis: {
-                    labels: {
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if(hours.length==1){
-                                hours = "0" + hours;
-                            }
-                            if(minutes.length==1){
-                                minutes = "0" + minutes;
-                            }
-                            if(seconds.length==1){
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value + '%';
-                        }
-                    }
-                },
-                tooltip: {
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
-                    }
-                },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Disk Read',
-                    data: diskRootReadArr
-                }, {
-                    name: 'Disk Write',
-                    data: diskRootWriteArr
-                }]
-            });
-        });
-    })
-}
 
 function showDiskRootUse(diskRootUsed, startTime){
     var diskRootUsedArr = [];
