@@ -32,8 +32,8 @@ $(document).ready(function () {
     $("#base_memoryInfo").load("base_memoryInfo.html"); // 메모리 통계 2017-01-18
     $("#base_processInfo").load("base_processInfo.html"); // 메모리 통계 2017-01-18
 
-    $("#base_diskInfo").load("base_diskInfo.html");
-    $("#base_networkInfo").load("base_networkInfo.html");
+    $("#base_diskInfo").load("base_diskInfo.html"); //디스크 통계
+    $("#base_networkInfo").load("base_networkInfo.html"); //네트워크통계
 });
 /* 2017.01.11 zbxSyncApi 추가*/
 var zbxSyncApi = {
@@ -166,7 +166,6 @@ var zbxSyncApi = {
 }
 
 zbxSyncApi.auth();
-
 
 var zbxApi = {
     // for Test
@@ -2503,7 +2502,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
 }
 
 function serverProcessView(serverProcess) {
-    $("#serverProcessList").empty();
+    //$("#serverProcessList").empty();
 
     var processArr = [];
     var processArrOrg = [];
@@ -2566,27 +2565,27 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
     $("#serverInfo").empty();
 
     var serverInfoTbl = '';
-    serverInfoTbl += "<tr><td>운영체제</td><td>"+serverOS+"</td></tr>";
-    serverInfoTbl += "<tr><td>서버명</td><td>"+serverTitle+"</td></tr>";
-    serverInfoTbl += "<tr><td>IP주소</td><td>"+serverIP+"</td></tr>";
-    serverInfoTbl += "<tr><td>호스트명</td><td>"+serverName+"</td></tr>";
-    serverInfoTbl += "<tr><td>에이전트</td><td>"+serverAgentVersion+"</td></tr>";
+        serverInfoTbl += "<tr><td>운영체제</td><td>"+serverOS+"</td></tr>";
+        serverInfoTbl += "<tr><td>서버명</td><td>"+serverTitle+"</td></tr>";
+        serverInfoTbl += "<tr><td>IP주소</td><td>"+serverIP+"</td></tr>";
+        serverInfoTbl += "<tr><td>호스트명</td><td>"+serverName+"</td></tr>";
+        serverInfoTbl += "<tr><td>에이전트</td><td>"+serverAgentVersion+"</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
 };
 
 var serverOverViewEvent = function(host, group, status, severity, description, lastchange, age, ack){
-    $("#serverEventList").empty();
+    //$("#serverEventList").empty();
 
     var serverEventTbl = '';
-    serverEventTbl += "<tr>";
-    serverEventTbl += "<td style='width: 10%;'>" + severity + "</td>";
-    serverEventTbl += "<td style='width: 10%;'>" + status + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + lastchange + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + age + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + ack + "</td>";
-    serverEventTbl += "<td>" + host + "</td>";
-    serverEventTbl += "<td>" + description + "</td>";
-    serverEventTbl += "</tr>";
+        serverEventTbl += "<tr>";
+        serverEventTbl += "<td style='width: 10%;'>" + severity + "</td>";
+        serverEventTbl += "<td style='width: 10%;'>" + status + "</td>";
+        serverEventTbl += "<td style='width: 7%;'>" + lastchange + "</td>";
+        serverEventTbl += "<td style='width: 7%;'>" + age + "</td>";
+        serverEventTbl += "<td style='width: 7%;'>" + ack + "</td>";
+        serverEventTbl += "<td>" + host + "</td>";
+        serverEventTbl += "<td>" + description + "</td>";
+        serverEventTbl += "</tr>";
     $("#serverEventList").append(serverEventTbl);
 };
 
