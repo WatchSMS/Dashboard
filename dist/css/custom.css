@@ -74,26 +74,31 @@
 }
 
 /* 2017.01.11 */
-.col-60{
-	width : 60%;
+.col-55{
+	width : 55%;
 	position: relative;
 	float: left;
 	margin-top: 10px;
 	min-height: 20px;
+
+	padding-right: 7px;
 }
 
-.col-40{
-	width : 40%;
+.col-45{
+	width : 45%;
 	position: relative;
-	float: left;
+	float: right;
 	margin-top: 10px;
 	min-height: 20px;
+
+	padding-left: 7px;
 }
 
 .col-50{
 	width : 50%;
 	position: relative;
 	float: left;
+	padding-right: 5px;
 }
 
 .font-title{
@@ -561,163 +566,163 @@ Theme Version: 	1.3.0
 
 
 .bold {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .large {
-    font-size: 13px;
+	font-size: 13px;
 }
 
 .smaller {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 .x-small {
-    font-size: 10px;
+	font-size: 10px;
 }
 
 .x-smaller {
-    font-size: 9px;
+	font-size: 9px;
 }
 
 .display-none {
-    display: none;
+	display: none;
 }
 
 .display-block {
-    display: block;
+	display: block;
 }
 
 .display-inline {
-    display: inline;
+	display: inline;
 }
 
 .inline-block {
-    display: inline-block;
+	display: inline-block;
 }
 
 span.ellipsis, td.ellipsis {
-    max-width: 100px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -ms-text-overflow: ellipsis;
+	max-width: 100px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
 }
 
 span.ellipsis{
-    display: inline-block;
-    vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .percent-text:after {
-    content: "%";
-    font-size: smaller;
+	content: "%";
+	font-size: smaller;
 }
 
 .ms-text:after {
-    content: "ms";
-    font-size: smaller;
+	content: "ms";
+	font-size: smaller;
 }
 
 .min-text:after {
-    content: "min";
-    font-size: smaller;
+	content: "min";
+	font-size: smaller;
 }
 
 /*table css*/
 
 @media screen and (max-width: 991px) {
-    .table-responsive {
-        box-shadow: 4px 0 21px -13px #000;
-    }
+	.table-responsive {
+		box-shadow: 4px 0 21px -13px #000;
+	}
 }
 
 table {
-    width: 100% !important;
+	width: 100% !important;
 }
 
 table.table-striped {
-    border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 .table> thead> tr> th, .table> tbody> tr> th, .table> tfoot> tr> th, .table> thead> tr> td, .table> tbody> tr> td, .table> tfoot> tr> td {
-    line-height: normal;
-    padding: 1px 7px;
-    font-weight: normal;
-    vertical-align: middle;
+	line-height: normal;
+	padding: 1px 7px;
+	font-weight: normal;
+	vertical-align: middle;
 }
 
 table> thead> tr> th.sorting, table> thead> tr> th.sorting_asc, table> thead> tr> th.sorting_desc, table.table-hover> tbody> tr {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 table> thead> tr, table> tbody> tr {
-    height: 36px;
+	height: 36px;
 }
 
 .dataTables_scrollHead table {
-    margin: 0;
+	margin: 0;
 }
 
 .dataTables_scrollHead .dataTables_scrollHeadInner {
-    padding-left: 0px;
+	padding-left: 0px;
 }
 
 .dataTables_scrollHeadInner {
-    width: 100% !important;
+	width: 100% !important;
 }
 
 .dataTables_scrollHeadInner table th:last-child {
-    width: auto !important;
+	width: auto !important;
 }
 
 .dataTables_scrollBody table {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .dataTables_scrollBody table> thead th:after {
-    content: none;
+	content: none;
 }
 
 .dataTables_scrollBody table> tbody tr:first-child td {
-    border: none;
+	border: none;
 }
 
 .dataTables_wrapper table thead th, .dataTables_wrapper table tbody tr {
-    padding-right: 7px !important;
-    white-space: nowrap;
+	padding-right: 7px !important;
+	white-space: nowrap;
 }
 
 .dataTables_wrapper table thead th.pr-none {
-    padding-right: 0 !important;
+	padding-right: 0 !important;
 }
 
 .dataTables_wrapper .dataTables_empty {
-    padding: 0;
-    text-align: center;
-    line-height: 36px;
+	padding: 0;
+	text-align: center;
+	line-height: 36px;
 }
 
 .dataTables_wrapper .dataTables_filter {
-    margin-left: -10px;
-    margin-bottom: 10px;
+	margin-left: -10px;
+	margin-bottom: 10px;
 }
 
 .dataTables_wrapper .dataTables_filter .zmdi-search {
-    font-size: 20px;
-    position: relative;
-    left: 28px;
-    top: 3px;
+	font-size: 20px;
+	position: relative;
+	left: 28px;
+	top: 3px;
 }
 
 .dataTables_wrapper .dataTables_filter input {
-    padding-left: 40px;
-    width: 202px;
-    height: 36px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    font-size: 14px;
+	padding-left: 40px;
+	width: 202px;
+	height: 36px;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	font-size: 14px;
 }
 
 .sorting:after, .sorting_asc:after, .sorting_desc:after, .sorting_asc_disabled:after, .sorting_desc_disabled:after, .paginate_enabled_previous:after, .paginate_disabled_previous:after, .paginate_enabled_next:after, .paginate_disabled_next:after {
@@ -757,58 +762,58 @@ table> thead> tr, table> tbody> tr {
 }
 
 table.main-list tbody tr {
-    height: 40px;
+	height: 40px;
 }
 
 table.simple-list tr {
-    border: 1px solid #dddddd;
-    height: 36px;
+	border: 1px solid #dddddd;
+	height: 36px;
 }
 
 table.simple-list tr.row_selected {
-    border: 2px solid #000;
+	border: 2px solid #000;
 }
 
 table.simple-list> tbody> tr.row_selected td:first-child:before {
-    border-color: transparent;
-    border-style: solid;
-    border-width: 8px 8px 8px 0;
-    content: "";
-    display: block;
-    height: 0;
-    left: -16px;
-    margin-top: -17px;
-    position: relative;
-    top: 30px;
-    width: 0;
+	border-color: transparent;
+	border-style: solid;
+	border-width: 8px 8px 8px 0;
+	content: "";
+	display: block;
+	height: 0;
+	left: -16px;
+	margin-top: -17px;
+	position: relative;
+	top: 30px;
+	width: 0;
 }
 
 .simple-list .progress {
-    margin: 3px 0 2px;
-    background-color: #74C8E4;
-    height: 8px;
-    display: inline-block;
+	margin: 3px 0 2px;
+	background-color: #74C8E4;
+	height: 8px;
+	display: inline-block;
 }
 
 .simple-list .progress .progress-bar {
-    background-color: #74C8E4;
-    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 73%, transparent 5%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 87%, transparent 75%, transparent);
-    background-size: 40px 40px;
+	background-color: #74C8E4;
+	background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 73%, transparent 5%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 87%, transparent 75%, transparent);
+	background-size: 40px 40px;
 }
 
 .simple-list .name {
-    max-width: 220px;
-    vertical-align: bottom;
+	max-width: 220px;
+	vertical-align: bottom;
 }
 
 .simple-list .value {
-    padding-left: 10px;
+	padding-left: 10px;
 }
 
 .simple-list .usage {
-    vertical-align: super;
-    right: 5px;
-    position: absolute;
-    padding-bottom: 2px;
-    font-size: 11px;
+	vertical-align: super;
+	right: 5px;
+	position: absolute;
+	padding-bottom: 2px;
+	font-size: 11px;
 }
