@@ -2535,16 +2535,16 @@ var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
     $("#serverProcessList").append(processTbl);
 }
 
-var EventListView = function(hostid){
+var EventListView = function(hostid){//서버정보요약 - 이벤트목록
     var data_EventList = null;
 
     new $.jqzabbix(options).getApiVersion().then(function(data){
         data_EventList = callApiForServerEvent(hostid);
-        showServerEventList(data_EventList);
+        showServerEventList(hostid, data_EventList);
     });
 }
 
-var showServerEventList = function(data_EventList){
+var showServerEventList = function(hostid, data_EventList){ //서버정보요약 - 이벤트목록
     var eventTbl = '';
 
     eventTbl += "<thead>";
@@ -2569,17 +2569,18 @@ var showServerEventList = function(data_EventList){
         var ack = convAckServer(v.lastEvent.acknowledged);
         var host = v.hosts[0].host;
         var description = v.description;
-        var group = v.groups[0].name;
-        var minte_status = v.hosts[0].maintenance_status;
-        var itemids = v.items;
+        //var group = v.groups[0].name;
+        //var minte_status = v.hosts[0].maintenance_status;
+        //var itemids = v.items;
 
         eventTbl += "<tr role='row'>";
-            eventTbl += "<td>" + severity + "</td>";
-            eventTbl += "<td>" + lastchange + "</td>";
-            eventTbl += "<td>" + age + "</td>";
-            eventTbl += "<td>" + ack + "</td>";
-            eventTbl += "<td>" + host + "</td>";
-            eventTbl += "<td>" + description + "</td>";
+        eventTbl += "<td>" + severity + "</td>";
+        eventTbl += "<td>" + status + "</td>";
+        eventTbl += "<td>" + lastchange + "</td>";
+        eventTbl += "<td>" + age + "</td>";
+        eventTbl += "<td>" + ack + "</td>";
+        eventTbl += "<td>" + host + "</td>";
+        eventTbl += "<td>" + description + "</td>";
         eventTbl += "</tr>";
     });
 
@@ -2926,7 +2927,6 @@ var procUsageView = function(hostid, startTime) {
         $.unblockUI(blockUI_opt_all);
     });
 }
-
 
 var showDetailedProcTable = function(hostid, finalProcArr, topProcessLastTime){
 
