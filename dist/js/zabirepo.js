@@ -2540,11 +2540,11 @@ var EventListView = function(hostid){
 
     new $.jqzabbix(options).getApiVersion().then(function(data){
         data_EventList = callApiForServerEvent(hostid);
-        showServerEventList(hostid, data_EventList);
+        showServerEventList(data_EventList);
     });
 }
 
-var showServerEventList = function(hostid, data_EventList){
+var showServerEventList = function(data_EventList){
     var eventTbl = '';
 
     eventTbl += "<thead>";
