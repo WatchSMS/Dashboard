@@ -134,12 +134,31 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
-        //console.log("param 123 : " + JSON.stringify(param));
         var result = zbxSyncApi.callAjax(param);
-//        console.log(JSON.stringify(result));
-//        console.log(JSON.stringify(result.result[0]));
+        return result.result;
+    },
+
+    /* 서버 정보 요약 - 이벤트 Table*/
+    serverViewTrigger: function (hostid) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": ["description", "priority", "value", "lastchange"],
+                "monitored": true,
+                "skipDependent": true,
+                "expandDescription": true,
+                "selectGroups": ["name"],
+                "selectHosts": ["host", "maintenance_status"],
+                "sortfield": "description",
+                "only_true": true,
+                "selectLastEvent": "true",
+                "hostids": hostid
+            },
+            "id": 1,
+            "auth": authid
+        }
+        var result = zbxSyncApi.callAjax(param);
         return result.result;
     },
 
@@ -407,32 +426,6 @@ var zbxApi = {
             console.log("AAA");
             $.each(data.result, function (k, v) {
                 console.log("AAA : " + v.hosts[0].hostid + " / " + JSON.stringify(v))
-            });
-            return data;
-        }
-    },
-
-    /* 서버 정보 요약 - 이벤트 Table*/
-    serverViewTrigger: {
-        get: function (hostid) {
-            var method = "trigger.get";
-            var params = {
-                "output": ["description", "priority", "value", "lastchange"],
-                "monitored": true,
-                "skipDependent": true,
-                "expandDescription": true,
-                "selectGroups": ["name"],
-                "selectHosts": ["host", "maintenance_status"],
-                "sortfield": "description",
-                "only_true": true,
-                "selectLastEvent": "true",
-                "hostids": hostid
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            $.each(data.result, function (k, v) {
-                //console.log("AAA : " + v.hosts[0].hostid + " / " + JSON.stringify(v))
             });
             return data;
         }
@@ -1657,34 +1650,7 @@ var int = {
                         })
                     });
 
-                    zbxApi.serverViewTrigger.get(v.hostid).done(function(data, status, jqXHR){
-                        var server_event = zbxApi.serverViewTrigger.success(data);
-                        var host = '';
-                        var group ='';
-                        var status ='';
-                        var severity ='';
-                        var description ='';
-                        var lastchange ='';
-                        var age ='';
-                        var ack ='';
-                        var minte_status ='';
-                        var itemids ='';
-
-                        $.each(server_event.result, function(k, v){
-                            severity = convPriorityServer(v.priority);
-                            status = convStatusServer(v.value);
-                            lastchange = convTime(v.lastchange);
-                            age = convDeltaTime(v.lastchange);
-                            ack = convAckServer(v.lastEvent.acknowledged);
-                            host = v.hosts[0].host;
-                            description = v.description;
-                            group = v.groups[0].name;
-                            minte_status = v.hosts[0].maintenance_status;
-                            itemids = v.items;
-
-                            serverOverViewEvent(host, group, status, severity, description, lastchange, age, ack, minte_status, itemids);
-                        })
-                    });
+                    EventListView(hostid);
                 });
 
                 $("#cpu_" + v.hostid).click(function () { //CPU
@@ -2569,6 +2535,60 @@ var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
     $("#serverProcessList").append(processTbl);
 }
 
+var EventListView = function(hostid){
+    var data_EventList = null;
+
+    new $.jqzabbix(options).getApiVersion().then(function(data){
+        data_EventList = callApiForServerEvent(hostid);
+        showServerEventList(hostid, data_EventList);
+    });
+}
+
+var showServerEventList = function(hostid, data_EventList){
+    var eventTbl = '';
+
+    eventTbl += "<thead>";
+    eventTbl += "<tr role='row'>";
+    eventTbl += "<th>이벤트 등급</th>";
+    eventTbl += "<th>상태</th>";
+    eventTbl += "<th>발생시간</th>";
+    eventTbl += "<th>지속시간</th>";
+    eventTbl += "<th>인지</th>";
+    eventTbl += "<th>호스트명</th>";
+    eventTbl += "<th>비고</th>";
+    eventTbl += "</tr>";
+    eventTbl += "</thead>";
+
+    eventTbl += "<tbody>";
+
+    $.each(data_EventList, function(k, v){
+        var severity = convPriorityServer(v.priority);
+        var status = convStatusServer(v.value);
+        var lastchange = convTime(v.lastchange);
+        var age = convDeltaTime(v.lastchange);
+        var ack = convAckServer(v.lastEvent.acknowledged);
+        var host = v.hosts[0].host;
+        var description = v.description;
+        var group = v.groups[0].name;
+        var minte_status = v.hosts[0].maintenance_status;
+        var itemids = v.items;
+
+        eventTbl += "<tr role='row'>";
+            eventTbl += "<td>" + severity + "</td>";
+            eventTbl += "<td>" + lastchange + "</td>";
+            eventTbl += "<td>" + age + "</td>";
+            eventTbl += "<td>" + ack + "</td>";
+            eventTbl += "<td>" + host + "</td>";
+            eventTbl += "<td>" + description + "</td>";
+        eventTbl += "</tr>";
+    });
+
+    eventTbl += "</tbody>";
+    $("#serverEventList").empty();
+    $("#serverEventList").append(eventTbl);
+
+}
+
 var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion){
     $("#serverInfo").empty();
 
@@ -2579,22 +2599,6 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
     serverInfoTbl += "<tr><td>호스트명</td><td>"+serverName+"</td></tr>";
     serverInfoTbl += "<tr><td>에이전트</td><td>"+serverAgentVersion+"</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
-};
-
-var serverOverViewEvent = function(host, group, status, severity, description, lastchange, age, ack){
-    //$("#serverEventList").empty();
-
-    var serverEventTbl = '';
-    serverEventTbl += "<tr>";
-    serverEventTbl += "<td style='width: 10%;'>" + severity + "</td>";
-    serverEventTbl += "<td style='width: 10%;'>" + status + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + lastchange + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + age + "</td>";
-    serverEventTbl += "<td style='width: 7%;'>" + ack + "</td>";
-    serverEventTbl += "<td>" + host + "</td>";
-    serverEventTbl += "<td>" + description + "</td>";
-    serverEventTbl += "</tr>";
-    $("#serverEventList").append(serverEventTbl);
 };
 
 var diskViewRoot = function(diskRootUsed, startTime){
@@ -3361,6 +3365,10 @@ var callApiForCpuLoadAvg = function (hostid,startTime){
 
 var callApiForCpuUsedProcess = function(hostid){
     return zbxSyncApi.getItem(hostid,"system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
+}
+
+var callApiForServerEvent = function(hostid){
+    return zbxSyncApi.serverViewTrigger(hostid);
 }
 
 var sortProcInCpuOrder = function(data_topProcess){
