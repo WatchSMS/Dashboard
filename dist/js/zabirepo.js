@@ -3035,6 +3035,8 @@ var showDetailedProcTable = function(hostid, finalProcArr, topProcessLastTime){
 var networkView = function(hostid, startTime){
     var data_network = null;
 
+    $.blockUI(blockUI_opt_all);
+
     new $.jqzabbix(options).getApiVersion().then(function(data){
         data_network = callApiForNetwork(hostid);
         console.log(">>>>> data_network <<<<<");
@@ -3042,6 +3044,8 @@ var networkView = function(hostid, startTime){
 
         data_network = sortNetwork(data_network);
         showNetworkUseView(hostid, data_network);
+
+        $.unblockUI(blockUI_opt_all);
     });
 }
 
