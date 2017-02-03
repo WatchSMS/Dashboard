@@ -2768,8 +2768,6 @@ var diskView = function(hostid, disk_data, startTime){
         console.log("disk_itemid : " + disk_itemid);
         console.log("disk_itemKey : " + disk_itemKey);
 
-        //var itemKeyRowArr = disk_itemKey.split(",total");
-        //console.log(itemKeyRowArr);
 
         var itemKey = disk_itemKey.substring(disk_itemKey.indexOf("[")+1,disk_itemKey.indexOf(","));
         console.log("itemKey : " + itemKey);
@@ -2800,38 +2798,38 @@ var diskView = function(hostid, disk_data, startTime){
                 console.log("diskItemKeyTotal : " + diskItemKeyTotal);
 
                 zbxApi.serverViewGraph.get(hostid, diskItemKeyIn).then(function(data) {
-                    diskItemKeyIn = zbxApi.serverViewGraph.success(data);
+                    diskIn = zbxApi.serverViewGraph.success(data);
                 }).then(function (){
                     return zbxApi.serverViewGraph.get(hostid, diskItemKeyOut);
                 }).then(function (data){
-                    diskItemKeyOut = zbxApi.serverViewGraph.success(data);
+                    diskOut = zbxApi.serverViewGraph.success(data);
                 }).then(function (){
                     return zbxApi.serverViewGraph.get(hostid, diskItemKeyTotal);
                 }).then(function (data){
-                    diskItemKeyTotal = zbxApi.serverViewGraph.success(data);
-                    showDiskView(diskItemKeyIn, diskItemKeyOut, diskItemKeyTotal);
+                    diskTotal = zbxApi.serverViewGraph.success(data);
+                    showDiskView(diskIn, diskOut, diskTotal);
                 });
             })
         });
     });
 }
 
-var showDiskView = function(diskItemKeyIn, diskItemKeyOut, diskItemKeyTotal){
+var showDiskView = function(diskIn, diskOut, diskTotal){
     var date1 = new Date();
     var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
 
-    showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime);
-    showTotalDisk(diskItemKeyTotal, startTime);
+    showInOutDisk(diskIn, diskOut, startTime);
+    showTotalDisk(diskTotal, startTime);
 };
 
-function showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime){
+function showInOutDisk(diskIn, diskOut, startTime){
     var diskInArr = [];
     var diskOutArr = [];
 
     var history_diskIn = null;
     var history_diskOut = null;
 
-    zbxApi.getHistory.get(diskItemKeyIn.result[0].itemid, startTime, 3).then(function(data){
+    zbxApi.getHistory.get(diskIn.result[0].itemid, startTime, 3).then(function(data){
         history_diskIn = zbxApi.getHistory.success(data);
         $.each(history_diskIn.result, function(k, v){
             diskInArr[k] = new Array();
@@ -2839,7 +2837,7 @@ function showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime){
             diskInArr[k][1] = parseFloat(v.value);
         });
     }).then(function (){
-        return zbxApi.getHistory.get(diskItemKeyOut.result[0].itemid, startTime, 3);
+        return zbxApi.getHistory.get(diskOut.result[0].itemid, startTime, 3);
     }).then(function(data){
         history_diskOut = zbxApi.getHistory.success(data);
         $.each(history_diskOut.result, function(k, v){
@@ -2932,12 +2930,12 @@ function showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime){
     })
 }
 
-function showTotalDisk(diskItemKeyTotal, startTime){
+function showTotalDisk(diskTotal, startTime){
     var diskTotalArr = [];
 
     var history_diskTotal = null;
 
-    zbxApi.getHistory.get(diskItemKeyTotal.result[0].itemid, startTime, 3).then(function(data){
+    zbxApi.getHistory.get(diskTotal.result[0].itemid, startTime, 3).then(function(data){
         history_diskTotal = zbxApi.getHistory.success(data);
         $.each(history_diskTotal.result, function (k, v) {
             diskTotalArr[k] = new Array();
@@ -3037,9 +3035,6 @@ var networkView = function(hostid, network_data, startTime){
 
         console.log("network_itemid : " + network_itemid);
         console.log("network_itemKey : " + network_itemKey);
-
-        var networkRowArr = network_itemKey.split("]");
-        console.log("networkRowArr : " + networkRowArr);
 
         var networkKey = network_itemKey.substring(network_itemKey.indexOf("[")+1,network_itemKey.indexOf("]"));
         console.log("networkKey : " + networkKey);
