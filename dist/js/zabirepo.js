@@ -382,7 +382,7 @@ var zbxApi = {
         get: function (hostid) {
             var method = "item.get";
             var params = {
-                "output": ["key_", "itemid"],
+                "output": ["key_", "itemid", "lastclock"],
                 "hostids": hostid,
                 "search": {"key_": "vfs.fs.size", "name" : "Total disk"}
             };
@@ -404,7 +404,7 @@ var zbxApi = {
         get: function (hostid) {
             var method = "item.get";
             var params = {
-                "output": ["key_", "itemid"],
+                "output": ["key_", "itemid", "lastclock"],
                 "hostids": hostid,
                 "search": {"key_": "net.if.in"}
             };
