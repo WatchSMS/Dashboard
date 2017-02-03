@@ -378,6 +378,28 @@ var zbxApi = {
         }
     },
 
+    getDiskItem: {
+        get: function (hostId) {
+            var method = "item.get";
+            var params = {
+                "output": ["key_", "itemid"],
+                "hostids": hostId,
+                "search": {"key_": "vfs.fs.size", "name" : "Total disk"}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("start222");
+            console.log("getItem data : " + data);
+
+            $.each(data.result, function (k, v) {
+                console.log(JSON.stringify(v));
+                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
+            })
+            return data;
+        }
+    },
+
     host: {
         get: function () {
             var method = "host.get";
@@ -1685,33 +1707,24 @@ var int = {
                     $("[id^=base]").hide();
                     $("#base_diskInfo").show();
 
+                    var hostId = v.hostid;
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                    var disk_data = '';
 
-                    if ($("#diskList > h4").size() > 0) {
-                        return;
-                    }
+                    zbxApi.getDiskItem.get(hostId).done(function(data, status, jqXHR){
+                        disk_data = zbxApi.getDiskItem.success(data);
+                        console.log(">>>>> disk_data <<<<<");
+                        console.log(disk_data);
+                        var disk_itemid = '';
+                        var disk_itemKey = '';
+                        
+                        $.each(disk_data.result, function(disk_k, disk_v){
+                            disk_itemid = disk_v.itemid;
+                            disk_itemKey = disk_v.key_;
 
-                    var serverDiskUseRoot = '';
-
-                    var diskTbl = '';
-                    diskTbl += '<h4><a href="#" style="color:black; font-weight: bold;" id="root_' + v.hostid + '">ROOT</h4>';
-                    $("#diskList").append(diskTbl);
-
-                    $("#btn_cpu.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        var diskRootUsed= null;
-                        zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]").then(function (data){
-                            diskRootUsed = zbxApi.serverViewGraph.success(data);
-                            diskViewRoot(diskRootUsed, startTime);
+                            diskView(disk_itemid, disk_itemKey, startTime);
                         })
                     });
-
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    var diskRootUsed= null;
-                    zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]").then(function (data){
-                        diskRootUsed = zbxApi.serverViewGraph.success(data);
-                        diskViewRoot(diskRootUsed, startTime);
-                    })
                 });
 
                 $("#traffic_" + v.hostid).click(function () {
@@ -1721,7 +1734,6 @@ var int = {
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
 
                     networkView(v.hostid, startTime);
-
                 });
 
                 $("#" + tagId).click(function () {
@@ -3030,6 +3042,29 @@ var showDetailedProcTable = function(hostid, finalProcArr, topProcessLastTime){
         };
     });
 
+}
+
+var diskView = function(disk_itemid, disk_itemKey, startTime){
+    var itemKeyRowArr = disk_itemKey.split("[");
+    var finalArr = [];
+    var finalObj = null;
+
+    var diskTbl = '';
+
+    console.log("===== split itemKeyRowArr =====");
+    console.log(itemKeyRowArr);
+
+    $.each(itemKeyRowArr, function(row_k, row_v){
+        var itemKeyColArr = itemKeyColArr = itemKeyRowArr[row_k].split(",");
+        console.log("===== split itemKeyColArr =====");
+        console.log(itemKeyColArr);
+
+        var itemKey = itemKeyColArr[0];
+        diskTbl += "<h4 id='" + itemKey + "'>" + itemKey + "</h4>";
+
+    });
+    $("#diskList").empty();
+    $("#diskList").append(diskTbl);
 }
 
 var networkView = function(hostid, startTime){
