@@ -2764,10 +2764,8 @@ var diskView = function(hostid, disk_data, startTime){
     $.each(disk_data.result, function(disk_k, disk_v) {
         disk_itemid = disk_v.itemid;
         disk_itemKey = disk_v.key_;
-
         console.log("disk_itemid : " + disk_itemid);
         console.log("disk_itemKey : " + disk_itemKey);
-
 
         var itemKey = disk_itemKey.substring(disk_itemKey.indexOf("[")+1,disk_itemKey.indexOf(","));
         console.log("itemKey : " + itemKey);
