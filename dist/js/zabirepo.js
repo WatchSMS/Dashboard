@@ -400,6 +400,28 @@ var zbxApi = {
         }
     },
 
+    getNetworkItem: {
+        get: function (hostid) {
+            var method = "item.get";
+            var params = {
+                "output": ["key_", "itemid"],
+                "hostids": hostid,
+                "search": {"key_": "net.if.in"}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getNetworkItem");
+            console.log("getItem data : " + JSON.stringify(data));
+
+            $.each(data.result, function (k, v) {
+                console.log(JSON.stringify(v));
+                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
+            })
+            return data;
+        }
+    },
+
     host: {
         get: function () {
             var method = "host.get";
@@ -1715,15 +1737,6 @@ var int = {
                         disk_data = zbxApi.getDiskItem.success(data);
                         console.log(">>>>> disk_data <<<<<");
                         console.log(disk_data);
-                        var disk_itemid = '';
-                        var disk_itemKey = '';
-                        
-                       /* $.each(disk_data.result, function(disk_k, disk_v){
-                            disk_itemid = disk_v.itemid;
-                            disk_itemKey = disk_v.key_;
-
-                            diskView(disk_itemid, disk_itemKey, startTime);
-                        })*/
 
                         diskView(hostid, disk_data, startTime);
                     });
@@ -1733,9 +1746,16 @@ var int = {
                     $("[id^=base]").hide();
                     $("#base_networkInfo").show();
 
+                    var hostid = v.hostid;
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                    var network_data = '';
 
-                    networkView(v.hostid, startTime);
+                    zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
+                        network_data = zbxApi.getNetworkItem.success(data);
+                        console.log(">>>>> network_data <<<<<");
+                        console.log(network_data);
+                        networkView(hostid, network_data, startTime);
+                    });
                 });
 
                 $("#" + tagId).click(function () {
@@ -2661,214 +2681,6 @@ function showDiskRootUse(diskRootUsed, startTime){
     })
 }
 
-var trafficViewEth0 = function(trafficEth0In, trafficEth0Out, trafficEth0Total, startTime){
-    console.log("startTime : " + startTime + " 입니다.");
-    showTrafficEth0Io(trafficEth0In, trafficEth0Out, startTime);
-    showTrafficEth0Total(trafficEth0Total, startTime);
-    $.unblockUI(blockUI_opt_all);
-};
-
-function showTrafficEth0Io(trafficEth0In, trafficEth0Out, startTime){
-    var trafficEth0InArr = [];
-    var trafficEth0OutArr = [];
-
-    var history_trafficEth0In = null;
-    var history_trafficEth0Out = null;
-
-    zbxApi.getHistory.get(trafficEth0In.result[0].itemid, startTime, 3).then(function(data){
-        history_trafficEth0In = zbxApi.getHistory.success(data);
-        $.each(history_trafficEth0In.result, function (k, v) {
-            trafficEth0InArr[k] = new Array();
-            trafficEth0InArr[k][0] = parseInt(v.clock) * 1000;
-            trafficEth0InArr[k][1] = parseInt(v.value) / 1000;
-        });
-    }).then(function(){
-        return zbxApi.getHistory.get(trafficEth0Out.result[0].itemid, startTime, 3);
-    }).then(function(data){
-        history_trafficEth0Out = zbxApi.getHistory.success(data);
-        $.each(history_trafficEth0Out.result, function(k, v){
-            trafficEth0OutArr[k] = new Array();
-            trafficEth0OutArr[k][0] = parseInt(v.clock) * 1000;
-            trafficEth0OutArr[k][1] = parseInt(v.value) / 1000;
-        });
-        $(function () {
-            Highcharts.chart('chart_trafficIo', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '트래픽 I/O',
-                    align: 'left'
-                },
-                subtitle: { text:  '' },
-                xAxis: {
-                    labels: {
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if(hours.length==1){
-                                hours = "0" + hours;
-                            }
-                            if(minutes.length==1){
-                                minutes = "0" + minutes;
-                            }
-                            if(seconds.length==1){
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value / 1000 + 'k';
-                        }
-                    }
-                },
-                tooltip: {
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
-                    }
-                },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Traffic In Eth0',
-                    data: trafficEth0InArr
-                }, {
-                    name: 'Traffic Out Eth0',
-                    data: trafficEth0OutArr
-                }]
-            });
-        });
-    })
-}
-
-function showTrafficEth0Total(trafficEth0Total, startTime){
-    var trafficEth0TotalArr = [];
-
-    var history_trafficEth0Total = null;
-
-    zbxApi.getHistory.get(trafficEth0Total.result[0].itemid, startTime, 3).then(function(data){
-        history_trafficEth0Total = zbxApi.getHistory.success(data);
-        $.each(history_trafficEth0Total.result, function (k, v) {
-            trafficEth0TotalArr[k] = new Array();
-            trafficEth0TotalArr[k][0] = parseInt(v.clock) * 1000;
-            trafficEth0TotalArr[k][1] = parseInt(v.value) / 1000;
-        });
-
-        $(function () {
-            Highcharts.chart('chart_trafficTotal', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '트래픽 Total',
-                    align: 'left'
-                },
-                subtitle: { text:  '' },
-                xAxis: {
-                    labels: {
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if(hours.length==1){
-                                hours = "0" + hours;
-                            }
-                            if(minutes.length==1){
-                                minutes = "0" + minutes;
-                            }
-                            if(seconds.length==1){
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value / 1000 + 'k';
-                        }
-                    }
-                },
-                tooltip: {
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
-                    }
-                },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Traffic Total Eth0',
-                    data: trafficEth0TotalArr
-                }]
-            });
-        });
-    })
-}
-
 var procUsageView = function(hostid, startTime) {
 
     var data_topProcess = null;
@@ -3060,7 +2872,7 @@ var diskView = function(hostid, disk_data, startTime){
 
         var itemKeyRowArr = disk_itemKey.split(",total");
         console.log(itemKeyRowArr);
-        
+
         $.each(itemKeyRowArr, function(row_k, row_v){
             var itemKeyColArr = itemKeyRowArr[row_k].split("[");
             console.log("itemKeyColArr");
@@ -3320,97 +3132,68 @@ function showTotalDisk(diskItemKeyTotal, startTime){
     })
 }
 
-var networkView = function(hostid, startTime){
-    var data_network = null;
-
-    $.blockUI(blockUI_opt_all);
-
-    new $.jqzabbix(options).getApiVersion().then(function(data){
-        data_network = callApiForNetwork(hostid);
-        console.log(">>>>> data_network <<<<<");
-        console.log(data_network);
-
-        data_network = sortNetwork(data_network);
-        showNetworkUseView(hostid, data_network);
-
-        $.unblockUI(blockUI_opt_all);
-    });
-}
-
-var sortNetwork = function(data_network){
-    var networkRowArr = data_network.lastvalue.split("\n\n");
-    //var networkData = [];
-    var finalArr = [];
-    var finalObj = null;
-
-    console.log("===== split networkRowArr =====");
-    console.log(networkRowArr);
-
-    $.each(networkRowArr, function(row_k, row_v){
-        while(networkRowArr[row_k].indexOf("\n") != -1){
-            networkRowArr[row_k] = networkRowArr[row_k].replace("\n", " ");
-        }
-
-        var networkColArr = networkRowArr[row_k].split(" ");
-        console.log("===== split networkColArr =====");
-        console.log(networkColArr);
-
-        //networkData = networkColArr[0];
-        //console.log("><><><>< networkData : " + networkData);
-
-        finalObj = new Object();
-        finalObj.networkName = networkColArr[0];
-        finalArr.push(finalObj);
-    });
-    return finalArr;
-}
-
-var showNetworkUseView = function(hostid, finalArr){
+var networkView = function(hostid, network_data, startTime){
+    var network_itemid = '';
+    var network_itemKey = '';
     var networkTbl = '';
 
-    $.each(finalArr, function(k, v){
-        networkName = v.networkName;
-        networkTbl += "<h4 id='" + networkName + "'>" + networkName + "</h4>";
-    });
+    $.each(network_data.result, function(network_k, network_v){
+        network_itemid = network_v.itemid;
+        network_itemKey = network_v.key_;
 
-    $("#networkList").empty();
-    $("#networkList").append(networkTbl);
+        console.log("network_itemid : " + network_itemid);
+        console.log("network_itemKey : " + network_itemKey);
 
-    var $table = $("#networkList");
+        var networkRowArr = network_itemKey.split("]");
+        console.log("networkRowArr : " + networkRowArr);
 
-    $('h4', $table).each(function(table_k, table_v) {
-        $(this).click(function() {
-            console.log(">>>>>> " + $(this).attr('id'));
+        $.each(networkRowArr, function(row_k, row_v){
+            var networkColArr = networkRowArr[row_k].split("net.if.in[");
+            console.log("networkColArr");
+            console.log(networkColArr[1]);
 
-            var tmpNetworkName = $(this).attr('id');
+            var networkKey = networkColArr[1];
+            networkTbl += "<h4 id='" + networkKey + "'>" + networkKey + "</h4>";
+        });
 
-            var networkIn = '';
-            var networkOut = '';
-            var networkTotal = '';
+        $("#networkList").empty();
+        $("#networkList").append(networkTbl);
 
-            var networkItemKeyIn = "net.if.in[" + tmpNetworkName + "]";
-            var networkItemKeyOut = "net.if.out[" + tmpNetworkName + "]";
-            var networkItemKeyTotal = "net.if.total[" + tmpNetworkName + "]";
+        var $table = $("#networkList");
+        $('h4', $table).each(function(table_k, table_v) {
+            $(this).click(function() {
+                console.log(">>>>>> " + $(this).attr('id'));
 
-            console.log(">>>>> <<<<<");
-            console.log("networkItemKeyIn : " + networkItemKeyIn);
-            console.log("networkItemKeyOut : " + networkItemKeyOut);
-            console.log("networkItemKeyTotal : " + networkItemKeyTotal);
+                var tmpNetworkName = $(this).attr('id');
 
-            zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
-                networkIn = zbxApi.serverViewGraph.success(data);
-            }).then(function (){
-                return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
-            }).then(function (data){
-                networkOut = zbxApi.serverViewGraph.success(data);
-            }).then(function (){
-                return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
-            }).then(function (data){
-                networkTotal = zbxApi.serverViewGraph.success(data);
-                trafficView(networkIn, networkOut, networkTotal);
-            });
+                var networkIn = '';
+                var networkOut = '';
+                var networkTotal = '';
+
+                var networkItemKeyIn = "net.if.in[" + tmpNetworkName + "]";
+                var networkItemKeyOut = "net.if.out[" + tmpNetworkName + "]";
+                var networkItemKeyTotal = "net.if.total[" + tmpNetworkName + "]";
+
+                console.log(">>>>> <<<<<");
+                console.log("networkItemKeyIn : " + networkItemKeyIn);
+                console.log("networkItemKeyOut : " + networkItemKeyOut);
+                console.log("networkItemKeyTotal : " + networkItemKeyTotal);
+
+                zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
+                    networkIn = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
+                }).then(function (data){
+                    networkOut = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
+                }).then(function (data){
+                    networkTotal = zbxApi.serverViewGraph.success(data);
+                    trafficView(networkIn, networkOut, networkTotal);
+                });
+            })
         })
-    })
+    });
 }
 
 var trafficView = function(networkIn, networkOut, networkTotal){
