@@ -379,11 +379,11 @@ var zbxApi = {
     },
 
     getDiskItem: {
-        get: function (hostId) {
+        get: function (hostid) {
             var method = "item.get";
             var params = {
                 "output": ["key_", "itemid"],
-                "hostids": hostId,
+                "hostids": hostid,
                 "search": {"key_": "vfs.fs.size", "name" : "Total disk"}
             };
             return server.sendAjaxRequest(method, params);
@@ -1707,23 +1707,25 @@ var int = {
                     $("[id^=base]").hide();
                     $("#base_diskInfo").show();
 
-                    var hostId = v.hostid;
+                    var hostid = v.hostid;
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     var disk_data = '';
 
-                    zbxApi.getDiskItem.get(hostId).done(function(data, status, jqXHR){
+                    zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
                         disk_data = zbxApi.getDiskItem.success(data);
                         console.log(">>>>> disk_data <<<<<");
                         console.log(disk_data);
                         var disk_itemid = '';
                         var disk_itemKey = '';
                         
-                        $.each(disk_data.result, function(disk_k, disk_v){
+                       /* $.each(disk_data.result, function(disk_k, disk_v){
                             disk_itemid = disk_v.itemid;
                             disk_itemKey = disk_v.key_;
 
                             diskView(disk_itemid, disk_itemKey, startTime);
-                        })
+                        })*/
+
+                        diskView(hostid, disk_data, startTime);
                     });
                 });
 
@@ -3044,27 +3046,278 @@ var showDetailedProcTable = function(hostid, finalProcArr, topProcessLastTime){
 
 }
 
-var diskView = function(disk_itemid, disk_itemKey, startTime){
-    var itemKeyRowArr = disk_itemKey.split("[");
-    var finalArr = [];
-    var finalObj = null;
-
+var diskView = function(hostid, disk_data, startTime){
+    var disk_itemid = '';
+    var disk_itemKey = '';
     var diskTbl = '';
 
-    console.log("===== split itemKeyRowArr =====");
-    console.log(itemKeyRowArr);
+    $.each(disk_data.result, function(disk_k, disk_v) {
+        disk_itemid = disk_v.itemid;
+        disk_itemKey = disk_v.key_;
 
-    $.each(itemKeyRowArr, function(row_k, row_v){
-        var itemKeyColArr = itemKeyColArr = itemKeyRowArr[row_k].split(",");
-        console.log("===== split itemKeyColArr =====");
-        console.log(itemKeyColArr);
+        console.log("disk_itemid : " + disk_itemid);
+        console.log("disk_itemKey : " + disk_itemKey);
 
-        var itemKey = itemKeyColArr[0];
-        diskTbl += "<h4 id='" + itemKey + "'>" + itemKey + "</h4>";
+        var itemKeyRowArr = disk_itemKey.split(",total");
+        console.log(itemKeyRowArr);
+        
+        $.each(itemKeyRowArr, function(row_k, row_v){
+            var itemKeyColArr = itemKeyRowArr[row_k].split("[");
+            console.log("itemKeyColArr");
+            console.log(itemKeyColArr[1]);
 
+            var itemKey = itemKeyColArr[1];
+            diskTbl += "<h4 id='" + itemKey + "'>" + itemKey + "</h4>";
+        });
+
+        $("#diskList").empty();
+        $("#diskList").append(diskTbl);
+
+        var $table = $("#diskList");
+        $('h4', $table).each(function(table_k, table_v) {
+            $(this).click(function() {
+                console.log(">>>>>> " + $(this).attr('id'));
+
+                var tmpDiskName = $(this).attr('id');
+
+                var diskIn = '';
+                var diskOut = '';
+                var diskTotal = '';
+
+                var diskItemKeyIn = "vfs.fs.size[" + tmpDiskName + ",total]";
+                var diskItemKeyOut = "vfs.fs.size[" + tmpDiskName + ",total]";
+                var diskItemKeyTotal = "vfs.fs.size[" + tmpDiskName + ",total]";
+
+                console.log(">>>>> hostid <<<<< : " + hostid);
+                console.log("diskItemKeyIn : " + diskItemKeyIn);
+                console.log("diskItemKeyOut : " + diskItemKeyOut);
+                console.log("diskItemKeyTotal : " + diskItemKeyTotal);
+
+                zbxApi.serverViewGraph.get(hostid, diskItemKeyIn).then(function(data) {
+                    diskItemKeyIn = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyOut);
+                }).then(function (data){
+                    diskItemKeyOut = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyTotal);
+                }).then(function (data){
+                    diskItemKeyTotal = zbxApi.serverViewGraph.success(data);
+                    showDiskView(diskItemKeyIn, diskItemKeyOut, diskItemKeyTotal);
+                });
+            })
+        });
     });
-    $("#diskList").empty();
-    $("#diskList").append(diskTbl);
+}
+
+var showDiskView = function(diskItemKeyIn, diskItemKeyOut, diskItemKeyTotal){
+    var date1 = new Date();
+    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
+
+    showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime);
+    showTotalDisk(diskItemKeyTotal, startTime);
+};
+
+function showInOutDisk(diskItemKeyIn, diskItemKeyOut, startTime){
+    var diskInArr = [];
+    var diskOutArr = [];
+
+    var history_diskIn = null;
+    var history_diskOut = null;
+
+    zbxApi.getHistory.get(diskItemKeyIn.result[0].itemid, startTime, 0).then(function(data){
+        history_diskIn = zbxApi.getHistory.success(data);
+        $.each(history_diskIn.result, function(k, v){
+            diskInArr[k] = new Array();
+            diskInArr[k][0] = parseInt(v.clock) * 1000;
+            diskInArr[k][1] = parseFloat(v.value);
+        });
+    }).then(function (){
+        return zbxApi.getHistory.get(diskItemKeyOut.result[0].itemid, startTime, 0);
+    }).then(function(data){
+        history_diskOut = zbxApi.getHistory.success(data);
+        $.each(history_diskOut.result, function(k, v){
+            diskOutArr[k] = new Array();
+            diskOutArr[k][0] = parseInt(v.clock) * 1000;
+            diskOutArr[k][1] = parseFloat(v.value);
+        });
+
+        $(function () {
+            Highcharts.chart('chart_diskIo', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '디스크 I/O',
+                    align: 'left'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value / 1000 + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk In',
+                    data: diskInArr
+                }, {
+                    name: 'Disk Out',
+                    data: diskOutArr
+                }]
+            });
+        });
+    })
+}
+
+function showTotalDisk(diskItemKeyTotal, startTime){
+    var diskTotalArr = [];
+
+    var history_diskTotal = null;
+
+    zbxApi.getHistory.get(diskItemKeyTotal.result[0].itemid, startTime, 0).then(function(data){
+        history_diskTotal = zbxApi.getHistory.success(data);
+        $.each(history_diskTotal.result, function (k, v) {
+            diskTotalArr[k] = new Array();
+            diskTotalArr[k][0] = parseInt(v.clock) * 1000;
+            diskTotalArr[k][1] = parseFloat(v.value);
+        });
+
+        $(function () {
+            Highcharts.chart('chart_diskUse', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '디스크 Total',
+                    align: 'left'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value / 1000 + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Total',
+                    data: diskTotalArr
+                }]
+            });
+        });
+    })
 }
 
 var networkView = function(hostid, startTime){
@@ -3143,7 +3396,6 @@ var showNetworkUseView = function(hostid, finalArr){
             console.log("networkItemKeyIn : " + networkItemKeyIn);
             console.log("networkItemKeyOut : " + networkItemKeyOut);
             console.log("networkItemKeyTotal : " + networkItemKeyTotal);
-            var networkItemId = null;
 
             zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
                 networkIn = zbxApi.serverViewGraph.success(data);
