@@ -4929,6 +4929,26 @@ var sortObjectStr = function (object, key) {
     return sorted;
 }
 
+var blockUI_opt_all_custom = {
+	    message: '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',
+	    fadeIn: 200,
+	    fadeOut: 200,
+	    css: {
+	        border: 'none',
+	        padding: '15px',
+	        backgroundColor: '#000',
+	        '-webkit-border-radius': '10px',
+	        '-moz-border-radius': '10px',
+	        opacity: .5,
+	        color: '#fff'
+	    },
+	    overlayCSS:  {
+	    	backgroundColor: '#000',
+	    	opacity: 0.1,
+	    	cursor: 'wait'
+	    }
+};
+
 var blockUI_opt_all = {
     message: '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',
     fadeIn: 200,
