@@ -35,6 +35,10 @@ $(document).ready(function () {
     $("#base_diskInfo").load("base_diskInfo.html"); //디스크 통계
     $("#base_networkInfo").load("base_networkInfo.html"); //네트워크통계
 });
+
+var LONGTIME_ONEHOUR = 3600000;
+var HISTORY_TYPE = {"FLOAT" : 0, "CHARACTER" : 1, "LOG" : 2, "UNSIGNEDINT" : 3, "TEXT" : 4};
+
 /* 2017.01.11 zbxSyncApi 추가*/
 var zbxSyncApi = {
     authid: "",
