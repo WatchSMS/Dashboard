@@ -1568,7 +1568,6 @@ var int = {
     //host 정보 호출
     hostInfoView: function () {
         console.log("IN function hostInfoView");
-        var LONGTIME_ONEHOUR = 3600000;
         zbxApi.host.get().done(function (data, status, jqXHR) {
             var host_data = zbxApi.host.success(data);
             var tagId = '';
@@ -1671,21 +1670,16 @@ var int = {
                 });
 
                 $("#cpu_" + v.hostid).click(function () { //CPU
-                    //$.blockUI(blockUI_opt_all);
-                    //var LONGTIME_ONEHOUR = 3600000;
-
-                    $("#btn_cpu.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-
-                        cpuStatsView(v.hostid,startTime);
-                        //callApiForCpu(v.hostid,startTime);
-                    });
-
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                    $("[id^=base]").hide();
-                    $("#base_cpuinfo").show();
-                    //1 callApiForCpu(v.hostid,startTime);
-                    cpuStatsView(v.hostid,startTime);
+                	$("#btn_cpu.btn").click(function() {
+                		var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);         		
+                		cpuStatsView(v.hostid,startTime);
+                	});
+                	
+                	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                	$("[id^=base]").hide();
+                	$("#base_cpuinfo").show();
+                	//1 callApiForCpu(v.hostid,startTime);
+                	cpuStatsView(v.hostid,startTime);
                 });
 
                 $("#memory_" + v.hostid).click(function () { //Memory
@@ -1700,16 +1694,11 @@ var int = {
                 });
 
                 $("#process_" + v.hostid).click(function () { //Process
-                    $.blockUI(blockUI_opt_all);
-                    $("[id^=base]").hide();
-                    $("#base_processInfo").show();
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-
-                    $("#processRow").click(function() {
-                        console.log("hhhh");
-                        //callApiForCpu(v.hostid,startTime);
-                    });
-                    procUsageView(v.hostid, startTime);
+                	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                	$.blockUI(blockUI_opt_all);
+                	$("[id^=base]").hide();
+                	$("#base_processInfo").show();
+                	procUsageView(v.hostid, startTime);
                 });
 
                 $("#disk_" + v.hostid).click(function () { //Disk
