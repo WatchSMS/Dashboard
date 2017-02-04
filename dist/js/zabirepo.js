@@ -191,27 +191,7 @@ var zbxSyncApi = {
 zbxSyncApi.auth();
 
 var zbxApi = {
-    // for Test
-    getHistory_TopProc : {
-        get : function(itemId,startTime) {
-            var method = "history.get";
-            var params = {
-                "output" : "extend",
-                "history" : 2,
-                "sortfield" : "clock",
-                "sortorder" : "ASC",
-                "itemids" : itemId,
-                "time_from": startTime,
-                //"limit" : 100
-                //"limit" : 72
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success : function(data) {
-            return data;
-        }
-    },
-
+    
     getTest1: {
         get: function (hostid,startTime) {
 
