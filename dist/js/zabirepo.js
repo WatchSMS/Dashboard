@@ -2635,6 +2635,7 @@ var procUsageView = function(hostid, startTime) {
 			var procTableRow = '';
 			var currentThObj = $(this);
 			var MAX_PROCCOUNT = 13;
+			var tmpProcessName = $(".selectedProcess").attr('id');
 			
 			if($(this).is('.sorting_desc')){
 				tableDataArr.sort(function (a, b) { 
@@ -2674,6 +2675,7 @@ var procUsageView = function(hostid, startTime) {
 				procTableRow += "</tr>";
 			}
 			$('tbody', $table).append(procTableRow);
+			$("#"+tmpProcessName).addClass("selectedProcess");
 			rowClickEvent($table, hostid, startTime);
 		});// end click
     });// end th col
