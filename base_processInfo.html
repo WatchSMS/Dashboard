@@ -1,0 +1,61 @@
+<!--  -->
+<section class="content-header">
+	<h1>프로세스 사용량</h1>
+</section>
+
+<section class="content">
+	
+	<div class="col-30">
+		<div class="col-c50">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="range-selector pull-right">
+						<div>
+							<div class="ranges"> 
+								<button type="button" id="btn_proc" class="btn" data-range="custom">기타</button>
+								<button type="button" id="btn_proc" class="btn display-none" data-range="selection"></button>
+								<button type="button" id="btn_proc" class="btn" data-range="hr" value="24">24시간</button>
+								<button type="button" id="btn_proc" class="btn" data-range="hr" value="12">12시간</button>
+								<button type="button" id="btn_proc" class="btn" data-range="hr" value="6">6시간</button>
+								<button type="button" id="btn_proc" class="btn" data-range="hr" value="3">3시간</button>
+								<button type="button" id="btn_proc" class="btn" data-range="hr" value="1">1시간</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-c50-block">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">프로세스</h2>
+						<div id="detailedProcTime" class="panel-actions process-date smaller"></div>
+						<div class="clear"></div>
+					</header>
+					<div class="panel-body pl-sm pr-sm">
+						<div id="processList_wrapper" class="dataTables_wrapper no-footer">	
+							<div class="table-responsive pl-sm pr-sm">
+								<table id="detailedCpuProc" class="table table-striped table-hover simple-list  dataTable no-foote" role="grid">
+									
+			                    </table>
+			                </div>
+			            </div>
+		            </div>
+	            </section>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-70">
+		<!-- <div class="col-xs-6"> -->
+		<div class="col-c50">
+			<div class="col-c50-block">
+				<div id="chart_processCpu" style="min-width: 310px; height: 290px; margin: 0 auto"></div>
+			</div>
+			
+			<div class="col-c50-block">
+				<div id="chart_processMem" style="min-width: 310px; height: 290px; margin: 0 auto"></div>
+			</div>			
+		</div>
+	</div>
+
+</section>

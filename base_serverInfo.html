@@ -3,52 +3,33 @@
 </section>
 
 <section class="content">
-    <div class="col-60">
+    <div class="col-55">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title"></h3>
-                <div class="pull-left">
-                    <span class="font-title"> CPU 사용량 </span>
-                </div>
                 <div class="box-body" id="cpuUse"></div>
             </div>
         </div>
 
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title"></h3>
-                <div class="pull-left">
-                    <span class="font-title"> 전체메모리 </span>
-                </div>
-
                 <div class="box-body" id="memoryAll"></div>
             </div>
         </div>
 
         <div class="box box-info col-50">
             <div class="box-header with-border">
-                <h3 class="box-title"></h3>
-                <div class="pull-left">
-                    <span class="font-title"> 디스크 사용량 </span>
-                </div>
-
                 <div class="box-body" id="diskUse"></div>
             </div>
         </div>
 
         <div class="box box-info col-50">
             <div class="box-header with-border">
-                <h3 class="box-title"></h3>
-                <div class="pull-left">
-                    <span class="font-title"> 트래픽 사용량 </span>
-                </div>
-
                 <div class="box-body" id="trafficUse"></div>
             </div>
         </div>
     </div>
 
-    <div class="col-40">
+    <div class="col-45">
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title"></h3>
@@ -58,7 +39,6 @@
 
                 <div class="box-body">
                     <table class="table" id="serverInfo">
-
                     </table>
                 </div>
             </div>
@@ -69,18 +49,14 @@
                 <h3 class="box-title"></h3>
                 <div class="pull-left">
                     <span class="font-title"> 프로세스 </span>
+                    <div id="processTime" class="panel-actions process-date smaller"></div>
+                    <div class="clear"></div>
                 </div>
 
+                <br>
+
                 <div class="box-body">
-                    <table class="table-server no-margin table-condensed table-hover table-striped" id="serverProcessList">
-                        <thead>
-                        <tr style="border-collapse: collapse;">
-                            <th>이름</th>
-                            <th>CPU</th>
-                            <th>메모리</th>
-                            <th>수</th>
-                        </tr>
-                        </thead>
+                    <table class="table table-striped table-hover simple-list  dataTable no-foote" role="grid" id="serverProcessList">
                     </table>
                 </div>
             </div>
@@ -95,17 +71,6 @@
 
                 <div class="box-body">
                     <table class="table-server no-margin table-condensed table-hover table-striped" id="serverEventList">
-                        <thead>
-                        <tr style="border-collapse: collapse;">
-                            <th>이벤트 등급</th>
-                            <th>상태</th>
-                            <th>발생시간</th>
-                            <th>지속시간</th>
-                            <th>인지</th>
-                            <th>호스트명</th>
-                            <th>비고</th>
-                        </tr>
-                        </thead>
                     </table>
                 </div>
             </div>

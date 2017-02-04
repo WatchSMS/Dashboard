@@ -25,11 +25,20 @@ $(document).ready(function () {
     $("#base_event").load("base_event.html");
     $("#base_graph").load("base_graph.html");
     $("#base_setting").load("base_setting.html");
-    $("#base_hostinfo").load("base_hostinfo.html");
+    $("#base_cpuinfo").load("base_cpuinfo.html");
 
     $("#base_server").load("base_server.html"); // 전체 서버 상태 2017-01-02
     $("#base_serverInfo").load("base_serverInfo.html"); //서버 정보 요약 2017-01-11
+    $("#base_memoryInfo").load("base_memoryInfo.html"); // 메모리 통계 2017-01-18
+    $("#base_processInfo").load("base_processInfo.html"); // 메모리 통계 2017-01-18
+
+    $("#base_diskInfo").load("base_diskInfo.html"); //디스크 통계
+    $("#base_networkInfo").load("base_networkInfo.html"); //네트워크통계
 });
+
+var LONGTIME_ONEHOUR = 3600000;
+var HISTORY_TYPE = {"FLOAT" : 0, "CHARACTER" : 1, "LOG" : 2, "UNSIGNEDINT" : 3, "TEXT" : 4};
+
 /* 2017.01.11 zbxSyncApi 추가*/
 var zbxSyncApi = {
     authid: "",
@@ -92,6 +101,71 @@ var zbxSyncApi = {
         return result.result[0];
     },
 
+    getItem: function (hostId, key_) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "item.get",
+            "params": {
+                "output": ["key_", "name", "lastvalue", "lastclock"],
+                "hostids": hostId,
+                "search": {"key_": key_}
+            },
+            "id": 1,
+            "auth": authid
+        }
+        console.log(JSON.stringify(param));
+
+        //console.log("param 123 : " + JSON.stringify(param));
+        var result = zbxSyncApi.callAjax(param);
+        //console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result.result[0]));
+        return result.result[0];
+    },
+
+    getHistory: function (itemId, startTime) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "history.get",
+            "params": {
+                "output": "extend",
+                "history": 0,
+                "sortfield": "clock",
+                "sortorder": "ASC",
+                "itemids": itemId,
+                "time_from": startTime
+                //"limit" : 72
+            },
+            "id": 1,
+            "auth": authid
+        }
+        var result = zbxSyncApi.callAjax(param);
+        return result.result;
+    },
+
+    /* 서버 정보 요약 - 이벤트 Table*/
+    serverViewTrigger: function (hostid) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": ["description", "priority", "value", "lastchange"],
+                "monitored": true,
+                "skipDependent": true,
+                "expandDescription": true,
+                "selectGroups": ["name"],
+                "selectHosts": ["host", "maintenance_status"],
+                "sortfield": "description",
+                "only_true": true,
+                "selectLastEvent": "true",
+                "hostids": hostid
+            },
+            "id": 1,
+            "auth": authid
+        }
+        var result = zbxSyncApi.callAjax(param);
+        return result.result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
@@ -117,13 +191,114 @@ var zbxSyncApi = {
 zbxSyncApi.auth();
 
 var zbxApi = {
-    // for Test
+    
+    getTest1: {
+        get: function (hostid,startTime) {
+
+            return function aa(){
+                var data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal = null;
+                var dataSet = [];
+
+                var CpuSystemArr = [];
+                var CpuUserArr = [];
+                var CpuIOwaitArr = [];
+                var CpuStealArr = [];
+
+                var history_CpuSystem = null;
+                var history_CpuUser = null;
+                var history_CpuIOwait = null;
+                var history_CpuSteal = null;
+
+                zbxApi.getItem.get(hostid,"system.cpu.util[,system]").then(function(data) {
+                    data_CpuSystem = zbxApi.getItem.success(data);
+                    //console.log("dataItem : " + JSON.stringify(dataItem));
+                }).then(function() {
+                    // for suggest
+                    return zbxApi.getItem.get(hostid,"system.cpu.util[,user]");
+                }).then(function(data) {
+                    data_CpuUser = zbxApi.getItem.success(data);
+                }).then(function() {
+                    // for suggest
+                    return zbxApi.getItem.get(hostid,"system.cpu.util[,iowait]");
+                }).then(function(data) {
+                    data_CpuIOwait = zbxApi.getItem.success(data);
+                }).then(function() {
+                    // for suggest
+                    return zbxApi.getItem.get(hostid,"system.cpu.util[,steal]");
+                }).then(function(data) {
+                    data_CpuSteal = zbxApi.getItem.success(data);
+                }).then(function() {
+                    return zbxApi.getHistory.get(data_CpuSystem.result[0].itemid, startTime, "0");
+                }).then(function(data) {
+                    history_CpuSystem = zbxApi.getHistory.success(data);
+                    $.each(history_CpuSystem.result, function(k,v) {
+                        CpuSystemArr[k] = new Array();
+                        CpuSystemArr[k][0]=parseInt(v.clock) * 1000;
+                        CpuSystemArr[k][1]=parseFloat(v.value);
+                    });
+                }).then(function() {
+                    return zbxApi.getHistory.get(data_CpuUser.result[0].itemid, startTime, "0");
+                }).then(function(data) {
+                    history_CpuUser = zbxApi.getHistory.success(data);
+                    $.each(history_CpuUser.result, function(k,v) {
+                        CpuUserArr[k] = new Array();
+                        CpuUserArr[k][0]=parseInt(v.clock) * 1000;
+                        CpuUserArr[k][1]=parseFloat(v.value);
+                    });
+                }).then(function() {
+                    return zbxApi.getHistory.get(data_CpuIOwait.result[0].itemid, startTime, "0");
+                }).then(function(data) {
+                    history_CpuIOwait = zbxApi.getHistory.success(data);
+                    $.each(history_CpuIOwait.result, function(k,v) {
+                        CpuIOwaitArr[k] = new Array();
+                        CpuIOwaitArr[k][0]=parseInt(v.clock) * 1000;
+                        CpuIOwaitArr[k][1]=parseFloat(v.value);
+                    });
+                }).then(function() {
+                    return zbxApi.getHistory.get(data_CpuSteal.result[0].itemid, startTime, "0");
+                }).then(function(data) {
+                    history_CpuSteal = zbxApi.getHistory.success(data);
+                    $.each(history_CpuSteal.result, function(k,v) {
+                        CpuStealArr[k] = new Array();
+                        CpuStealArr[k][0]=parseInt(v.clock) * 1000;
+                        CpuStealArr[k][1]=parseFloat(v.value);
+                    });
+
+                    var dataObj = new Object();
+
+                    dataObj.name = 'CPU System';
+                    dataObj.data = CpuSystemArr;
+                    dataSet.push(dataObj);
+
+                    dataObj = new Object();
+                    dataObj.name = 'CPU User';
+                    dataObj.data = CpuUserArr;
+                    dataSet.push(dataObj);
+
+                    dataObj = new Object();
+                    dataObj.name = 'CPU IO Wait';
+                    dataObj.data = CpuIOwaitArr;
+                    dataSet.push(dataObj);
+
+                    dataObj = new Object();
+                    dataObj.name = 'CPU Steal';
+                    dataObj.data = CpuStealArr;
+                    dataSet.push(dataObj);
+                    return dataSet;
+                });
+            };
+        },
+        success: function (data) {
+            return data;
+        }
+    },
+
     getHistory: {
-        get: function (itemId, startTime) {
+        get: function (itemId, startTime, type) {
             var method = "history.get";
             var params = {
                 "output": "extend",
-                "history": 0,
+                "history": type,
                 "sortfield": "clock",
                 "sortorder": "ASC",
                 "itemids": itemId,
@@ -139,28 +314,102 @@ var zbxApi = {
         }
     },
 
+    checkItem: {
+        get: function (hostId, key_) {
+            var method = "item.get";
+            var params = {
+                "host": hostId,
+                "search": {"key_": key_}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getHistory data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+    
+    getProcHistory: {
+        get: function (itemId, startTime, type) {
+            var method = "history.get";
+            var params = {
+                "output": "extend",
+                "history": type,
+                "sortfield": "clock",
+                "sortorder": "ASC",
+                "itemids": itemId,
+                "time_from": startTime,
+                //"time_till": till_time,
+                "limit" : 2000
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            return data;
+        }
+    },
+    
     getItem: {
         get: function (hostId, key_) {
             var method = "item.get";
             var params = {
                 // "output" : "extend",
-                "output": ["key_", "name", "lastvalue"],
+                "output": ["key_", "name", "lastvalue", "lastclock", "interfaceid","hostid"],
                 "hostids": hostId,
                 "search": {"key_": key_}
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("getItem data : " + data);
-            //console.log(data.result);
-            //console.log(Object.keys(data.result).length);
-            //console.log(data.result[0]);
-            //console.log(data.result[0].hostid);
-
             $.each(data.result, function (k, v) {
                 console.log(JSON.stringify(v));
                 console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
                 //("#infobox_alertTrigger").text(data.result);
+            })
+            return data;
+        }
+    },
+
+    getDiskItem: {
+        get: function (hostid) {
+            var method = "item.get";
+            var params = {
+                "output": ["key_", "itemid", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": "vfs.fs.size", "name" : "Total disk"}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("start222");
+            console.log("getItem data : " + data);
+
+            $.each(data.result, function (k, v) {
+                console.log(JSON.stringify(v));
+                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
+            })
+            return data;
+        }
+    },
+
+    getNetworkItem: {
+        get: function (hostid) {
+            var method = "item.get";
+            var params = {
+                "output": ["key_", "itemid", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": "net.if.in"}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getNetworkItem");
+            console.log("getItem data : " + JSON.stringify(data));
+
+            $.each(data.result, function (k, v) {
+                console.log(JSON.stringify(v));
+                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
             })
             return data;
         }
@@ -178,12 +427,6 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("host data : " + data);
-            //console.log(data.result);
-            //console.log(Object.keys(data.result).length);
-            //console.log(data.result[0]);
-            //console.log(data.result[0].hostid);
-
             $.each(data.result, function (k, v) {
                 console.log("host JSON > " + JSON.stringify(v));
                 console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
@@ -215,6 +458,69 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log("AAA : " + v.hosts[0].hostid + " / " + JSON.stringify(v))
             });
+            return data;
+        }
+    },
+
+    /* 서버 정보 요약 - 서버 정보 Table*/
+    serverViewHost: {
+        get: function (hostid) {
+            var method = "host.get";
+            var params = {
+                "output": "extend",
+                "selectInterfaces": ["ip", "disk"],
+                "selectInventory": ["os", "hardware", "name"],
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+                //console.log(" 전체 서버 상태 >> 서버아이디 : " + v.hostid + " , 서버명 : " + v.host + " , IP주소 : " + v.interfaces[0].ip + " , OS : " + v.inventory.os + " , 하드웨어 : " + v.inventory.hardware); //ok
+                //console.log("서버아이디 : " + v.hostid + " , 서버명 : " + v.host + " , 호스트명 : " + v.name + " , IP주소 : " + v.interfaces[0].ip + " , OS : " + v.inventory.os);
+            });
+            return data;
+        }
+    },
+
+    serverViewGraph : {
+        get: function(hostid, key_){
+            console.log("IN serOvewViewGraph");
+            console.log("hostid : " + hostid + " / key : " + key_);
+            var method = "item.get";
+            var params = {
+                //"output" : "extend",
+                "output": ["key_", "name", "lastvalue"],
+                "hostids": hostid,
+                "search": {"key_": key_}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+                console.log("serverViewGraph : " + JSON.stringify(v));
+                console.log(" serverViewGraph >> 키 값 : " + v.key_ + ", 마지막 값 : " + v.lastvalue);
+            })
+            return data;
+        }
+    },
+
+    serverViewGraphName : {
+        get: function(hostid, name){
+            console.log("IN serOvewViewGraph");
+            console.log("hostid : " + hostid + " / name : " + name);
+            var method = "item.get";
+            var params = {
+                //"output" : "extend",
+                "output": ["key_", "name", "lastvalue"],
+                "hostids": hostid,
+                "search": {"name": name}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            })
             return data;
         }
     },
@@ -571,8 +877,6 @@ var int = {
             int.hostInfoView(); //host 정보 호출
         }).then(function (data) {
             int.allServerViewHost(); //전체 서버 상태 호출
-        }).then(function (data){
-            int.serOverviewHost(); //서버 요약 정보
         });
     },
 
@@ -658,7 +962,6 @@ var int = {
         });
 
         $("#menu_serverlist").click(function () {
-            console.log("Click Menu ServerList");
             //int.serverInfoOverView();
         });
 
@@ -934,6 +1237,7 @@ var int = {
                 });
             });
         });
+
     },
 
     createGraphMenu: function () {
@@ -1180,17 +1484,16 @@ var int = {
 
     /* 전체 서버 상태 2017-01-02 */
     allServerViewHost: function () {
-        console.log("allServerViewHost");
-
         zbxApi.allServerViewHost.get().done(function (data, status, jqXHR) {
             var server_data = zbxApi.allServerViewHost.success(data);
-            var serverName, serverIP = ''; //서버명, IP주소
-            var serverPerCPU = 0; //PerCPU
-            var serverPerMemory = 0; //Per메모리
-            var serverPerDisk = 0; //Per디스크
-            var serverOS = '-'; //운영체제
-            var serverCPU = '-'; //CPU
-            var serverRAM = '-'; //RAM
+            var serverName = '';
+            var serverIP = '';
+            var serverPerCPU = 0;
+            var serverPerMemory = 0;
+            var serverPerDisk = 0;
+            var serverOS = '-';
+            var serverCPU = '-';
+            var serverRAM = '-';
 
             $.each(server_data.result, function (k, v) {
                 serverName = v.name;
@@ -1258,11 +1561,6 @@ var int = {
                 serverTbl += "</tr>";
                 $("#serverList").append(serverTbl);
 
-                //serverPerCPU = 0;
-                //serverPerMemory = 0;
-                //serverPerDisk = 0;
-
-                //console.log("호스트 아이디 : " + v.hostid + " , serverName : " + serverName + " , serverIP : " + serverIP + " ,  serverPerCPU : " + serverPerCPU + " , serverPerMemory : " + serverPerMemory + " , serverPerDisk : " + serverPerDisk + " , serverOS : " + serverOS + " , serverCPU : " + serverCPU + " , serverRAM : " + serverRAM);
             })
         });
     },
@@ -1270,10 +1568,6 @@ var int = {
     //host 정보 호출
     hostInfoView: function () {
         console.log("IN function hostInfoView");
-        if ($("#serverlist > li").size() > 0) {
-            return;
-        }
-
         zbxApi.host.get().done(function (data, status, jqXHR) {
             var host_data = zbxApi.host.success(data);
             var tagId = '';
@@ -1283,12 +1577,10 @@ var int = {
             $.each(host_data.result, function (k, v) {
                 tagText = '';
                 tagText2 = '';
-                //console.log(v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
                 tagId = "host_" + v.hostid;
                 tagText = '<li><a href="#" id="' + tagId + '"><i class="fa fa-bar-chart"></i>';
                 tagText += v.host;
                 tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
-                //console.log("tagText : " + tagText);
                 $("#serverlist").append(tagText);
 
                 tagText2 += '<li><a class="treeview-menu" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
@@ -1300,118 +1592,147 @@ var int = {
 
                 $("#" + tagId + "_performlist").append(tagText2);
 
-                /* 2017.01.11 서버 정보 요약 */
-                $("#info_" + v.hostid).click(function () { //요약
-                    console.log("IN IN IN 호스트 아이디 : " + v.hostid + ", 호스트명 : " + v.host);
+                $("#info_" + v.hostid).click(function () { /* 서버 정보 요약 */
                     $("[id^=base]").hide();
                     $("#base_serverInfo").show();
+                    var hostid = v.hostid;
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
 
-                    //CPU 사용량 그래프
-                    //전체 메모리 그래프
-                    //디스크 사용량 그래프
-                    //트래픽 사용량 그래프
-                    zbxApi.serOverviewHost.get(v.hostid).done(function(data, status, jqXHR){ //서버 정보 Table
-                        console.log("IN serOverviewHost : " + v.hostid);
-                        var server_host = zbxApi.serOverviewHost.success(data);
-                        var serverTitle, serverIP, serverOS, serverName = '';
+                    var serverCpuSystem = null;
+                    var serverCpuUser = null;
+                    var serverCpuIoWait = null;
+                    var serverCpuSteal = null;
+                    var serverDiskUseRoot = null;
+                    var serverMemoryUse = null;
+                    var serverTraInEth0 = null;
+                    var serverTraOutEth0 = null;
+                    var serverTraTotalEth0 = null;
+
+                    zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,system]").then(function (data){
+                        serverCpuSystem = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,user]");
+                    }).then(function (data){
+                        serverCpuUser = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,iowait]");
+                    }).then(function (data){
+                        serverCpuIoWait = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,steal]");
+                    }).then(function (data){
+                        serverCpuSteal = zbxApi.serverViewGraph.success(data);
+                    }).then(function(){
+                        return zbxApi.serverViewGraphName.get(v.hostid, "Used memory(%)");
+                    }).then(function (data){
+                        serverMemoryUse = zbxApi.serverViewGraphName.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]");
+                    }).then(function (data){
+                        serverDiskUseRoot = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.in[eth0]");
+                    }).then(function (data){
+                        serverTraInEth0 = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.out[eth0]");
+                    }).then(function (data){
+                        serverTraOutEth0 = zbxApi.serverViewGraph.success(data);
+                    }).then(function (){
+                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.total[eth0]");
+                    }).then(function (data){
+                        serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
+                        serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+                    });
+
+                    processView(hostid, startTime);
+
+                    zbxApi.serverViewHost.get(v.hostid).done(function(data, status, jqXHR){
+                        var server_host = zbxApi.serverViewHost.success(data);
+                        var serverTitle = '';
+                        var serverIP = '';
+                        var serverOS = '';
+                        var serverName = '';
+                        var serverAgentVersion = '';
 
                         $.each(server_host.result, function (k, v){
                             serverTitle = v.host;
                             serverIP = v.interfaces[0].ip;
                             serverOS = v.inventory.os;
                             serverName = v.name;
+                            serverAgentVersion = zbxSyncApi.allServerViewItem(v.hostid, "agent.version").lastvalue; //agent.version
 
-                            console.log("TEST : " + serverTitle + " , " + serverIP + " , " + serverOS + " , " + serverName);
-
-                            var serverInfoTbl = '';
-                            serverInfoTbl += "<tr><td>운영체제</td><td>"+serverOS+"</td></tr>";
-                            serverInfoTbl += "<tr><td>서버명</td><td>"+serverTitle+"</td></tr>";
-                            serverInfoTbl += "<tr><td>IP주소</td><td>"+serverIP+"</td></tr>";
-                            serverInfoTbl += "<tr><td>호스트명</td><td>"+serverName+"</td></tr>";
-                            serverInfoTbl += "<tr><td>데이터 보관 일</td><td></td></tr>";
-                            serverInfoTbl += "<tr><td>에이전트 아이디</td><td></td></tr>";
-                            serverInfoTbl += "<tr><td>에이전트</td><td></td></tr>";
-                            $("#serverInfo").append(serverInfoTbl);
+                            serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion);
                         })
-                    })
-                    //프로세스 Table
-                    //이벤트 목록 Table
-                    zbxApi.serOverviewTrigger.get(v.hostid).done(function(data, status, jqXHR){
-                        console.log("IN serOverviewHost : " + v.hostid);
-                        var server_event = zbxApi.serOverviewTrigger.success(data);
+                    });
 
-                        var host, group, status, severity, description, lastchange, age, ack, minte_status, itemids ='';
-
-                        $.each(server_event.result, function(k, v){
-                            host = v.hosts[0].host;
-                            group = v.groups[0].name;
-                            status = convStatus(v.value);
-                            severity = convPriority(v.priority);
-                            description = v.description;
-                            lastchange = convTime(v.lastchange);
-                            age = convDeltaTime(v.lastchange);
-                            ack = convAck(v.lastEvent.acknowledged);
-                            minte_status = v.hosts[0].maintenance_status;
-                            itemids = v.items;
-
-                            console.log("1111111111");
-                            //console.log(host + "/ " + group + "/ " +  status + "/ " + severity + "/ " + description + "/ " + lastchange + "/ " + age + "/ " + ack + "/ " + minte_status + "/ " + itemids);
-
-                            var serverEventTbl = '';
-                            serverEventTbl += "<tr>";
-                            serverEventTbl += "<td>" + severity + "</td>";
-                            serverEventTbl += "<td>" + status + "</td>";
-                            serverEventTbl += "<td>" + lastchange + "</td>";
-                            serverEventTbl += "<td>" + age + "</td>";
-                            serverEventTbl += "<td>" + ack + "</td>";
-                            serverEventTbl += "<td>" + group + "</td>";
-                            serverEventTbl += "<td>" + description + "</td>";
-                            serverEventTbl += "</tr>";
-                            $("#serverEventList").append(serverEventTbl);
-
-                        })
-                    })
+                    EventListView(hostid);
                 });
 
                 $("#cpu_" + v.hostid).click(function () { //CPU
-                    $("[id^=base]").hide();
-                    $("#base_hostinfo").show();
-                    var dataItem = null;
-                    var data_loadavg1 = null;
-
-                    zbxApi.getItem.get(v.hostid, "system.cpu.util[,system]").then(function (data) {
-                        dataItem = zbxApi.getItem.success(data);
-                        console.log("dataItem : " + JSON.stringify(dataItem));
-                    }).then(function () {
-                        // for suggest
-                        return zbxApi.getItem.get(v.hostid, "system.cpu.load[percpu,avg1]");
-                    }).then(function (data) {
-                        data_loadavg1 = zbxApi.getItem.success(data);
-                        console.log(data_loadavg1);
-                        hostinfoView(dataItem, data_loadavg1);
-                    });
+                	$("#btn_cpu.btn").click(function() {
+                		var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);         		
+                		cpuStatsView(v.hostid,startTime);
+                	});
+                	
+                	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                	$("[id^=base]").hide();
+                	$("#base_cpuinfo").show();
+                	//1 callApiForCpu(v.hostid,startTime);
+                	cpuStatsView(v.hostid,startTime);
                 });
 
                 $("#memory_" + v.hostid).click(function () { //Memory
-                    alert("IN Memory");
+                    //var oneDayLongTime = 3600000;
+
+                    $("#btn_mem.btn").click(function() {
+                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                        callApiForMem(v.hostid,startTime);
+                    });
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                    callApiForMem(v.hostid,startTime);
                 });
 
                 $("#process_" + v.hostid).click(function () { //Process
-                    alert("IN Process");
+                	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                	$.blockUI(blockUI_opt_all);
+                	$("[id^=base]").hide();
+                	$("#base_processInfo").show();
+                	procUsageView(v.hostid, startTime);
                 });
 
                 $("#disk_" + v.hostid).click(function () { //Disk
-                    alert("IN Disk");
+                    $("[id^=base]").hide();
+                    $("#base_diskInfo").show();
+
+                    var hostid = v.hostid;
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                    var disk_data = '';
+
+                    zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
+                        disk_data = zbxApi.getDiskItem.success(data);
+                        diskView(hostid, disk_data, startTime);
+                    });
                 });
 
-                $("#traffic_" + v.hostid).click(function () { //Traffic
-                    alert("IN Traffic");
+                $("#traffic_" + v.hostid).click(function () {
+                    $("[id^=base]").hide();
+                    $("#base_networkInfo").show();
+
+                    var hostid = v.hostid;
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                    var network_data = '';
+
+                    zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
+                        network_data = zbxApi.getNetworkItem.success(data);
+                        networkView(hostid, network_data, startTime);
+                    });
                 });
 
                 $("#" + tagId).click(function () {
                     $("[id^=base]").hide();
-                    $("#base_hostinfo").show();
-                    hostinfoView();
+                    //$("#base_hostinfo").show();
+                    //hostinfoView();
                 });
             })
         }).fail(function () {
@@ -1637,73 +1958,126 @@ var int = {
     }
 };
 
+var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
+    showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
+    showServerMemory(serverMemoryUse, startTime);
+    showServerDisk(serverDiskUseRoot, startTime);
+    showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+    //$.unblockUI(blockUI_opt_all);
+};
 
-var hostinfoView = function (dataItem, data_loadavg1) {
-    var systemCpuArr = [];
-    var loadAvg1Arr = [];
-    var keyName = '';
-    var keyName2 = '';
-    console.log("hostinfoView");
-    var d = new Date();
-    var startTime = d.getTime();
-    startTime = String(Math.round((startTime - 43200000) / 1000));
+function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime){
+    var serverCpuSystemArr = [];
+    var serverCpuUserArr = [];
+    var serverCpuIoWaitArr = [];
+    var serverCpuStealArr = [];
 
-    var dataHistory = null;
-    var history_loadavg1 = null;
+    var history_cpuSytem = null;
+    var history_cpuUser = null;
+    var history_cpuIoWait = null;
+    var history_cpuSteal = null;
 
-    zbxApi.getHistory.get(dataItem.result[0].itemid, startTime).then(function (data) {
-        dataHistory = zbxApi.getHistory.success(data);
-        keyName = dataItem.result[0].key_;
-        $.each(dataHistory.result, function (k, v) {
-            systemCpuArr[k] = parseFloat(v.value);
+    zbxApi.getHistory.get(serverCpuSystem.result[0].itemid, startTime, 0).then(function(data){
+        history_cpuSytem = zbxApi.getHistory.success(data);
+        $.each(history_cpuSytem.result, function(k, v){
+            serverCpuSystemArr[k] = new Array();
+            serverCpuSystemArr[k][0] = parseInt(v.clock) * 1000;
+            serverCpuSystemArr[k][1] = parseFloat(v.value);
         });
-    }).then(function () {
-        // for suggest
-        return zbxApi.getHistory.get(data_loadavg1.result[0].itemid, startTime);
-        //return zbxApi.getItem.get();
-    }).then(function (data) {
-        history_loadavg1 = zbxApi.getHistory.success(data);
-        keyName2 = data_loadavg1.result[0].key_;
-        $.each(history_loadavg1.result, function (k, v) {
-            loadAvg1Arr[k] = parseFloat(v.value);
+    }).then(function(){
+        return zbxApi.getHistory.get(serverCpuUser.result[0].itemid, startTime, 0);
+    }).then(function(data){
+        history_cpuUser = zbxApi.getHistory.success(data);
+        $.each(history_cpuUser.result, function(k, v){
+            serverCpuUserArr[k] = new Array();
+            serverCpuUserArr[k][0] = parseInt(v.clock) * 1000;
+            serverCpuUserArr[k][1] = parseFloat(v.value);
+        });
+    }).then(function(){
+        return zbxApi.getHistory.get(serverCpuIoWait.result[0].itemid, startTime, 0);
+    }).then(function(data){
+        history_cpuIoWait = zbxApi.getHistory.success(data);
+        $.each(history_cpuIoWait.result, function(k, v){
+            serverCpuIoWaitArr[k] = new Array();
+            serverCpuIoWaitArr[k][0] = parseInt(v.clock) * 1000;
+            serverCpuIoWaitArr[k][1] = parseFloat(v.value);
+        });
+    }).then(function(){
+        return zbxApi.getHistory.get(serverCpuSteal.result[0].itemid, startTime, 0);
+    }).then(function(data){
+        history_cpuSteal = zbxApi.getHistory.success(data);
+        $.each(history_cpuSteal.result, function(k, v){
+            serverCpuStealArr[k] = new Array();
+            serverCpuStealArr[k][0] = parseInt(v.clock) * 1000;
+            serverCpuStealArr[k][1] = parseFloat(v.value);
         });
 
         $(function () {
-            Highcharts.chart('hostinfo_cpuusage', {
+            Highcharts.chart('cpuUse', {
                 chart: {
-                    type: 'area'
+                    type: 'area',
+                    zoomType: 'x',
+                    height: 250,
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
                 },
                 title: {
                     text: 'CPU 사용량'
                 },
-                subtitle: {
-                    text: ''
-                },
+                subtitle: { text:  '' },
                 xAxis: {
-                    allowDecimals: false,
                     labels: {
                         formatter: function () {
-                            return this.value; // clean, unformatted number for year
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
                         }
                     }
                 },
                 yAxis: {
                     title: {
-                        text: 'Nuclear weapon states'
+                        text: ''
                     },
+                    min: 0,
                     labels: {
-                        formatter: function () {
-                            //return this.value / 1000 + 'k';
-                            return this.value;
+                        formatter: function() {
+                            return this.value + '%';
                         }
                     }
                 },
                 tooltip: {
-                    pointFormat: '{series.name} produced <b>{point.y}</b><br/>warheads in {point.x}'
+                    formatter: function(){
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
                 },
                 plotOptions: {
                     area: {
-                        pointStart: 1940,
                         marker: {
                             enabled: false,
                             symbol: 'circle',
@@ -1717,178 +2091,2681 @@ var hostinfoView = function (dataItem, data_loadavg1) {
                     }
                 },
                 series: [{
-                    name: keyName,
-                    data: systemCpuArr
-//		            	[null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
-//		                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
-//		                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
-//		                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-//		                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
-//		                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
-//		                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
+                    name: 'CPU System',
+                    data: serverCpuSystemArr
                 }, {
-                    name: keyName,
-                    data: systemCpuArr
-//		            	[null, null, null, null, null, null, null, null, null, null,
-//		                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
-//		                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
-//		                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
-//		                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
-//		                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-//		                21000, 20000, 19000, 18000, 18000, 17000, 16000]
+                    name: 'CPU User',
+                    data: serverCpuUserArr
+                }, {
+                    name: 'CPU IoWait',
+                    data: serverCpuIoWaitArr
+                }, {
+                    name: 'CPU Steal',
+                    data: serverCpuStealArr
                 }]
             });
         });
+    });
+}
+
+function showServerMemory(serverMemoryUse, startTime){
+    var serverMemoryUseArr = [];
+
+    var history_memoryUse = null;
+
+    zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, 0).then(function(data){
+        history_memoryUse = zbxApi.getHistory.success(data);
+        $.each(history_memoryUse.result, function(k, v){
+            serverMemoryUseArr[k] = new Array();
+            serverMemoryUseArr[k][0]=parseInt(v.clock) * 1000;
+            serverMemoryUseArr[k][1]=parseFloat(v.value);
+        });
 
         $(function () {
-            Highcharts.chart('serverinfo_memusage', {
+            Highcharts.chart('memoryAll', {
                 chart: {
-                    //type: 'area'
+                    type: 'area',
+                    zoomType: 'x',
+                    height: 250,
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
                 },
                 title: {
-                    text: 'Load Average'
+                    text: '전체메모리'
                 },
-                subtitle: {
-                    text: ''
-                },
+                subtitle: { text:  '' },
                 xAxis: {
-                    allowDecimals: false,
                     labels: {
                         formatter: function () {
-                            return this.value; // clean, unformatted number for year
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
                         }
                     }
                 },
                 yAxis: {
                     title: {
-                        text: 'Nuclear weapon states'
+                        text: ''
                     },
+                    min: 0,
+                    labels: {
+                        formatter: function() {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function(){
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    area: {
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle',
+                            radius: 2,
+                            states: {
+                                hover: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Memory Use',
+                    data: serverMemoryUseArr
+                }]
+            });
+        });
+
+    })
+}
+
+function showServerDisk(serverDiskUseRoot, startTime){
+    var serverDiskUseRootArr = [];
+
+    var history_diskUseRoot = null;
+
+    zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, 0).then(function(data){
+        history_diskUseRoot = zbxApi.getHistory.success(data);
+        $.each(history_diskUseRoot.result, function(k, v){
+            serverDiskUseRootArr[k] = new Array();
+            serverDiskUseRootArr[k][0] = parseInt(v.clock) * 1000;
+            serverDiskUseRootArr[k][1] = parseFloat(v.value);
+        });
+
+        $(function () {
+            Highcharts.chart('diskUse', {
+                chart: {
+                    zoomType: 'x',
+                    height: 250,
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
+                },
+                title: {
+                    text: '디스크 사용량'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
                     labels: {
                         formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    min: 0,
+                    max: 100,
+                    labels: {
+                        formatter: function() {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function(){
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Use : /',
+                    data: serverDiskUseRootArr
+                }]
+            });
+        });
+
+    })
+}
+
+function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
+    var serverTraInEth0Arr = [];
+    var serverTraOutEth0Arr = [];
+    var serverTraTotEth0Arr = [];
+
+    var history_traInEth0 = null;
+    var history_traOutEth0 = null;
+    var history_traTotEth0 = null;
+
+    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, 3).then(function(data) {
+        history_traInEth0 = zbxApi.getHistory.success(data);
+        $.each(history_traInEth0.result, function (k, v) {
+            serverTraInEth0Arr[k] = new Array();
+            serverTraInEth0Arr[k][0] = parseInt(v.clock) * 1000;
+            serverTraInEth0Arr[k][1] = parseInt(v.value) / 1000;
+        });
+    }).then(function(){
+        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, 3);
+    }).then(function(data){
+        history_traOutEth0 = zbxApi.getHistory.success(data);
+        $.each(history_traOutEth0.result, function(k, v){
+            serverTraOutEth0Arr[k] = new Array();
+            serverTraOutEth0Arr[k][0] = parseInt(v.clock) * 1000;
+            serverTraOutEth0Arr[k][1] = parseInt(v.value) / 1000;
+        });
+    }).then(function(){
+        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, 3);
+    }).then(function(data){
+        history_traTotEth0 = zbxApi.getHistory.success(data);
+        $.each(history_traTotEth0.result, function(k, v){
+            serverTraTotEth0Arr[k] = new Array();
+            serverTraTotEth0Arr[k][0] = parseInt(v.clock) * 1000;
+            serverTraTotEth0Arr[k][1] = parseInt(v.value) / 1000;
+        });
+
+        $(function () {
+            Highcharts.chart('trafficUse', {
+                chart: {
+                    zoomType: 'x',
+                    height: 250,
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
+                },
+                title: {
+                    text: '트래픽 사용량'
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value / 1000 + 'kbps';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic In Eth0',
+                    data: serverTraInEth0Arr
+                }, {
+                    name: 'Traffic Out Eth0',
+                    data: serverTraOutEth0Arr
+                }, {
+                    name: 'Traffic Total Eth0',
+                    data: serverTraTotEth0Arr
+                }]
+            });
+        });
+    })
+}
+
+var processView = function(hostid, startTime){
+    var data_topProcess = null;
+
+    new $.jqzabbix(options).getApiVersion().then(function(data){
+        data_topProcess = callApiForCpuUsedProcess(hostid);
+        var topProcessLastClock = parseInt(data_topProcess.lastclock) * 1000;
+        var d2 = new Date(topProcessLastClock);
+        var topProcessLastTime = d2.getFullYear() + "-" + d2.getMonth()+1 + "-" + d2.getDate()  + " " + d2.getHours() + ":" + d2.getMinutes();
+
+        data_topProcess = sortProcInCpuOrder(data_topProcess, topProcessLastTime);
+        showServerProcess(hostid, data_topProcess, topProcessLastTime);
+    });
+}
+
+var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
+    var processTbl = '';
+    var MAX_PROCCOUNT = 10;
+
+    processTbl += "<thead>";
+    processTbl += "<tr role='row'>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>이름</th>";
+    processTbl += "<th width='15%' tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>cpu</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>메모리</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>수</th>";
+    processTbl += "</tr>";
+    processTbl += "</thead>";
+
+    processTbl += "<tbody>";
+
+    $.each(finalProcArr, function(k, v){
+        if(k<MAX_PROCCOUNT){
+            var procNameArr = '';
+            var procName = '';
+            var procCpuValue = v.procCpu.toFixed(1);
+
+            if(v.procName.indexOf("/0") != -1){
+                procName = v.procName;
+            }else{
+                procNameArr = v.procName.split("/");
+                procName = procNameArr[procNameArr.length-1];
+            }
+
+            processTbl += "<tr id='" + procName + "' role='row' class='odd'>";
+            processTbl += "<td><span class='ellipsis' title='" + procName + "'>" + procName + "</span></td>";
+            processTbl += "<td>" + procCpuValue + "</td>";
+            processTbl += "<td>" + procCpuValue + "<span class='smaller'>MB</span></td>";
+            processTbl += "<td>" + v.procCnt + "</td>";
+            processTbl += "</tr>";
+        }
+    });
+
+    processTbl += "</tbody>";
+
+    $("#processTime").text(topProcessLastTime);
+    $("#serverProcessList").empty();
+    $("#serverProcessList").append(processTbl);
+}
+
+var EventListView = function(hostid){//서버정보요약 - 이벤트목록
+    var data_EventList = null;
+
+    new $.jqzabbix(options).getApiVersion().then(function(data){
+        data_EventList = callApiForServerEvent(hostid);
+        showServerEventList(hostid, data_EventList);
+    });
+}
+
+var showServerEventList = function(hostid, data_EventList){ //서버정보요약 - 이벤트목록
+    var eventTbl = '';
+
+    eventTbl += "<thead>";
+    eventTbl += "<tr role='row'>";
+    eventTbl += "<th>이벤트 등급</th>";
+    eventTbl += "<th>상태</th>";
+    eventTbl += "<th>발생시간</th>";
+    eventTbl += "<th>지속시간</th>";
+    eventTbl += "<th>인지</th>";
+    eventTbl += "<th>호스트명</th>";
+    eventTbl += "<th>비고</th>";
+    eventTbl += "</tr>";
+    eventTbl += "</thead>";
+
+    eventTbl += "<tbody>";
+
+    $.each(data_EventList, function(k, v){
+        var severity = convPriorityServer(v.priority);
+        var status = convStatusServer(v.value);
+        var lastchange = convTime(v.lastchange);
+        var age = convDeltaTime(v.lastchange);
+        var ack = convAckServer(v.lastEvent.acknowledged);
+        var host = v.hosts[0].host;
+        var description = v.description;
+        //var group = v.groups[0].name;
+        //var minte_status = v.hosts[0].maintenance_status;
+        //var itemids = v.items;
+
+        eventTbl += "<tr role='row'>";
+        eventTbl += "<td>" + severity + "</td>";
+        eventTbl += "<td>" + status + "</td>";
+        eventTbl += "<td>" + lastchange + "</td>";
+        eventTbl += "<td>" + age + "</td>";
+        eventTbl += "<td>" + ack + "</td>";
+        eventTbl += "<td>" + host + "</td>";
+        eventTbl += "<td>" + description + "</td>";
+        eventTbl += "</tr>";
+    });
+
+    eventTbl += "</tbody>";
+    $("#serverEventList").empty();
+    $("#serverEventList").append(eventTbl);
+
+}
+
+var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion){
+    $("#serverInfo").empty();
+
+    var serverInfoTbl = '';
+    serverInfoTbl += "<tr><td>운영체제</td><td>"+serverOS+"</td></tr>";
+    serverInfoTbl += "<tr><td>서버명</td><td>"+serverTitle+"</td></tr>";
+    serverInfoTbl += "<tr><td>IP주소</td><td>"+serverIP+"</td></tr>";
+    serverInfoTbl += "<tr><td>호스트명</td><td>"+serverName+"</td></tr>";
+    serverInfoTbl += "<tr><td>에이전트</td><td>"+serverAgentVersion+"</td></tr>";
+    $("#serverInfo").append(serverInfoTbl);
+};
+
+
+var procUsageView = function(hostid, startTime) {
+
+	$.blockUI(blockUI_opt_all);
+	
+	var topProcessLastClock = null;
+	var ProcessTableHTML = '';
+	var MAX_PROCCOUNT = 13;
+	var currentProcessName = null;
+	var tableDataObj = new Object();
+	var tableDataArr = [];
+	var lastProcessData = callApiForProcessTable(hostid);
+	var lastClockLongType = parseInt(lastProcessData.lastclock) * 1000;
+	var date = new Date(lastClockLongType);
+	var lastClockForProcessTable = date.getFullYear() + "-" + (parseInt(date.getMonth())+1) + "-" + date.getDate()  + " " + date.getHours() + ":" + date.getMinutes();
+	var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
+	
+	ProcessTableHTML += "<thead>";
+	ProcessTableHTML += "<tr role='row'>";
+	ProcessTableHTML += "<th class='percent-text sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='CPU: 오름차순 정렬' aria-sort='descending'>이름</th>";
+	ProcessTableHTML += "<th width='15%' class='text-left sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='이름: 오름차순 정렬'>cpu</th>";
+	ProcessTableHTML += "<th class='pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='메모리: 오름차순 정렬'>메모리</th>";
+	ProcessTableHTML += "<th class='text-center pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='수: 오름차순 정렬'>수</th>";
+	ProcessTableHTML += "</tr>";
+	ProcessTableHTML += "</thead>";
+	ProcessTableHTML += "<tbody>";
+	 
+	//ps 데이터의  마지막  값을 테이블에 삽입 
+	$.each(sortProcessForTable, function(k,v) {
+		
+		tableDataObj = new Object();
+		
+		tableDataObj.procName = v.procName;
+		tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
+		tableDataObj.memValue = parseFloat(v.totalMemVal.toFixed(1));
+		tableDataObj.procCnt = parseInt(v.procCnt);
+		tableDataArr.push(tableDataObj);
+		
+		if(k<MAX_PROCCOUNT){
+		
+			var procCpuValue = v.totalCpuVal.toFixed(1);
+			var procMemValue = v.totalMemVal.toFixed(1);
+
+			ProcessTableHTML += "<tr id='" + v.procName + "' role='row' class='odd'>";
+			ProcessTableHTML += "<td class='text-left sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
+			ProcessTableHTML += "<td class='percent-text sorting_3'>" + procCpuValue + "</td>";
+			ProcessTableHTML += "<td class='pr-none sorting_2'>" + procMemValue + "<span class='smaller'>MB</span></td>";
+			ProcessTableHTML += "<td class='text-center pr-none'>" + v.procCnt + "</td>";
+			ProcessTableHTML += "</tr>";
+		} 
+	});
+	
+	ProcessTableHTML += "</tbody>";
+	 
+    $("#detailedProcTime").text(lastClockForProcessTable);
+	$("#detailedCpuProc").empty();
+    $("#detailedCpuProc").append(ProcessTableHTML);
+    $("#chart_processCpu").empty();
+	$("#chart_processMem").empty();
+	var $table = $("#detailedCpuProc");
+	$("#detailedCpuProc > tbody > tr").eq(0).addClass("selectedProcess");
+	currentProcessName = $(".selectedProcess").attr('id');
+	generateProcessResource(hostid, currentProcessName, startTime);
+	
+    
+    // table의 row에 클릭시 하이라이트 처리 및 해당 프로세스 차트를 만드는 클릭 이벤트 생성 
+	rowClickEvent($table, hostid, startTime);
+	
+	// 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
+    $("#btn_proc.btn").click(function() {
+		var startTime1 = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+		var currentProcessName = $(".selectedProcess").attr('id');
+		generateProcessResource(hostid, currentProcessName, startTime1);
+	});
+    
+    // 테이블의 th col 클릭시, 정렬 된 테이블 내용 생성 및 각 행의 클릭이벤트(하이라이트, 차트) 생성
+    $('th', $table).each(function (column){
+		$(this).click(function(){
+			var procTableRow = '';
+			var currentThObj = $(this);
+			var MAX_PROCCOUNT = 13;
+			var tmpProcessName = $(".selectedProcess").attr('id');
+			
+			if($(this).is('.sorting_desc')){
+				tableDataArr.sort(function (a, b) { 
+					if(column == 0){
+						return a.procName < b.procName ? -1 : a.procName > b.procName ? 1 : 0;
+					}else if(column == 1){
+						return a.cpuValue < b.cpuValue ? -1 : a.cpuValue > b.cpuValue ? 1 : 0;
+					}else if(column == 2){
+						return a.memValue < b.memValue ? -1 : a.memValue > b.memValue ? 1 : 0;
+					}else if(column == 3){
+						return a.procCnt < b.procCnt ? -1 : a.procCnt > b.procCnt ? 1 : 0;
+					}
+				});
+				currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
+			}else{
+				tableDataArr.sort(function (a, b) { 
+					if(column == 0){
+						return a.procName > b.procName ? -1 : a.procName < b.procName ? 1 : 0; 
+					}else if(column == 1){
+						return a.cpuValue > b.cpuValue ? -1 : a.cpuValue < b.cpuValue ? 1 : 0;
+					}else if(column == 2){
+						return a.memValue > b.memValue ? -1 : a.memValue < b.memValue ? 1 : 0;
+					}else if(column == 3){
+						return a.procCnt > b.procCnt ? -1 : a.procCnt < b.procCnt ? 1 : 0;
+					}
+				});
+				currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
+			}
+			$('tbody', $table).empty();
+			
+			for(var i=0; i<MAX_PROCCOUNT; i++){
+				procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd'>";
+				procTableRow += "<td class='text-left sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
+				procTableRow += "<td class='percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
+				procTableRow += "<td class='pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'>MB</span></td>";
+				procTableRow += "<td class='text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
+				procTableRow += "</tr>";
+			}
+			$('tbody', $table).append(procTableRow);
+			$("#"+tmpProcessName).addClass("selectedProcess");
+			rowClickEvent($table, hostid, startTime);
+		});// end click
+    });// end th col
+		
+	$.unblockUI(blockUI_opt_all);
+}
+
+var rowClickEvent = function(table, hostid, startTime){
+	$('tr', table).each(function (row){
+    	if(row>0){
+	    	$(this).click(function(){
+	    		var currentProcessName = $(this).attr('id');
+	    		$(".selectedProcess").removeClass("selectedProcess");
+	    		$(this).addClass("selectedProcess");
+	    		$(this).children().css("border-top", "1px #FF5E00 solid").css("border-bottom", "1px #FF5E00 solid");
+	    		$(this).children().eq(0).css("border-left", "1px #FF5E00 solid");
+	    		$(this).children().eq(3).css("border-right", "1px #FF5E00 solid");
+	    		$(this).prevAll().children().removeAttr('style');
+	    		$(this).nextAll().children().removeAttr('style');
+	    		generateProcessResource(hostid, currentProcessName, startTime);
+	    	});
+    	}
+    });
+}
+
+var generateProcessResource = function(hostid, processName, startTime) {
+
+	var itemId = null;
+	var dataObj = new Object();
+	var cpuArr = [];
+	var memArr = [];
+	var dataSet = [];
+	var itemKey = "system.run[\"ps -eo user,pid,ppid,pmem,pcpu,time,cmd --sort=-pcpu\"]";
+	$("#chart_processCpu").block(blockUI_opt_all_custom);
+	$("#chart_processMem").block(blockUI_opt_all_custom);
+
+	zbxApi.getItem.get(hostid,itemKey).then(function(data) {
+		var item = zbxApi.getItem.success(data);
+		itemId = item.result[0].itemid;
+		
+	}).then(function() {
+		return zbxApi.getProcHistory.get(itemId, startTime, HISTORY_TYPE.LOG);
+		 
+	}).then(function(data) {
+		var hisData = zbxApi.getProcHistory.success(data);
+		var hisDataCount = hisData.result.length;
+		var showDataCount = 180;
+		var hisDataInterval = 1;		
+		if(hisDataCount >= 180){			
+			hisDataInterval = Math.round(hisDataCount / showDataCount);
+		}
+		for(var i=0,j=0; i<hisDataCount; i+=hisDataInterval,j++){ // 전체 히스토리 데이터에서 일부만 추출
+
+			var cpuDataObj = null;
+			var cpuDataSet = [];
+			var cpuSumVal = 0;
+			var memDataObj = null;
+			var memDataSet = [];
+			var memSumVal = 0.0;
+			var ProcRowArr = data.result[i].value.split("\n");
+			
+			$.each(ProcRowArr, function(k,v) { // 각 행별,프로세스 명을 비교하여 cpu, mem 값을 sum.
+				if(ProcRowArr[k].indexOf(processName) != -1){
+
+					while(ProcRowArr[k].indexOf("  ") != -1){
+						ProcRowArr[k] = ProcRowArr[k].replace('  ',' ');
+					}
+					var ProcColArr = ProcRowArr[k].split(" ");	
+					var tempProcName = null;
+					var procNameArr = [];
+					
+					if(ProcColArr[6].indexOf("/0") != -1){
+						tempProcName = ProcColArr[6];
+					}else{
+						procNameArr = ProcColArr[6].split("/");
+						tempProcName = procNameArr[procNameArr.length-1];
+					}
+					tempProcName = tempProcName.replace(/\:/g, '');
+					if(tempProcName == processName){
+						cpuSumVal += parseFloat(ProcColArr[4]);
+						memSumVal += parseFloat(ProcColArr[3]);
+					}	
+				}
+			});
+			// 각 히스토리 데이터 cpu, mem의 sum값을 data 배열에 담는다.
+			cpuArr[j] = new Array();
+			cpuArr[j][0]=parseInt(data.result[i].clock) * 1000;
+			cpuArr[j][1]=parseFloat(cpuSumVal.toFixed(1));
+			memArr[j] = new Array();
+			memArr[j][0]=parseInt(data.result[i].clock) * 1000;
+			memArr[j][1]=parseFloat(memSumVal.toFixed(1));
+		}
+
+		//차트에 전달할 데이터셋 생성
+		cpuDataObj = new Object();
+		cpuDataObj.name = processName;
+		cpuDataObj.data = cpuArr;
+		cpuDataSet.push(cpuDataObj);
+		
+		memDataObj = new Object();
+		memDataObj.name = processName;
+		memDataObj.data = memArr;
+		memDataSet.push(memDataObj);
+
+		showBasicLineChart('chart_processCpu', 'CPU', cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+		showBasicAreaChart('chart_processMem', 'Memory', memDataSet, "MB", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+	});
+}
+
+
+var diskView = function(hostid, disk_data, startTime){
+    var disk_itemid = '';
+    var disk_itemKey = '';
+    var diskTbl = '';
+
+    $.each(disk_data.result, function(disk_k, disk_v) {
+        disk_itemid = disk_v.itemid;
+        disk_itemKey = disk_v.key_;
+        console.log("disk_itemid : " + disk_itemid);
+        console.log("disk_itemKey : " + disk_itemKey);
+
+        var itemKey = disk_itemKey.substring(disk_itemKey.indexOf("[")+1,disk_itemKey.indexOf(","));
+        console.log("itemKey : " + itemKey);
+
+        diskTbl += "<h4 id='" + itemKey + "'>" + itemKey + "</h4>";
+
+        $("#diskList").empty();
+        $("#diskList").append(diskTbl);
+
+        var $table = $("#diskList");
+        $('h4', $table).each(function(table_k, table_v) {
+            $(this).click(function() {
+                console.log(">>>>>> " + $(this).attr('id'));
+
+                var tmpDiskName = $(this).attr('id');
+
+                var diskInode = '';
+                var diskFree = '';
+                var diskUse = '';
+
+                var diskItemKeyInode = "vfs.fs.inode[" + tmpDiskName + ",pfree]";
+                var diskItemKeyFree = "vfs.fs.size[" + tmpDiskName + ",pfree]";
+                var diskItemKeyUse = "vfs.fs.size[" + tmpDiskName + ",pfree]";
+
+                console.log(">>>>> hostid <<<<< : " + hostid);
+                console.log("diskItemKeyInode " + diskItemKeyInode);
+                console.log("diskItemKeyFree : " + diskItemKeyFree);
+                console.log("diskItemKeyTotal : " + diskItemKeyUse);
+
+                zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
+                    diskInode = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
+                }).then(function (data){
+                    diskFree = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
+                }).then(function (data){
+                    diskUse = zbxApi.serverViewGraph.success(data);
+                    showDiskView(diskInode, diskFree, diskUse);
+                });
+            })
+        });
+    });
+}
+
+var showDiskView = function(diskInode, diskFree, diskUse){
+    var date1 = new Date();
+    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
+
+    showInFrDisk(diskInode, diskFree, startTime);
+    showUseDisk(diskUse, startTime);
+};
+
+function showInFrDisk(diskInode, diskFree, startTime){
+    var diskInodeArr = [];
+    var diskFreeArr = [];
+
+    var history_diskInode = null;
+    var history_diskFree = null;
+
+    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data){
+        history_diskInode = zbxApi.getHistory.success(data);
+        $.each(history_diskInode.result, function(k, v){
+            diskInodeArr[k] = new Array();
+            diskInodeArr[k][0] = parseInt(v.clock) * 1000;
+            diskInodeArr[k][1] = parseFloat(v.value);
+        });
+    }).then(function (){
+        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
+    }).then(function(data){
+        history_diskFree = zbxApi.getHistory.success(data);
+        $.each(history_diskFree.result, function(k, v){
+            diskFreeArr[k] = new Array();
+            diskFreeArr[k][0] = parseInt(v.clock) * 1000;
+            diskFreeArr[k][1] = parseFloat(v.value);
+        });
+
+        $(function () {
+            Highcharts.chart('chart_diskIo', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '디스크 I/O',
+                    align: 'left'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Inode',
+                    data: diskInodeArr
+                }, {
+                    name: 'Disk Free',
+                    data: diskFreeArr
+                }]
+            });
+        });
+    })
+}
+
+function showUseDisk(diskUse, startTime){
+    var diskUseArr = [];
+
+    var history_diskUse = null;
+
+    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data){
+        history_diskUse = zbxApi.getHistory.success(data);
+        $.each(history_diskUse.result, function (k, v) {
+            diskUseArr[k] = new Array();
+            diskUseArr[k][0] = parseInt(v.clock) * 1000;
+            diskUseArr[k][1] = 100 - parseFloat(v.value);
+        });
+
+        $(function () {
+            Highcharts.chart('chart_diskUse', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '디스크 Total',
+                    align: 'left'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Use',
+                    data: diskUseArr
+                }]
+            });
+        });
+    })
+}
+
+var networkView = function(hostid, network_data, startTime){
+    var network_itemid = '';
+    var network_itemKey = '';
+    var networkTbl = '';
+
+    $.each(network_data.result, function(network_k, network_v){
+        network_itemid = network_v.itemid;
+        network_itemKey = network_v.key_;
+
+        console.log("network_itemid : " + network_itemid);
+        console.log("network_itemKey : " + network_itemKey);
+
+        var networkKey = network_itemKey.substring(network_itemKey.indexOf("[")+1,network_itemKey.indexOf("]"));
+        console.log("networkKey : " + networkKey);
+        networkTbl += "<h4 id='" + networkKey + "'>" + networkKey + "</h4>";
+
+        $("#networkList").empty();
+        $("#networkList").append(networkTbl);
+
+        var $table = $("#networkList");
+        $('h4', $table).each(function(table_k, table_v) {
+            $(this).click(function() {
+                console.log(">>>>>> " + $(this).attr('id'));
+
+                var tmpNetworkName = $(this).attr('id');
+
+                var networkIn = '';
+                var networkOut = '';
+                var networkTotal = '';
+
+                var networkItemKeyIn = "net.if.in[" + tmpNetworkName + "]";
+                var networkItemKeyOut = "net.if.out[" + tmpNetworkName + "]";
+                var networkItemKeyTotal = "net.if.total[" + tmpNetworkName + "]";
+
+                console.log(">>>>> hostid <<<<< : " + hostid);
+                console.log("networkItemKeyIn : " + networkItemKeyIn);
+                console.log("networkItemKeyOut : " + networkItemKeyOut);
+                console.log("networkItemKeyTotal : " + networkItemKeyTotal);
+
+                zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
+                    networkIn = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
+                }).then(function (data){
+                    networkOut = zbxApi.serverViewGraph.success(data);
+                }).then(function (){
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
+                }).then(function (data){
+                    networkTotal = zbxApi.serverViewGraph.success(data);
+                    trafficView(networkIn, networkOut, networkTotal);
+                });
+            })
+        })
+    });
+}
+
+var trafficView = function(networkIn, networkOut, networkTotal){
+    var date1 = new Date();
+    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
+
+    showInOutNetwork(networkIn, networkOut, startTime);
+    showTotalNetwork(networkTotal, startTime);
+};
+
+function showInOutNetwork(networkIn, networkOut, startTime){
+    var networkInArr = [];
+    var networkOutArr = [];
+
+    var history_networkIn = null;
+    var history_networkOut = null;
+
+    zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, 3).then(function(data){
+        history_networkIn = zbxApi.getHistory.success(data);
+        $.each(history_networkIn.result, function(k, v){
+            networkInArr[k] = new Array();
+            networkInArr[k][0] = parseInt(v.clock) * 1000;
+            networkInArr[k][1] = parseInt(v.value) / 1000;
+        });
+    }).then(function (){
+        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, 3);
+    }).then(function(data){
+        history_networkOut = zbxApi.getHistory.success(data);
+        $.each(history_networkOut.result, function(k, v){
+            networkOutArr[k] = new Array();
+            networkOutArr[k][0] = parseInt(v.clock) * 1000;
+            networkOutArr[k][1] = parseInt(v.value) / 1000;
+        });
+
+        $(function () {
+            Highcharts.chart('chart_trafficIo', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '트래픽 I/O',
+                    align: 'left'
+                },
+                subtitle: { text:  '' },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
                             return this.value / 1000 + 'k';
                         }
                     }
                 },
                 tooltip: {
-                    pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                    }
                 },
                 plotOptions: {
-                    area: {
-                        pointStart: 1940,
-                        marker: {
-                            enabled: false,
-                            symbol: 'circle',
-                            radius: 2,
-                            states: {
-                                hover: {
-                                    enabled: true
-                                }
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
                             }
                         }
                     }
                 },
                 series: [{
-                    name: keyName2,
-                    data: loadAvg1Arr
+                    name: 'Traffic In',
+                    data: networkInArr
                 }, {
-                    name: keyName2,
-                    data: loadAvg1Arr
+                    name: 'Traffic Out',
+                    data: networkOutArr
                 }]
             });
         });
+    })
+}
+
+function showTotalNetwork(networkTotal, startTime){
+    var networkTotalArr = [];
+
+    var history_networkTotal = null;
+
+    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, 3).then(function(data){
+        history_networkTotal = zbxApi.getHistory.success(data);
+        $.each(history_networkTotal.result, function (k, v) {
+            networkTotalArr[k] = new Array();
+            networkTotalArr[k][0] = parseInt(v.clock) * 1000;
+            networkTotalArr[k][1] = parseInt(v.value) / 1000;
+        });
 
         $(function () {
-
-            Highcharts.chart('hostinfo_cpuusage1', {
+            Highcharts.chart('chart_trafficTotal', {
                 chart: {
-                    type: 'area'
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
                 },
                 title: {
-                    text: 'CPU 사용량'
+                    text: '트래픽 Total',
+                    align: 'left'
                 },
-                subtitle: {
-                    text: ''
-                },
+                subtitle: { text:  '' },
                 xAxis: {
-                    allowDecimals: false,
                     labels: {
                         formatter: function () {
-                            return this.value; // clean, unformatted number for year
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if(hours.length==1){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length==1){
+                                minutes = "0" + minutes;
+                            }
+                            if(seconds.length==1){
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
                         }
                     }
                 },
                 yAxis: {
                     title: {
-                        text: 'Nuclear weapon states'
+                        text: ''
                     },
                     labels: {
-                        formatter: function () {
-                            //return this.value / 1000 + 'k';
-                            return this.value;
+                        formatter: function() {
+                            return this.value / 1000 + 'k';
                         }
                     }
                 },
                 tooltip: {
-                    pointFormat: '{series.name} produced <b>{point.y}</b><br/>warheads in {point.x}'
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                    }
                 },
                 plotOptions: {
-                    area: {
-                        pointStart: 1940,
-                        marker: {
-                            enabled: false,
-                            symbol: 'circle',
-                            radius: 2,
-                            states: {
-                                hover: {
-                                    enabled: true
-                                }
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
                             }
                         }
                     }
                 },
                 series: [{
-                    name: keyName,
-                    data: systemCpuArr
-//		            	[null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
-//		                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
-//		                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
-//		                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-//		                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
-//		                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
-//		                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
-                }, {
-                    name: keyName,
-                    data: systemCpuArr
-//		            	[null, null, null, null, null, null, null, null, null, null,
-//		                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
-//		                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
-//		                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
-//		                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
-//		                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-//		                21000, 20000, 19000, 18000, 18000, 17000, 16000]
+                    name: 'Traffic Total',
+                    data: networkTotalArr
                 }]
             });
         });
-    });
+    })
+}
 
-//	$.blockUI(blockUI_opt_all);
-//	var beforeDay = db.get("beforeDay");
-//
-//	zbxApi.event.get().done(function(data, statusText, jqXHR) {
-//
-//		var Latest_events = zbxApi.event.success(data);
-//		pivotMain(Latest_events, "event_histogram");
-//		pivotMain(Latest_events, "event_pivot");
-//		pivotMain(Latest_events, "event_treemap");
-//		pivotMain(Latest_events, "event_free");
-//		$.unblockUI(blockUI_opt_all);
-//	}).fail(function(jqXHR, statusText, errorThrown) {
-//		$.unblockUI(blockUI_opt_all);
-//		console.log("pivotDisplay : Network Error");
-//		alertDiag("Network Error");
+var cpuStatsView = function(hostid, startTime) {
+	
+	var dataSet = [];
+	var data_topProcess = null;
+	
+	$.blockUI(blockUI_opt_all);
+
+	new $.jqzabbix(options).getApiVersion().then(function(data){
+	
+		dataSet = callApiForCpuUsage(hostid,startTime);
+		showBasicAreaChart('chart_cpuUsage', 'CPU 사용량', dataSet, "%", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+		
+		dataSet = callApiForCpuLoadAvg(hostid,startTime);
+		showBasicLineChart('chart_loadAverage', 'Load Average', dataSet, "", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+		
+		data_topProcess = callApiForProcessTable(hostid);
+		var topProcessLastClock = parseInt(data_topProcess.lastclock) * 1000;
+		var d2 = new Date(topProcessLastClock);
+		var topProcessLastTime = d2.getFullYear() + "-" + (parseInt(d2.getMonth())+1) + "-" + d2.getDate()  + " " + d2.getHours() + ":" + d2.getMinutes();
+		
+		data_topProcess = sortProcInCpuOrder(data_topProcess);
+		showProcessTable(data_topProcess,topProcessLastTime);
+		
+	    $.unblockUI(blockUI_opt_all);
+    });
+}
+/*
+
+ function callApiForCpuUsage(hostid,startTime) {
+ var data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal = null;
+ var dataSet = [];
+
+ var CpuSystemArr = [];
+ var CpuUserArr = [];
+ var CpuIOwaitArr = [];
+ var CpuStealArr = [];
+
+ var history_CpuSystem = null;
+ var history_CpuUser = null;
+ var history_CpuIOwait = null;
+ var history_CpuSteal = null;
+
+
+ zbxApi.getItem.get(hostid,"system.cpu.util[,system]").then(function(data) {
+ data_CpuSystem = zbxApi.getItem.success(data);
+ //console.log("dataItem : " + JSON.stringify(dataItem));
+ }).then(function() {
+ // for suggest
+ return zbxApi.getItem.get(hostid,"system.cpu.util[,user]");
+ }).then(function(data) {
+ data_CpuUser = zbxApi.getItem.success(data);
+ }).then(function() {
+ // for suggest
+ return zbxApi.getItem.get(hostid,"system.cpu.util[,iowait]");
+ }).then(function(data) {
+ data_CpuIOwait = zbxApi.getItem.success(data);
+ }).then(function() {
+ // for suggest
+ return zbxApi.getItem.get(hostid,"system.cpu.util[,steal]");
+ }).then(function(data) {
+ data_CpuSteal = zbxApi.getItem.success(data);
+ }).then(function() {
+ // for suggest
+ var dataObj = new Object();
+
+ dataObj.name = 'CPU System';
+ dataObj.data = CpuSystemArr;
+ dataSet.push(dataObj);
+
+ dataObj = new Object();
+ dataObj.name = 'CPU User';
+ dataObj.data = CpuUserArr;
+ dataSet.push(dataObj);
+
+ dataObj = new Object();
+ dataObj.name = 'CPU IO Wait';
+ dataObj.data = CpuIOwaitArr;
+ dataSet.push(dataObj);
+
+ dataObj = new Object();
+ dataObj.name = 'CPU Steal';
+ dataObj.data = CpuStealArr;
+ dataSet.push(dataObj);
+ return dataSet;
+ });
+ }
+ */
+
+//** 함수이름 cpu 통계 화면 관리 명으로 변경(역할 : 화면 열고, 데이터 채우고 --> 각각 function으로분리), cpu data manager 객체 : api 호출해서 dataset 만들어서 넘김
+
+var callApiForCpuUsage = function (hostid,startTime){ 
+	
+	var data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal = null;
+	var dataSet = [];
+	
+	var CpuSystemArr = [];
+	var CpuUserArr = [];
+	var CpuIOwaitArr = [];
+	var CpuStealArr = [];
+	
+	var history_CpuSystem = null;
+	var history_CpuUser = null;
+	var history_CpuIOwait = null;
+	var history_CpuSteal = null;
+	
+	data_CpuSystem = zbxSyncApi.getItem(hostid,"system.cpu.util[,system]");
+	data_CpuUser = zbxSyncApi.getItem(hostid,"system.cpu.util[,user]");
+	data_CpuIOwait = zbxSyncApi.getItem(hostid,"system.cpu.util[,iowait]");
+	data_CpuSteal = zbxSyncApi.getItem(hostid,"system.cpu.util[,steal]");
+	
+
+//	zbxApi.getItem.get(hostid,"system.cpu.util[,system]").then(function(data) {
+//		data_CpuSystem = zbxApi.getItem.success(data);
+//		//console.log("dataItem : " + JSON.stringify(dataItem));
+//	}).then(function() {
+//		// for suggest
+//		return zbxApi.getItem.get(hostid,"system.cpu.util[,user]");
+//	}).then(function(data) {
+//		data_CpuUser = zbxApi.getItem.success(data);
+//	}).then(function() {
+//		// for suggest
+//		return zbxApi.getItem.get(hostid,"system.cpu.util[,iowait]");
+//	}).then(function(data) {
+//		data_CpuIOwait = zbxApi.getItem.success(data);
+//	}).then(function() {
+//		// for suggest
+//		return zbxApi.getItem.get(hostid,"system.cpu.util[,steal]");
+//	}).then(function(data) {
+//		data_CpuSteal = zbxApi.getItem.success(data);
+//	}).then(function() {
+//		// for suggest
+//		var dataObj = new Object();
+//		
+//		dataObj.name = 'CPU System';
+//		dataObj.data = CpuSystemArr;
+//		dataSet.push(dataObj);
+//		
+//		dataObj = new Object();
+//		dataObj.name = 'CPU User';
+//		dataObj.data = CpuUserArr;
+//		dataSet.push(dataObj);
+//		
+//		dataObj = new Object();
+//		dataObj.name = 'CPU IO Wait';
+//		dataObj.data = CpuIOwaitArr;
+//		dataSet.push(dataObj);
+//		
+//		dataObj = new Object();
+//		dataObj.name = 'CPU Steal';
+//		dataObj.data = CpuStealArr;
+//		dataSet.push(dataObj);
+//		return dataSet;
 //	});
+//	
+         
+    history_CpuSystem = zbxSyncApi.getHistory(data_CpuSystem.itemid, startTime, HISTORY_TYPE.FLOAT);
+    $.each(history_CpuSystem, function(k,v) {
+    	CpuSystemArr[k] = new Array();
+    	CpuSystemArr[k][0]=parseInt(v.clock) * 1000;
+    	CpuSystemArr[k][1]=parseFloat(v.value);
+	});	
+    
+    history_CpuUser = zbxSyncApi.getHistory(data_CpuUser.itemid, startTime, HISTORY_TYPE.FLOAT);
+    $.each(history_CpuUser, function(k,v) {
+    	CpuUserArr[k] = new Array();
+    	CpuUserArr[k][0]=parseInt(v.clock) * 1000;
+    	CpuUserArr[k][1]=parseFloat(v.value);
+	});	
+    
+    history_CpuIOwait = zbxSyncApi.getHistory(data_CpuIOwait.itemid, startTime, HISTORY_TYPE.FLOAT);
+    $.each(history_CpuIOwait, function(k,v) {
+    	CpuIOwaitArr[k] = new Array();
+    	CpuIOwaitArr[k][0]=parseInt(v.clock) * 1000;
+    	CpuIOwaitArr[k][1]=parseFloat(v.value);
+	});	
+    
+    history_CpuSteal = zbxSyncApi.getHistory(data_CpuSteal.itemid, startTime, HISTORY_TYPE.FLOAT);
+    $.each(history_CpuSteal, function(k,v) {
+    	CpuStealArr[k] = new Array();
+    	CpuStealArr[k][0]=parseInt(v.clock) * 1000;
+    	CpuStealArr[k][1]=parseFloat(v.value);
+	});	
+
+	var dataObj = new Object();
+	dataObj.name = 'CPU System';
+	dataObj.data = CpuSystemArr;
+	dataSet.push(dataObj);
+	
+	dataObj = new Object();
+	dataObj.name = 'CPU User';
+	dataObj.data = CpuUserArr;
+	dataSet.push(dataObj);
+	
+	dataObj = new Object();
+	dataObj.name = 'CPU IO Wait';
+	dataObj.data = CpuIOwaitArr;
+	dataSet.push(dataObj);
+	
+	dataObj = new Object();
+	dataObj.name = 'CPU Steal';
+	dataObj.data = CpuStealArr;
+	dataSet.push(dataObj);
+	
+	return dataSet;
+}
+
+var callApiForCpuLoadAvg = function (hostid,startTime){ 
+
+	var data_loadavg1, data_loadavg5, data_loadavg15 = null;
+	var data_topProcess = null;
+	var dataSet = [];
+
+	var loadAvg1Arr = [];
+	var loadAvg5Arr = [];
+	var loadAvg15Arr = [];
+	
+	var history_loadavg1 = null;
+	var history_loadavg5 = null;
+	var history_loadavg15 = null;
+	
+	data_loadavg1 = zbxSyncApi.getItem(hostid,"system.cpu.load[percpu,avg1]");
+    data_loadavg5 = zbxSyncApi.getItem(hostid,"system.cpu.load[percpu,avg5]");
+    data_loadavg15 = zbxSyncApi.getItem(hostid,"system.cpu.load[percpu,avg15]");
+     
+    
+     history_loadavg1 = zbxSyncApi.getHistory(data_loadavg1.itemid, startTime, HISTORY_TYPE.FLOAT);
+     $.each(history_loadavg1, function(k,v) {
+    	 loadAvg1Arr[k] = new Array();
+    	 loadAvg1Arr[k][0]=parseInt(v.clock) * 1000;
+    	 loadAvg1Arr[k][1]=parseFloat(v.value);
+	});		
+     
+     history_loadavg5 = zbxSyncApi.getHistory(data_loadavg5.itemid, startTime, HISTORY_TYPE.FLOAT);
+     $.each(history_loadavg5, function(k,v) {
+    	 loadAvg5Arr[k] = new Array();
+    	 loadAvg5Arr[k][0]=parseInt(v.clock) * 1000;
+    	 loadAvg5Arr[k][1]=parseFloat(v.value);	
+     });
+     
+     history_loadavg15 = zbxSyncApi.getHistory(data_loadavg15.itemid, startTime, HISTORY_TYPE.FLOAT);
+     $.each(history_loadavg15, function(k,v) {
+    	 loadAvg15Arr[k] = new Array();
+    	 loadAvg15Arr[k][0]=parseInt(v.clock) * 1000;
+    	 loadAvg15Arr[k][1]=parseFloat(v.value);
+	});	
+
+	var dataObj = new Object();
+	
+	dataObj.name = '1분 평균';
+	dataObj.data = loadAvg1Arr;
+	dataSet.push(dataObj);
+	
+	dataObj = new Object();
+	dataObj.name = '5분 평균';
+	dataObj.data = loadAvg5Arr;
+	dataSet.push(dataObj);
+	
+	dataObj = new Object();
+	dataObj.name = '15분 평균';
+	dataObj.data = loadAvg15Arr;
+	dataSet.push(dataObj);
+
+	return dataSet;
+}
+
+var callApiForProcessTable = function(hostid){
+	return zbxSyncApi.getItem(hostid,"system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
+}
+
+var callApiForServerEvent = function(hostid){
+    return zbxSyncApi.serverViewTrigger(hostid);
+}
+
+var callApiForNetwork = function(hostid){
+    return zbxSyncApi.getItem(hostid, "system.run[\"ifconfig\"]");
+}
+
+var sortProcInCpuOrder = function(data_topProcess){
+	
+	var topProcRowArr = data_topProcess.lastvalue.split("\n"); //각 행들의 집합
+	var procUniqueName = [];
+	var procNameOrderByCpu = [];
+	var dataObj = null;
+	var dataSet = [];
+	
+	//모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
+	$.each(topProcRowArr, function(k,v) {
+		while(topProcRowArr[k].indexOf("  ") != -1){
+			topProcRowArr[k] = topProcRowArr[k].replace('  ',' ');
+		}
+		var topProcColArr = topProcRowArr[k].split(" ");	
+		var procNameArr = [];
+		var procName = '';
+		if(topProcColArr[9].indexOf("/0") != -1){
+			procName = topProcColArr[9];
+		}else{
+			procNameArr = topProcColArr[9].split("/");
+			procName = procNameArr[procNameArr.length-1];
+		}
+		procName = procName.replace(/\:/g, '');
+		
+		procNameOrderByCpu[k] = procName;
+		
+		dataObj = new Object();
+		dataObj.procName = procName;
+		dataObj.procCpu = parseFloat(topProcColArr[7]);
+		dataObj.procMem = parseFloat(topProcColArr[6]);
+		dataSet.push(dataObj);
+	});
+	
+	// 프로세스명 중복 제거 후, 프로세스 별 cpu 합 초기화
+	procUniqueName = $.unique(procNameOrderByCpu);
+	var procUniqueObj = null;
+	var procTotalArr = [];
+	$.each(procUniqueName, function(k,v){
+		procUniqueObj = new Object();
+		procUniqueObj.procName = v;
+		procUniqueObj.totalCpuVal = 0;
+		procUniqueObj.totalMemVal = 0;
+		procUniqueObj.procCnt = 0;
+		procTotalArr.push(procUniqueObj);
+	});
+	
+	// 같은 프로세스 명끼리 cpu값 더함
+	procTotalArr.splice(0,1);
+	$.each(procTotalArr, function(k1,v1){
+		$.each(dataSet, function(k2,v2){
+			if(v1.procName == v2.procName){
+				v1.totalCpuVal += v2.procCpu;
+				v1.totalMemVal += v2.procMem;
+				v1.procCnt += 1;
+			}
+		});
+	});
+	
+	// cpu값을 기준으로 객체배열 내림차순 정렬
+	procTotalArr.sort(function (a, b) { 
+			return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
+	});
+	return procTotalArr;
+}
+
+var showProcessTable = function(finalProcArr, topProcessLastTime){
+	
+	var maxRefValue; 
+	var processGaugeValue;
+	var cpuProcessTbl = '';
+	var MAX_PROCCOUNT = 13;
+	
+	cpuProcessTbl += "<thead>";
+	cpuProcessTbl += "<tr class='display-none' role='row'>";
+	cpuProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
+	cpuProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
+	cpuProcessTbl += "</tr>";
+	cpuProcessTbl += "</thead>";
+	cpuProcessTbl += "<tbody>";
+	 
+	$.each(finalProcArr, function(k,v) {
+		
+		if(k<MAX_PROCCOUNT){
+			var procNameArr = '';
+			var procName = v.procName;
+			var processPercentValue = v.totalCpuVal.toFixed(1);
+
+			if(k==0){
+				maxRefValue = processPercentValue;
+				processGaugeValue = 100;
+			}else{
+				processGaugeValue = (processPercentValue * 100) / maxRefValue;				
+			}
+
+			cpuProcessTbl += "<tr role='row' class='odd'>";
+			cpuProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
+			cpuProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
+			cpuProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
+			cpuProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
+			cpuProcessTbl += "</div></div>";
+			cpuProcessTbl += "</td>";
+			cpuProcessTbl += "<td class=' display-none'>httpd</td>";	 
+			cpuProcessTbl += "</tr>";
+		} 
+	});
+	 cpuProcessTbl += "</tbody>";
+	    
+    $("#processTime").text(topProcessLastTime);
+	$("#cpuProcess").empty();
+    $("#cpuProcess").append(cpuProcessTbl);
+}
+
+/*
+ var sortProcInCpuOrder = function(data_topProcess){
+
+ var cpuValueOrderByDesc = []; // 내림차순으로 정렬된 cpu 사용량 필드 배열
+ var orgProcArrOrderByCpu = []; // 정렬되기전 process 행 배열
+ var finalProcArr = []; // 최종 Cpu 사용량 순으로 정렬된 process 행 배열
+ var topProcRowArr = data_topProcess.lastvalue.split("\n"); //각 행들의 집합
+
+ var procUniqueName = [];
+ var procNameOrderByCpu = [];
+ var dataObj = null;
+ var dataSet = [];
+
+ //모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
+ $.each(topProcRowArr, function(k,v) {
+ while(topProcRowArr[k].indexOf("  ") != -1){
+ topProcRowArr[k] = topProcRowArr[k].replace('  ',' ');
+ }
+ //행의
+ var topProcColArr = topProcRowArr[k].split(" ");
+ cpuValueOrderByDesc[k] = parseFloat(topProcColArr[7]);
+ orgProcArrOrderByCpu[k] = parseFloat(topProcColArr[7]);
+
+ procNameOrderByCpu[k] = topProcColArr[9];
+
+ dataObj = new Object();
+ dataObj.procName = topProcColArr[9];
+ dataObj.procCpu = parseFloat(topProcColArr[7]);
+ dataSet.push(dataObj);
+ });
+
+ console.log("cpuValueOrderByDesc");
+ console.log(cpuValueOrderByDesc);
+
+ console.log("orgProcArrOrderByCpu");
+ console.log(orgProcArrOrderByCpu);
+ console.log("procNameOrderByCpu");
+ console.log(procNameOrderByCpu);
+ console.log("unique");
+ var procUniqueName = $.unique(procNameOrderByCpu);
+ var procUniqueSet = [];
+ var procUniqueObj = null;
+ console.log(procUniqueName);
+ console.log("dataSet");
+ console.log(dataSet);
+
+ $.each(procUniqueName, function(k,v){
+ procUniqueObj = new Object();
+ procUniqueObj.procName = v;
+ procUniqueObj.totalCpuVal = 0;
+ procUniqueSet.push(procUniqueObj);
+ });
+ procUniqueSet.splice(0,1);
+ $.each(procUniqueSet, function(k1,v1){
+ $.each(dataSet, function(k2,v2){
+ if(v1.procName == v2.procName){
+ //console.log(k1 + " / "+ k2);
+ //console.log(v2.procName + " : " + v2.procCpu);
+ v1.totalCpuVal += v2.procCpu;
+ }
+ });
+ });
+ console.log("procUniqueSet");
+ console.log(procUniqueSet);
+ var sortedCpuValueArr = [];
+ var cpuValueArr = [];
+ $.each(procUniqueSet, function(k,v){
+ console.log(v.procName + " : "+ v.totalCpuVal);
+ sortedCpuValueArr[k] = v.totalCpuVal;
+ });
+ sortedCpuValueArr.sort(function(a, b){ return b-a; });
+ console.log("sortedCpuValueArr");
+ console.log(sortedCpuValueArr);
+
+ var finalProcArr2  = [];
+ var finalObj = null;
+ $.each(sortedCpuValueArr, function(k1,v1){
+ $.each(procUniqueSet, function(k2,v2){
+ if(v1 == v2.totalCpuVal){
+ finalObj = new Object();
+ finalObj.procName = v2.procName;
+ finalObj.procCpu = v2.totalCpuVal;
+ finalProcArr2.push(finalObj);
+ v2.totalCpuVal = -1;
+ }
+ });
+ });
+
+ console.log("finalProcArr2");
+ console.log(finalProcArr2);
+
+
+ cpuValueOrderByDesc.splice(0,1);
+ cpuValueOrderByDesc.sort(function(a, b){ return b-a; });
+
+ for(var i=0; i<cpuValueOrderByDesc.length; i++){
+ for(var j=0; j<orgProcArrOrderByCpu.length; ++j){
+ if(cpuValueOrderByDesc[i] == orgProcArrOrderByCpu[j]){
+ finalProcArr[i] = topProcRowArr[j];
+ orgProcArrOrderByCpu[j] = -1;
+ break;
+ }
+ }
+ }
+
+ console.log("finalProcArr");
+ console.log(finalProcArr);
+ return finalProcArr;
+ }
+
+
+ var showProcessTable = function(finalProcArr, topProcessLastTime){
+
+ var maxRefValue;
+ var processGaugeValue;
+ var cpuProcessTbl = '';
+ var MAX_PROCCOUNT = 13;
+
+ cpuProcessTbl += "<thead>";
+ cpuProcessTbl += "<tr class='display-none' role='row'>";
+ cpuProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
+ cpuProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
+ cpuProcessTbl += "</tr>";
+ cpuProcessTbl += "</thead>";
+ cpuProcessTbl += "<tbody>";
+
+ $.each(finalProcArr, function(k,v) {
+
+ if(k>0 && k<MAX_PROCCOUNT){
+ var temp = finalProcArr[k].split(" ");
+ var procNameArr = '';
+ var procName = '';
+ var processPercentValue = parseFloat(temp[7]);
+
+ if(k==1){
+ maxRefValue = processPercentValue;
+ processGaugeValue = 100;
+ }else{
+ processGaugeValue = (processPercentValue * 100) / maxRefValue;
+ }
+ //			for(var i=9; i<=temp.length; ++i){
+ //				if(temp[i] != null){
+ //					procName += " " + temp[i];
+ //				}
+ //			}
+ procNameArr = temp[9].split("/");
+ procName = procNameArr[procNameArr.length-1];
+
+ cpuProcessTbl += "<tr role='row' class='odd'>";
+ cpuProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
+ cpuProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
+ cpuProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
+ cpuProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
+ cpuProcessTbl += "</div></div>";
+ cpuProcessTbl += "</td>";
+ cpuProcessTbl += "<td class=' display-none'>httpd</td>";
+ cpuProcessTbl += "</tr>";
+ }
+ });
+ cpuProcessTbl += "</tbody>";
+
+ $("#processTime").text(topProcessLastTime);
+ $("#cpuProcess").empty();
+ $("#cpuProcess").append(cpuProcessTbl);
+
+ }
+ */
+
+function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
+	
+	$(function () {
+		/*
+		Highcharts.setOptions({
+	        //colors: colorArr//['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']
+			plotOptions: {
+				series: {
+	            	point: {
+		                events: {
+		                    mouseOver: function () {
+		                        console.log('Moused over');
+		                        console.log(this.x);
+		                        console.log(this.y);
+		                        console.log(this.series);
+		                        console.log(this.series.chart);
+		                    },
+		                    mouseOut: function () {
+		                        console.log('Moused out');
+		                        console.log(this.x);
+		                        console.log(this.y);
+		                    }
+		                }
+	            	}
+	            }
+			}
+	    });
+	    */
+		
+		var chart1 = Highcharts.chart(chartId, {
+			colors: colorArr,
+	        chart: {
+	            type: 'area',
+	            zoomType: 'x',
+	        	events: {
+	        		load: function(event) {
+	        			$("#"+chartId).unblock(blockUI_opt_el);
+	                }
+	        	}
+	        },
+	        title: {
+	            text: chartTitle
+	        },
+	        subtitle: {
+	            text: ''
+	        },
+	        xAxis: {
+	            labels: {
+	                formatter: function () {
+	                	var d2 = new Date(this.value);
+	                	var hours = "" + d2.getHours();
+	                	var minutes = "" + d2.getMinutes();
+	                	var seconds = "" + d2.getSeconds();
+	                	if(hours.length==1){
+	                		hours = "0" + hours;
+	                	}
+	                	if(minutes.length==1){
+	                		minutes = "0" + minutes;
+	                	}
+	                	if(seconds.length==1){
+	                		seconds = "0" + seconds;
+	                	}
+	                    return hours + ":" + minutes + ":" + seconds; 
+	                }
+	            }
+	        	//categories: ['100', '300', '500', '700', '900', '1100']
+	        	//tickInterval: 200
+	        	//minorTickInterval: 'auto',
+	            //startOnTick: true,
+	            //endOnTick: true
+	        },
+	        yAxis: {
+	            title: {
+	                text: ''
+	            },
+	            labels: {
+	                formatter: function () {
+	                	return this.value + unit;
+	                }
+	            }
+	        },
+	        tooltip: {
+	        	formatter: function () {
+	        	  	var d2 = new Date(this.x);
+                	var hours = "" + d2.getHours();
+                	var minutes = "" + d2.getMinutes();
+                	var seconds = "" + d2.getSeconds();
+                	if(hours.length==1){
+                		hours = "0" + hours;
+                	}
+                	if(minutes.length==1){
+                		minutes = "0" + minutes;
+                	}
+                	if(seconds.length==1){
+                		seconds = "0" + seconds;
+                	}
+                	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                   
+                }
+	        },
+	        plotOptions: {
+//	        	series: {
+//	        		pointStart: startTimeForChart,
+//	        		pointInterval: 24 * 3600 * 2
+//	        	},
+	        	area: {
+	                //pointStart: startTimeForChart,
+	                marker: {
+	                    enabled: false,
+	                    symbol: 'circle',
+	                    radius: 2,
+	                    states: {
+	                        hover: {
+	                            enabled: true
+	                        }
+	                    }
+	                }
+	            }
+	        },
+	        series: dataSet
+	    });
+	});
+}
+
+//** 차트에 callback 확인해볼 것.
+function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
+	
+	$(function () {
+	    var chart2 = Highcharts.chart(chartId, {
+	    	colors: colorArr,
+	        chart: {
+	            //type: 'area'
+	        	zoomType: 'x',
+	        	events: {
+	        		load: function(event) {
+	        			$("#"+chartId).unblock(blockUI_opt_el);
+	                }
+	        	}
+	        },
+	        title: {
+	            text: chartTitle
+	        },
+	        subtitle: {
+	            text: ''
+	        },
+	        xAxis: {
+	        	labels: {
+	                formatter: function () {
+	                	var d2 = new Date(this.value);
+	                	var hours = "" + d2.getHours();
+	                	var minutes = "" + d2.getMinutes();
+	                	var seconds = "" + d2.getSeconds();
+	                	if(hours.length==1){
+	                		hours = "0" + hours;
+	                	}
+	                	if(minutes.length==1){
+	                		minutes = "0" + minutes;
+	                	}
+	                	if(seconds.length==1){
+	                		seconds = "0" + seconds;
+	                	}
+	                    return hours + ":" + minutes + ":" + seconds; 
+	                }
+	        	}
+	        },
+	        yAxis: {
+	            title: {
+	                text: ''
+	            },
+	            labels: {
+	                formatter: function () {
+	                	return this.value + unit;
+	                }
+	            }
+	        },
+	        tooltip: {
+	        	formatter: function () {
+	        	  	var d2 = new Date(this.x);
+                	var hours = "" + d2.getHours();
+                	var minutes = "" + d2.getMinutes();
+                	var seconds = "" + d2.getSeconds();
+                	var retrunValue = null;
+                	
+                	if(hours.length==1){
+                		hours = "0" + hours;
+                	}
+                	if(minutes.length==1){
+                		minutes = "0" + minutes;
+                	}
+                	if(seconds.length==1){
+                		seconds = "0" + seconds;
+                	}
+                	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;    
+                }
+	        },
+	        plotOptions: {
+	            area: {
+	                marker: {
+	                    enabled: false,
+	                    symbol: 'circle',
+	                    radius: 2,
+	                    states: {
+	                        hover: {
+	                            enabled: true
+	                        }
+	                    }
+	                }
+	            },
+	            series: {
+	            	point: {
+		                events: {
+//		                    mouseOver: function () {
+//		                        console.log('Moused over');
+//		                        console.log(this.x);
+//		                        console.log(this.y);
+//		                        console.log(this.series);
+//		                        console.log(this.series.chart);
+//		                    },
+//		                    mouseOut: function () {
+//		                        console.log('Moused out');
+//		                        console.log(this.x);
+//		                        console.log(this.y);
+//		                    }
+		                }
+	            	}
+	            }
+	        },
+	        series: dataSet
+	    });
+	});
+}
+
+function callApiForMem(hostid,startTime){
+	
+	$.blockUI(blockUI_opt_all);
+	$("[id^=base]").hide();
+	$("#base_memoryInfo").show();
+	var data_MemPused, data_SwapMemPused = null;
+	var data_MemBuffers, data_MemCached, data_MemUsed = null;
+	var data_topProcess = null;
+	
+	zbxApi.getItem.get(hostid,"vm.memory.size[pused]").then(function(data) {
+		data_MemPused = zbxApi.getItem.success(data);
+		//console.log("dataItem : " + JSON.stringify(dataItem));
+	}).then(function() {
+		// for suggest
+		return zbxApi.getItem.get(hostid,"system.swap.size[,pused]");
+	}).then(function(data) {
+		data_SwapMemPused = zbxApi.getItem.success(data);
+	}).then(function() {
+		// for suggest
+		return zbxApi.getItem.get(hostid,"vm.memory.size[buffers]");
+	}).then(function(data) {
+		data_MemBuffers = zbxApi.getItem.success(data);
+	}).then(function() {
+		// for suggest
+		return zbxApi.getItem.get(hostid,"vm.memory.size[cached]");
+	}).then(function(data) {
+		data_MemCached = zbxApi.getItem.success(data);
+	}).then(function() {
+		// for suggest
+		return zbxApi.getItem.get(hostid,"vm.memory.size[used]");
+	}).then(function(data) {
+		data_MemUsed = zbxApi.getItem.success(data);
+	}).then(function() {
+		// for suggest
+		return zbxApi.getItem.get(hostid,"system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
+	}).then(function(data) {
+		data_topProcess = zbxApi.getItem.success(data);
+		
+		memoryinfoView(data_MemPused, data_SwapMemPused, data_MemBuffers, data_MemCached, data_MemUsed, data_topProcess, startTime);
+	});
+}
+
+var memoryinfoView = function(data_MemPused, data_SwapMemPused, data_MemBuffers, data_MemCached, data_MemUsed, data_topProcess, startTime) {
+
+    showMemUsage(data_MemPused, data_SwapMemPused, startTime);
+    showMemTotal(data_MemBuffers, data_MemCached, data_MemUsed, startTime);
+    showMemUsedProcess(data_topProcess);
+    $.unblockUI(blockUI_opt_all);
+
 };
 
+function showMemUsage(data_MemPused, data_SwapMemPused, startTime){
+	
+	var memPusedArr = [];
+	var swapMemPuesdArr = [];
+	
+	var keyName_MemPused = '';
+	var keyName_SwapMemPused = '';
+	
+	var history_MemPused = null;
+	var history_SwapMemPused = null;
+	
+    zbxApi.getHistory.get(data_MemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+    	history_MemPused = zbxApi.getHistory.success(data);
+    	keyName_MemPused = data_MemPused.result[0].key_;
+		$.each(history_MemPused.result, function(k,v) {
+			memPusedArr[k] = new Array();
+			memPusedArr[k][0]=parseInt(v.clock) * 1000;
+			memPusedArr[k][1]=parseFloat(v.value);
+			
+//			loadAvg1Arr[k]=parseFloat(v.value);
+		});
+		
+	}).then(function() {
+		return zbxApi.getHistory.get(data_SwapMemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+		
+	}).then(function(data) {
+		history_SwapMemPused = zbxApi.getHistory.success(data);
+		keyName_SwapMemPused = data_SwapMemPused.result[0].key_;
+		$.each(history_SwapMemPused.result, function(k,v) {
+			swapMemPuesdArr[k] = new Array();
+			swapMemPuesdArr[k][0]=parseInt(v.clock) * 1000;
+			swapMemPuesdArr[k][1]=parseFloat(v.value);
+			
+//			loadAvg5Arr[k]=parseFloat(v.value);
+		});
+		
+		$(function () {
+		    Highcharts.chart('chart_memUsage', {
+		        chart: {
+		            type: 'area',
+		        	zoomType: 'x'
+		        },
+		        title: {
+		            text: '메모리 사용량'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		        	labels: {
+		                formatter: function () {
+		                	var d2 = new Date(this.value);
+		                	var hours = "" + d2.getHours();
+		                	var minutes = "" + d2.getMinutes();
+		                	var seconds = "" + d2.getSeconds();
+		                	if(hours.length==1){
+		                		hours = "0" + hours;
+		                	}
+		                	if(minutes.length==1){
+		                		minutes = "0" + minutes;
+		                	}
+		                	if(seconds.length==1){
+		                		seconds = "0" + seconds;
+		                	}
+		                    return hours + ":" + minutes + ":" + seconds; 
+		                }
+		        	}
+		        },
+		        yAxis: {
+		            title: {
+		                text: ''
+		            },
+		            labels: {
+		                formatter: function () {
+		                	return this.value + '%';
+		                	//return this.value / 1000 + 'k';
+		                }
+		            }
+		        },
+		        tooltip: {
+		        	formatter: function () {
+		        	  	var d2 = new Date(this.x);
+	                	var hours = "" + d2.getHours();
+	                	var minutes = "" + d2.getMinutes();
+	                	var seconds = "" + d2.getSeconds();
+	                	if(hours.length==1){
+	                		hours = "0" + hours;
+	                	}
+	                	if(minutes.length==1){
+	                		minutes = "0" + minutes;
+	                	}
+	                	if(seconds.length==1){
+	                		seconds = "0" + seconds;
+	                	}
+	                	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + "%";
+	                   
+	                }
+		        },
+		        plotOptions: {
+		            area: {
+		                //pointStart: 1940,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		        	name: keyName_MemPused,
+		            data: memPusedArr
+		        }, {
+		        	name: keyName_SwapMemPused,
+		            data: swapMemPuesdArr
+		        }]
+		    });
+		});
+		
+	});
+		
+}
+
+function showMemTotal(data_MemBuffers, data_MemCached, data_MemUsed, startTime){
+	
+	
+	var memBufferArr = [];
+	var memCachedArr = [];
+	var memUsedArr = [];
+	
+	var keyName_MemBuffers = '';
+	var keyName_MemCached = '';
+	var keyName_MemUsed = '';
+	
+	var history_MemBuffers = null;
+	var history_MemCached = null;
+	var history_MemUsed = null;
+	
+	zbxApi.getHistory.get(data_MemBuffers.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+		history_MemBuffers = zbxApi.getHistory.success(data);
+		keyName_MemBuffers = data_MemBuffers.result[0].key_;
+		$.each(history_MemBuffers.result, function(k,v) {
+			memBufferArr[k] = new Array();
+			memBufferArr[k][0]=parseInt(v.clock) * 1000;
+			memBufferArr[k][1]=parseFloat(v.value);
+		});
+	}).then(function() {
+		return zbxApi.getHistory.get(data_MemCached.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+		
+	}).then(function(data) { 
+		history_MemCached = zbxApi.getHistory.success(data);
+		keyName_MemCached = data_MemCached.result[0].key_;
+		$.each(history_MemCached.result, function(k,v) {
+			memCachedArr[k] = new Array();
+			memCachedArr[k][0]=parseInt(v.clock) * 1000;
+			memCachedArr[k][1]=parseFloat(v.value);
+		});
+		
+	}).then(function() {
+		return zbxApi.getHistory.get(data_MemUsed.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+		
+	}).then(function(data) {
+		history_MemUsed = zbxApi.getHistory.success(data);
+		keyName_MemUsed = data_MemUsed.result[0].key_;
+		$.each(history_MemUsed.result, function(k,v) {
+			memUsedArr[k] = new Array();
+			memUsedArr[k][0]=parseInt(v.clock) * 1000;
+			memUsedArr[k][1]=parseFloat(v.value);
+		});
+		
+		$(function () {
+			Highcharts.setOptions({
+		        colors: ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']
+		    });
+			
+			Highcharts.chart('chart_memTotal', {
+		        chart: {
+		            type: 'area',
+		            zoomType: 'x'
+		        },
+		        title: {
+		            text: '전체 메모리'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		            labels: {
+		                formatter: function () {
+		                	var d2 = new Date(this.value);
+		                	var hours = "" + d2.getHours();
+		                	var minutes = "" + d2.getMinutes();
+		                	var seconds = "" + d2.getSeconds();
+		                	if(hours.length==1){
+		                		hours = "0" + hours;
+		                	}
+		                	if(minutes.length==1){
+		                		minutes = "0" + minutes;
+		                	}
+		                	if(seconds.length==1){
+		                		seconds = "0" + seconds;
+		                	}
+		                    return hours + ":" + minutes + ":" + seconds; 
+		                }
+		            }
+		        	//categories: ['100', '300', '500', '700', '900', '1100']
+		        	//tickInterval: 200
+		        	//minorTickInterval: 'auto',
+		            //startOnTick: true,
+		            //endOnTick: true
+		        },
+		        yAxis: {
+		            title: {
+		                text: ''
+		            },
+		            labels: {
+		                formatter: function () {
+		                	return Math.round(this.value / (1024 * 1024)) + 'MB';
+		                }
+		            }
+		        },
+		        tooltip: {
+		        	formatter: function () {
+		        	  	var d2 = new Date(this.x);
+	                	var hours = "" + d2.getHours();
+	                	var minutes = "" + d2.getMinutes();
+	                	var seconds = "" + d2.getSeconds();
+	                	if(hours.length==1){
+	                		hours = "0" + hours;
+	                	}
+	                	if(minutes.length==1){
+	                		minutes = "0" + minutes;
+	                	}
+	                	if(seconds.length==1){
+	                		seconds = "0" + seconds;
+	                	}
+	                	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+	                   
+	                }
+		        },
+		        plotOptions: {
+//		        	series: {
+//		        		pointStart: startTimeForChart,
+//		        		pointInterval: 24 * 3600 * 2
+//		        	},
+		        	area: {
+		                //pointStart: startTimeForChart,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		            name: keyName_MemBuffers,
+		            data: memBufferArr
+		        }, {
+		            name: keyName_MemCached,
+		            data: memCachedArr
+		        }, {
+		            name: keyName_MemUsed,
+		            data: memUsedArr
+		        }]
+		    });
+		});
+	});
+}
+
+function showMemUsedProcess(data_topProcess){
+	
+	var memValueOrderByDesc = [];
+	var orgProcArrOrderByMem = [];
+	var finalProcArr = [];
+	var topProcRowArr = data_topProcess.result[0].lastvalue.split("\n");
+	var topProcessLastClock = parseInt(data_topProcess.result[0].lastclock) * 1000;
+	var d2 = new Date(topProcessLastClock);
+	var topProcessLastTime = d2.getFullYear() + "-" + (parseInt(d2.getMonth())+1) + "-" + d2.getDate()  + " " + d2.getHours() + ":" + d2.getMinutes();
+	var memProcessTbl = '';
+	var maxRefValue; 
+	var processGaugeValue;
+	var MAX_PROCCOUNT = 13;
+	
+	//모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
+	$.each(topProcRowArr, function(k,v) {
+		while(topProcRowArr[k].indexOf("  ") != -1){
+			topProcRowArr[k] = topProcRowArr[k].replace('  ',' ');
+		}
+		var topProcColArr = topProcRowArr[k].split(" ");
+		memValueOrderByDesc[k] = parseFloat(topProcColArr[6]);
+		orgProcArrOrderByMem[k] = parseFloat(topProcColArr[6]);
+	});
+
+	memValueOrderByDesc.splice(0,1);
+	memValueOrderByDesc.sort(function(a, b){ return b-a; });
+	
+	for(var i=0; i<memValueOrderByDesc.length; i++){
+		for(var j=0; j<orgProcArrOrderByMem.length; ++j){
+			if(memValueOrderByDesc[i] == orgProcArrOrderByMem[j]){
+				finalProcArr[i] = topProcRowArr[j];
+				orgProcArrOrderByMem[j] = -1;
+				break;
+			}
+		}
+	}
+	
+	memProcessTbl += "<thead>";
+	memProcessTbl += "<tr class='display-none' role='row'>";
+	memProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
+	memProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
+	memProcessTbl += "</tr>";
+	memProcessTbl += "</thead>";
+	memProcessTbl += "<tbody>";
+	
+	$.each(finalProcArr, function(k,v) {
+		if(k>0 && k<MAX_PROCCOUNT){
+			var temp = finalProcArr[k].split(" ");
+			var procName = '';
+			var processPercentValue = parseFloat(temp[6]);
+			if(k==1){
+				maxRefValue = processPercentValue;
+				processGaugeValue = 100;
+			}else{
+				processGaugeValue = (processPercentValue * 100) / maxRefValue;				
+			}
+			for(var i=9; i<=temp.length; ++i){
+				if(temp[i] != null){
+					procName += " " + temp[i];
+				}
+			}
+			memProcessTbl += "<tr role='row' class='odd'>";
+			memProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
+			memProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
+			memProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
+			memProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
+			memProcessTbl += "</div></div>";
+			memProcessTbl += "</td>";
+			memProcessTbl += "<td class=' display-none'>httpd</td>";	 
+			memProcessTbl += "</tr>";
+		} 
+	});
+	memProcessTbl += "</tbody>";
+    
+    $("#memProcessTime").text(topProcessLastTime);
+	$("#memProcess").empty();
+    $("#memProcess").append(memProcessTbl);
+}
+
+function showCpuUsage(data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal, startTime){
+	
+	
+	var CpuUserArr = [];
+	var CpuIOwaitArr = [];
+	var CpuStealArr = [];
+	
+	var keyName_CpuSystem = '';
+	var keyName_CpuUser = '';
+	var keyName_CpuIOwait = '';
+	var keyName_CpuSteal = '';
+	
+	var history_CpuSystem = null;
+	var history_CpuUser = null;
+	var history_CpuIOwait = null;
+	var history_CpuSteal = null;
+	
+	zbxApi.getHistory.get(data_CpuSystem.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+		history_CpuSystem = zbxApi.getHistory.success(data);
+		keyName_CpuSystem = data_CpuSystem.result[0].key_;
+		$.each(history_CpuSystem.result, function(k,v) {
+			CpuSystemArr[k] = new Array();
+			CpuSystemArr[k][0]=parseInt(v.clock) * 1000;
+			CpuSystemArr[k][1]=parseFloat(v.value);
+		});
+		
+	}).then(function() {
+		return zbxApi.getHistory.get(data_CpuUser.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+		
+	}).then(function(data) { 
+		history_CpuUser = zbxApi.getHistory.success(data);
+		keyName_CpuUser = data_CpuUser.result[0].key_;
+		$.each(history_CpuUser.result, function(k,v) {
+			CpuUserArr[k] = new Array();
+        	CpuUserArr[k][0]=parseInt(v.clock) * 1000;
+			CpuUserArr[k][1]=parseFloat(v.value);
+		});
+		
+	}).then(function() {
+		return zbxApi.getHistory.get(data_CpuIOwait.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+		
+	}).then(function(data) {
+		history_CpuIOwait = zbxApi.getHistory.success(data);
+		keyName_CpuIOwait = data_CpuIOwait.result[0].key_;
+		$.each(history_CpuIOwait.result, function(k,v) {
+			CpuIOwaitArr[k] = new Array();
+			CpuIOwaitArr[k][0]=parseInt(v.clock) * 1000;
+			CpuIOwaitArr[k][1]=parseFloat(v.value);
+		});
+		
+	}).then(function() {
+		return zbxApi.getHistory.get(data_CpuSteal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+		
+	}).then(function(data) {
+		history_CpuSteal = zbxApi.getHistory.success(data);
+		keyName_CpuSteal = data_CpuSteal.result[0].key_;
+		$.each(history_CpuSteal.result, function(k,v) {
+			CpuStealArr[k] = new Array();
+			CpuStealArr[k][0]=parseInt(v.clock) * 1000;
+			CpuStealArr[k][1]=parseFloat(v.value);
+		});
+		
+		$(function () {
+			Highcharts.setOptions({
+		        colors: ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']
+		    });
+			
+			Highcharts.chart('chart_cpuUsage', {
+		        chart: {
+		            type: 'area',
+		            zoomType: 'x'
+		        },
+		        title: {
+		            text: 'CPU 사용량'
+		        },
+		        subtitle: {
+		            text: ''
+		        },
+		        xAxis: {
+		            labels: {
+		                formatter: function () {
+		                	var d2 = new Date(this.value);
+		                	var hours = "" + d2.getHours();
+		                	var minutes = "" + d2.getMinutes();
+		                	var seconds = "" + d2.getSeconds();
+		                	if(hours.length==1){
+		                		hours = "0" + hours;
+		                	}
+		                	if(minutes.length==1){
+		                		minutes = "0" + minutes;
+		                	}
+		                	if(seconds.length==1){
+		                		seconds = "0" + seconds;
+		                	}
+		                    return hours + ":" + minutes + ":" + seconds; 
+		                }
+		            }
+		        	//categories: ['100', '300', '500', '700', '900', '1100']
+		        	//tickInterval: 200
+		        	//minorTickInterval: 'auto',
+		            //startOnTick: true,
+		            //endOnTick: true
+		        },
+		        yAxis: {
+		            title: {
+		                text: ''
+		            },
+		            labels: {
+		                formatter: function () {
+		                	return this.value + '%';
+		                }
+		            }
+		        },
+		        tooltip: {
+		        	formatter: function () {
+		        	  	var d2 = new Date(this.x);
+	                	var hours = "" + d2.getHours();
+	                	var minutes = "" + d2.getMinutes();
+	                	var seconds = "" + d2.getSeconds();
+	                	if(hours.length==1){
+	                		hours = "0" + hours;
+	                	}
+	                	if(minutes.length==1){
+	                		minutes = "0" + minutes;
+	                	}
+	                	if(seconds.length==1){
+	                		seconds = "0" + seconds;
+	                	}
+	                	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + "%";
+	                   
+	                }
+		        },
+		        plotOptions: {
+//		        	series: {
+//		        		pointStart: startTimeForChart,
+//		        		pointInterval: 24 * 3600 * 2
+//		        	},
+		        	area: {
+		                //pointStart: startTimeForChart,
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: [{
+		            name: keyName_CpuSystem,
+		            data: CpuSystemArr
+		        }, {
+		            name: keyName_CpuUser,
+		            data: CpuUserArr
+		        }, {
+		            name: keyName_CpuIOwait,
+		            data: CpuIOwaitArr
+		        }, {
+		            name: keyName_CpuSteal,
+		            data: CpuStealArr
+		        }]
+		    });
+		});
+	});
+}
+
+
+function showCpuUsedProcess(data_topProcess){
+	
+	$("#cpuProcess").empty();
+	var procArrOrderByCpu = [];
+	var orgProcArrOrderByCpu = [];
+	var finalProcArr = [];
+	var topProcRowArr = data_topProcess.result[0].lastvalue.split("\n");
+	var topProcessLastClock = parseInt(data_topProcess.result[0].lastclock) * 1000;
+	var d2 = new Date(topProcessLastClock);
+	var topProcessLastTime = d2.getFullYear() + "-" + (parseInt(d2.getMonth())+1) + "-" + d2.getDate()  + " " + d2.getHours() + ":" + d2.getMinutes();
+	$("#processTime").text(topProcessLastTime);
+	var cpuProcessTbl = '';
+	var maxRefValue; 
+	var processGaugeValue;
+	var MAX_PROCCOUNT = 13;
+	
+	//** 프로세스 객체로 만들어도 좋을 것. 객체에 대해서 utility한 function 만드는것 추천
+	//모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
+	$.each(topProcRowArr, function(k,v) {
+		while(topProcRowArr[k].indexOf("  ") != -1){
+			topProcRowArr[k] = topProcRowArr[k].replace('  ',' ');
+		}
+		var topProcColArr = topProcRowArr[k].split(" ");
+		procArrOrderByCpu[k] = parseFloat(topProcColArr[7]);
+		orgProcArrOrderByCpu[k] = parseFloat(topProcColArr[7]);
+	});
+	orgProcArrOrderByCpu = procArrOrderByCpu;
+	procArrOrderByCpu.splice(0,1);
+	procArrOrderByCpu.sort(function(a, b){ return b-a; });
+
+	for(var i=0; i<procArrOrderByCpu.length; i++){
+		for(var j=0; j<orgProcArrOrderByCpu.length; ++j){
+			if(procArrOrderByCpu[i]==orgProcArrOrderByCpu[j]){
+				finalProcArr[i]=topProcRowArr[j];
+				orgProcArrOrderByCpu[j]=-1;
+				break;
+			}
+		}
+	}
+	
+	//** 트리맵 : 키가 정렬되서들어감. 키를 cpu 사용률로 하고 value를 항목으로. 
+	
+	cpuProcessTbl += "<thead>";
+	cpuProcessTbl += "<tr class='display-none' role='row'>";
+	cpuProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
+	cpuProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
+	cpuProcessTbl += "</tr>";
+	cpuProcessTbl += "</thead>";
+	cpuProcessTbl += "<tbody>";
+	 
+	$.each(finalProcArr, function(k,v) {
+		if(k>0 && k<MAX_PROCCOUNT){
+			var temp = finalProcArr[k].split(" ");
+			var procName = '';
+			var processPercentValue = parseFloat(temp[7]);
+			if(k==1){
+				maxRefValue = processPercentValue;
+				processGaugeValue = 100;
+			}else{
+				processGaugeValue = (processPercentValue * 100) / maxRefValue;				
+			}
+			for(var i=9; i<=temp.length; ++i){
+				if(temp[i] != null){
+					procName += " " + temp[i];
+				}
+			}
+			cpuProcessTbl += "<tr role='row' class='odd'>";
+			cpuProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
+			cpuProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
+			cpuProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
+			cpuProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
+			cpuProcessTbl += "</div></div>";
+			cpuProcessTbl += "</td>";
+			cpuProcessTbl += "<td class=' display-none'>httpd</td>";	 
+			cpuProcessTbl += "</tr>";
+		} 
+	});
+    cpuProcessTbl += "</tbody>";
+    $("#cpuProcess").append(cpuProcessTbl);
+    
+}
 
 function type(d, i, columns) {
     for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
@@ -2056,6 +4933,26 @@ var sortObjectStr = function (object, key) {
     return sorted;
 }
 
+var blockUI_opt_all_custom = {
+	    message: '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',
+	    fadeIn: 200,
+	    fadeOut: 200,
+	    css: {
+	        border: 'none',
+	        padding: '15px',
+	        backgroundColor: '#000',
+	        '-webkit-border-radius': '10px',
+	        '-moz-border-radius': '10px',
+	        opacity: .5,
+	        color: '#fff'
+	    },
+	    overlayCSS:  {
+	    	backgroundColor: '#000',
+	    	opacity: 0.1,
+	    	cursor: 'wait'
+	    }
+};
+
 var blockUI_opt_all = {
     message: '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',
     fadeIn: 200,
@@ -2193,6 +5090,39 @@ var convPriority = function (priority) {
             return "disaster";
     }
 }
+
+var convAckServer = function (ack) {
+    if (ack === "0") {
+        return "아니오";
+    } else {
+        return "예";
+    }
+};
+
+var convPriorityServer = function (priority) {
+    switch (priority) {
+        case "0":
+            return "미분류";
+        case "1":
+            return "정보";
+        case "2":
+            return "경고";
+        case "3":
+            return "가벼운 장애";
+        case "4":
+            return "중증 장애";
+        case "5":
+            return "심각한 장애";
+    }
+};
+
+var convStatusServer = function (status) {
+    if (status === "0") {
+        return "장애 없음";
+    } else {
+        return "장애 있음";
+    }
+};
 
 var reloadTimer = function (flag, interval) {
     if (flag === true) {
