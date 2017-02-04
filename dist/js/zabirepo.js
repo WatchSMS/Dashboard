@@ -284,17 +284,13 @@ var zbxApi = {
                     dataObj.name = 'CPU Steal';
                     dataObj.data = CpuStealArr;
                     dataSet.push(dataObj);
-                    console.log("dream");
-                    console.log(dataSet);
                     return dataSet;
                 });
             };
         },
         success: function (data) {
-            console.log("data!!!" + data);
             return data;
         }
-
     },
 
     getHistory: {
@@ -333,26 +329,39 @@ var zbxApi = {
             return data;
         }
     },
-
+    
+    getProcHistory: {
+        get: function (itemId, startTime, type) {
+            var method = "history.get";
+            var params = {
+                "output": "extend",
+                "history": type,
+                "sortfield": "clock",
+                "sortorder": "ASC",
+                "itemids": itemId,
+                "time_from": startTime,
+                //"time_till": till_time,
+                "limit" : 2000
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            return data;
+        }
+    },
+    
     getItem: {
         get: function (hostId, key_) {
             var method = "item.get";
             var params = {
                 // "output" : "extend",
-                "output": ["key_", "name", "lastvalue", "lastclock"],
+                "output": ["key_", "name", "lastvalue", "lastclock", "interfaceid","hostid"],
                 "hostids": hostId,
                 "search": {"key_": key_}
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("start222");
-            console.log("getItem data : " + data);
-            //console.log(data.result);
-            //console.log(Object.keys(data.result).length);
-            //console.log(data.result[0]);
-            //console.log(data.result[0].hostid);
-
             $.each(data.result, function (k, v) {
                 console.log(JSON.stringify(v));
                 console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
@@ -418,12 +427,6 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("host data : " + data);
-            //console.log(data.result);
-            //console.log(Object.keys(data.result).length);
-            //console.log(data.result[0]);
-            //console.log(data.result[0].hostid);
-
             $.each(data.result, function (k, v) {
                 console.log("host JSON > " + JSON.stringify(v));
                 console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
