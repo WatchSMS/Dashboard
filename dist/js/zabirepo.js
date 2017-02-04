@@ -2557,180 +2557,232 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
 
 var procUsageView = function(hostid, startTime) {
 
-    var data_topProcess = null;
+	$.blockUI(blockUI_opt_all);
+	
+	var topProcessLastClock = null;
+	var ProcessTableHTML = '';
+	var MAX_PROCCOUNT = 13;
+	var currentProcessName = null;
+	var tableDataObj = new Object();
+	var tableDataArr = [];
+	var lastProcessData = callApiForProcessTable(hostid);
+	var lastClockLongType = parseInt(lastProcessData.lastclock) * 1000;
+	var date = new Date(lastClockLongType);
+	var lastClockForProcessTable = date.getFullYear() + "-" + (parseInt(date.getMonth())+1) + "-" + date.getDate()  + " " + date.getHours() + ":" + date.getMinutes();
+	var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
+	
+	ProcessTableHTML += "<thead>";
+	ProcessTableHTML += "<tr role='row'>";
+	ProcessTableHTML += "<th class='percent-text sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='CPU: 오름차순 정렬' aria-sort='descending'>이름</th>";
+	ProcessTableHTML += "<th width='15%' class='text-left sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='이름: 오름차순 정렬'>cpu</th>";
+	ProcessTableHTML += "<th class='pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='메모리: 오름차순 정렬'>메모리</th>";
+	ProcessTableHTML += "<th class='text-center pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='수: 오름차순 정렬'>수</th>";
+	ProcessTableHTML += "</tr>";
+	ProcessTableHTML += "</thead>";
+	ProcessTableHTML += "<tbody>";
+	 
+	//ps 데이터의  마지막  값을 테이블에 삽입 
+	$.each(sortProcessForTable, function(k,v) {
+		
+		tableDataObj = new Object();
+		
+		tableDataObj.procName = v.procName;
+		tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
+		tableDataObj.memValue = parseFloat(v.totalMemVal.toFixed(1));
+		tableDataObj.procCnt = parseInt(v.procCnt);
+		tableDataArr.push(tableDataObj);
+		
+		if(k<MAX_PROCCOUNT){
+		
+			var procCpuValue = v.totalCpuVal.toFixed(1);
+			var procMemValue = v.totalMemVal.toFixed(1);
 
-    $.blockUI(blockUI_opt_all);
-
-    new $.jqzabbix(options).getApiVersion().then(function(data){
-
-        data_topProcess = callApiForCpuUsedProcess(hostid);
-        var topProcessLastClock = parseInt(data_topProcess.lastclock) * 1000;
-        var d2 = new Date(topProcessLastClock);
-        var topProcessLastTime = d2.getFullYear() + "-" + d2.getMonth()+1 + "-" + d2.getDate()  + " " + d2.getHours() + ":" + d2.getMinutes();
-
-        data_topProcess = sortProcInCpuOrder(data_topProcess);
-        showDetailedProcTable(hostid, data_topProcess,topProcessLastTime);
-
-        $.unblockUI(blockUI_opt_all);
-    });
-}
-
-var showDetailedProcTable = function(hostid, finalProcArr, topProcessLastTime){
-
-    var cpuProcessTbl = '';
-    var MAX_PROCCOUNT = 13;
-
-    /*
-     * <div class="panel-body pl-sm pr-sm">
-     <div id="processList_wrapper" class="dataTables_wrapper no-footer">
-     <div class="table-responsive pl-sm pr-sm">
-     <table id="processList" class="table table-striped table-hover simple-list  dataTable no-footer" role="grid">
-     <thead>
-     <tr role="row">
-     <th class="percent-text sorting_desc" tabindex="0" aria-controls="processList" rowspan="1" colspan="1" aria-label="CPU: 오름차순 정렬" aria-sort="descending">CPU</th>
-     <th width="15%" class="text-left sorting_asc" tabindex="0" aria-controls="processList" rowspan="1" colspan="1" aria-label="이름: 오름차순 정렬">이름</th>
-     <th class="pr-none sorting_desc" tabindex="0" aria-controls="processList" rowspan="1" colspan="1" aria-label="메모리: 오름차순 정렬">메모리</th>
-     <th class="text-center pr-none sorting" tabindex="0" aria-controls="processList" rowspan="1" colspan="1" aria-label="수: 오름차순 정렬">수</th>
-     <th class="text-center pr-none sorting_disabled" rowspan="1" colspan="1" aria-label="알림">알림</th>
-     </tr>
-     </thead>
-     <tbody>
-     <tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="httpd">httpd</span></td><td class="percent-text sorting_1">6.11</td><td class="pr-none sorting_2">370.09<span class="smaller">MB</span></td><td class=" text-center pr-none">21</td><td class=" text-center pr-none"><input type="checkbox" id="httpd" value="httpd" name="proc"></td></tr>
-     <tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="sshd">sshd</span></td><td class="percent-text sorting_1">0.18</td><td class="pr-none sorting_2">6.55<span class="smaller">MB</span></td><td class=" text-center pr-none">4</td><td class=" text-center pr-none"><input type="checkbox" id="sshd" value="sshd" name="proc"></td></tr>
-     <tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="zabbix_agentd">zabbix_agentd</span></td><td class="percent-text sorting_1">0.12</td><td class="pr-none sorting_2">2.61<span class="smaller">MB</span></td><td class=" text-center pr-none">6</td><td class=" text-center pr-none"><input type="checkbox" id="zabbix_agentd" value="zabbix_agentd" name="proc"></td></tr>
-     <tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="zabbix_server">zabbix_server</span></td><td class="percent-text sorting_1">0.11</td><td class="pr-none sorting_2">17.91<span class="smaller">MB</span></td><td class=" text-center pr-none">27</td><td class=" text-center pr-none"><input type="checkbox" id="zabbix_server" value="zabbix_server" name="proc"></td></tr>
-     <tr role="row" class="odd row_selected"><td class="text-left sorting_3"><span class="ellipsis" title="top">top</span></td><td class="percent-text sorting_1">0.1</td><td class="pr-none sorting_2">1.34<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="top" value="top" name="proc"></td></tr>
-     <tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="whatap_agentd">whatap_agentd</span></td><td class="percent-text sorting_1">0.1</td><td class="pr-none sorting_2">884.00<span class="smaller">KB</span></td><td class=" text-center pr-none">3</td><td class=" text-center pr-none"><input type="checkbox" id="whatap_agentd" value="whatap_agentd" name="proc"></td></tr>
-     <tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="docker">docker</span></td><td class="percent-text sorting_1">0.07</td><td class="pr-none sorting_2">7.70<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="docker" value="docker" name="proc"></td></tr>
-     <tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="bash">bash</span></td><td class="percent-text sorting_1">0.02</td><td class="pr-none sorting_2">1.94<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="bash" value="bash" name="proc"></td></tr>
-     <tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="events/0">events/0</span></td><td class="percent-text sorting_1">0.02</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="events_0" value="events/0" name="proc"></td></tr>
-     <tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="postmaster">postmaster</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">158.46<span class="smaller">MB</span></td><td class=" text-center pr-none">29</td><td class=" text-center pr-none"><input type="checkbox" id="postmaster" value="postmaster" name="proc"></td></tr>
-     <tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="rsyslogd">rsyslogd</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">4.82<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="rsyslogd" value="rsyslogd" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="pickup">pickup</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">3.72<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="pickup" value="pickup" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="master">master</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">2.85<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="master" value="master" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="qmgr">qmgr</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">2.80<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="qmgr" value="qmgr" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="hald">hald</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">1.43<span class="smaller">MB</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="hald" value="hald" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="udevd">udevd</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">276.00<span class="smaller">KB</span></td><td class=" text-center pr-none">3</td><td class=" text-center pr-none"><input type="checkbox" id="udevd" value="udevd" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="anacron">anacron</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="anacron" value="anacron" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="anvil">anvil</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="anvil" value="anvil" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="awk">awk</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="awk" value="awk" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="cgroup">cgroup</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="cgroup" value="cgroup" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="deferwq">deferwq</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="deferwq" value="deferwq" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="kauditd">kauditd</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="kauditd" value="kauditd" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="kdmremove">kdmremove</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="kdmremove" value="kdmremove" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="khelper">khelper</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="khelper" value="khelper" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="kpsmoused">kpsmoused</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="kpsmoused" value="kpsmoused" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="kstriped">kstriped</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="kstriped" value="kstriped" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="proxymap">proxymap</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="proxymap" value="proxymap" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="ps">ps</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="ps" value="ps" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="smtpd">smtpd</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="smtpd" value="smtpd" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="sort">sort</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="sort" value="sort" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="stopper/0">stopper/0</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="stopper_0" value="stopper/0" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="trivial-rewrite">trivial-rewrite</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">0</td><td class=" text-center pr-none"><input type="checkbox" id="trivial-rewrite" value="trivial-rewrite" name="proc"></td></tr><tr role="row" class="odd"><td class="text-left sorting_3"><span class="ellipsis" title="usbhid_resumer">usbhid_resumer</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="usbhid_resumer" value="usbhid_resumer" name="proc"></td></tr><tr role="row" class="even"><td class="text-left sorting_3"><span class="ellipsis" title="watchdog/0">watchdog/0</span></td><td class="percent-text sorting_1">0</td><td class="pr-none sorting_2">0.00<span class="smaller">B</span></td><td class=" text-center pr-none">1</td><td class=" text-center pr-none"><input type="checkbox" id="watchdog_0" value="watchdog/0" name="proc"></td></tr>
-     </tbody>
-     </table>
-     </div>
-     </div>
-     </div>
-     * <th width="15%" class="text-left sorting_asc" tabindex="0" aria-controls="processList" rowspan="1" colspan="1" aria-label="이름: 오름차순 정렬">이름</th>
-     *
-     *
-     *
-     */
-
-    cpuProcessTbl += "<thead>";
-    cpuProcessTbl += "<tr role='row'>";
-    cpuProcessTbl += "<th class='percent-text sorting_desc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='CPU: 오름차순 정렬' aria-sort='descending'>이름</th>";
-    cpuProcessTbl += "<th width='15%' class='text-left sorting_asc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='이름: 오름차순 정렬'>cpu</th>";
-    cpuProcessTbl += "<th class='pr-none sorting_desc' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='메모리: 오름차순 정렬'>메모리</th>";
-    cpuProcessTbl += "<th class='text-center pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='수: 오름차순 정렬'>수</th>";
-    cpuProcessTbl += "</tr>";
-    cpuProcessTbl += "</thead>";
-
-    cpuProcessTbl += "<tbody>";
-
-    $.each(finalProcArr, function(k,v) {
-
-        if(k<MAX_PROCCOUNT){
-            var procNameArr = '';
-            var procName = '';
-            var procCpuValue = v.procCpu.toFixed(1);
-
-
-            if(v.procName.indexOf("/0") != -1){
-                procName = v.procName;
-            }else{
-                procNameArr = v.procName.split("/");
-                procName = procNameArr[procNameArr.length-1];
-            }
-            cpuProcessTbl += "<tr id='" + procName + "' role='row' class='odd'>";
-            cpuProcessTbl += "<td class='text-left sorting_1'><span class='ellipsis' title='" + procName + "'>" + procName + "</span></td>";
-            cpuProcessTbl += "<td class='percent-text sorting_3'>" + procCpuValue + "</td>";
-            cpuProcessTbl += "<td class='pr-none sorting_2'>" + procCpuValue + "<span class='smaller'>MB</span></td>";
-            cpuProcessTbl += "<td class='text-center pr-none'>" + v.procCnt + "</td>";
-            cpuProcessTbl += "</tr>";
-        }
-    });
-
-    cpuProcessTbl += "</tbody>";
-
-    $("#detailedProcTime").text(topProcessLastTime);
-    $("#detailedCpuProc").empty();
-    $("#detailedCpuProc").append(cpuProcessTbl);
-    var $table = $("#detailedCpuProc");
-
-    $('tr', $table).each(function (row){
-        console.log("row : " + row);
-        $(this).click(function(){
-            console.log($(this).attr('id'));
-            $("#chart_processCpu").block(blockUI_opt_el);;
-            var tmpProcName = $(this).attr('id');
-            var itemKey = "proc.cpu.util[" + tmpProcName + "]";
-            var itemId = null;
-
-            zbxApi.checkItem.get(hostid,itemKey).then(function(data) {
-                console.log("checkItem");
-                console.log(zbxApi.checkItem.success(data));
-                console.log(data);
-                console.log("data.result.length");
-                console.log(data.result.length);
-            });
-
-            zbxApi.getItem.get(hostid,itemKey).then(function(data) {
-                var item = zbxApi.getItem.success(data);
-                console.log("item?! " + item);
-                console.log("item.result[0]");
-                console.log(item.result[0]);
-                itemId = item.result[0].itemid;
-                if(itemId == null){
-                    console.log("This item is not existing");
-                }
-                console.log("itemId?! " + itemId);
-            }).then(function() {
-                var LONGTIME_ONEHOUR = 3600000;
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                return zbxApi.getHistory.get(itemId, startTime, 0)
-            }).then(function(data) {
-                var procHisCpuSet = zbxApi.getHistory.success(data);
-                console.log("procHisCpuSet");
-                console.log(procHisCpuSet);
-                var procHisCpuArr = [];
-                $.each(procHisCpuSet.result, function(k,v) {
-                    procHisCpuArr[k] = new Array();
-                    procHisCpuArr[k][0]=parseInt(v.clock) * 1000;
-                    procHisCpuArr[k][1]=parseFloat(v.value);
-                    console.log("tttt : " + parseFloat(v.value));
-                });
-            });
-
-        });
-    });
-
+			ProcessTableHTML += "<tr id='" + v.procName + "' role='row' class='odd'>";
+			ProcessTableHTML += "<td class='text-left sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
+			ProcessTableHTML += "<td class='percent-text sorting_3'>" + procCpuValue + "</td>";
+			ProcessTableHTML += "<td class='pr-none sorting_2'>" + procMemValue + "<span class='smaller'>MB</span></td>";
+			ProcessTableHTML += "<td class='text-center pr-none'>" + v.procCnt + "</td>";
+			ProcessTableHTML += "</tr>";
+		} 
+	});
+	
+	ProcessTableHTML += "</tbody>";
+	 
+    $("#detailedProcTime").text(lastClockForProcessTable);
+	$("#detailedCpuProc").empty();
+    $("#detailedCpuProc").append(ProcessTableHTML);
+    $("#chart_processCpu").empty();
+	$("#chart_processMem").empty();
+	var $table = $("#detailedCpuProc");
+	$("#detailedCpuProc > tbody > tr").eq(0).addClass("selectedProcess");
+	currentProcessName = $(".selectedProcess").attr('id');
+	generateProcessResource(hostid, currentProcessName, startTime);
+	
+    
+    // table의 row에 클릭시 하이라이트 처리 및 해당 프로세스 차트를 만드는 클릭 이벤트 생성 
+	rowClickEvent($table, hostid, startTime);
+	
+	// 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
+    $("#btn_proc.btn").click(function() {
+		var startTime1 = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+		var currentProcessName = $(".selectedProcess").attr('id');
+		generateProcessResource(hostid, currentProcessName, startTime1);
+	});
+    
+    // 테이블의 th col 클릭시, 정렬 된 테이블 내용 생성 및 각 행의 클릭이벤트(하이라이트, 차트) 생성
     $('th', $table).each(function (column){
-        console.log("column : " + column);
-        if($(this).is('.sorting_desc')){
-            var direction = -1;
-            $(this).click(function(){
-                direction = - direction;
-                var rows = $table.find('tbody > tr').get();
-                console.log("rows : " + rows);
-                console.log(rows);
-                rows.sort(function (a, b){
-                    var keyA = $(a).children('td').eq(column).text().toUpperCase();
-                    var keyB = $(b).children('td').eq(column).text().toUpperCase();
-
-                    if(keyA < keyB)
-                        return -direction;
-                    if(keyA > keyB)
-                        return direction;
-                    // http://panocafe.tistory.com/entry/jQuery%ED%85%8C%EC%9D%B4%EB%B8%94%EC%9D%98-%ED%97%A4%EB%8D%94-%ED%81%B4%EB%A6%AD%EC%8B%9C-%ED%95%B4%EB%8B%B9-%EC%97%B4-%EC%A0%95%EB%A0%AC
-                    return 0;
-                });
-                $.each(rows, function(index, row) {$table.children});
-            });
-        };
-    });
-
+		$(this).click(function(){
+			var procTableRow = '';
+			var currentThObj = $(this);
+			var MAX_PROCCOUNT = 13;
+			
+			if($(this).is('.sorting_desc')){
+				tableDataArr.sort(function (a, b) { 
+					if(column == 0){
+						return a.procName < b.procName ? -1 : a.procName > b.procName ? 1 : 0;
+					}else if(column == 1){
+						return a.cpuValue < b.cpuValue ? -1 : a.cpuValue > b.cpuValue ? 1 : 0;
+					}else if(column == 2){
+						return a.memValue < b.memValue ? -1 : a.memValue > b.memValue ? 1 : 0;
+					}else if(column == 3){
+						return a.procCnt < b.procCnt ? -1 : a.procCnt > b.procCnt ? 1 : 0;
+					}
+				});
+				currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
+			}else{
+				tableDataArr.sort(function (a, b) { 
+					if(column == 0){
+						return a.procName > b.procName ? -1 : a.procName < b.procName ? 1 : 0; 
+					}else if(column == 1){
+						return a.cpuValue > b.cpuValue ? -1 : a.cpuValue < b.cpuValue ? 1 : 0;
+					}else if(column == 2){
+						return a.memValue > b.memValue ? -1 : a.memValue < b.memValue ? 1 : 0;
+					}else if(column == 3){
+						return a.procCnt > b.procCnt ? -1 : a.procCnt < b.procCnt ? 1 : 0;
+					}
+				});
+				currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
+			}
+			$('tbody', $table).empty();
+			
+			for(var i=0; i<MAX_PROCCOUNT; i++){
+				procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd'>";
+				procTableRow += "<td class='text-left sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
+				procTableRow += "<td class='percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
+				procTableRow += "<td class='pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'>MB</span></td>";
+				procTableRow += "<td class='text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
+				procTableRow += "</tr>";
+			}
+			$('tbody', $table).append(procTableRow);
+			rowClickEvent($table, hostid, startTime);
+		});// end click
+    });// end th col
+		
+	$.unblockUI(blockUI_opt_all);
 }
+
+var rowClickEvent = function(table, hostid, startTime){
+	$('tr', table).each(function (row){
+    	if(row>0){
+	    	$(this).click(function(){
+	    		var currentProcessName = $(this).attr('id');
+	    		$(".selectedProcess").removeClass("selectedProcess");
+	    		$(this).addClass("selectedProcess");
+	    		$(this).children().css("border-top", "1px #FF5E00 solid").css("border-bottom", "1px #FF5E00 solid");
+	    		$(this).children().eq(0).css("border-left", "1px #FF5E00 solid");
+	    		$(this).children().eq(3).css("border-right", "1px #FF5E00 solid");
+	    		$(this).prevAll().children().removeAttr('style');
+	    		$(this).nextAll().children().removeAttr('style');
+	    		generateProcessResource(hostid, currentProcessName, startTime);
+	    	});
+    	}
+    });
+}
+
+var generateProcessResource = function(hostid, processName, startTime) {
+
+	var itemId = null;
+	var dataObj = new Object();
+	var cpuArr = [];
+	var memArr = [];
+	var dataSet = [];
+	var itemKey = "system.run[\"ps -eo user,pid,ppid,pmem,pcpu,time,cmd --sort=-pcpu\"]";
+	$("#chart_processCpu").block(blockUI_opt_all_custom);
+	$("#chart_processMem").block(blockUI_opt_all_custom);
+
+	zbxApi.getItem.get(hostid,itemKey).then(function(data) {
+		var item = zbxApi.getItem.success(data);
+		itemId = item.result[0].itemid;
+		
+	}).then(function() {
+		return zbxApi.getProcHistory.get(itemId, startTime, HISTORY_TYPE.LOG);
+		 
+	}).then(function(data) {
+		var hisData = zbxApi.getProcHistory.success(data);
+		var hisDataCount = hisData.result.length;
+		var showDataCount = 180;
+		var hisDataInterval = 1;		
+		if(hisDataCount >= 180){			
+			hisDataInterval = Math.round(hisDataCount / showDataCount);
+		}
+		for(var i=0,j=0; i<hisDataCount; i+=hisDataInterval,j++){ // 전체 히스토리 데이터에서 일부만 추출
+
+			var cpuDataObj = null;
+			var cpuDataSet = [];
+			var cpuSumVal = 0;
+			var memDataObj = null;
+			var memDataSet = [];
+			var memSumVal = 0.0;
+			var ProcRowArr = data.result[i].value.split("\n");
+			
+			$.each(ProcRowArr, function(k,v) { // 각 행별,프로세스 명을 비교하여 cpu, mem 값을 sum.
+				if(ProcRowArr[k].indexOf(processName) != -1){
+
+					while(ProcRowArr[k].indexOf("  ") != -1){
+						ProcRowArr[k] = ProcRowArr[k].replace('  ',' ');
+					}
+					var ProcColArr = ProcRowArr[k].split(" ");	
+					var tempProcName = null;
+					var procNameArr = [];
+					
+					if(ProcColArr[6].indexOf("/0") != -1){
+						tempProcName = ProcColArr[6];
+					}else{
+						procNameArr = ProcColArr[6].split("/");
+						tempProcName = procNameArr[procNameArr.length-1];
+					}
+					tempProcName = tempProcName.replace(/\:/g, '');
+					if(tempProcName == processName){
+						cpuSumVal += parseFloat(ProcColArr[4]);
+						memSumVal += parseFloat(ProcColArr[3]);
+					}	
+				}
+			});
+			// 각 히스토리 데이터 cpu, mem의 sum값을 data 배열에 담는다.
+			cpuArr[j] = new Array();
+			cpuArr[j][0]=parseInt(data.result[i].clock) * 1000;
+			cpuArr[j][1]=parseFloat(cpuSumVal.toFixed(1));
+			memArr[j] = new Array();
+			memArr[j][0]=parseInt(data.result[i].clock) * 1000;
+			memArr[j][1]=parseFloat(memSumVal.toFixed(1));
+		}
+
+		//차트에 전달할 데이터셋 생성
+		cpuDataObj = new Object();
+		cpuDataObj.name = processName;
+		cpuDataObj.data = cpuArr;
+		cpuDataSet.push(cpuDataObj);
+		
+		memDataObj = new Object();
+		memDataObj.name = processName;
+		memDataObj.data = memArr;
+		memDataSet.push(memDataObj);
+
+		showBasicLineChart('chart_processCpu', 'CPU', cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+		showBasicAreaChart('chart_processMem', 'Memory', memDataSet, "MB", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+	});
+}
+
 
 var diskView = function(hostid, disk_data, startTime){
     var disk_itemid = '';
