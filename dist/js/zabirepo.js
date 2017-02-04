@@ -3876,6 +3876,7 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
 function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 	
 	$(function () {
+		/*
 		Highcharts.setOptions({
 	        //colors: colorArr//['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']
 			plotOptions: {
@@ -3899,6 +3900,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 	            }
 			}
 	    });
+	    */
 		
 		var chart1 = Highcharts.chart(chartId, {
 			colors: colorArr,
