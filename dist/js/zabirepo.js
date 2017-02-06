@@ -1589,7 +1589,6 @@ var int = {
                 $("#PerDisk_" + v.hostid).click(function () {
                     alert("click " + v.hostid);
                 });
-
             })
         });
     },
@@ -1735,13 +1734,21 @@ var int = {
                     $("#base_diskInfo").show();
 
                     var hostid = v.hostid;
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     var disk_data = '';
 
+                    $("#btn_disk.btn").click(function() {
+                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                        zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
+                            disk_data = zbxApi.getDiskItem.success(data);
+                            diskView(hostid, disk_data, startTime);
+                        })
+                    });
+
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
                         disk_data = zbxApi.getDiskItem.success(data);
                         diskView(hostid, disk_data, startTime);
-                    });
+                    })
                 });
 
                 $("#traffic_" + v.hostid).click(function () {
@@ -1749,13 +1756,21 @@ var int = {
                     $("#base_networkInfo").show();
 
                     var hostid = v.hostid;
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     var network_data = '';
 
+                    $("#btn_network.btn").click(function() {
+                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                        zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
+                            network_data = zbxApi.getNetworkItem.success(data);
+                            networkView(hostid, network_data, startTime);
+                        })
+                    });
+
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
                         network_data = zbxApi.getNetworkItem.success(data);
                         networkView(hostid, network_data, startTime);
-                    });
+                    })
                 });
 
                 $("#" + tagId).click(function () {
@@ -2800,6 +2815,7 @@ var diskView = function(hostid, disk_data, startTime){
     var disk_itemid = '';
     var disk_itemKey = '';
     var diskTbl = '';
+    console.log("startTime : " + startTime);
 
     $.each(disk_data.result, function(disk_k, disk_v) {
         disk_itemid = disk_v.itemid;
