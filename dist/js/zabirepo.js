@@ -1498,13 +1498,22 @@ var int = {
             $.each(server_data.result, function (k, v) {
                 serverName = v.name;
                 serverIP = v.interfaces[0].ip;
+                //alert("서버 " + serverName + " 의 호스트는 " + serverHostid + " 입니다. " );
 
                 var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
-                if (osInfo === undefined) { serverOS = '-'; }
+                if (osInfo === undefined) {
+                    serverOS = '-';
+                }
                 else {
-                    if (osInfo.match('Linux')) { serverOS = 'Linux'; }
-                    else if (osInfo.match('Window')) { serverOS = 'Windows'; }
-                    else { serverOS = '-'; }
+                    if (osInfo.match('Linux')) {
+                        serverOS = 'Linux';
+                    }
+                    else if (osInfo.match('Window')) {
+                        serverOS = 'Windows';
+                    }
+                    else {
+                        serverOS = '-';
+                    }
                 }
 
                 try {
@@ -1549,17 +1558,37 @@ var int = {
                 }
 
                 var serverTbl = ''; //전체 서버 상태 Table
-                serverTbl += "<tr>";
-                serverTbl += "<td>" + serverName + "</td>";
-                serverTbl += "<td>" + serverIP + "</td>";
-                serverTbl += "<td class='progress-background'><div class='progress-bar' style='width:" + serverPerCPU + "%'>" + serverPerCPU + "%</div></td>";
-                serverTbl += "<td class='progress-background'><div class='progress-bar' style='width:" + serverPerMemory + "%'>" + serverPerMemory + "%</div></td>";
-                serverTbl += "<td class='progress-background'><div class='progress-bar' style='width:" + serverPerDisk + "%'>" + serverPerDisk + "%</div></td>";
-                serverTbl += "<td>" + serverOS + "</td>";
-                serverTbl += "<td>" + serverCPU + "</td>";
-                serverTbl += "<td>" + serverRAM + "</td>";
-                serverTbl += "</tr>";
+                serverTbl += '<tr>';
+                serverTbl += '<td><a href="#" id = "Name_' + v.hostid + '">' + serverName + '</a></td>';
+                serverTbl += '<td><a href="#" id = "IP_' + v.hostid + '">' + serverIP + '</a></td>';
+                serverTbl += '<td class="progress-background"><a href="#" id = "PerCPU_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></a></td>';
+                serverTbl += '<td class="progress-background"><a href="#" id = "PerMemory_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></a></td>';
+                serverTbl += '<td class="progress-background"><a href="#" id = "PerDisk_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></a></td>';
+                serverTbl += '<td>' + serverOS + '</td>';
+                serverTbl += '<td>' + serverCPU + '</td>';
+                serverTbl += '<td>' + serverRAM + '</td>';
+                serverTbl += '</tr>';
                 $("#serverList").append(serverTbl);
+
+                $("#Name_" + v.hostid).click(function () {
+                    alert("click " + v.hostid);
+                });
+
+                $("#IP_" + v.hostid).click(function () {
+                    alert("click " + v.hostid);
+                });
+
+                $("#PerCPU_" + v.hostid).click(function () {
+                    alert("click " + v.hostid);
+                });
+
+                $("#PerMemory_" + v.hostid).click(function () {
+                    alert("click " + v.hostid);
+                });
+
+                $("#PerDisk_" + v.hostid).click(function () {
+                    alert("click " + v.hostid);
+                });
 
             })
         });
