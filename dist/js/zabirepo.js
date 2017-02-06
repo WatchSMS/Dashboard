@@ -2474,7 +2474,7 @@ var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
     processTbl += "<thead>";
     processTbl += "<tr role='row'>";
     processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>이름</th>";
-    processTbl += "<th width='15%' tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>cpu</th>";
+    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>cpu</th>";
     processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>메모리</th>";
     processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>수</th>";
     processTbl += "</tr>";
@@ -2545,9 +2545,6 @@ var showServerEventList = function(hostid, data_EventList){ //서버정보요약
         var ack = convAckServer(v.lastEvent.acknowledged);
         var host = v.hosts[0].host;
         var description = v.description;
-        //var group = v.groups[0].name;
-        //var minte_status = v.hosts[0].maintenance_status;
-        //var itemids = v.items;
 
         eventTbl += "<tr role='row'>";
         eventTbl += "<td>" + severity + "</td>";
@@ -2563,7 +2560,6 @@ var showServerEventList = function(hostid, data_EventList){ //서버정보요약
     eventTbl += "</tbody>";
     $("#serverEventList").empty();
     $("#serverEventList").append(eventTbl);
-
 }
 
 var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion){
@@ -2577,7 +2573,6 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
     serverInfoTbl += "<tr><td>에이전트</td><td>"+serverAgentVersion+"</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
 };
-
 
 var procUsageView = function(hostid, startTime) {
 
