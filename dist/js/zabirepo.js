@@ -2469,7 +2469,7 @@ var processView = function(hostid, startTime){
 
 var showServerProcess = function(hostid, finalProcArr, topProcessLastTime){
     var processTbl = '';
-    var MAX_PROCCOUNT = 10;
+    var MAX_PROCCOUNT = 7;
 
     processTbl += "<thead>";
     processTbl += "<tr role='row'>";
@@ -2805,17 +2805,14 @@ var diskView = function(hostid, disk_data, startTime){
                     return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
                 }).then(function (data){
                     diskUse = zbxApi.serverViewGraph.success(data);
-                    showDiskView(diskInode, diskFree, diskUse);
+                    showDiskView(diskInode, diskFree, diskUse, startTime);
                 });
             })
         });
     });
 }
 
-var showDiskView = function(diskInode, diskFree, diskUse){
-    var date1 = new Date();
-    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
-
+var showDiskView = function(diskInode, diskFree, diskUse, startTime){
     showInFrDisk(diskInode, diskFree, startTime);
     showUseDisk(diskUse, startTime);
 };
@@ -3071,17 +3068,14 @@ var networkView = function(hostid, network_data, startTime){
                     return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
                 }).then(function (data){
                     networkTotal = zbxApi.serverViewGraph.success(data);
-                    trafficView(networkIn, networkOut, networkTotal);
+                    trafficView(networkIn, networkOut, networkTotal, startTime);
                 });
             })
         })
     });
 }
 
-var trafficView = function(networkIn, networkOut, networkTotal){
-    var date1 = new Date();
-    var startTime = String(Math.round((date1.getTime() - 43200000)/1000));
-
+var trafficView = function(networkIn, networkOut, networkTotal, startTime){
     showInOutNetwork(networkIn, networkOut, startTime);
     showTotalNetwork(networkTotal, startTime);
 };
