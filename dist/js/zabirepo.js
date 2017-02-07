@@ -977,6 +977,11 @@ var int = {
             int.dashboardView();
         });
 
+        // ##### ServerOverView #####
+        $("#reload_serverOverview").click(function () {
+            int.allServerViewHost();
+        });
+
         $(function ($) {
             $('#reload_dashboard_selecter').change(function () {
                 var selectVal = $(this).val();
@@ -1498,7 +1503,6 @@ var int = {
             $.each(server_data.result, function (k, v) {
                 serverName = v.name;
                 serverIP = v.interfaces[0].ip;
-                //alert("서버 " + serverName + " 의 호스트는 " + serverHostid + " 입니다. " );
                 var hostid = v.hostid;
                 var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
                 if (osInfo === undefined) {
@@ -1957,7 +1961,8 @@ var int = {
 
 var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, serverPerMemory, serverPerDisk, serverOS, serverCPU, serverRAM){
     var serverTbl = ''; //전체 서버 상태 Table
-    serverTbl += '<tbody><tr>';
+    serverTbl += '<tbody>';
+    serverTbl += '<tr>';
     serverTbl += '<td id = "Name_' + hostid + '">' + serverName + '</a></td>';
     serverTbl += '<td id = "IP_' + hostid + '">' + serverIP + '</a></td>';
     serverTbl += '<td class="progress-background" id = "PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
@@ -1966,9 +1971,9 @@ var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, server
     serverTbl += '<td>' + serverOS + '</td>';
     serverTbl += '<td>' + serverCPU + '</td>';
     serverTbl += '<td>' + serverRAM + '</td>';
-    serverTbl += '</tr></tbody>';
+    serverTbl += '</tr>';
+    serverTbl += '</tbody>';
     $("#serverList").append(serverTbl);
-
 
     var $table = $("#serverList");
 
@@ -1998,36 +2003,6 @@ var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, server
             })
         }
     });
-
-    /*$("#Name_" + v.hostid).click(function () {
-     //alert("Name click " + v.hostid);
-     var hostid = v.hostid;
-     console.log("Name click : " + hostid);
-     });
-
-     $("#IP_" + v.hostid).click(function () {
-     //alert("IP click " + v.hostid);
-     var hostid = v.hostid;
-     console.log("IP click : " + hostid);
-     });
-
-     $("#PerCPU_" + v.hostid).click(function () {
-     //alert("PerCPU click " + v.hostid);
-     var hostid = v.hostid;
-     console.log("PerCPU click : " + hostid);
-     });
-
-     $("#PerMemory_" + v.hostid).click(function () {
-     //alert("PerMemory click " + v.hostid);
-     var hostid = v.hostid;
-     console.log("PerMemory click : " + hostid);
-     });
-
-     $("#PerDisk_" + v.hostid).click(function () {
-     //alert("PerDisk click " + v.hostid);
-     var hostid = v.hostid;
-     console.log("PerDisk click : " + hostid);
-     });*/
 };
 
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
@@ -2035,7 +2010,6 @@ var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWa
     showServerMemory(serverMemoryUse, startTime);
     showServerDisk(serverDiskUseRoot, startTime);
     showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
-    //$.unblockUI(blockUI_opt_all);
 };
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime){
