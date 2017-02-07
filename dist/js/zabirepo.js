@@ -1559,11 +1559,11 @@ var int = {
 
                 var serverTbl = ''; //전체 서버 상태 Table
                 serverTbl += '<tr>';
-                serverTbl += '<td><a href="#" id = "Name_' + v.hostid + '">' + serverName + '</a></td>';
-                serverTbl += '<td><a href="#" id = "IP_' + v.hostid + '">' + serverIP + '</a></td>';
-                serverTbl += '<td class="progress-background"><a href="#" id = "PerCPU_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></a></td>';
-                serverTbl += '<td class="progress-background"><a href="#" id = "PerMemory_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></a></td>';
-                serverTbl += '<td class="progress-background"><a href="#" id = "PerDisk_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></a></td>';
+                serverTbl += '<td id = "Name_' + v.hostid + '">' + serverName + '</a></td>';
+                serverTbl += '<td id = "IP_' + v.hostid + '">' + serverIP + '</a></td>';
+                serverTbl += '<td class="progress-background" id = "PerCPU_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
+                serverTbl += '<td class="progress-background" id = "PerMemory_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
+                serverTbl += '<td class="progress-background" id = "PerDisk_' + v.hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
                 serverTbl += '<td>' + serverOS + '</td>';
                 serverTbl += '<td>' + serverCPU + '</td>';
                 serverTbl += '<td>' + serverRAM + '</td>';
@@ -1571,23 +1571,33 @@ var int = {
                 $("#serverList").append(serverTbl);
 
                 $("#Name_" + v.hostid).click(function () {
-                    alert("click " + v.hostid);
+                    //alert("Name click " + v.hostid);
+                    var hostid = v.hostid;
+                    console.log("Name click : " + hostid);
                 });
 
                 $("#IP_" + v.hostid).click(function () {
-                    alert("click " + v.hostid);
+                    //alert("IP click " + v.hostid);
+                    var hostid = v.hostid;
+                    console.log("IP click : " + hostid);
                 });
 
                 $("#PerCPU_" + v.hostid).click(function () {
-                    alert("click " + v.hostid);
+                    //alert("PerCPU click " + v.hostid);
+                    var hostid = v.hostid;
+                    console.log("PerCPU click : " + hostid);
                 });
 
                 $("#PerMemory_" + v.hostid).click(function () {
-                    alert("click " + v.hostid);
+                    //alert("PerMemory click " + v.hostid);
+                    var hostid = v.hostid;
+                    console.log("PerMemory click : " + hostid);
                 });
 
                 $("#PerDisk_" + v.hostid).click(function () {
-                    alert("click " + v.hostid);
+                    //alert("PerDisk click " + v.hostid);
+                    var hostid = v.hostid;
+                    console.log("PerDisk click : " + hostid);
                 });
             })
         });
@@ -1736,14 +1746,6 @@ var int = {
                     var hostid = v.hostid;
                     var disk_data = '';
 
-                    $("#btn_disk.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
-                            disk_data = zbxApi.getDiskItem.success(data);
-                            diskView(hostid, disk_data, startTime);
-                        })
-                    });
-
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
                         disk_data = zbxApi.getDiskItem.success(data);
@@ -1757,14 +1759,6 @@ var int = {
 
                     var hostid = v.hostid;
                     var network_data = '';
-
-                    $("#btn_network.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
-                            network_data = zbxApi.getNetworkItem.success(data);
-                            networkView(hostid, network_data, startTime);
-                        })
-                    });
 
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR){
