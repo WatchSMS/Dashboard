@@ -977,11 +977,6 @@ var int = {
             int.dashboardView();
         });
 
-        // ##### ServerOverView #####
-        $("#reload_serverOverview").click(function () {
-            int.allServerViewHost();
-        });
-
         $(function ($) {
             $('#reload_dashboard_selecter').change(function () {
                 var selectVal = $(this).val();
@@ -994,6 +989,24 @@ var int = {
                     $("#reload_dashboard").removeAttr("disabled");
 
                     reloadTimer(false);
+                }
+            });
+        });
+
+        // ##### ServerOverView #####
+        $("#reload_serverOverview").click(function () {
+            int.allServerViewHost();
+        });
+
+        $(function ($) {
+            $('#reload_serverOverview_selecter').change(function () {
+                var selectVal = $(this).val();
+                if (selectVal != 0) {
+                    $("#reload_serverOverview").attr({
+                        "disabled": "disabled"
+                    });
+                } else {
+                    $("#reload_serverOverview").removeAttr("disabled");
                 }
             });
         });
@@ -1976,6 +1989,7 @@ var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, server
     $("#serverList").append(serverTbl);
 
     var $table = $("#serverList");
+//http://astrap.tistory.com/268
 
     $('th', $table).each(function (column) {
         if($(this).is('.sorting')){
@@ -2003,6 +2017,22 @@ var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, server
             })
         }
     });
+
+    //화면 이동
+    $("#Name_" + hostid).click(function () {
+    });
+
+    $("#IP_" + hostid).click(function () {
+    });
+
+    $("#PerCPU_" + hostid).click(function () {
+    });
+
+    $("#PerMemory_" + hostid).click(function () {
+    });
+
+    $("#PerDisk_" + hostid).click(function () {
+    });
 };
 
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
@@ -2010,6 +2040,7 @@ var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWa
     showServerMemory(serverMemoryUse, startTime);
     showServerDisk(serverDiskUseRoot, startTime);
     showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+    //$.unblockUI(blockUI_opt_all);
 };
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime){
