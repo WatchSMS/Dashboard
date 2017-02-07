@@ -12,6 +12,12 @@
                 <button type="submit" id ="searchServer">검색</button>
                 -->
 			</div>
+
+			<div>
+				<button id="reload_serverOverview" type="button" class="btn  btn-default pull-right">
+					<i class="glyphicon glyphicon-refresh"></i>
+				</button>
+			</div>
 		</div>
 
 		<div class="box-body">
@@ -19,7 +25,7 @@
 				<table class="serverTable" id="serverList">
 					<thead>
 					<tr style="border-collapse: collapse;" role="row">
-						<th style="width: 10%;" class = "sorting" aria-controls="serverList" aria-label='서버명: 오름차순 정렬' aria-sort="descending">서버명</th>
+						<th style="width: 10%;" class="sorting" aria-controls="serverList" aria-label='서버명: 오름차순 정렬' aria-sort="descending">서버명</th>
 						<th style="width: 10%;">IP주소</th>
 						<th style="width: 17%;">CPU(%)</th>
 						<th style="width: 17%;">메모리(%)</th>
