@@ -1904,7 +1904,7 @@ var serverOverView = function(server_data){
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
-    serverOverViewHTML += '<th id = "serverName" style="width: 10%;" class="sorting">서버명</th>';
+    serverOverViewHTML += '<th id = "serverName" style="width: 10%;" class="sorting" aria-sort="descending">서버명</th>';
     serverOverViewHTML += '<th id = "serverIpAddr" style="width: 10%;">IP주소</th>';
     serverOverViewHTML += '<th id = "serverPerCpu" style="width: 17%;">CPU(%)</th>';
     serverOverViewHTML += '<th id = "serverMemory" style="width: 17%;">메모리(%)</th>';
@@ -1917,7 +1917,6 @@ var serverOverView = function(server_data){
     serverOverViewHTML += '<tbody>';
 
     $.each(server_data.result, function(server_k, server_v) {
-        serverName = server_v.name;
         serverName = server_v.name;
         serverIP = server_v.interfaces[0].ip;
         hostid = server_v.hostid;
@@ -1978,8 +1977,8 @@ var serverOverView = function(server_data){
             serverRAM = splitInfo[1].slice(5);
         }
 
-        tableDataObj.serverName = serverName;
-        tableDataObj.serverIP = serverIP;
+        tableDataObj.serverName = server_v.name;
+        tableDataObj.serverIP = server_v.interfaces[0].ip;
         tableDataObj.serverPerCPU = serverPerCPU;
         tableDataObj.serverPerMemory = serverPerMemory;
         tableDataObj.serverPerDisk = serverPerDisk;
@@ -1989,7 +1988,7 @@ var serverOverView = function(server_data){
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-        serverOverViewHTML += '<td class="sorting_1" aria-sort="descending" id = "Name_' + hostid + '">' + serverName + '</a></td>';
+        serverOverViewHTML += '<td id = "Name_' + hostid + '">' + serverName + '</a></td>';
         serverOverViewHTML += '<td id = "IP_' + hostid + '">' + serverIP + '</a></td>';
         serverOverViewHTML += '<td class="progress-background" id = "PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
         serverOverViewHTML += '<td class="progress-background" id = "PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
@@ -2011,14 +2010,11 @@ var serverOverView = function(server_data){
     var $table = $("#serverList");
     $('th', $table).each(function (column) {
         $(this).click(function() {
-            var sortDataArr = tableDataArr;
             var sortTableRow = '';
             var currentThObj = $(this);
-            var currentThObjName = $(this).attr('id');
-            console.log(" >>>>> currentThObjName <<<<< : " + currentThObjName);
 
-            if($(this).is('.sortind_desc')){
-                console.log(" >>>>> sortind_desc <<<<<");
+            if($(this).is('.sorting_desc')){
+                console.log(" >>>>> sorting_desc <<<<<");
                 tableDataArr.sort(function (a, b) {
                     if(column == 0) {
                         return a.serverName < b.serverName ? -1 : a.serverName > b.serverName ? 1 : 0;
@@ -2027,6 +2023,7 @@ var serverOverView = function(server_data){
                 currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
             }else{
                 tableDataArr.sort(function (a, b) {
+                    console.log(" >>>>> sorting_asc <<<<<");
                     if(column == 0){
                         return a.serverName > b.serverName ? -1 : a.serverName < b.serverName ? 1 : 0;
                     }
@@ -2035,7 +2032,7 @@ var serverOverView = function(server_data){
             }//end else
             $('tbody', $table).empty();
 
-            for(var i=0; i<sortDataArr.length; i++){
+            for(var i=0; i<tableDataArr.length; i++){
                 var hostid = tableDataArr[i].hostid;
                 sortTableRow += '<tr id="overView_' + hostid + '" role="row" class="odd">';
                 sortTableRow += '<td class="sorting_1" id = "Name_' + hostid + '">' + tableDataArr[i].serverName + '</a></td>';
