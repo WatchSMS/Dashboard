@@ -1486,7 +1486,7 @@ var int = {
 
         var server_data = '';
         zbxApi.allServerViewHost.get().done(function (data, status, jqXHR) {
-            console.log("IN allServerViewHost");
+            console.log("1. IN allServerViewHost");
             server_data = zbxApi.getDiskItem.success(data);
             serverOverView(server_data);
         });
@@ -1887,7 +1887,7 @@ var int = {
 
 var serverOverView = function(server_data){
     $.blockUI(blockUI_opt_all);
-    console.log("IN serverOverView");
+    console.log("2. IN serverOverView");
     var serverName = '';
     var serverIP = '';
     var serverPerCPU = 0;
@@ -2011,6 +2011,7 @@ var serverOverView = function(server_data){
     var $table = $("#serverList");
     $('th', $table).each(function (column) {
         $(this).click(function() {
+            var sortDataArr = tableDataArr;
             var sortTableRow = '';
             var currentThObj = $(this);
             var currentThObjName = $(this).attr('id');
@@ -2034,7 +2035,7 @@ var serverOverView = function(server_data){
             }//end else
             $('tbody', $table).empty();
 
-            for(var i=0; i<tableDataArr.length; i++){
+            for(var i=0; i<sortDataArr.length; i++){
                 var hostid = tableDataArr[i].hostid;
                 sortTableRow += '<tr id="overView_' + hostid + '" role="row" class="odd">';
                 sortTableRow += '<td class="sorting_1" id = "Name_' + hostid + '">' + tableDataArr[i].serverName + '</a></td>';
@@ -2050,19 +2051,36 @@ var serverOverView = function(server_data){
             $('tbody', $table).append(sortTableRow);
 
         })//end click function
-
     }) //end each
 
     //page reloag
     $("#reload_serverOverview").click(function(){
+        console.log(">>>>> 3. reload_serverOverview <<<<<");
+        int.allServerViewHost();
+    });
 
+    $(function ($) {
+        $('#reload_serverOverview_selecter').change(function () {
+            var selectVal = $(this).val();
+            if (selectVal != 0) {
+                $("#reload_serverOverview").attr({
+                    "disabled": "disabled"
+                });
+            } else {
+                $("#reload_serverOverview").removeAttr("disabled");
+            }
+        });
     });
     
     //자동 새로고침
-
+    setTimeout("reloadPageOverView()", 60000);
     $.unblockUI(blockUI_opt_all);
 };
 
+var reloadPageOverView = function(){
+    console.log("4. reloadPage");
+    int.allServerViewHost();
+}
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
     showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
     showServerMemory(serverMemoryUse, startTime);
