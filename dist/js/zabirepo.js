@@ -1480,7 +1480,7 @@ var int = {
 
     /* 전체 서버 상태 2017-01-02 */
     allServerViewHost: function () {
-        $.blockUI(blockUI_opt_all);
+       // $.blockUI(blockUI_opt_all);
         $("[id^=base]").hide();
         $("#base_server").show();
 
@@ -1969,18 +1969,18 @@ var serverOverView = function(server_data) {
         }
 
         tableDataObj.hostid = hostid;
-        tableDataObj.serverName = serverName;
-        tableDataObj.serverIP = serverIP;
-        tableDataObj.serverPerCPU = serverPerCPU;
-        tableDataObj.serverPerMemory = serverPerMemory;
-        tableDataObj.serverPerDisk = serverPerDisk;
-        tableDataObj.serverOS = serverOS;
-        tableDataObj.serverCPU = serverCPU;
-        tableDataObj.serverRAM = serverRAM;
+        tableDataObj.name = serverName;
+        tableDataObj.ip = serverIP;
+        tableDataObj.perCPU = serverPerCPU;
+        tableDataObj.perMemory = serverPerMemory;
+        tableDataObj.perDisk = serverPerDisk;
+        tableDataObj.OS = serverOS;
+        tableDataObj.CPU = serverCPU;
+        tableDataObj.RAM = serverRAM;
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-        serverOverViewHTML += '<td id=Name_' + hostid + '">' + serverName + '</a></td>';
+        serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</a></td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</a></td>';
         serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
         serverOverViewHTML += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
@@ -1989,12 +1989,12 @@ var serverOverView = function(server_data) {
         serverOverViewHTML += '<td>' + serverCPU + '</td>';
         serverOverViewHTML += '<td>' + serverRAM + '</td>';
         serverOverViewHTML += '</tr>';
-        serverOverViewHTML += '</tbody>';
     });
 
     console.log("------------tableDataArr------------");
     console.log(JSON.stringify(tableDataArr));
 
+    serverOverViewHTML += '</tbody>';
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
 
@@ -2033,7 +2033,7 @@ var serverOverView = function(server_data) {
                 console.log(" >>>>> sorting_desc <<<<<");
                 tableDataArr.sort(function (a, b) {
                     if(column == 0) {
-                        return a.serverName < b.serverName ? -1 : a.serverName > b.serverName ? 1 : 0;
+                        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
                     }
                 });
                 currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
@@ -2041,7 +2041,7 @@ var serverOverView = function(server_data) {
                 tableDataArr.sort(function (a, b) {
                     console.log(" >>>>> sorting_asc <<<<<");
                     if(column == 0){
-                        return a.serverName > b.serverName ? -1 : a.serverName < b.serverName ? 1 : 0;
+                        return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
                     }
                 });
                 currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
@@ -2051,14 +2051,14 @@ var serverOverView = function(server_data) {
             for(var i=0; i<MAX_COUNT; i++){
                 var hostid = tableDataArr[i].hostid;
                 sortTable += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-                sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].serverName + '</a></td>';
-                sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].serverIP + '</a></td>';
-                sortTable += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].serverPerCPU + '%">' + tableDataArr[i].serverPerCPU + '%</div></td>';
-                sortTable += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].serverPerMemory + '%">' + tableDataArr[i].serverPerMemory + '%</div></td>';
-                sortTable += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].serverPerDisk + '%">' + tableDataArr[i].serverPerDisk + '%</div></td>';
-                sortTable += '<td>' + tableDataArr[i].serverOS + '</td>';
-                sortTable += '<td>' + tableDataArr[i].serverCPU + '</td>';
-                sortTable += '<td>' + tableDataArr[i].serverRAM + '</td>';
+                sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].name + '</a></td>';
+                sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].ip + '</a></td>';
+                sortTable += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perCPU + '%">' + tableDataArr[i].perCPU + '%</div></td>';
+                sortTable += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perMemory + '%">' + tableDataArr[i].perMemory + '%</div></td>';
+                sortTable += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perDisk + '%">' + tableDataArr[i].perDisk + '%</div></td>';
+                sortTable += '<td>' + tableDataArr[i].OS + '</td>';
+                sortTable += '<td>' + tableDataArr[i].CPU + '</td>';
+                sortTable += '<td>' + tableDataArr[i].RAM + '</td>';
                 sortTable += '</tr>';
             }//end for
             $('tbody', $table).append(sortTable);
@@ -2085,13 +2085,10 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
-    setTimeout(reloadPageOverView(), PAGE_RELOAD_TIME);
+
+
     //$.unblockUI(blockUI_opt_all);
 };
-
-var reloadPageOverView = function(){
-    int.allServerViewHost();
-}
 
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
     showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
