@@ -1913,33 +1913,47 @@ var serverOverView = function(server_data) {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
         console.log("123 456 hostid : " + hostid);
 
+        var clickCount = 0;
         //화면 이동
         $("#Name_" + hostid).click(function () {
-            //console.log(">>>>> 서버명 클릭 <<<<< : " + this.id);
-            item_id = this.id;
-            hostid = item_id.substring(item_id.indexOf("_")+1);
-            clickOverView(hostid);
+            clickCount += 1;
+            if(clickCount == 2){
+                //console.log(">>>>> 서버명 클릭 <<<<< : " + this.id);
+                item_id = this.id;
+                hostid = item_id.substring(item_id.indexOf("_")+1);
+                clickOverView(hostid);
+            }
         });
 
         $("#PerCPU_" + hostid).click(function () {
-            //console.log(">>>>> CPU(%) 클릭 <<<<< : " + this.id);
-            item_id = this.id;
-            hostid = item_id.substring(item_id.indexOf("_")+1);
-            clickCPUView(hostid);
+            clickCount += 1;
+            if(clickCount == 2) {
+                //console.log(">>>>> CPU(%) 클릭 <<<<< : " + this.id);
+                item_id = this.id;
+                hostid = item_id.substring(item_id.indexOf("_") + 1);
+                clickCPUView(hostid);
+            }
         });
 
         $("#PerMemory_" + hostid).click(function () {
-            //console.log(">>>>> Memory(%) 클릭 <<<<< : " + this.id);
-            item_id = this.id;
-            hostid = item_id.substring(item_id.indexOf("_")+1);
-            clickMemoryView(hostid);
+            clickCount += 1;
+            if(clickCount == 2) {
+                //console.log(">>>>> Memory(%) 클릭 <<<<< : " + this.id);
+                item_id = this.id;
+                hostid = item_id.substring(item_id.indexOf("_") + 1);
+                clickMemoryView(hostid);
+            }
         });
 
         $("#PerDisk_" + hostid).click(function () {
-            //console.log(">>>>> Disk(%) 클릭 <<<<< : " + + this.id);
-            item_id = this.id;
-            hostid = item_id.substring(item_id.indexOf("_")+1);
-            clickDiskView(hostid);
+            clickCount += 1;
+            alert(clickCount);
+            if(clickCount == 2) {
+                //console.log(">>>>> Disk(%) 클릭 <<<<< : " + + this.id);
+                item_id = this.id;
+                hostid = item_id.substring(item_id.indexOf("_") + 1);
+                clickDiskView(hostid);
+            }
         });
     });
 
