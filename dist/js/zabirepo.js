@@ -1480,7 +1480,7 @@ var int = {
 
     /* 전체 서버 상태 2017-01-02 */
     allServerViewHost: function () {
-       // $.blockUI(blockUI_opt_all);
+        // $.blockUI(blockUI_opt_all);
         $("[id^=base]").hide();
         $("#base_server").show();
 
@@ -1887,7 +1887,7 @@ var serverOverView = function(server_data) {
     var serverOS = '-';
     var serverCPU = '-';
     var serverRAM = '-';
-    var hostid = server_data.result.hostid;
+    var hostid = '';
 
     var tableDataObj = new Object();
     var tableDataArr = [];
@@ -1911,6 +1911,7 @@ var serverOverView = function(server_data) {
         serverName = v.name;
         serverIP = v.interfaces[0].ip;
         hostid = v.hostid;
+        console.log("호스트 정보 : " + hostid);
         var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
         if (osInfo === undefined) {
             serverOS = '-';
@@ -1968,6 +1969,7 @@ var serverOverView = function(server_data) {
             serverRAM = splitInfo[1].slice(5);
         }
 
+        var tableDataObj = new Object();
         tableDataObj.hostid = hostid;
         tableDataObj.name = serverName;
         tableDataObj.ip = serverIP;
@@ -1979,9 +1981,9 @@ var serverOverView = function(server_data) {
         tableDataObj.RAM = serverRAM;
         tableDataArr.push(tableDataObj);
 
-        serverOverViewHTML += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-        serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</a></td>';
-        serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</a></td>';
+        serverOverViewHTML += '<tr role="row" class="odd">';
+        serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</td>';
+        serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</td>';
         serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
         serverOverViewHTML += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
         serverOverViewHTML += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
@@ -1989,15 +1991,16 @@ var serverOverView = function(server_data) {
         serverOverViewHTML += '<td>' + serverCPU + '</td>';
         serverOverViewHTML += '<td>' + serverRAM + '</td>';
         serverOverViewHTML += '</tr>';
-    });
+    })
 
-    console.log("------------tableDataArr------------");
+    console.log("------------<<<tableDataArr>>>-----------");
     console.log(JSON.stringify(tableDataArr));
 
     serverOverViewHTML += '</tbody>';
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
 
+    console.log("123 456 hostid : " + hostid);
     //화면 이동
     $("#Name_" + hostid).click(function () {
         console.log(">>>>> 서버명 클릭 <<<<< : " + hostid);
@@ -2051,8 +2054,8 @@ var serverOverView = function(server_data) {
             for(var i=0; i<MAX_COUNT; i++){
                 var hostid = tableDataArr[i].hostid;
                 sortTable += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-                sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].name + '</a></td>';
-                sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].ip + '</a></td>';
+                sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].name + '</td>';
+                sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].ip + '</td>';
                 sortTable += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perCPU + '%">' + tableDataArr[i].perCPU + '%</div></td>';
                 sortTable += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perMemory + '%">' + tableDataArr[i].perMemory + '%</div></td>';
                 sortTable += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perDisk + '%">' + tableDataArr[i].perDisk + '%</div></td>';
