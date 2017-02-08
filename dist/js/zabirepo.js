@@ -1525,27 +1525,11 @@ var int = {
                 });
 
                 $("#cpu_" + hostid).click(function () { //CPU
-                    $("#btn_cpu.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        cpuStatsView(hostid,startTime);
-                    });
-
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                    $("[id^=base]").hide();
-                    $("#base_cpuinfo").show();
-                    //1 callApiForCpu(v.hostid,startTime);
-                    cpuStatsView(hostid,startTime);
+                    clickCPUView(hostid);
                 });
 
                 $("#memory_" + hostid).click(function () { //Memory
-                    //var oneDayLongTime = 3600000;
-
-                    $("#btn_mem.btn").click(function() {
-                        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        callApiForMem(hostid,startTime);
-                    });
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                    callApiForMem(hostid,startTime);
+                    clickMemoryView(hostid);
                 });
 
                 $("#process_" + hostid).click(function () { //Process
@@ -2683,7 +2667,6 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
 };
 
 var procUsageView = function(hostid, startTime) {
-
     $.blockUI(blockUI_opt_all);
 
     var topProcessLastClock = null;
@@ -3451,6 +3434,19 @@ function showTotalNetwork(networkTotal, startTime){
         });
     })
 }
+
+var clickCPUView = function(hostid){
+    $("#btn_cpu.btn").click(function() {
+        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+        cpuStatsView(hostid,startTime);
+    });
+
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+    $("[id^=base]").hide();
+    $("#base_cpuinfo").show();
+    //1 callApiForCpu(v.hostid,startTime);
+    cpuStatsView(hostid,startTime);
+};
 
 var cpuStatsView = function(hostid, startTime) {
 
@@ -4236,6 +4232,17 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
         });
     });
 }
+
+var clickMemoryView = function(hostid){
+    //var oneDayLongTime = 3600000;
+
+    $("#btn_mem.btn").click(function() {
+        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+        callApiForMem(hostid,startTime);
+    });
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+    callApiForMem(hostid,startTime);
+};
 
 function callApiForMem(hostid,startTime){
 
