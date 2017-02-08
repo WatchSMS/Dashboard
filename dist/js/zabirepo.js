@@ -1502,6 +1502,7 @@ var int = {
             var tagText2 = '';
 
             $.each(host_data.result, function (k, v) {
+                var hostid = v.hostid;
                 tagText = '';
                 tagText2 = '';
                 tagId = "host_" + v.hostid;
@@ -1519,7 +1520,7 @@ var int = {
 
                 $("#" + tagId + "_performlist").append(tagText2);
 
-                $("#info_" + v.hostid).click(function () { /* 서버 정보 요약 */
+                $("#info_" + hostid).click(function () { /* 서버 정보 요약 */
                     $("[id^=base]").hide();
                     $("#base_serverInfo").show();
                     var hostid = v.hostid;
@@ -1574,7 +1575,7 @@ var int = {
 
                     processView(hostid, startTime);
 
-                    zbxApi.serverViewHost.get(v.hostid).done(function(data, status, jqXHR){
+                    zbxApi.serverViewHost.get(hostid).done(function(data, status, jqXHR){
                         var server_host = zbxApi.serverViewHost.success(data);
                         var serverTitle = '';
                         var serverIP = '';
@@ -1587,7 +1588,7 @@ var int = {
                             serverIP = v.interfaces[0].ip;
                             serverOS = v.inventory.os;
                             serverName = v.name;
-                            serverAgentVersion = zbxSyncApi.allServerViewItem(v.hostid, "agent.version").lastvalue; //agent.version
+                            serverAgentVersion = zbxSyncApi.allServerViewItem(hostid, "agent.version").lastvalue; //agent.version
 
                             serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion);
                         })
@@ -1596,48 +1597,46 @@ var int = {
                     EventListView(hostid);
                 });
 
-                $("#cpu_" + v.hostid).click(function () { //CPU
+                $("#cpu_" + hostid).click(function () { //CPU
                     $("#btn_cpu.btn").click(function() {
                         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        cpuStatsView(v.hostid,startTime);
+                        cpuStatsView(hostid,startTime);
                     });
 
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     $("[id^=base]").hide();
                     $("#base_cpuinfo").show();
                     //1 callApiForCpu(v.hostid,startTime);
-                    cpuStatsView(v.hostid,startTime);
+                    cpuStatsView(hostid,startTime);
                 });
 
-                $("#memory_" + v.hostid).click(function () { //Memory
+                $("#memory_" + hostid).click(function () { //Memory
                     //var oneDayLongTime = 3600000;
 
                     $("#btn_mem.btn").click(function() {
                         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                        callApiForMem(v.hostid,startTime);
+                        callApiForMem(hostid,startTime);
                     });
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                    callApiForMem(v.hostid,startTime);
+                    callApiForMem(hostid,startTime);
                 });
 
-                $("#process_" + v.hostid).click(function () { //Process
+                $("#process_" + hostid).click(function () { //Process
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                     $.blockUI(blockUI_opt_all);
                     $("[id^=base]").hide();
                     $("#base_processInfo").show();
-                    procUsageView(v.hostid, startTime);
+                    procUsageView(hostid, startTime);
                 });
 
-                $("#disk_" + v.hostid).click(function () { //Disk
-                    var hostid = v.hostid;
+                $("#disk_" + hostid).click(function () { //Disk
                     clickDiskView(hostid);
                 });
 
-                $("#traffic_" + v.hostid).click(function () {
+                $("#traffic_" + hostid).click(function () {
                     $("[id^=base]").hide();
                     $("#base_networkInfo").show();
 
-                    var hostid = v.hostid;
                     var network_data = '';
 
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
@@ -1991,36 +1990,50 @@ var serverOverView = function(server_data) {
         serverOverViewHTML += '<td>' + serverCPU + '</td>';
         serverOverViewHTML += '<td>' + serverRAM + '</td>';
         serverOverViewHTML += '</tr>';
-    })
-
-    console.log("------------<<<tableDataArr>>>-----------");
-    console.log(JSON.stringify(tableDataArr));
+    });
 
     serverOverViewHTML += '</tbody>';
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
 
-    console.log("123 456 hostid : " + hostid);
-    //화면 이동
-    $("#Name_" + hostid).click(function () {
-        console.log(">>>>> 서버명 클릭 <<<<< : " + hostid);
-    });
+    $.each(server_data.result, function(k, v) {
+        hostid = v.hostid;
+        var item_id = '';
+        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+        console.log("123 456 hostid : " + hostid);
 
-    $("#IP_" + hostid).click(function () {
-        console.log(">>>>> IP 클릭 <<<<< : " + hostid);
-    });
+        //화면 이동
+        $("#Name_" + hostid).click(function () {
+            //console.log(">>>>> 서버명 클릭 <<<<< : " + this.id);
+            item_id = this.id;
+            hostid = item_id.substring(item_id.indexOf("_")+1);
 
-    $("#PerCPU_" + hostid).click(function () {
-        console.log(">>>>> CPU(%) 클릭 <<<<< : " + hostid);
-    });
+        });
 
-    $("#PerMemory_" + hostid).click(function () {
-        console.log(">>>>> Memory(%) 클릭 <<<<< : " + hostid);
-    });
+        $("#IP_" + hostid).click(function () {
+            //console.log(">>>>> IP 클릭 <<<<< : " + this.id);
+            item_id = this.id;
+            hostid = item_id.substring(item_id.indexOf("_")+1);
+        });
 
-    $("#PerDisk_" + hostid).click(function () {
-        console.log(">>>>> Disk(%) 클릭 <<<<< : " + hostid);
-        clickDiskView(hostid);
+        $("#PerCPU_" + hostid).click(function () {
+            //console.log(">>>>> CPU(%) 클릭 <<<<< : " + this.id);
+            item_id = this.id;
+            hostid = item_id.substring(item_id.indexOf("_")+1);
+        });
+
+        $("#PerMemory_" + hostid).click(function () {
+            //console.log(">>>>> Memory(%) 클릭 <<<<< : " + this.id);
+            item_id = this.id;
+            hostid = item_id.substring(item_id.indexOf("_")+1);
+        });
+
+        $("#PerDisk_" + hostid).click(function () {
+            //console.log(">>>>> Disk(%) 클릭 <<<<< : " + + this.id);
+            item_id = this.id;
+            hostid = item_id.substring(item_id.indexOf("_")+1);
+            clickDiskView(hostid);
+        });
     });
 
     //테이블의 th col 클릭시 정렬된 테이블 내용 생성
@@ -2030,7 +2043,6 @@ var serverOverView = function(server_data) {
             var sortTable = '';
             var currentThObj = $(this);
             var MAX_COUNT = tableDataArr.length;
-            alert(MAX_COUNT);
 
             if($(this).is('.sorting_desc')){
                 console.log(" >>>>> sorting_desc <<<<<");
