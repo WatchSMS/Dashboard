@@ -1502,80 +1502,10 @@ var int = {
 
     /* 전체 서버 상태 2017-01-02 */
     allServerViewHost: function () {
+        var server_data = '';
         zbxApi.allServerViewHost.get().done(function (data, status, jqXHR) {
-            var server_data = zbxApi.allServerViewHost.success(data);
-            var serverName = '';
-            var serverIP = '';
-            var serverPerCPU = 0;
-            var serverPerMemory = 0;
-            var serverPerDisk = 0;
-            var serverOS = '-';
-            var serverCPU = '-';
-            var serverRAM = '-';
-
-            $.each(server_data.result, function (k, v) {
-                serverName = v.name;
-                serverIP = v.interfaces[0].ip;
-                var hostid = v.hostid;
-                var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
-                if (osInfo === undefined) {
-                    serverOS = '-';
-                }
-                else {
-                    if (osInfo.match('Linux')) {
-                        serverOS = 'Linux';
-                    }
-                    else if (osInfo.match('Window')) {
-                        serverOS = 'Windows';
-                    }
-                    else {
-                        serverOS = '-';
-                    }
-                }
-
-                try {
-                    serverPerCPU = zbxSyncApi.allServerViewItemByName(v.hostid, "CPU idle time").lastvalue;
-                    serverPerCPU = Math.floor(serverPerCPU * 100) / 100;
-
-                    if (serverPerCPU == 100)
-                        serverPerCPU = 0;
-                } catch (e) {
-                    console.log(e);
-                }
-
-                try {
-                    serverPerMemory = zbxSyncApi.allServerViewItem(v.hostid, "vm.memory.size[pused]").lastvalue;
-                    serverPerMemory = Math.floor(serverPerMemory * 100) / 100;
-                } catch (e) {
-                    console.log(e);
-                }
-
-                var value;
-                try {
-                    // TODO pfree to pused.
-                    value = zbxSyncApi.allServerViewItem(v.hostid, "vfs.fs.size[/,pfree]").lastvalue;
-                } catch (e) {
-                    console.log(e);
-                    value = zbxSyncApi.allServerViewItem(v.hostid, "vfs.fs.size[C:,pfree]").lastvalue;
-                }
-                serverPerDisk = 100 - value;
-
-                if (serverPerDisk == 100)
-                    serverPerDisk = 0;
-                serverPerDisk = Math.floor(serverPerDisk * 100) / 100;
-
-                var infoArr = v.inventory.hardware;     //serverCPU + serverRAM = v.inventory.hardware
-                if (infoArr === undefined || infoArr == '') {
-                    serverCPU = '-';
-                    serverRAM = '-';
-                } else {
-                    var splitInfo = infoArr.split(",");
-                    serverCPU = splitInfo[0].slice(4);
-                    serverRAM = splitInfo[1].slice(5);
-                }
-
-                serverOverView(hostid, serverName, serverIP, serverPerCPU, serverPerMemory, serverPerDisk, serverOS, serverCPU, serverRAM);
-            })
+            server_data = zbxApi.getDiskItem.success(data);
+            serverOverView(server_data);
         });
     },
 
@@ -1972,67 +1902,112 @@ var int = {
     }
 };
 
-var serverOverView = function(hostid, serverName, serverIP, serverPerCPU, serverPerMemory, serverPerDisk, serverOS, serverCPU, serverRAM){
-    var serverTbl = ''; //전체 서버 상태 Table
-    serverTbl += '<tbody>';
-    serverTbl += '<tr>';
-    serverTbl += '<td id = "Name_' + hostid + '">' + serverName + '</a></td>';
-    serverTbl += '<td id = "IP_' + hostid + '">' + serverIP + '</a></td>';
-    serverTbl += '<td class="progress-background" id = "PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
-    serverTbl += '<td class="progress-background" id = "PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
-    serverTbl += '<td class="progress-background" id = "PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
-    serverTbl += '<td>' + serverOS + '</td>';
-    serverTbl += '<td>' + serverCPU + '</td>';
-    serverTbl += '<td>' + serverRAM + '</td>';
-    serverTbl += '</tr>';
-    serverTbl += '</tbody>';
-    $("#serverList").append(serverTbl);
+var serverOverView = function(server_data){
+    var serverName = '';
+    var serverIP = '';
+    var serverPerCPU = 0;
+    var serverPerMemory = 0;
+    var serverPerDisk = 0;
+    var serverOS = '-';
+    var serverCPU = '-';
+    var serverRAM = '-';
+    var hostid = '';
 
-    var $table = $("#serverList");
-//http://astrap.tistory.com/268
+    var tableDataObj = new Object();
+    var tableDataArr = [];
 
-    $('th', $table).each(function (column) {
-        if($(this).is('.sorting')){
-            $(this).click(function() {
-                var rows = $table.find('tbody > tr').get();
+    var serverOverViewHTML = '';
 
-                // 자바 스크립트의 sort 함수를 사용해서 오름차순 정렬
-                rows.sort(function (a,b) {
-                    var keyA = $(a).children('td').eq(column).text().toUpperCase();
-                    var keyB = $(b).children('td').eq(column).text().toUpperCase();
+    serverOverViewHTML += '<thead>';
+    serverOverViewHTML += '<tr role="row">';
+    serverOverViewHTML += '<th style="width: 10%;">서버명</th>';
+    serverOverViewHTML += '<th style="width: 10%;">IP주소</th>';
+    serverOverViewHTML += '<th style="width: 17%;">CPU(%)</th>';
+    serverOverViewHTML += '<th style="width: 17%;">메모리(%)</th>';
+    serverOverViewHTML += '<th style="width: 17%;">디스크(%)</th>';
+    serverOverViewHTML += '<th style="width: 10%;">운영체제</th>';
+    serverOverViewHTML += '<th style="width: 10%;">CPU</th>';
+    serverOverViewHTML += '<th style="width: 10%;">RAM</th>';
+    serverOverViewHTML += '</tr>';
+    serverOverViewHTML += '</thead>';
 
-                    if(keyA < keyB){
-                        return -1;
-                    }
-                    if(keyA > keyB){
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                //정렬된 행을 테이블에 추가
-                $.each(rows, function (index, row) {
-                    $table.children('tbody').append(row);
-                });
-            })
+    $.each(server_data.result, function(server_k, server_v) {
+        serverName = server_v.name;
+        serverName = server_v.name;
+        serverIP = server_v.interfaces[0].ip;
+        hostid = server_v.hostid;
+        var osInfo = server_v.inventory.os;    //serverOS = v.inventory.os;
+        if (osInfo === undefined) {
+            serverOS = '-';
         }
-    });
+        else {
+            if (osInfo.match('Linux')) {
+                serverOS = 'Linux';
+            }
+            else if (osInfo.match('Window')) {
+                serverOS = 'Windows';
+            }
+            else {
+                serverOS = '-';
+            }
+        }
 
-    //화면 이동
-    $("#Name_" + hostid).click(function () {
-    });
+        try {
+            serverPerCPU = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
+            serverPerCPU = Math.floor(serverPerCPU * 100) / 100;
 
-    $("#IP_" + hostid).click(function () {
-    });
+            if (serverPerCPU == 100)
+                serverPerCPU = 0;
+        } catch (e) {
+            console.log(e);
+        }
 
-    $("#PerCPU_" + hostid).click(function () {
-    });
+        try {
+            serverPerMemory = zbxSyncApi.allServerViewItem(hostid, "vm.memory.size[pused]").lastvalue;
+            serverPerMemory = Math.floor(serverPerMemory * 100) / 100;
+        } catch (e) {
+            console.log(e);
+        }
 
-    $("#PerMemory_" + hostid).click(function () {
-    });
+        var value;
+        try {
+            // TODO pfree to pused.
+            value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[/,pfree]").lastvalue;
+        } catch (e) {
+            console.log(e);
+            value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+        }
+        serverPerDisk = 100 - value;
 
-    $("#PerDisk_" + hostid).click(function () {
-    });
+        if (serverPerDisk == 100)
+            serverPerDisk = 0;
+        serverPerDisk = Math.floor(serverPerDisk * 100) / 100;
+
+        var infoArr = server_v.inventory.hardware;     //serverCPU + serverRAM = v.inventory.hardware
+        if (infoArr === undefined || infoArr == '') {
+            serverCPU = '-';
+            serverRAM = '-';
+        } else {
+            var splitInfo = infoArr.split(",");
+            serverCPU = splitInfo[0].slice(4);
+            serverRAM = splitInfo[1].slice(5);
+        }
+        serverOverViewHTML += '<tbody>';
+        serverOverViewHTML += '<tr id="overView_' + hostid + '" role="row" class="odd">';
+        serverOverViewHTML += '<td class="sorting_1" id = "Name_' + hostid + '">' + serverName + '</a></td>';
+        serverOverViewHTML += '<td id = "IP_' + hostid + '">' + serverIP + '</a></td>';
+        serverOverViewHTML += '<td class="progress-background" id = "PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
+        serverOverViewHTML += '<td class="progress-background" id = "PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
+        serverOverViewHTML += '<td class="progress-background" id = "PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
+        serverOverViewHTML += '<td>' + serverOS + '</td>';
+        serverOverViewHTML += '<td>' + serverCPU + '</td>';
+        serverOverViewHTML += '<td>' + serverRAM + '</td>';
+        serverOverViewHTML += '</tr>';
+        serverOverViewHTML += '</tbody>';
+    })
+    $("#serverList").empty();
+    $("#serverList").append(serverOverViewHTML);
+
 };
 
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
