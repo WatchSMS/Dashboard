@@ -1521,80 +1521,7 @@ var int = {
                 $("#" + tagId + "_performlist").append(tagText2);
 
                 $("#info_" + hostid).click(function () { /* 서버 정보 요약 */
-                    $("[id^=base]").hide();
-                    $("#base_serverInfo").show();
-                    var hostid = v.hostid;
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-
-                    var serverCpuSystem = null;
-                    var serverCpuUser = null;
-                    var serverCpuIoWait = null;
-                    var serverCpuSteal = null;
-                    var serverDiskUseRoot = null;
-                    var serverMemoryUse = null;
-                    var serverTraInEth0 = null;
-                    var serverTraOutEth0 = null;
-                    var serverTraTotalEth0 = null;
-
-                    zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,system]").then(function (data){
-                        serverCpuSystem = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,user]");
-                    }).then(function (data){
-                        serverCpuUser = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,iowait]");
-                    }).then(function (data){
-                        serverCpuIoWait = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "system.cpu.util[,steal]");
-                    }).then(function (data){
-                        serverCpuSteal = zbxApi.serverViewGraph.success(data);
-                    }).then(function(){
-                        return zbxApi.serverViewGraphName.get(v.hostid, "Used memory(%)");
-                    }).then(function (data){
-                        serverMemoryUse = zbxApi.serverViewGraphName.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "vfs.fs.size[/,pused]");
-                    }).then(function (data){
-                        serverDiskUseRoot = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.in[eth0]");
-                    }).then(function (data){
-                        serverTraInEth0 = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.out[eth0]");
-                    }).then(function (data){
-                        serverTraOutEth0 = zbxApi.serverViewGraph.success(data);
-                    }).then(function (){
-                        return zbxApi.serverViewGraph.get(v.hostid, "net.if.total[eth0]");
-                    }).then(function (data){
-                        serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
-                        serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
-                    });
-
-                    processView(hostid, startTime);
-
-                    zbxApi.serverViewHost.get(hostid).done(function(data, status, jqXHR){
-                        var server_host = zbxApi.serverViewHost.success(data);
-                        var serverTitle = '';
-                        var serverIP = '';
-                        var serverOS = '';
-                        var serverName = '';
-                        var serverAgentVersion = '';
-
-                        $.each(server_host.result, function (k, v){
-                            serverTitle = v.host;
-                            serverIP = v.interfaces[0].ip;
-                            serverOS = v.inventory.os;
-                            serverName = v.name;
-                            serverAgentVersion = zbxSyncApi.allServerViewItem(hostid, "agent.version").lastvalue; //agent.version
-
-                            serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion);
-                        })
-                    });
-
-                    EventListView(hostid);
+                    clickOverView(hostid);
                 });
 
                 $("#cpu_" + hostid).click(function () { //CPU
@@ -2007,25 +1934,21 @@ var serverOverView = function(server_data) {
             //console.log(">>>>> 서버명 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_")+1);
-
-        });
-
-        $("#IP_" + hostid).click(function () {
-            //console.log(">>>>> IP 클릭 <<<<< : " + this.id);
-            item_id = this.id;
-            hostid = item_id.substring(item_id.indexOf("_")+1);
+            clickOverView(hostid);
         });
 
         $("#PerCPU_" + hostid).click(function () {
             //console.log(">>>>> CPU(%) 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_")+1);
+            clickCPUView(hostid);
         });
 
         $("#PerMemory_" + hostid).click(function () {
             //console.log(">>>>> Memory(%) 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_")+1);
+            clickMemoryView(hostid);
         });
 
         $("#PerDisk_" + hostid).click(function () {
@@ -2103,6 +2026,82 @@ var serverOverView = function(server_data) {
 
 
     //$.unblockUI(blockUI_opt_all);
+};
+
+var clickOverView = function(hostid){
+    $("[id^=base]").hide();
+    $("#base_serverInfo").show();
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+
+    var serverCpuSystem = null;
+    var serverCpuUser = null;
+    var serverCpuIoWait = null;
+    var serverCpuSteal = null;
+    var serverDiskUseRoot = null;
+    var serverMemoryUse = null;
+    var serverTraInEth0 = null;
+    var serverTraOutEth0 = null;
+    var serverTraTotalEth0 = null;
+
+    zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,system]").then(function (data){
+        serverCpuSystem = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,user]");
+    }).then(function (data){
+        serverCpuUser = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,iowait]");
+    }).then(function (data){
+        serverCpuIoWait = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,steal]");
+    }).then(function (data){
+        serverCpuSteal = zbxApi.serverViewGraph.success(data);
+    }).then(function(){
+        return zbxApi.serverViewGraphName.get(hostid, "Used memory(%)");
+    }).then(function (data){
+        serverMemoryUse = zbxApi.serverViewGraphName.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "vfs.fs.size[/,pused]");
+    }).then(function (data){
+        serverDiskUseRoot = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "net.if.in[eth0]");
+    }).then(function (data){
+        serverTraInEth0 = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "net.if.out[eth0]");
+    }).then(function (data){
+        serverTraOutEth0 = zbxApi.serverViewGraph.success(data);
+    }).then(function (){
+        return zbxApi.serverViewGraph.get(hostid, "net.if.total[eth0]");
+    }).then(function (data){
+        serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
+        serverOverGraphView(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+    });
+
+    processView(hostid, startTime);
+
+    zbxApi.serverViewHost.get(hostid).done(function(data, status, jqXHR){
+        var server_host = zbxApi.serverViewHost.success(data);
+        var serverTitle = '';
+        var serverIP = '';
+        var serverOS = '';
+        var serverName = '';
+        var serverAgentVersion = '';
+
+        $.each(server_host.result, function (k, v){
+            serverTitle = v.host;
+            serverIP = v.interfaces[0].ip;
+            serverOS = v.inventory.os;
+            serverName = v.name;
+            serverAgentVersion = zbxSyncApi.allServerViewItem(hostid, "agent.version").lastvalue; //agent.version
+
+            serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion);
+        })
+    });
+
+    EventListView(hostid);
 };
 
 var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
