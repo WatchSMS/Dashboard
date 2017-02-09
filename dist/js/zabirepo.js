@@ -1480,7 +1480,7 @@ var int = {
 
     /* 전체 서버 상태 2017-01-02 */
     allServerViewHost: function () {
-        // $.blockUI(blockUI_opt_all);
+        $.blockUI(blockUI_opt_all);
         $("[id^=base]").hide();
         $("#base_server").show();
 
@@ -1786,7 +1786,7 @@ var int = {
 };
 
 var serverOverView = function(server_data) {
-    //$.blockUI(blockUI_opt_all);
+    $.blockUI(blockUI_opt_all);
     var serverName = '';
     var serverIP = '';
     var serverPerCPU = 0;
@@ -2004,8 +2004,13 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
+    setInterval('go_OverView()', 60000);
 
-    //$.unblockUI(blockUI_opt_all);
+    $.unblockUI(blockUI_opt_all);
+};
+
+var go_OverView = function(){
+    int.allServerViewHost();
 };
 
 var clickOverView = function(hostid){
