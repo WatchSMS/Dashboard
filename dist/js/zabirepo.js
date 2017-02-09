@@ -2997,6 +2997,25 @@ var diskView = function(hostid, disk_data, startTime){
             $('tbody', $table).append(sortTable);
         })
     })
+
+    //page reloag
+    $("#reload_diskInfo").click(function(){
+        console.log(">>>>> reload_diskInfo <<<<<");
+        clickDiskView(hostid);
+    });
+
+    $(function ($) {
+        $('#reload_diskInfo_selecter').change(function () {
+            var selectVal = $(this).val();
+            if (selectVal != 0) {
+                $("#reload_diskInfo").attr({
+                    "disabled": "disabled"
+                });
+            } else {
+                $("#reload_diskInfo").removeAttr("disabled");
+            }
+        });
+    });
 };
 
 var networkView = function(hostid, network_data, startTime){
