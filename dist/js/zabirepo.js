@@ -2961,6 +2961,11 @@ var diskView = function(hostid, disk_data, startTime){
     var $table = $("#diskInfoTable");
 
     //table의 row 클릭시 해당 그래프 만드는 이벤트
+    $("#btn_disk.btn").click(function() {
+        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+        rowClickDiskEvent($table, hostid, startTime);
+    })
+
     rowClickDiskEvent($table, hostid, startTime);
 
     //테이블의 th col 클릭시 정렬
