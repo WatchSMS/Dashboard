@@ -2004,7 +2004,7 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
-    setInterval('go_OverView()', PAGE_RELOAD_TIME);
+    //setInterval('go_OverView()', PAGE_RELOAD_TIME); - 개요 페이지 확인 후 다른 페이지 이동시 1분 후 개요 페이지로 이동
 
     $.unblockUI(blockUI_opt_all);
 };
@@ -2901,7 +2901,7 @@ var clickDiskView = function(hostid){
     $("#base_diskInfo").show();
     console.log(">>>>> IN clickDiskView <<<<<");
 
-    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
     var disk_data = '';
     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR){
         disk_data = zbxApi.getDiskItem.success(data);
