@@ -2001,11 +2001,11 @@ var serverOverView = function(server_data) {
         var memory = '';
         var disk = '';
         var ROW_COUNT = tableDataArr.length;
-        alert("ROW_COUNT : " + ROW_COUNT);
+        //alert("ROW_COUNT : " + ROW_COUNT);
 
         for(var i=0; i<ROW_COUNT; i++){
             var hostid = tableDataArr[i].hostid;
-            alert("hostid : " + hostid);
+            //alert("hostid : " + hostid);
             try {
                 cpu = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
                 cpu = Math.floor(cpu * 100) / 100;
@@ -2065,13 +2065,9 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
-    //setInterval('go_OverView()', PAGE_RELOAD_TIME); - 개요 페이지 확인 후 다른 페이지 이동시 1분 후 개요 페이지로 이동
+    setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);
 
     $.unblockUI(blockUI_opt_all);
-};
-
-var go_OverView = function(){
-    int.allServerViewHost();
 };
 
 var clickOverView = function(hostid){
