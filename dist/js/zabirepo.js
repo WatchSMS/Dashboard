@@ -2910,268 +2910,55 @@ var clickDiskView = function(hostid){
 };
 
 var diskView = function(hostid, disk_data, startTime){
-    var disk_itemid = '';
-    var disk_itemKey = '';
-    var diskTbl = '';
-    console.log("startTime : " + startTime);
+    console.log("diskView");
+    var diskTableHTML = '';
+    var MAX_DISKCOUNT = 10;
+    var tableDataObj = new Object();
+    var tableDataArr = [];
 
-    $.each(disk_data.result, function(disk_k, disk_v) {
-        disk_itemid = disk_v.itemid;
-        disk_itemKey = disk_v.key_;
-        console.log("disk_itemid : " + disk_itemid);
-        console.log("disk_itemKey : " + disk_itemKey);
+    var diskItemId = '';
+    var diskItemName = '';
+    var diskItemUsed = '';
+    var diskItemSize = '';
 
-        var itemKey = disk_itemKey.substring(disk_itemKey.indexOf("[")+1,disk_itemKey.indexOf(","));
-        console.log("itemKey : " + itemKey);
+    diskTableHTML += "<thead>";
+    diskTableHTML += "<tr role='row'>";
+    diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
+    diskTableHTML += "<th width='15%' class='text-left'>USED</th>";
+    diskTableHTML += "<th width='15%' class='text-left'>SIZE</th>";
+    diskTableHTML += "</tr>";
+    diskTableHTML += "</thead>";
 
-        diskTbl += "<h4 id='" + itemKey + "'>" + itemKey + "</h4>";
+    diskTableHTML += "<tbody>";
 
-        $("#diskList").empty();
-        $("#diskList").append(diskTbl);
+    $.each(disk_data.result, function(k, v) {
+        diskItemId = v.itemId;
+        var name = v.key_;
+        diskItemName = name.substring(name.indexOf("[")+1,name.indexOf(","));
+        diskItemUsed = 0;
+        diskItemSize = 0;
 
-        var $table = $("#diskList");
-        $('h4', $table).each(function(table_k, table_v) {
-            $(this).click(function() {
-                console.log(">>>>>> " + $(this).attr('id'));
-
-                var tmpDiskName = $(this).attr('id');
-
-                var diskInode = '';
-                var diskFree = '';
-                var diskUse = '';
-
-                var diskItemKeyInode = "vfs.fs.inode[" + tmpDiskName + ",pfree]";
-                var diskItemKeyFree = "vfs.fs.size[" + tmpDiskName + ",pfree]";
-                var diskItemKeyUse = "vfs.fs.size[" + tmpDiskName + ",pfree]";
-
-                console.log(">>>>> hostid <<<<< : " + hostid);
-                console.log("diskItemKeyInode " + diskItemKeyInode);
-                console.log("diskItemKeyFree : " + diskItemKeyFree);
-                console.log("diskItemKeyTotal : " + diskItemKeyUse);
-
-                zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
-                    diskInode = zbxApi.serverViewGraph.success(data);
-                }).then(function (){
-                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
-                }).then(function (data){
-                    diskFree = zbxApi.serverViewGraph.success(data);
-                }).then(function (){
-                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
-                }).then(function (data){
-                    diskUse = zbxApi.serverViewGraph.success(data);
-                    showDiskView(diskInode, diskFree, diskUse, startTime);
-                });
-            })
-        });
+        tableDataObj = new Object();
+        tableDataObj.diskItemId = diskItemId;
+        tableDataObj.diskItemName = diskItemName;
+        tableDataObj.diskItemUsed = diskItemUsed;
+        tableDataObj.diskItemSize = diskItemSize;
+        tableDataArr.push(tableDataObj);
+        
+        if(k<MAX_DISKCOUNT){
+            diskTableHTML += "<tr id='" + diskItemId + "' role='row' class='odd'>";
+            diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" +diskItemName + "</span></td>";
+            diskTableHTML += "<td>"+diskItemUsed+"</td>";
+            diskTableHTML += "<td>"+diskItemSize+"</td>";
+            diskTableHTML += "</tr>";
+        }
     });
-}
 
-var showDiskView = function(diskInode, diskFree, diskUse, startTime){
-    showInFrDisk(diskInode, diskFree, startTime);
-    showUseDisk(diskUse, startTime);
+    diskTableHTML += "</tbody>";
+
+    $("#diskInfoTable").empty();
+    $("#diskInfoTable").append(diskTableHTML);
 };
-
-function showInFrDisk(diskInode, diskFree, startTime){
-    var diskInodeArr = [];
-    var diskFreeArr = [];
-
-    var history_diskInode = null;
-    var history_diskFree = null;
-
-    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data){
-        history_diskInode = zbxApi.getHistory.success(data);
-        $.each(history_diskInode.result, function(k, v){
-            diskInodeArr[k] = new Array();
-            diskInodeArr[k][0] = parseInt(v.clock) * 1000;
-            diskInodeArr[k][1] = parseFloat(v.value);
-        });
-    }).then(function (){
-        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
-    }).then(function(data){
-        history_diskFree = zbxApi.getHistory.success(data);
-        $.each(history_diskFree.result, function(k, v){
-            diskFreeArr[k] = new Array();
-            diskFreeArr[k][0] = parseInt(v.clock) * 1000;
-            diskFreeArr[k][1] = parseFloat(v.value);
-        });
-
-        $(function () {
-            Highcharts.chart('chart_diskIo', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '디스크 I/O',
-                    align: 'left'
-                },
-                subtitle: { text:  '' },
-                xAxis: {
-                    labels: {
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if(hours.length==1){
-                                hours = "0" + hours;
-                            }
-                            if(minutes.length==1){
-                                minutes = "0" + minutes;
-                            }
-                            if(seconds.length==1){
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value + '%';
-                        }
-                    }
-                },
-                tooltip: {
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
-                    }
-                },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Disk Inode',
-                    data: diskInodeArr
-                }, {
-                    name: 'Disk Free',
-                    data: diskFreeArr
-                }]
-            });
-        });
-    })
-}
-
-function showUseDisk(diskUse, startTime){
-    var diskUseArr = [];
-
-    var history_diskUse = null;
-
-    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data){
-        history_diskUse = zbxApi.getHistory.success(data);
-        $.each(history_diskUse.result, function (k, v) {
-            diskUseArr[k] = new Array();
-            diskUseArr[k][0] = parseInt(v.clock) * 1000;
-            diskUseArr[k][1] = 100 - parseFloat(v.value);
-        });
-
-        $(function () {
-            Highcharts.chart('chart_diskUse', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '디스크 Total',
-                    align: 'left'
-                },
-                subtitle: { text:  '' },
-                xAxis: {
-                    labels: {
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if(hours.length==1){
-                                hours = "0" + hours;
-                            }
-                            if(minutes.length==1){
-                                minutes = "0" + minutes;
-                            }
-                            if(seconds.length==1){
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value + '%';
-                        }
-                    }
-                },
-                tooltip: {
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
-                    }
-                },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Disk Use',
-                    data: diskUseArr
-                }]
-            });
-        });
-    })
-}
 
 var networkView = function(hostid, network_data, startTime){
     var network_itemid = '';
