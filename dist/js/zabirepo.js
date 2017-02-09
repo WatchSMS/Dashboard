@@ -1486,7 +1486,6 @@ var int = {
 
         var server_data = '';
         zbxApi.allServerViewHost.get().done(function (data, status, jqXHR) {
-            console.log("1. IN allServerViewHost");
             server_data = zbxApi.getDiskItem.success(data);
             serverOverView(server_data);
         });
@@ -1788,7 +1787,6 @@ var int = {
 
 var serverOverView = function(server_data) {
     //$.blockUI(blockUI_opt_all);
-    console.log("2. IN serverOverView");
     var serverName = '';
     var serverIP = '';
     var serverPerCPU = 0;
@@ -2006,7 +2004,6 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
-
 
     //$.unblockUI(blockUI_opt_all);
 };
