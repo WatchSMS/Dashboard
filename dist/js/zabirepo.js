@@ -2946,10 +2946,10 @@ var diskView = function(hostid, disk_data, startTime){
         tableDataArr.push(tableDataObj);
         
         if(k<MAX_DISKCOUNT){
-            diskTableHTML += "<tr id='" + diskItemId + "' role='row' class='odd'>";
-            diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" +diskItemName + "</span></td>";
-            diskTableHTML += "<td>"+diskItemUsed+"</td>";
-            diskTableHTML += "<td>"+diskItemSize+"</td>";
+            diskTableHTML += "<tr id='diskView_" + diskItemId + "' role='row' class='odd'>";
+            diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>"  + diskItemName + "</span></td>";
+            diskTableHTML += "<td>" + diskItemUsed + "</td>";
+            diskTableHTML += "<td>" + diskItemSize + "</td>";
             diskTableHTML += "</tr>";
         }
     });
@@ -2958,6 +2958,45 @@ var diskView = function(hostid, disk_data, startTime){
 
     $("#diskInfoTable").empty();
     $("#diskInfoTable").append(diskTableHTML);
+
+    //테이블의 th col 클릭시 정렬
+    var $table = $("#diskInfoTable");
+    $('th', $table).each(function (column) {
+        $(this).click(function() {
+            var sortTable = '';
+            var currentThObj = $(this);
+            var MAX_COUNT = tableDataArr.length;
+
+            if($(this).is('.sorting_desc')){
+                console.log(" >>>>> sorting_desc <<<<<");
+                tableDataArr.sort(function (a, b) {
+                    if(column == 0){
+                        return a.diskItemName < b.diskItemName ? -1 : a.diskItemName > b.diskItemName ? 1 : 0;
+                    }
+                });
+                currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
+            }else{
+                tableDataArr.sort(function (a, b) {
+                    console.log(" >>>>> sorting_asc <<<<<");
+                    if(column == 0){
+                        return a.diskItemName > b.diskItemName ? -1 : a.diskItemName < b.diskItemName ? 1 : 0;
+                    }
+                });
+                currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
+            }
+            $('tbody', $table).empty();
+            
+            for(var i=0; i<MAX_COUNT; i++){
+                var diskItemId = tableDataArr[i].diskItemId;
+                sortTable += "<tr id='diskView_" + diskItemId + "' role='row' class='odd'>";
+                sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>"  + tableDataArr[i].diskItemName + "</span></td>";
+                sortTable += "<td>" + tableDataArr[i].diskItemUsed + "</td>";
+                sortTable += "<td>" + tableDataArr[i].diskItemSize + "</td>";
+                sortTable += "</tr>";
+            }
+            $('tbody', $table).append(sortTable);
+        })
+    })
 };
 
 var networkView = function(hostid, network_data, startTime){
