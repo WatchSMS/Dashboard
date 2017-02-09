@@ -2004,7 +2004,7 @@ var serverOverView = function(server_data) {
     });
 
     //자동 새로고침
-    setInterval('go_OverView()', 60000);
+    setInterval('go_OverView()', PAGE_RELOAD_TIME);
 
     $.unblockUI(blockUI_opt_all);
 };
