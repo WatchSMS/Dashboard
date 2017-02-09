@@ -1892,9 +1892,9 @@ var serverOverView = function(server_data) {
         serverOverViewHTML += '<tr role="row" class="odd">';
         serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
+        serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div id="perCPU_'+hostid+'" class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
+        serverOverViewHTML += '<td class="progress-background" id="PerMemory_' + hostid + '"><div id="perMemory_'+hostid+'" class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
+        serverOverViewHTML += '<td class="progress-background" id="PerDisk_' + hostid + '"><div id="perDisk_'+hostid+'" class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
         serverOverViewHTML += '<td>' + serverOS + '</td>';
         serverOverViewHTML += '<td>' + serverCPU + '</td>';
         serverOverViewHTML += '<td>' + serverRAM + '</td>';
@@ -1987,7 +1987,68 @@ var serverOverView = function(server_data) {
 
     //page reloag
     $("#reload_serverOverview").click(function(){
-        int.allServerViewHost();
+        //int.allServerViewHost();
+        console.log("reload_serverOverview");
+        //http://div.or.kr/js-studying/%ED%83%9C%EA%B7%B8%20%EA%B0%9D%EC%B2%B4%20innerHTML%20%EC%86%8D%EC%84%B1
+        /*
+         console.log($("#perCPU_10110").width());
+         console.log($("#perCPU_10110").html());
+         $("#perCPU_10110").width("80%");
+         $("#perCPU_10110").html("80%");
+         */
+
+        var cpu = '';
+        var memory = '';
+        var disk = '';
+        var ROW_COUNT = tableDataArr.length;
+        alert("ROW_COUNT : " + ROW_COUNT);
+
+        for(var i=0; i<ROW_COUNT; i++){
+            var hostid = tableDataArr[i].hostid;
+            alert("hostid : " + hostid);
+            try {
+                cpu = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
+                cpu = Math.floor(cpu * 100) / 100;
+
+                if (cpu == 100)
+                    cpu = 0;
+            } catch (e) {
+                console.log(e);
+            }
+            console.log("perCPU_"+hostid + " >> " + $("#perCPU_"+hostid).width() +" / " + $("#perCPU_"+hostid).html());
+            $("#perCPU_"+hostid).width(cpu+"%");
+            $("#perCPU_"+hostid).html(cpu+"%");
+
+            try {
+                memory = zbxSyncApi.allServerViewItem(hostid, "vm.memory.size[pused]").lastvalue;
+                memory = Math.floor(memory * 100) / 100;
+            } catch (e) {
+                console.log(e);
+            }
+            if(memory == 0)
+                memory = 0;
+            console.log("perMemory_"+hostid + " >> " + $("#perMemory_"+hostid).width() +" / " + $("#perMemory_"+hostid).html());
+            $("#perMemory_"+hostid).width(memory+"%");
+            $("#perMemory_"+hostid).html(memory+"%");
+
+            var value;
+            try {
+                // TODO pfree to pused.
+                value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[/,pfree]").lastvalue;
+            } catch (e) {
+                console.log(e);
+                value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+            }
+            disk = 100 - value;
+
+            if (disk == 100)
+                disk = 0;
+            disk = Math.floor(disk * 100) / 100;
+            console.log("perDisk_"+hostid + " >> " + $("#perDisk_"+hostid).width() +" / " + $("#perDisk_"+hostid).html());
+            $("#perDisk_"+hostid).width(disk+"%");
+            $("#perDisk_"+hostid).html(disk+"%");
+            console.log("================================");
+        }
     });
 
     $(function ($) {
