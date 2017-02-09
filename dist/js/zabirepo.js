@@ -3062,7 +3062,7 @@ var showDiskView = function(diskInode, diskFree, diskUse, startTime){
     showInFrDisk(diskInode, diskFree, startTime);
     showUseDisk(diskUse, startTime);
 
-    $('#graph_container').bind('mousemove touchmove touchstart', function (e) {
+    $('#disk_container').bind('mousemove touchmove touchstart', function (e) {
         var chart, point, i, event;
 
         for (i = 0; i < Highcharts.charts.length; i = i + 1) {
