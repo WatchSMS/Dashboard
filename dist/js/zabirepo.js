@@ -1626,110 +1626,112 @@ var showProcessTable = function(finalProcArr, topProcessLastTime) {
 
 //** 차트에 callback 확인해볼 것.
 function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr) {
+    chartCall(chartId, chartTitle, dataSet, label, colorArr);
 
-    $(function() {
-        var chart2 = Highcharts.chart(chartId, {
-            colors: colorArr,
-            chart: {
-                //type: 'area'
-                zoomType: 'x',
-                events: {
-                    load: function(event) {
-                        $("#" + chartId).unblock(blockUI_opt_el);
-                    }
-                }
-            },
-            title: {
-                text: chartTitle
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        var d2 = new Date(this.value);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
-                }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value + unit;
-                    }
-                }
-            },
-            tooltip: {
-                formatter: function() {
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-                    var retrunValue = null;
-
-                    if (hours.length == 1) {
-                        hours = "0" + hours;
-                    }
-                    if (minutes.length == 1) {
-                        minutes = "0" + minutes;
-                    }
-                    if (seconds.length == 1) {
-                        seconds = "0" + seconds;
-                    }
-                    return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
-                }
-            },
-            plotOptions: {
-                area: {
-                    marker: {
-                        enabled: false,
-                        symbol: 'circle',
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
-                    }
-                },
-                series: {
-                    point: {
-                        events: {
-                            //		                    mouseOver: function () {
-                            //		                        console.log('Moused over');
-                            //		                        console.log(this.x);
-                            //		                        console.log(this.y);
-                            //		                        console.log(this.series);
-                            //		                        console.log(this.series.chart);
-                            //		                    },
-                            //		                    mouseOut: function () {
-                            //		                        console.log('Moused out');
-                            //		                        console.log(this.x);
-                            //		                        console.log(this.y);
-                            //		                    }
-                        }
-                    }
-                }
-            },
-            series: dataSet
-        });
-    });
+    //
+    // $(function() {
+    //     var chart2 = Highcharts.chart(chartId, {
+    //         colors: colorArr,
+    //         chart: {
+    //             //type: 'area'
+    //             zoomType: 'x',
+    //             events: {
+    //                 load: function(event) {
+    //                     $("#" + chartId).unblock(blockUI_opt_el);
+    //                 }
+    //             }
+    //         },
+    //         title: {
+    //             text: chartTitle
+    //         },
+    //         subtitle: {
+    //             text: ''
+    //         },
+    //         xAxis: {
+    //             labels: {
+    //                 formatter: function() {
+    //                     var d2 = new Date(this.value);
+    //                     var hours = "" + d2.getHours();
+    //                     var minutes = "" + d2.getMinutes();
+    //                     var seconds = "" + d2.getSeconds();
+    //                     if (hours.length == 1) {
+    //                         hours = "0" + hours;
+    //                     }
+    //                     if (minutes.length == 1) {
+    //                         minutes = "0" + minutes;
+    //                     }
+    //                     if (seconds.length == 1) {
+    //                         seconds = "0" + seconds;
+    //                     }
+    //                     return hours + ":" + minutes + ":" + seconds;
+    //                 }
+    //             }
+    //         },
+    //         yAxis: {
+    //             title: {
+    //                 text: ''
+    //             },
+    //             labels: {
+    //                 formatter: function() {
+    //                     return this.value + unit;
+    //                 }
+    //             }
+    //         },
+    //         tooltip: {
+    //             formatter: function() {
+    //                 var d2 = new Date(this.x);
+    //                 var hours = "" + d2.getHours();
+    //                 var minutes = "" + d2.getMinutes();
+    //                 var seconds = "" + d2.getSeconds();
+    //                 var retrunValue = null;
+    //
+    //                 if (hours.length == 1) {
+    //                     hours = "0" + hours;
+    //                 }
+    //                 if (minutes.length == 1) {
+    //                     minutes = "0" + minutes;
+    //                 }
+    //                 if (seconds.length == 1) {
+    //                     seconds = "0" + seconds;
+    //                 }
+    //                 return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+    //             }
+    //         },
+    //         plotOptions: {
+    //             area: {
+    //                 marker: {
+    //                     enabled: false,
+    //                     symbol: 'circle',
+    //                     radius: 2,
+    //                     states: {
+    //                         hover: {
+    //                             enabled: true
+    //                         }
+    //                     }
+    //                 }
+    //             },
+    //             series: {
+    //                 point: {
+    //                     events: {
+    //                         //		                    mouseOver: function () {
+    //                         //		                        console.log('Moused over');
+    //                         //		                        console.log(this.x);
+    //                         //		                        console.log(this.y);
+    //                         //		                        console.log(this.series);
+    //                         //		                        console.log(this.series.chart);
+    //                         //		                    },
+    //                         //		                    mouseOut: function () {
+    //                         //		                        console.log('Moused out');
+    //                         //		                        console.log(this.x);
+    //                         //		                        console.log(this.y);
+    //                         //		                    }
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         series: dataSet
+    //     });
+    // });
 }
 
 

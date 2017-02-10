@@ -84,8 +84,11 @@ var generateProcessResource = function(hostid, processName, startTime) {
         memDataSet.push(new DataObject(processName, memArr));
 
 
-        showBasicLineChart('chart_processCpu', 'CPU', cpuDataSet, Label.percent, ['#00B700', '#DB9700', '#E3C4FF', '#8F8AFF']);
-        showBasicAreaChart('chart_processMem', 'Memory', memDataSet, Label.MB, ['#E3C4FF', '#8F8AFF', '#00B700', '#DB9700']);
+        chartCall('chart_processCpu', 'CPU', cpuDataSet, Label.percent, ['#00B700', '#DB9700', '#E3C4FF', '#8F8AFF']);
+        chartCall('chart_processMem', 'Memory', memDataSet, Label.MB, ['#E3C4FF', '#8F8AFF', '#00B700', '#DB9700']);
+        
+        // showBasicLineChart('chart_processCpu', 'CPU', cpuDataSet, Label.percent, ['#00B700', '#DB9700', '#E3C4FF', '#8F8AFF']);
+        // showBasicAreaChart('chart_processMem', 'Memory', memDataSet, Label.MB, ['#E3C4FF', '#8F8AFF', '#00B700', '#DB9700']);
     });
 }
 
