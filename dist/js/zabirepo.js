@@ -3118,45 +3118,7 @@ var rowClickDiskEvent = function(table, hostid, startTime){
 var showDiskView = function(diskInode, diskFree, diskUse, startTime){
     showInFrDisk(diskInode, diskFree, startTime);
     showUseDisk(diskUse, startTime);
-
-    $('#disk_container').bind('mousemove touchmove touchstart', function (e) {
-        var chart, point, i, event;
-
-        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-            chart = Highcharts.charts[i];
-            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-            point = chart.series[0].searchPoint(event, true); // Get the hovered point
-
-            if (point) {
-                point.highlight(e);
-            }
-        }
-    });
-
-    Highcharts.Pointer.prototype.reset = function () {
-        return undefined;
-    };
-
-    Highcharts.Point.prototype.highlight = function (event) {
-        this.onMouseOver(); // Show the hover marker
-        this.series.chart.tooltip.refresh(this); // Show the tooltip
-        this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-    };
 };
-
-function syncExtremes(e) {
-    var thisChart = this.chart;
-
-    if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-        Highcharts.each(Highcharts.charts, function (chart) {
-            if (chart !== thisChart) {
-                if (chart.xAxis[0].setExtremes) { // It is null while updating
-                    chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
-                }
-            }
-        });
-    }
-}
 
 function showInFrDisk(diskInode, diskFree, startTime){
     var diskInodeArr = [];
@@ -3196,9 +3158,6 @@ function showInFrDisk(diskInode, diskFree, startTime){
                 },
                 subtitle: { text:  '' },
                 xAxis: {
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         formatter: function () {
                             var d2 = new Date(this.value);
@@ -3296,9 +3255,6 @@ function showUseDisk(diskUse, startTime){
                 },
                 subtitle: { text:  '' },
                 xAxis: {
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         formatter: function () {
                             var d2 = new Date(this.value);
