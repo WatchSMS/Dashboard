@@ -1048,7 +1048,7 @@ var diskView = function(hostid, disk_data, startTime) {
     });
 
     //자동 새로고침
-    setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
+    //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
 
 };
 
@@ -1416,7 +1416,7 @@ var networkView = function(hostid, network_data, startTime){
     });
 
     //자동 새로고침
-    setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
+    //setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
 }
 
 var rowClickNetworkEvent = function(table, hostid, startTime) {

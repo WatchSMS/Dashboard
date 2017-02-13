@@ -1,6 +1,6 @@
 //host 정보 호출
 var hostInfoView = function() {
-    console.log("IN function hostInfoView");
+    console.log(">>>>> IN function hostInfoView <<<<<");
     zbxApi.host.get().done(function(data, status, jqXHR) {
         var host_data = zbxApi.host.success(data);
         var tagId = '';
@@ -28,9 +28,10 @@ var hostInfoView = function() {
             $("#" + tagId + "_performlist").append(tagText2);
 
             $("#info_" + hostid).click(function() { /* 서버 정보 요약 */
+                console.log(">>>>> info_ reload_serverOverView <<<<<");
                 $("[id^=base]").hide();
                 $("#base_serverInfo").show();
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
 
                 var serverCpuSystem = null;
                 var serverCpuUser = null;
@@ -104,6 +105,26 @@ var hostInfoView = function() {
                 });
 
                 EventListView(hostid);
+
+                //page reloag
+                $("#reload_serverOverView").click(function() {
+                    console.log(">>>>> reload_serverOverView <<<<<");
+                    $("#info_" + hostid).click();
+                });
+
+                $(function($) {
+                    $('#reload_serverOverView_selecter').change(function() {
+                        var selectVal = $(this).val();
+                        if (selectVal != 0) {
+                            $("#reload_serverOverView").attr({
+                                "disabled": "disabled"
+                            });
+                        } else {
+                            $("#reload_serverOverView").removeAttr("disabled");
+                        }
+                    });
+                });
+
             });
 
             $("#cpu_" + hostid).click(function() { //CPU
