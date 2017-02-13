@@ -11,7 +11,6 @@ var allServerViewHost = function() {
     });
 }
 
-
 var serverOverView = function(server_data) {
     $.blockUI(blockUI_opt_all);
     var serverName = '';
