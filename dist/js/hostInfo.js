@@ -154,10 +154,10 @@ var hostInfoView = function() {
             $("#traffic_" + hostid).click(function() {
                 $("[id^=base]").hide();
                 $("#base_networkInfo").show();
+                console.log(">>>>> IN clickNetworkView <<<<<");
 
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 var network_data = '';
-
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
                 zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR) {
                     network_data = zbxApi.getNetworkItem.success(data);
                     networkView(hostid, network_data, startTime);

@@ -13,13 +13,19 @@
                 <section class="panel">
                     <header class="panel-heading">
                         <h2 class="panel-title">네트워크 카드</h2>
-                        <div id="networkTime" class="panel-actions process-date smaller"></div>
+                        <div id="networkTime" class="panel-actions process-date smaller">
+                            <button id="reload_networkInfo" type="button" class="btn  btn-default pull-right">
+                                <i class="glyphicon glyphicon-refresh"></i>
+                            </button>
+                        </div>
                         <div class="clear"></div>
                     </header>
                     <div class="panel-body">
                         <div id="diskList_wrapper" class="dataTables_wrapper no-footer">
-                            <div id="networkList">
+                            <div class="table-responsive pl-sm pr-sm">
+                                <table id="networkInfoTable" class="table table-striped table-hover simple-list  dataTable no-foote" role="grid">
 
+                                </table>
                             </div>
                         </div>
                     </div>
