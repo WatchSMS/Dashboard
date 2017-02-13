@@ -1120,7 +1120,6 @@ function showInFrDisk(diskInode, diskFree, startTime) {
             Highcharts.chart('chart_diskIo', {
                 chart: {
                     zoomType: 'x',
-                    type: 'area',
                     spacingTop: 2,
                     spacingBottom: 0
                 },
@@ -1221,7 +1220,6 @@ function showUseDisk(diskUse, startTime) {
             Highcharts.chart('chart_diskUse', {
                 chart: {
                     zoomType: 'x',
-                    type: 'area',
                     spacingTop: 2,
                     spacingBottom: 0
                 },
