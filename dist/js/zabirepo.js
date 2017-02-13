@@ -709,8 +709,8 @@ var int = {
             var chartSeverity = dc.pieChart('#chart_severity');
             chartSeverity.width(250).height(200).cx(160).radius(90).innerRadius(35).slicesCap(Infinity) // すべて表示
                 .dimension(dimSeverity).group(gpSeverity).ordering(function(t) {
-                    return -t.value;
-                }).legend(dc.legend())
+                return -t.value;
+            }).legend(dc.legend())
             chartSeverity.label(function(d) {
                 return d.key + ' : ' + d.value;
             });
@@ -1097,7 +1097,7 @@ function showInFrDisk(diskInode, diskFree, startTime) {
     var history_diskFree = null;
 
     zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data) {
-      diskInodeArr  = zbxApi.getHistory.success(data);
+        diskInodeArr  = zbxApi.getHistory.success(data);
         // history_diskInode = zbxApi.getHistory.success(data);
         // $.each(history_diskInode.result, function(k, v) {
         //     diskInodeArr[k] = new Array();
@@ -1107,7 +1107,7 @@ function showInFrDisk(diskInode, diskFree, startTime) {
     }).then(function() {
         return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
     }).then(function(data) {
-diskFreeArr= zbxApi.getHistory.success(data);
+        diskFreeArr= zbxApi.getHistory.success(data);
         //
         // history_diskFree = zbxApi.getHistory.success(data);
         // $.each(history_diskFree.result, function(k, v) {
@@ -1352,12 +1352,12 @@ var networkView = function(hostid, network_data, startTime){
     var $table = $("#networkInfoTable");
 
     //table의 row 클릭시 해당 그래프 만드는 이벤트
-    $("#btn_disk.btn").click(function() {
+    $("#btn_network.btn").click(function() {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-        //rowClickNetworkEvent($table, hostid, startTime);
+        rowClickNetworkEvent($table, hostid, startTime);
     })
 
-    //rowClickNetworkEvent($table, hostid, startTime);
+    rowClickNetworkEvent($table, hostid, startTime);
 
     //테이블의 th col 클릭시 정렬
     $('th', $table).each(function(column) {
@@ -1418,6 +1418,259 @@ var networkView = function(hostid, network_data, startTime){
     //자동 새로고침
     setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
 }
+
+var rowClickNetworkEvent = function(table, hostid, startTime) {
+    $('tr', table).each(function(row) {
+        if (row > 0) {
+            $(this).click(function() {
+                var currentNetworkItemId = $(this).attr('id');
+                console.log("currentNetworkItemId : " + currentNetworkItemId);
+
+                var networkIn = '';
+                var networkOut = '';
+                var networkTotal = '';
+
+                var networkItemKeyIn = "net.if.in[" + currentNetworkItemId + "]";
+                var networkItemKeyOut = "net.if.out[" + currentNetworkItemId + "]";
+                var networkItemKeyTotal = "net.if.total[" + currentNetworkItemId + "]";
+
+                console.log(">>>>> hostid <<<<< : " + hostid);
+                console.log("networkItemKeyIn : " + networkItemKeyIn);
+                console.log("networkItemKeyOut : " + networkItemKeyOut);
+                console.log("networkItemKeyTotal : " + networkItemKeyTotal);
+
+                zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
+                    networkIn = zbxApi.serverViewGraph.success(data);
+                }).then(function() {
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
+                }).then(function(data) {
+                    networkOut = zbxApi.serverViewGraph.success(data);
+                }).then(function() {
+                    return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
+                }).then(function(data) {
+                    networkTotal = zbxApi.serverViewGraph.success(data);
+                    trafficView(networkIn, networkOut, networkTotal, startTime);
+                });
+            });
+        }
+    });
+};
+
+var trafficView = function(networkIn, networkOut, networkTotal, startTime) {
+    showInOutNetwork(networkIn, networkOut, startTime);
+    showTotalNetwork(networkTotal, startTime);
+};
+
+function showInOutNetwork(networkIn, networkOut, startTime) {
+    var networkInArr = [];
+    var networkOutArr = [];
+
+    var history_networkIn = null;
+    var history_networkOut = null;
+
+    zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, 3).then(function(data) {
+        networkInArr = zbxApi.getHistory.success(data);
+        // history_networkIn = zbxApi.getHistory.success(data);
+        // $.each(history_networkIn.result, function(k, v) {
+        //     networkInArr[k] = new Array();
+        //     networkInArr[k][0] = parseInt(v.clock) * 1000;
+        //     networkInArr[k][1] = parseInt(v.value) / 1000;
+        // });
+    }).then(function() {
+        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, 3);
+    }).then(function(data) {
+
+        networkOutArr = zbxApi.getHistory.success(data);
+        // history_networkOut = zbxApi.getHistory.success(data);
+        // $.each(history_networkOut.result, function(k, v) {
+        //     networkOutArr[k] = new Array();
+        //     networkOutArr[k][0] = parseInt(v.clock) * 1000;
+        //     networkOutArr[k][1] = parseInt(v.value) / 1000;
+        // });
+
+        $(function() {
+            Highcharts.chart('chart_trafficIo', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '트래픽 I/O',
+                    align: 'left'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value / 1000 + 'k';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function() {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic In',
+                    data: networkInArr
+                }, {
+                    name: 'Traffic Out',
+                    data: networkOutArr
+                }]
+            });
+        });
+    })
+}
+
+function showTotalNetwork(networkTotal, startTime) {
+    var networkTotalArr = [];
+
+    var history_networkTotal = null;
+
+    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, 3).then(function(data) {
+        networkTotalArr  = zbxApi.getHistory.success(data);
+        // history_networkTotal = zbxApi.getHistory.success(data);
+        // $.each(history_networkTotal.result, function(k, v) {
+        //     networkTotalArr[k] = new Array();
+        //     networkTotalArr[k][0] = parseInt(v.clock) * 1000;
+        //     networkTotalArr[k][1] = parseInt(v.value) / 1000;
+        // });
+
+        $(function() {
+            Highcharts.chart('chart_trafficTotal', {
+                chart: {
+                    zoomType: 'x',
+                    type: 'area',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '트래픽 Total',
+                    align: 'left'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value / 1000 + 'k';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function() {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                    }
+                },
+                plotOptions: {
+                    marker: {
+                        enabled: false,
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic Total',
+                    data: networkTotalArr
+                }]
+            });
+        });
+    })
+}
+
 var callApiForServerEvent = function(hostid) {
     return zbxSyncApi.serverViewTrigger(hostid);
 }
@@ -1599,8 +1852,8 @@ function showCpuUsage(data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuStea
     var history_CpuSteal = null;
 
     zbxApi.getHistory.get(data_CpuSystem.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-      keyName_CpuSystem = data_CpuSystem.result[0].key_;
-      CpuSystemArr = zbxApi.getHistory.success(data);
+        keyName_CpuSystem = data_CpuSystem.result[0].key_;
+        CpuSystemArr = zbxApi.getHistory.success(data);
         // history_CpuSystem = zbxApi.getHistory.success(data);
         // $.each(history_CpuSystem.result, function(k, v) {
         //     CpuSystemArr[k] = new Array();
@@ -1612,9 +1865,9 @@ function showCpuUsage(data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuStea
         return zbxApi.getHistory.get(data_CpuUser.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
 
     }).then(function(data) {
-      keyName_CpuUser = data_CpuUser.result[0].key_;
+        keyName_CpuUser = data_CpuUser.result[0].key_;
 
-      CpuUserArr  = zbxApi.getHistory.success(data);
+        CpuUserArr  = zbxApi.getHistory.success(data);
         // history_CpuUser = zbxApi.getHistory.success(data);
         // $.each(history_CpuUser.result, function(k, v) {
         //     CpuUserArr[k] = new Array();
@@ -1626,9 +1879,9 @@ function showCpuUsage(data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuStea
         return zbxApi.getHistory.get(data_CpuIOwait.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
 
     }).then(function(data) {
-      keyName_CpuIOwait = data_CpuIOwait.result[0].key_;
+        keyName_CpuIOwait = data_CpuIOwait.result[0].key_;
 
-      CpuIOwaitArr  = zbxApi.getHistory.success(data);
+        CpuIOwaitArr  = zbxApi.getHistory.success(data);
         // history_CpuIOwait = zbxApi.getHistory.success(data);
         // $.each(history_CpuIOwait.result, function(k, v) {
         //     CpuIOwaitArr[k] = new Array();
