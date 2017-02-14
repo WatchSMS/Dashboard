@@ -154,7 +154,7 @@ var zbxApi = {
         get: function (hostid) {
             var method = "item.get";
             var params = {
-                "output": ["key_", "itemid", "lastclock"],
+                "output": ["key_", "itemid", "lastclock", "lastvalue"],
                 "hostids": hostid,
                 "search": {"key_": "vfs.fs.size", "name": "Total disk space"}
             };

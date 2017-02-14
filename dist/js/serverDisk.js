@@ -26,7 +26,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     diskTableHTML += "<tr role='row'>";
     diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
     diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(MB)</span></th>";
+    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(%)</span></th>";
     diskTableHTML += "</tr>";
     diskTableHTML += "</thead>";
 
@@ -36,8 +36,10 @@ function diskInfoView(hostid, data_topDisk, startTime){
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
-        diskItemUsed = 0;
-        diskItemSize = 0;
+        //diskItemUsed = 0;
+        //diskItemSize = 0;
+        diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
+        diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
 
         tableDataObj = new Object();
         tableDataObj.diskItemId = diskItemId;
@@ -50,7 +52,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
             diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='odd'>";
             diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" + diskItemName + "</span></td>";
             diskTableHTML += "<td class='text-right'>" + diskItemUsed + "<span class='smaller'>%</span></td>";
-            diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>MB</span></td>";
+            diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>%</span></td>";
             diskTableHTML += "</tr>";
         }
     });
@@ -101,7 +103,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
                 sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='odd'>";
                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemUsed + "<span class='smaller'>%</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>MB</span></td>";
+                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>%</span></td>";
                 sortTable += "</tr>";
             }
             $('tbody', $table).append(sortTable);
@@ -145,7 +147,7 @@ var rowClickDiskEvent = function(table, hostid, startTime) {
 
                 var diskItemKeyInode = "vfs.fs.inode[" + currentDiskItemId + ",pfree]";
                 var diskItemKeyFree = "vfs.fs.size[" + currentDiskItemId + ",pfree]";
-                var diskItemKeyUse = "vfs.fs.size[" + currentDiskItemId + ",pfree]";
+                var diskItemKeyUse = "vfs.fs.size[" + currentDiskItemId + ",pused]";
 
                 zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
                     diskInode = zbxApi.serverViewGraph.success(data);

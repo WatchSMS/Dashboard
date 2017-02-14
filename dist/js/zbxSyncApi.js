@@ -125,6 +125,27 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    getDiskItem: function (hostid, key_) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "item.get",
+            "params": {
+                "output": ["key_", "name", "lastvalue", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": key_}
+            },
+            "id": 1,
+            "auth": authid
+        }
+        console.log(JSON.stringify(param));
+
+        //console.log("param 123 : " + JSON.stringify(param));
+        var result = zbxSyncApi.callAjax(param);
+        //console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result.result[0]));
+        return result.result[0];
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
