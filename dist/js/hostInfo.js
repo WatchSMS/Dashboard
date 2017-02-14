@@ -28,7 +28,7 @@ var hostInfoView = function() {
             $("#" + tagId + "_performlist").append(tagText2);
 
             $("#info_" + hostid).click(function() { /* 서버 정보 요약 */
-                console.log(">>>>> info_ reload_serverOverView <<<<<");
+                console.log(">>>>> info_ reload_serverOverInfo <<<<<");
                 $("[id^=base]").hide();
                 $("#base_serverInfo").show();
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
@@ -109,7 +109,7 @@ var hostInfoView = function() {
                 //page reloag
                 $("#reload_serverOverView").click(function() {
                     console.log(">>>>> reload_serverOverView <<<<<");
-                    $("#info_" + hostid).click();
+                    $(allServerViewHost()).click();
                 });
 
                 $(function($) {
@@ -121,6 +121,25 @@ var hostInfoView = function() {
                             });
                         } else {
                             $("#reload_serverOverView").removeAttr("disabled");
+                        }
+                    });
+                });
+
+                //page reloag
+                $("#reload_serverOverInfo").click(function() {
+                    console.log(">>>>> reload_serverOverInfo <<<<<");
+                    $("#info_" + hostid).click();
+                });
+
+                $(function($) {
+                    $('#reload_serverOverInfo_selecter').change(function() {
+                        var selectVal = $(this).val();
+                        if (selectVal != 0) {
+                            $("#reload_serverOverInfo").attr({
+                                "disabled": "disabled"
+                            });
+                        } else {
+                            $("#reload_serverOverInfo").removeAttr("disabled");
                         }
                     });
                 });
