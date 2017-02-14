@@ -193,8 +193,6 @@ var hostInfoView = function() {
             });
 
             $("#traffic_" + hostid).click(function() {
-                $("[id^=base]").hide();
-                $("#base_networkInfo").show();
                 console.log(">>>>> IN clickNetworkView <<<<<");
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);

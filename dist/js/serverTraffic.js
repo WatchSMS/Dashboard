@@ -1,5 +1,18 @@
-function networkView(hostid, network_data, startTime){
-    console.log("networkView");
+function callApiForTraffic(hostid, startTime){
+    $("[id^=base]").hide();
+    $("#base_networkInfo").show();
+
+    var data_topDisk = '';
+
+    zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
+        data_topDisk = zbxApi.getNetworkItem.success(data);
+        console.log("dataItem : " + JSON.stringify(data_topDisk));
+        networkInfoView(hostid, startTime, data_topDisk);
+    })
+}
+
+function networkInfoView(hostid, startTime, data_topDisk){
+    console.log("networkInfoView");
     var networkTableHTML = '';
     var MAX_NETWORKCOUNT = 10;
     var tableDataObj = new Object();
@@ -20,7 +33,7 @@ function networkView(hostid, network_data, startTime){
 
     networkTableHTML += "<tbody>";
 
-    $.each(network_data.result, function(k, v) {
+    $.each(data_topDisk.result, function(k, v){
         networkItemId = v.itemId;
         var key = v.key_;
         networkItemName = key.substring(key.indexOf("[") + 1, key.indexOf("]"));
