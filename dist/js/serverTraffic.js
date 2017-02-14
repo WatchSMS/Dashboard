@@ -26,8 +26,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
     networkTableHTML += "<thead>";
     networkTableHTML += "<tr role='row'>";
     networkTableHTML += "<th class='percent-text sorting' aria-sort='descending'>NETWORK</th>";
-    networkTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-    networkTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(MB)</span></th>";
+    networkTableHTML += "<th width='15%' class='text-right'>USED<span class='smaller'>(%)</span></th>";
+    networkTableHTML += "<th width='15%' class='text-right'>SIZE<span class='smaller'>(MB)</span></th>";
     networkTableHTML += "</tr>";
     networkTableHTML += "</thead>";
 
