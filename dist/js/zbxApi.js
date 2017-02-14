@@ -173,12 +173,13 @@ var zbxApi = {
     },
 
     getNetworkItem: {
-        get: function (hostid) {
+        get: function (hostid, key_) {
             var method = "item.get";
             var params = {
                 "output": ["key_", "itemid", "lastclock"],
                 "hostids": hostid,
-                "search": {"key_": "net.if.in["}
+                "search": {"key_": key_}
+                //"search": {"key_": "net.if.in["}
             };
             return server.sendAjaxRequest(method, params);
         },

@@ -198,11 +198,14 @@ var hostInfoView = function() {
                 console.log(">>>>> IN clickNetworkView <<<<<");
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                callApiForTraffic(hostid, startTime);
+                /*
                 var network_data = '';
-                zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR) {
-                    network_data = zbxApi.getNetworkItem.success(data);
-                    networkView(hostid, network_data, startTime);
-                })
+                 zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR) {
+                 network_data = zbxApi.getNetworkItem.success(data);
+                 networkView(hostid, network_data, startTime);
+                 })
+                 */
             });
 
             $("#" + tagId).click(function() {
