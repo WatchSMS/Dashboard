@@ -1,5 +1,16 @@
-function diskView(hostid, disk_data, startTime) {
-    console.log("diskView");
+function callApiForDisk(hostid, startTime){
+    $("[id^=base]").hide();
+    $("#base_diskInfo").show();
+
+    var data_topDisk = '';
+    zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
+        data_topDisk = zbxApi.getDiskItem.success(data);
+        diskInfoView(hostid, data_topDisk, startTime);
+    })
+}
+
+function diskInfoView(hostid, data_topDisk, startTime){
+    console.log(" =========== diskInfoView =========== ");
     var diskTableHTML = '';
     var MAX_DISKCOUNT = 10;
     var currentDiskName = null;
@@ -21,7 +32,7 @@ function diskView(hostid, disk_data, startTime) {
 
     diskTableHTML += "<tbody>";
 
-    $.each(disk_data.result, function(k, v) {
+    $.each(data_topDisk.result, function(k, v) {
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
@@ -162,28 +173,12 @@ function showInFrDisk(diskInode, diskFree, startTime) {
     var diskInodeArr = [];
     var diskFreeArr = [];
 
-    var history_diskInode = null;
-    var history_diskFree = null;
-
     zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data) {
         diskInodeArr  = zbxApi.getHistory.success(data);
-        // history_diskInode = zbxApi.getHistory.success(data);
-        // $.each(history_diskInode.result, function(k, v) {
-        //     diskInodeArr[k] = new Array();
-        //     diskInodeArr[k][0] = parseInt(v.clock) * 1000;
-        //     diskInodeArr[k][1] = parseFloat(v.value);
-        // });
     }).then(function() {
         return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
     }).then(function(data) {
         diskFreeArr= zbxApi.getHistory.success(data);
-        //
-        // history_diskFree = zbxApi.getHistory.success(data);
-        // $.each(history_diskFree.result, function(k, v) {
-        //     diskFreeArr[k] = new Array();
-        //     diskFreeArr[k][0] = parseInt(v.clock) * 1000;
-        //     diskFreeArr[k][1] = parseFloat(v.value);
-        // });
 
         $(function() {
             Highcharts.chart('chart_diskIo', {
@@ -274,16 +269,8 @@ function showInFrDisk(diskInode, diskFree, startTime) {
 function showUseDisk(diskUse, startTime) {
     var diskUseArr = [];
 
-    var history_diskUse = null;
-
     zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data) {
         diskUseArr  = zbxApi.getHistory.success(data);
-        // history_diskUse = zbxApi.getHistory.success(data);
-        // $.each(history_diskUse.result, function(k, v) {
-        //     diskUseArr[k] = new Array();
-        //     diskUseArr[k][0] = parseInt(v.clock) * 1000;
-        //     diskUseArr[k][1] = 100 - parseFloat(v.value);
-        // });
 
         $(function() {
             Highcharts.chart('chart_diskUse', {

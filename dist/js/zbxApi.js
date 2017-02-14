@@ -156,7 +156,7 @@ var zbxApi = {
             var params = {
                 "output": ["key_", "itemid", "lastclock"],
                 "hostids": hostid,
-                "search": {"key_": "vfs.fs.size", "name" : "Total disk"}
+                "search": {"key_": "vfs.fs.size", "name": "Total disk space"}
             };
             return server.sendAjaxRequest(method, params);
         },

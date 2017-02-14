@@ -179,16 +179,17 @@ var hostInfoView = function() {
             });
 
             $("#disk_" + hostid).click(function() { //Disk
-                $("[id^=base]").hide();
-                $("#base_diskInfo").show();
                 console.log(">>>>> IN clickDiskView <<<<<");
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                callApiForDisk(hostid, startTime);
+                /*
                 var disk_data = '';
                 zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
                     disk_data = zbxApi.getDiskItem.success(data);
                     diskView(hostid, disk_data, startTime);
                 })
+                */
             });
 
             $("#traffic_" + hostid).click(function() {
