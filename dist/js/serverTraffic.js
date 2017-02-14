@@ -20,8 +20,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
     var networkItemId = '';
     var networkItemName = '';
-    var networkItemUsed = '';
-    var networkItemSize = '';
+    var networkItemUsed = 0;
+    var networkItemSize = 0;
 
     networkTableHTML += "<thead>";
     networkTableHTML += "<tr role='row'>";
@@ -37,8 +37,20 @@ function networkInfoView(hostid, startTime, data_topDisk){
         networkItemId = v.itemId;
         var key = v.key_;
         networkItemName = key.substring(key.indexOf("[") + 1, key.indexOf("]"));
-        networkItemSize = 0;
-        networkItemUsed = 0;
+        //networkItemSize = 0;
+        //networkItemUsed = 0;
+        try{
+            networkItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+networkItemName+",pused]").lastvalue;
+            networkItemUsed = Math.floor(networkItemUsed * 100) / 100;
+        } catch(e){
+            console.log(e);
+        }
+        try {
+            networkItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+networkItemName+",pused]").lastvalue;
+        }
+        catch(e){
+            console.log(e);
+        }
 
         tableDataObj = new Object();
         tableDataObj.networkItemId = networkItemId;
