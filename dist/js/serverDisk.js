@@ -19,8 +19,8 @@ function diskInfoView(hostid, data_topDisk, startTime){
 
     var diskItemId = '';
     var diskItemName = '';
-    var diskItemUsed = '';
-    var diskItemSize = '';
+    var diskItemUsed = 0;
+    var diskItemSize = 0;
 
     diskTableHTML += "<thead>";
     diskTableHTML += "<tr role='row'>";
@@ -38,9 +38,18 @@ function diskInfoView(hostid, data_topDisk, startTime){
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
         //diskItemUsed = 0;
         //diskItemSize = 0;
-        diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
+        try{
+            diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
             diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
-        diskItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+diskItemName+",used]").lastvalue;
+        } catch(e){
+            console.log(e);
+        }
+        try {
+            diskItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+diskItemName+",pused]").lastvalue;
+        }
+        catch(e){
+            console.log(e);
+        }
 
         tableDataObj = new Object();
         tableDataObj.diskItemId = diskItemId;
