@@ -39,7 +39,8 @@ function diskInfoView(hostid, data_topDisk, startTime){
         //diskItemUsed = 0;
         //diskItemSize = 0;
         diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
-        diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
+            diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
+        diskItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+diskItemName+",used]").lastvalue;
 
         tableDataObj = new Object();
         tableDataObj.diskItemId = diskItemId;
