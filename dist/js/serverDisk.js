@@ -277,7 +277,6 @@ function showUseDisk(diskUse, startTime) {
     var history_diskUse = null;
 
     zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data) {
-
         diskUseArr  = zbxApi.getHistory.success(data);
         // history_diskUse = zbxApi.getHistory.success(data);
         // $.each(history_diskUse.result, function(k, v) {
