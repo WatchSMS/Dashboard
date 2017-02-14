@@ -188,6 +188,7 @@ function showInFrDisk(diskInode, diskFree, startTime) {
         $(function() {
             Highcharts.chart('chart_diskIo', {
                 chart: {
+                    type: 'area',
                     zoomType: 'x',
                     spacingTop: 2,
                     spacingBottom: 0
@@ -288,6 +289,7 @@ function showUseDisk(diskUse, startTime) {
         $(function() {
             Highcharts.chart('chart_diskUse', {
                 chart: {
+                    type: 'area',
                     zoomType: 'x',
                     spacingTop: 2,
                     spacingBottom: 0

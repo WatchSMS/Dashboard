@@ -177,7 +177,6 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
     }).then(function() {
         return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, 3);
     }).then(function(data) {
-
         networkOutArr = zbxApi.getHistory.success(data);
         // history_networkOut = zbxApi.getHistory.success(data);
         // $.each(history_networkOut.result, function(k, v) {

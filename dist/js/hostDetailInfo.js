@@ -155,7 +155,6 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     })
 }
 
-
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
     var serverCpuSystemArr = [];
     var serverCpuUserArr = [];
@@ -191,7 +190,6 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         var chartId = "cpuUse";
         var title = 'CPU 사용량';
         var name = 'Memory Use';
-
 
         var series = [{
             name: 'CPU System',
