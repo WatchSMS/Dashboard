@@ -163,27 +163,12 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
     var networkInArr = [];
     var networkOutArr = [];
 
-    var history_networkIn = null;
-    var history_networkOut = null;
-
     zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, 3).then(function(data) {
         networkInArr = zbxApi.getHistory.success(data);
-        // history_networkIn = zbxApi.getHistory.success(data);
-        // $.each(history_networkIn.result, function(k, v) {
-        //     networkInArr[k] = new Array();
-        //     networkInArr[k][0] = parseInt(v.clock) * 1000;
-        //     networkInArr[k][1] = parseInt(v.value) / 1000;
-        // });
     }).then(function() {
         return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, 3);
     }).then(function(data) {
         networkOutArr = zbxApi.getHistory.success(data);
-        // history_networkOut = zbxApi.getHistory.success(data);
-        // $.each(history_networkOut.result, function(k, v) {
-        //     networkOutArr[k] = new Array();
-        //     networkOutArr[k][0] = parseInt(v.clock) * 1000;
-        //     networkOutArr[k][1] = parseInt(v.value) / 1000;
-        // });
 
         $(function() {
             Highcharts.chart('chart_trafficIo', {
@@ -274,16 +259,8 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
 function showTotalNetwork(networkTotal, startTime) {
     var networkTotalArr = [];
 
-    var history_networkTotal = null;
-
     zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, 3).then(function(data) {
         networkTotalArr  = zbxApi.getHistory.success(data);
-        // history_networkTotal = zbxApi.getHistory.success(data);
-        // $.each(history_networkTotal.result, function(k, v) {
-        //     networkTotalArr[k] = new Array();
-        //     networkTotalArr[k][0] = parseInt(v.clock) * 1000;
-        //     networkTotalArr[k][1] = parseInt(v.value) / 1000;
-        // });
 
         $(function() {
             Highcharts.chart('chart_trafficTotal', {
