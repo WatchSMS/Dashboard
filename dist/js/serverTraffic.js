@@ -179,7 +179,7 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
     zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, 3).then(function(data) {
         networkInArr = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, 3);
+        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         networkOutArr = zbxApi.getHistory.success(data);
 
@@ -272,7 +272,7 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
 function showTotalNetwork(networkTotal, startTime) {
     var networkTotalArr = [];
 
-    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, 3).then(function(data) {
+    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkTotalArr  = zbxApi.getHistory.success(data);
 
         $(function() {

@@ -173,10 +173,10 @@ function showInFrDisk(diskInode, diskFree, startTime) {
     var diskInodeArr = [];
     var diskFreeArr = [];
 
-    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         diskInodeArr  = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
+        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         diskFreeArr= zbxApi.getHistory.success(data);
 
@@ -269,7 +269,7 @@ function showInFrDisk(diskInode, diskFree, startTime) {
 function showUseDisk(diskUse, startTime) {
     var diskUseArr = [];
 
-    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         diskUseArr  = zbxApi.getHistory.success(data);
 
         $(function() {
