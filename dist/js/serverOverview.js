@@ -134,32 +134,27 @@ var serverOverView = function(server_data) {
     $.each(server_data.result, function(k, v) {
         hostid = v.hostid;
         var item_id = '';
-        console.log("123 456 hostid : " + hostid);
 
         //화면 이동
         $("#Name_" + hostid).dblclick(function () {
-            //console.log(">>>>> 서버명 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_")+1);
             $("#info_" + hostid).click();
         });
 
         $("#PerCPU_" + hostid).dblclick(function () {
-            //console.log(">>>>> CPU(%) 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#cpu_" + hostid).click();
         });
 
         $("#PerMemory_" + hostid).dblclick(function () {
-            //console.log(">>>>> Memory(%) 클릭 <<<<< : " + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#memory_" + hostid).click();
         });
 
         $("#PerDisk_" + hostid).dblclick(function () {
-            //console.log(">>>>> Disk(%) 클릭 <<<<< : " + + this.id);
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#disk_" + hostid).click();
@@ -215,13 +210,6 @@ var serverOverView = function(server_data) {
     $("#reload_serverOverview").click(function(){
         //int.allServerViewHost();
         console.log("reload_serverOverview");
-        //http://div.or.kr/js-studying/%ED%83%9C%EA%B7%B8%20%EA%B0%9D%EC%B2%B4%20innerHTML%20%EC%86%8D%EC%84%B1
-        /*
-         console.log($("#perCPU_10110").width());
-         console.log($("#perCPU_10110").html());
-         $("#perCPU_10110").width("80%");
-         $("#perCPU_10110").html("80%");
-         */
 
         var cpu = '';
         var memory = '';
@@ -231,7 +219,6 @@ var serverOverView = function(server_data) {
 
         for(var i=0; i<ROW_COUNT; i++){
             var hostid = tableDataArr[i].hostid;
-            //alert("hostid : " + hostid);
             try {
                 cpu = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
                 cpu = Math.floor(cpu * 100) / 100;
