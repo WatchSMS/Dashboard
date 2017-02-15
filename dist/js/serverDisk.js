@@ -35,12 +35,17 @@ function diskInfoView(hostid, data_topDisk, startTime){
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
+        var diskValue;
         try{
-            diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
-            diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
-        } catch(e){
+            diskValue = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pfree]").lastvalue;
+        } catch (e) {
             console.log(e);
         }
+        diskItemUsed = 100-diskValue;
+        if(diskItemUsed == 100)
+            diskItemUsed = 0;
+        diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
+
         try {
             diskItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+diskItemName+",pused]").lastvalue;
         }
