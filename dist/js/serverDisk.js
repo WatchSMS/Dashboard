@@ -25,7 +25,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     diskTableHTML += "<tr role='row'>";
     diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
     diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(%)</span></th>";
+    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>MB</span></th>";
     diskTableHTML += "</tr>";
     diskTableHTML += "</thead>";
 
@@ -64,7 +64,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
             diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='odd'>";
             diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" + diskItemName + "</span></td>";
             diskTableHTML += "<td class='text-right'>" + diskItemUsed + "<span class='smaller'>%</span></td>";
-            diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>%</span></td>";
+            diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>MB</span></td>";
             diskTableHTML += "</tr>";
         }
     });
@@ -113,7 +113,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
                 sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='odd'>";
                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemUsed + "<span class='smaller'>%</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>%</span></td>";
+                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>MB</span></td>";
                 sortTable += "</tr>";
             }
             $('tbody', $table).append(sortTable);
