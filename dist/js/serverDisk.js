@@ -36,8 +36,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
-        //diskItemUsed = 0;
-        //diskItemSize = 0;
         try{
             diskItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
             diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
