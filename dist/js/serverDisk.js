@@ -32,6 +32,9 @@ function diskInfoView(hostid, data_topDisk, startTime){
     diskTableHTML += "<tbody>";
 
     $.each(data_topDisk.result, function(k, v) {
+        /*var test = zbxSyncApi.getDiskDuRule(hostid, "Mounted filesystem device discovery");
+        console.log(" <<<<< getDiskDuRule test >>>>> ");
+        console.log(test);*/
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
@@ -47,7 +50,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
         diskItemUsed = Math.floor(diskItemUsed * 100) / 100;
 
         try {
-            diskItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+diskItemName+",pused]").lastvalue;
+            diskItemSize = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",used]").lastvalue;
         }
         catch(e){
             console.log(e);

@@ -146,6 +146,26 @@ var zbxSyncApi = {
         return result.result[0];
     },
 
+    getDiskDuRule: function (hostid, key_) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "drule.get",
+            "params": {
+                "output": "extend",
+                "hostids": hostid,
+                "search": {"key_": key_}
+            },
+            "id": 1,
+            "auth": authid
+        }
+        console.log(JSON.stringify(param));
+
+        var result = zbxSyncApi.callAjax(param);
+        console.log("ABCD : " + JSON.stringify(result));
+        console.log(JSON.stringify(result.result[0]));
+        return result.result[0];
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
