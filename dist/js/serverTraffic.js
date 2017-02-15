@@ -38,7 +38,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
         var key = v.key_;
         networkItemName = key.substring(key.indexOf("[") + 1, key.indexOf("]"));
         try{
-            networkItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+networkItemName+",pused]").lastvalue;
+            networkItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+networkItemName+",pfree]").lastvalue;
             networkItemUsed = Math.floor(networkItemUsed * 100) / 100;
         } catch(e){
             console.log(e);
