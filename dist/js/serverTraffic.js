@@ -44,7 +44,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
             console.log(e);
         }
         try {
-            networkItemSize = zbxSyncApi.getDiskItem(hostid, "vm.memory.size["+networkItemName+",pused]").lastvalue;
+            networkItemSize = zbxSyncApi.getDiskItem(hostid, "net.if.total["+networkItemName+",bytes]").lastvalue;
         }
         catch(e){
             console.log(e);

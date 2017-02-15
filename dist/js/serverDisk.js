@@ -25,7 +25,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     diskTableHTML += "<tr role='row'>";
     diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
     diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>GB</span></th>";
+    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(GB)</span></th>";
     diskTableHTML += "</tr>";
     diskTableHTML += "</thead>";
 
