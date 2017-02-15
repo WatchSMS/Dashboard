@@ -13,7 +13,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
     console.log(" =========== diskInfoView =========== ");
     var diskTableHTML = '';
     var MAX_DISKCOUNT = 10;
-    var currentDiskName = null;
     var tableDataObj = new Object();
     var tableDataArr = [];
 
@@ -70,8 +69,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
     $("#diskInfoTable").empty();
     $("#diskInfoTable").append(diskTableHTML);
     var $table = $("#diskInfoTable");
-    $("#diskInfoTable > tbody > tr").eq(0).addClass("selectedDisk");
-    currentDiskName = $(".selectedDisk").attr('id');
 
     //table의 row 클릭시 해당 그래프 만드는 이벤트
     $("#btn_disk.btn").click(function() {
