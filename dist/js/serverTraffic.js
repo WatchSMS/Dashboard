@@ -193,54 +193,24 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
     }).then(function(data) {
         networkOutArr = zbxApi.getHistory.success(data);
 
-        $(function() {
-            Highcharts.chart('chart_trafficIo', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '트래픽 I/O',
-                    align: 'left'
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    labels: {
-                        formatter: function() {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if (hours.length == 1) {
-                                hours = "0" + hours;
-                            }
-                            if (minutes.length == 1) {
-                                minutes = "0" + minutes;
-                            }
-                            if (seconds.length == 1) {
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value / 1000 + 'k';
-                        }
-                    }
-                },
-                tooltip: {
+        Highcharts.chart('chart_trafficIo', {
+            chart: {
+                zoomType: 'x',
+                type: 'area',
+                spacingTop: 2,
+                spacingBottom: 0
+            },
+            title: {
+                text: '트래픽 I/O',
+                align: 'left'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                labels: {
                     formatter: function() {
-                        var d2 = new Date(this.x);
+                        var d2 = new Date(this.value);
                         var hours = "" + d2.getHours();
                         var minutes = "" + d2.getMinutes();
                         var seconds = "" + d2.getSeconds();
@@ -253,29 +223,57 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
                         if (seconds.length == 1) {
                             seconds = "0" + seconds;
                         }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                        return hours + ":" + minutes + ":" + seconds;
                     }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
                 },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
+                labels: {
+                    formatter: function() {
+                        return this.value / 1000 + 'k';
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+                    if (hours.length == 1) {
+                        hours = "0" + hours;
+                    }
+                    if (minutes.length == 1) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds.length == 1) {
+                        seconds = "0" + seconds;
+                    }
+                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                }
+            },
+            plotOptions: {
+                marker: {
+                    enabled: false,
+                    radius: 2,
+                    states: {
+                        hover: {
+                            enabled: true
                         }
                     }
-                },
-                series: [{
-                    name: 'Traffic In',
-                    data: networkInArr
-                }, {
-                    name: 'Traffic Out',
-                    data: networkOutArr
-                }]
-            });
-        });
+                }
+            },
+            series: [{
+                name: 'Traffic In',
+                data: networkInArr
+            }, {
+                name: 'Traffic Out',
+                data: networkOutArr
+            }]
+        })
     })
 }
 
@@ -285,54 +283,24 @@ function showTotalNetwork(networkTotal, startTime) {
     zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkTotalArr  = zbxApi.getHistory.success(data);
 
-        $(function() {
-            Highcharts.chart('chart_trafficTotal', {
-                chart: {
-                    zoomType: 'x',
-                    type: 'area',
-                    spacingTop: 2,
-                    spacingBottom: 0
-                },
-                title: {
-                    text: '트래픽 Total',
-                    align: 'left'
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    labels: {
-                        formatter: function() {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if (hours.length == 1) {
-                                hours = "0" + hours;
-                            }
-                            if (minutes.length == 1) {
-                                minutes = "0" + minutes;
-                            }
-                            if (seconds.length == 1) {
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function() {
-                            return this.value / 1000 + 'k';
-                        }
-                    }
-                },
-                tooltip: {
+        Highcharts.chart('chart_trafficTotal', {
+            chart: {
+                zoomType: 'x',
+                type: 'area',
+                spacingTop: 2,
+                spacingBottom: 0
+            },
+            title: {
+                text: '트래픽 Total',
+                align: 'left'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                labels: {
                     formatter: function() {
-                        var d2 = new Date(this.x);
+                        var d2 = new Date(this.value);
                         var hours = "" + d2.getHours();
                         var minutes = "" + d2.getMinutes();
                         var seconds = "" + d2.getSeconds();
@@ -345,25 +313,53 @@ function showTotalNetwork(networkTotal, startTime) {
                         if (seconds.length == 1) {
                             seconds = "0" + seconds;
                         }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                        return hours + ":" + minutes + ":" + seconds;
                     }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
                 },
-                plotOptions: {
-                    marker: {
-                        enabled: false,
-                        radius: 2,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
+                labels: {
+                    formatter: function() {
+                        return this.value / 1000 + 'k';
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+                    if (hours.length == 1) {
+                        hours = "0" + hours;
+                    }
+                    if (minutes.length == 1) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds.length == 1) {
+                        seconds = "0" + seconds;
+                    }
+                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                }
+            },
+            plotOptions: {
+                marker: {
+                    enabled: false,
+                    radius: 2,
+                    states: {
+                        hover: {
+                            enabled: true
                         }
                     }
-                },
-                series: [{
-                    name: 'Traffic Total',
-                    data: networkTotalArr
-                }]
-            });
-        });
+                }
+            },
+            series: [{
+                name: 'Traffic Total',
+                data: networkTotalArr
+            }]
+        })
     })
 }
