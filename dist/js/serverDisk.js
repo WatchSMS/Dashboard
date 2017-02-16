@@ -235,12 +235,14 @@ function showInFrDisk(diskInode, diskFree, startTime) {
                     text: ''
                 },
                 labels: {
-                    formatter: function() {
-                        return this.value + '%';
-                    }
+                    format: '{value} %'
                 }
             },
             tooltip: {
+                backgroundColor: 'none',
+                headerFormat: '',
+                shadow: false,
+                borderWidth: 0,
                 formatter: function() {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
@@ -283,7 +285,6 @@ function showUseDisk(diskUse, startTime) {
 
         Highcharts.chart('chart_diskUse', {
             chart: {
-                type: 'area',
                 zoomType: 'x',
                 spacingTop: 2,
                 spacingBottom: 0
@@ -320,12 +321,14 @@ function showUseDisk(diskUse, startTime) {
                     text: ''
                 },
                 labels: {
-                    formatter: function() {
-                        return this.value + '%';
-                    }
+                    format: '{value} %'
                 }
             },
             tooltip: {
+                backgroundColor: 'none',
+                headerFormat: '',
+                shadow: false,
+                borderWidth: 0,
                 formatter: function() {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
