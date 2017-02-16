@@ -198,7 +198,6 @@ function showInFrDisk(diskInode, diskFree, startTime) {
 
         Highcharts.chart('chart_diskIo', {
             chart: {
-                type: 'spline',
                 zoomType: 'x',
                 spacingTop: 2,
                 spacingBottom: 0
@@ -239,10 +238,6 @@ function showInFrDisk(diskInode, diskFree, startTime) {
                 }
             },
             tooltip: {
-                backgroundColor: 'none',
-                headerFormat: '',
-                shadow: false,
-                borderWidth: 0,
                 formatter: function() {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
@@ -261,17 +256,20 @@ function showInFrDisk(diskInode, diskFree, startTime) {
                 }
             },
             plotOptions: {
-                lineWidth: 1.5,
-                marker: {
-                    radius: 2
+                series: {
+                    marker: {
+                        enabled: false //false
+                    }
                 }
             },
             series: [{
                 name: 'Disk Inode',
-                data: diskInodeArr
+                data: diskInodeArr,
+                cursor: 'default'
             }, {
                 name: 'Disk Free',
-                data: diskFreeArr
+                data: diskFreeArr,
+                cursor: 'default'
             }]
         })
     })
@@ -347,13 +345,9 @@ function showUseDisk(diskUse, startTime) {
                 }
             },
             plotOptions: {
-                marker: {
-                    enabled: false,
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
+                series: {
+                    marker: {
+                        enabled: false //false
                     }
                 }
             },

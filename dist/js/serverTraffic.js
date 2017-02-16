@@ -256,13 +256,9 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
                 }
             },
             plotOptions: {
-                marker: {
-                    enabled: false,
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
+                series: {
+                    marker: {
+                        enabled: false //false
                     }
                 }
             },
@@ -346,13 +342,9 @@ function showTotalNetwork(networkTotal, startTime) {
                 }
             },
             plotOptions: {
-                marker: {
-                    enabled: false,
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
+                series: {
+                    marker: {
+                        enabled: false //false
                     }
                 }
             },

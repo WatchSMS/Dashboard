@@ -183,13 +183,9 @@ function chartCall(chartId, title, series, label, colorArr) {
                 }
             },
             plotOptions: {
-                marker: {
-                    enabled: false,
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
+                series: {
+                    marker: {
+                        enabled: false //false
                     }
                 }
             },
