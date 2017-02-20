@@ -145,10 +145,9 @@ function diskInfoView(hostid, data_topDisk, startTime){
 
     //자동 새로고침
     //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
-
 };
 
-var rowClickDiskEvent = function(table, hostid, startTime) {
+function rowClickDiskEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
         if (row > 0) {
             $(this).click(function() {
@@ -180,14 +179,11 @@ var rowClickDiskEvent = function(table, hostid, startTime) {
     });
 };
 
-var showDiskView = function(diskInode, diskFree, diskUse, startTime) {
-    showInFrDisk(diskInode, diskFree, startTime);
-    showUseDisk(diskUse, startTime);
-};
-
-function showInFrDisk(diskInode, diskFree, startTime) {
+function showDiskView(diskInode, diskFree, diskUse, startTime) {
     var diskInodeArr = [];
     var diskFreeArr = [];
+
+    var diskUseArr = [];
 
     zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         diskInodeArr  = zbxApi.getHistory.success(data);
@@ -195,164 +191,243 @@ function showInFrDisk(diskInode, diskFree, startTime) {
         return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         diskFreeArr= zbxApi.getHistory.success(data);
-
-        Highcharts.chart('chart_diskIo', {
-            chart: {
-                zoomType: 'x',
-                spacingTop: 2,
-                spacingBottom: 0
-            },
-            title: {
-                text: '디스크 I/O',
-                align: 'left'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        var d2 = new Date(this.value);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
-                }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'%';
-                    }
-                }
-            },
-            tooltip: {
-                formatter: function() {
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-                    if (hours.length == 1) {
-                        hours = "0" + hours;
-                    }
-                    if (minutes.length == 1) {
-                        minutes = "0" + minutes;
-                    }
-                    if (seconds.length == 1) {
-                        seconds = "0" + seconds;
-                    }
-                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
-                }
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false //false
-                    }
-                }
-            },
-            series: [{
-                name: 'Disk Inode',
-                data: diskInodeArr
-            }, {
-                name: 'Disk Free',
-                data: diskFreeArr
-            }]
-        })
-    })
-}
-
-function showUseDisk(diskUse, startTime) {
-    var diskUseArr = [];
-
-    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+    }).then(function() {
+        return zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
         diskUseArr  = zbxApi.getHistory.success(data);
 
-        Highcharts.chart('chart_diskUse', {
-            chart: {
-                zoomType: 'x',
-                spacingTop: 2,
-                spacingBottom: 0
-            },
-            title: {
-                text: '디스크 Total',
-                align: 'left'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        var d2 = new Date(this.value);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
+        $(function () {
+            var chart_IO;
+            var chart_Total;
+
+            var defaultTickInterval = 5;
+            var currentTickInterval = defaultTickInterval;
+
+            $(document).ready(function () {
+                function syncronizeCrossHairs(chart) {
+                    var container = $(chart.container);
+                    var offset = container.offset();
+                    var x;
+                    var y;
+
+                    container.mousemove(function (evt) {
+                        x = evt.clientX - chart.plotLeft - offset.left;
+                        y = evt.clientY - chart.plotTop - offset.top;
+                        var xAxis = chart.xAxis[0];
+                        var chart_IO_xAxis1 = chart_IO.xAxis[0];
+                        chart_IO_xAxis1.removePlotLine("myPlotLineId");
+                        chart_IO_xAxis1.addPlotLine({
+                            value: chart.xAxis[0].translate(x, true),
+                            width: 1,
+                            color: 'red',
+                            id: "myPlotLineId"
+                        });
+                        //remove old crosshair and draw new crosshair on chart2
+                        var chart_Total_xAxis2 = chart_Total.xAxis[0];
+                        chart_Total_xAxis2.removePlotLine("myPlotLineId");
+                        chart_Total_xAxis2.addPlotLine({
+                            value: chart.xAxis[0].translate(x, true),
+                            width: 1,
+                            color: 'red',
+                            id: "myPlotLineId"
+                        });
+                    });
                 }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'%';
-                    }
+
+                function computeTickInterval(xMin, xMax) {
+                    var zoomRange = xMax - xMin;
+
+                    if (zoomRange <= 2)
+                        currentTickInterval = 0.5;
+                    if (zoomRange < 20)
+                        currentTickInterval = 1;
+                    else if (zoomRange < 100)
+                        currentTickInterval = 5;
                 }
-            },
-            tooltip: {
-                formatter: function() {
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-                    if (hours.length == 1) {
-                        hours = "0" + hours;
-                    }
-                    if (minutes.length == 1) {
-                        minutes = "0" + minutes;
-                    }
-                    if (seconds.length == 1) {
-                        seconds = "0" + seconds;
-                    }
-                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+
+                function setTickInterval(event) {
+                    var xMin = event.xAxis[0].min;
+                    var xMax = event.xAxis[0].max;
+                    computeTickInterval(xMin, xMax);
+
+                    chart_IO.xAxis[0].options.tickInterval = currentTickInterval;
+                    chart_IO.xAxis[0].isDirty = true;
+                    chart_Total.xAxis[0].options.tickInterval = currentTickInterval;
+                    chart_Total.xAxis[0].isDirty = true;
                 }
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false //false
-                    }
-                }
-            },
-            series: [{
-                name: 'Disk Use',
-                data: diskUseArr
-            }]
-        })
+
+                $(document).ready(function () {
+                    var myPlotLineId = "myPlotLine";
+
+                    chart_IO = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'chart_diskIo',
+                            zoomType: 'x',
+                            borderColor: '#003399',
+                            borderWidth: 1
+                        },
+                        title: {
+                            text: '디스크 I/O',
+                            align: 'left'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            tickInterval:5,
+                            startOnTick: true,
+                            endOnTick: true,
+                            showLastLabel: true,
+                            labels: {
+                                formatter: function() {
+                                    var d2 = new Date(this.value);
+                                    var hours = "" + d2.getHours();
+                                    var minutes = "" + d2.getMinutes();
+                                    var seconds = "" + d2.getSeconds();
+                                    if (hours.length == 1) {
+                                        hours = "0" + hours;
+                                    }
+                                    if (minutes.length == 1) {
+                                        minutes = "0" + minutes;
+                                    }
+                                    if (seconds.length == 1) {
+                                        seconds = "0" + seconds;
+                                    }
+                                    return hours + ":" + minutes + ":" + seconds;
+                                }
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            },
+                            labels: {
+                                formatter: function() {
+                                    return this.value +'%';
+                                }
+                            }
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                var d2 = new Date(this.x);
+                                var hours = "" + d2.getHours();
+                                var minutes = "" + d2.getMinutes();
+                                var seconds = "" + d2.getSeconds();
+                                if (hours.length == 1) {
+                                    hours = "0" + hours;
+                                }
+                                if (minutes.length == 1) {
+                                    minutes = "0" + minutes;
+                                }
+                                if (seconds.length == 1) {
+                                    seconds = "0" + seconds;
+                                }
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    enabled: false //false
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Disk Inode',
+                            data: diskInodeArr
+                        }, {
+                            name: 'Disk Free',
+                            data: diskFreeArr
+                        }]
+                    }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
+                        syncronizeCrossHairs(chart);
+                    });
+
+                    chart_Total = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'chart_diskUse',
+                            zoomType: 'x',
+                            type: 'area',
+                            borderColor: '#003399',
+                            borderWidth: 1,
+                            spacingTop: 2,
+                            spacingBottom: 0
+                        },
+                        title: {
+                            text: '디스크 Total',
+                            align: 'left'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            tickInterval:5,
+                            startOnTick: true,
+                            endOnTick: true,
+                            showLastLabel: true,
+                            labels: {
+                                formatter: function () {
+                                    var d2 = new Date(this.value);
+                                    var hours = "" + d2.getHours();
+                                    var minutes = "" + d2.getMinutes();
+                                    var seconds = "" + d2.getSeconds();
+                                    if (hours.length == 1) {
+                                        hours = "0" + hours;
+                                    }
+                                    if (minutes.length == 1) {
+                                        minutes = "0" + minutes;
+                                    }
+                                    if (seconds.length == 1) {
+                                        seconds = "0" + seconds;
+                                    }
+                                    return hours + ":" + minutes + ":" + seconds;
+                                }
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            },
+                            labels: {
+                                formatter: function () {
+                                    return this.value +'%';
+                                }
+                            }
+                        },
+                        tooltip: {
+                            formatter: function () {
+                                var d2 = new Date(this.x);
+                                var hours = "" + d2.getHours();
+                                var minutes = "" + d2.getMinutes();
+                                var seconds = "" + d2.getSeconds();
+                                if (hours.length == 1) {
+                                    hours = "0" + hours;
+                                }
+                                if (minutes.length == 1) {
+                                    minutes = "0" + minutes;
+                                }
+                                if (seconds.length == 1) {
+                                    seconds = "0" + seconds;
+                                }
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    enabled: false //false
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Disk Use',
+                            data: diskUseArr
+                        }]
+                    }, function(chart) {
+                        syncronizeCrossHairs(chart);
+                    });
+                });
+            });
+        });
     })
-}
+};
