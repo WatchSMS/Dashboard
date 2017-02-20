@@ -26,8 +26,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
     networkTableHTML += "<thead>";
     networkTableHTML += "<tr role='row'>";
     networkTableHTML += "<th class='percent-text sorting' aria-sort='descending'>NETWORK</th>";
-    networkTableHTML += "<th width='15%' class='text-right'>USED<span class='smaller'>(%)</span></th>";
-    networkTableHTML += "<th width='15%' class='text-right'>SIZE<span class='smaller'>(MB)</span></th>";
+    //networkTableHTML += "<th width='15%' class='text-right'>USED<span class='smaller'>(%)</span></th>";
+    //networkTableHTML += "<th width='15%' class='text-right'>SIZE<span class='smaller'>(MB)</span></th>";
     networkTableHTML += "</tr>";
     networkTableHTML += "</thead>";
 
@@ -60,8 +60,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
         if(k < MAX_NETWORKCOUNT){
             networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='odd'>";
             networkTableHTML += "<td class='text-left'><span class='ellipsis' title='" + networkItemName + "'>" + networkItemName + "</span></td>";
-            networkTableHTML += "<td class='text-right'>" + networkItemUsed + "<span class='smaller'>%</span></td>";
-            networkTableHTML += "<td class='text-right'>" + networkItemSize + "<span class='smaller'>MB</span></td>";
+            //networkTableHTML += "<td class='text-right'>" + networkItemUsed + "<span class='smaller'>%</span></td>";
+            //networkTableHTML += "<td class='text-right'>" + networkItemSize + "<span class='smaller'>MB</span></td>";
             networkTableHTML += "</tr>";
         }
     });
@@ -109,8 +109,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
             for (var i = 0; i < MAX_COUNT; i++) {
                 sortTable += "<tr id='" + tableDataArr[i].networkItemName + "' role='row' class='odd'>";
                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].networkItemName + "'>" + tableDataArr[i].networkItemName + "</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemUsed + "<span class='smaller'>%</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemSize + "<span class='smaller'>MB</span></td>";
+                //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemUsed + "<span class='smaller'>%</span></td>";
+                //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemSize + "<span class='smaller'>MB</span></td>";
                 sortTable += "</tr>";
             }
             $('tbody', $table).append(sortTable);
