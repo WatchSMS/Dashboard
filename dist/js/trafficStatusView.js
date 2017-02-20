@@ -178,179 +178,285 @@ function rowClickNetworkEvent(table, hostid, startTime) {
 };
 
 function trafficView(networkIn, networkOut, networkTotal, startTime) {
-    showInOutNetwork(networkIn, networkOut, startTime);
-    showTotalNetwork(networkTotal, startTime);
-};
-
-function showInOutNetwork(networkIn, networkOut, startTime) {
     var networkInArr = [];
     var networkOutArr = [];
 
-    zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, 3).then(function(data) {
+    var networkTotalArr = [];
+
+    zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkInArr = zbxApi.getHistory.success(data);
     }).then(function() {
         return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         networkOutArr = zbxApi.getHistory.success(data);
-
-        Highcharts.chart('chart_trafficIo', {
-            chart: {
-                zoomType: 'x',
-                spacingTop: 2,
-                spacingBottom: 0
-            },
-            title: {
-                text: '트래픽 I/O',
-                align: 'left'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        var d2 = new Date(this.value);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
-                }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value / 1000 + 'k';
-                    }
-                }
-            },
-            tooltip: {
-                formatter: function() {
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-                    if (hours.length == 1) {
-                        hours = "0" + hours;
-                    }
-                    if (minutes.length == 1) {
-                        minutes = "0" + minutes;
-                    }
-                    if (seconds.length == 1) {
-                        seconds = "0" + seconds;
-                    }
-                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
-                }
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false //false
-                    }
-                }
-            },
-            series: [{
-                name: 'Traffic In',
-                data: networkInArr
-            }, {
-                name: 'Traffic Out',
-                data: networkOutArr
-            }]
-        })
-    })
-}
-
-function showTotalNetwork(networkTotal, startTime) {
-    var networkTotalArr = [];
-
-    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+    }).then(function() {
+        return zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data) {
         networkTotalArr  = zbxApi.getHistory.success(data);
 
-        Highcharts.chart('chart_trafficTotal', {
-            chart: {
-                zoomType: 'x',
-                type: 'area',
-                spacingTop: 2,
-                spacingBottom: 0
-            },
-            title: {
-                text: '트래픽 Total',
-                align: 'left'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        var d2 = new Date(this.value);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
+        $(function () {
+            var chart_IO;
+            var chart_Total;
+
+            var defaultTickInterval = 5;
+            var currentTickInterval = defaultTickInterval;
+
+            $(document).ready(function () {
+                function syncronizeCrossHairs(chart) {
+                    var container = $(chart.container);
+                    var offset = container.offset();
+                    var x;
+                    var y;
+
+                    container.mousemove(function (evt) {
+                        x = evt.clientX - chart.plotLeft - offset.left;
+                        y = evt.clientY - chart.plotTop - offset.top;
+                        var xAxis = chart.xAxis[0];
+                        var chart_IO_xAxis1 = chart_IO.xAxis[0];
+                        chart_IO_xAxis1.removePlotLine("myPlotLineId");
+                        chart_IO_xAxis1.addPlotLine({
+                            value: chart.xAxis[0].translate(x, true),
+                            width: 1,
+                            color: 'red',
+                            id: "myPlotLineId"
+                        });
+                        //remove old crosshair and draw new crosshair on chart2
+                        var chart_Total_xAxis2 = chart_Total.xAxis[0];
+                        chart_Total_xAxis2.removePlotLine("myPlotLineId");
+                        chart_Total_xAxis2.addPlotLine({
+                            value: chart.xAxis[0].translate(x, true),
+                            width: 1,
+                            color: 'red',
+                            id: "myPlotLineId"
+                        });
+                    });
                 }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value / 1000 + 'k';
-                    }
+
+                function computeTickInterval(xMin, xMax) {
+                    var zoomRange = xMax - xMin;
+
+                    if (zoomRange <= 2)
+                        currentTickInterval = 0.5;
+                    if (zoomRange < 20)
+                        currentTickInterval = 1;
+                    else if (zoomRange < 100)
+                        currentTickInterval = 5;
                 }
-            },
-            tooltip: {
-                formatter: function() {
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-                    if (hours.length == 1) {
-                        hours = "0" + hours;
-                    }
-                    if (minutes.length == 1) {
-                        minutes = "0" + minutes;
-                    }
-                    if (seconds.length == 1) {
-                        seconds = "0" + seconds;
-                    }
-                    return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+
+                function setTickInterval(event) {
+                    var xMin = event.xAxis[0].min;
+                    var xMax = event.xAxis[0].max;
+                    computeTickInterval(xMin, xMax);
+
+                    chart_IO.xAxis[0].options.tickInterval = currentTickInterval;
+                    chart_IO.xAxis[0].isDirty = true;
+                    chart_Total.xAxis[0].options.tickInterval = currentTickInterval;
+                    chart_Total.xAxis[0].isDirty = true;
                 }
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false //false
-                    }
-                }
-            },
-            series: [{
-                name: 'Traffic Total',
-                data: networkTotalArr
-            }]
-        })
+
+                $(document).ready(function () {
+                    var myPlotLineId = "myPlotLine";
+
+                    chart_IO = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'chart_trafficIo',
+                            zoomType: 'x',
+                            borderColor: '#003399',
+                            borderWidth: 1
+                        },
+                        title: {
+                            text: '트래픽 I/O',
+                            align: 'left'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            tickInterval:5,
+                            startOnTick: true,
+                            endOnTick: true,
+                            showLastLabel: true,
+                            labels: {
+                                formatter: function() {
+                                    var d2 = new Date(this.value);
+                                    var hours = "" + d2.getHours();
+                                    var minutes = "" + d2.getMinutes();
+                                    var seconds = "" + d2.getSeconds();
+                                    if (hours.length == 1) {
+                                        hours = "0" + hours;
+                                    }
+                                    if (minutes.length == 1) {
+                                        minutes = "0" + minutes;
+                                    }
+                                    if (seconds.length == 1) {
+                                        seconds = "0" + seconds;
+                                    }
+                                    return hours + ":" + minutes + ":" + seconds;
+                                }
+                            },
+                            events: {
+                                afterSetExtremes:function(){
+                                    if (!this.chart.options.chart.isZoomed) {
+                                        var xMin = this.chart.xAxis[0].min;
+                                        var xMax = this.chart.xAxis[0].max;
+
+                                        var zmRange = computeTickInterval(xMin, xMax);
+                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].isDirty = true;
+                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
+                                        chart_Total.xAxis[0].isDirty = true;
+                                        chart_Total.xAxis[0].setExtremes(xMin, xMax, true);
+                                    }
+                                }
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            },
+                            labels: {
+                                formatter: function() {
+                                    return this.value / 1000 + 'k';
+                                }
+                            }
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                var d2 = new Date(this.x);
+                                var hours = "" + d2.getHours();
+                                var minutes = "" + d2.getMinutes();
+                                var seconds = "" + d2.getSeconds();
+                                if (hours.length == 1) {
+                                    hours = "0" + hours;
+                                }
+                                if (minutes.length == 1) {
+                                    minutes = "0" + minutes;
+                                }
+                                if (seconds.length == 1) {
+                                    seconds = "0" + seconds;
+                                }
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    enabled: false //false
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Traffic In',
+                            data: networkInArr
+                        }, {
+                            name: 'Traffic Out',
+                            data: networkOutArr
+                        }]
+                    }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
+                        syncronizeCrossHairs(chart);
+                    });
+
+                    chart_Total = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'chart_trafficTotal',
+                            zoomType: 'x',
+                            type: 'area',
+                            borderColor: '#003399',
+                            borderWidth: 1,
+                            spacingTop: 2,
+                            spacingBottom: 0
+                        },
+                        title: {
+                            text: '트래픽 Total',
+                            align: 'left'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            tickInterval:5,
+                            startOnTick: true,
+                            endOnTick: true,
+                            showLastLabel: true,
+                            events: {
+                                afterSetExtremes: function() {
+                                    if (!this.chart.options.chart.isZoomed) {
+                                        var xMin = this.chart.xAxis[0].min;
+                                        var xMax = this.chart.xAxis[0].max;
+
+                                        var zmRange = computeTickInterval(xMin, xMax);
+                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].isDirty = true;
+                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
+                                        chart_Total.xAxis[0].isDirty = true;
+
+                                        chart_IO.xAxis[0].setExtremes(xMin, xMax, true);
+                                    }
+                                }
+                            },
+                            labels: {
+                                formatter: function () {
+                                    var d2 = new Date(this.value);
+                                    var hours = "" + d2.getHours();
+                                    var minutes = "" + d2.getMinutes();
+                                    var seconds = "" + d2.getSeconds();
+                                    if (hours.length == 1) {
+                                        hours = "0" + hours;
+                                    }
+                                    if (minutes.length == 1) {
+                                        minutes = "0" + minutes;
+                                    }
+                                    if (seconds.length == 1) {
+                                        seconds = "0" + seconds;
+                                    }
+                                    return hours + ":" + minutes + ":" + seconds;
+                                }
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            },
+                            labels: {
+                                formatter: function () {
+                                    return this.value / 1000 + 'k';
+                                }
+                            }
+                        },
+                        tooltip: {
+                            formatter: function () {
+                                var d2 = new Date(this.x);
+                                var hours = "" + d2.getHours();
+                                var minutes = "" + d2.getMinutes();
+                                var seconds = "" + d2.getSeconds();
+                                if (hours.length == 1) {
+                                    hours = "0" + hours;
+                                }
+                                if (minutes.length == 1) {
+                                    minutes = "0" + minutes;
+                                }
+                                if (seconds.length == 1) {
+                                    seconds = "0" + seconds;
+                                }
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    enabled: false //false
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Traffic Total',
+                            data: networkTotalArr
+                        }]
+                    }, function(chart) {
+                        syncronizeCrossHairs(chart);
+                    });
+                });
+            });
+        });
     })
 }
