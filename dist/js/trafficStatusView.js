@@ -76,7 +76,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
     $("#btn_network.btn").click(function() {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
         rowClickNetworkEvent($table, hostid, startTime);
-    })
+    });
 
     rowClickNetworkEvent($table, hostid, startTime);
 
