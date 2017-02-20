@@ -140,7 +140,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
     //setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
 }
 
-var rowClickNetworkEvent = function(table, hostid, startTime) {
+function rowClickNetworkEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
         if (row > 0) {
             $(this).click(function() {
@@ -177,7 +177,7 @@ var rowClickNetworkEvent = function(table, hostid, startTime) {
     });
 };
 
-var trafficView = function(networkIn, networkOut, networkTotal, startTime) {
+function trafficView(networkIn, networkOut, networkTotal, startTime) {
     showInOutNetwork(networkIn, networkOut, startTime);
     showTotalNetwork(networkTotal, startTime);
 };
