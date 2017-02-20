@@ -196,7 +196,6 @@ function showInOutNetwork(networkIn, networkOut, startTime) {
         Highcharts.chart('chart_trafficIo', {
             chart: {
                 zoomType: 'x',
-                type: 'area',
                 spacingTop: 2,
                 spacingBottom: 0
             },
