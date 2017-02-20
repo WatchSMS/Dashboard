@@ -234,7 +234,9 @@ function showInFrDisk(diskInode, diskFree, startTime) {
                     text: ''
                 },
                 labels: {
-                    format: '{value} %'
+                    formatter: function() {
+                        return this.value +'%';
+                    }
                 }
             },
             tooltip: {
@@ -264,12 +266,10 @@ function showInFrDisk(diskInode, diskFree, startTime) {
             },
             series: [{
                 name: 'Disk Inode',
-                data: diskInodeArr,
-                cursor: 'default'
+                data: diskInodeArr
             }, {
                 name: 'Disk Free',
-                data: diskFreeArr,
-                cursor: 'default'
+                data: diskFreeArr
             }]
         })
     })
@@ -319,14 +319,12 @@ function showUseDisk(diskUse, startTime) {
                     text: ''
                 },
                 labels: {
-                    format: '{value} %'
+                    formatter: function() {
+                        return this.value +'%';
+                    }
                 }
             },
             tooltip: {
-                backgroundColor: 'none',
-                headerFormat: '',
-                shadow: false,
-                borderWidth: 0,
                 formatter: function() {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
