@@ -1,13 +1,4 @@
-var serverOverGraphView = function(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverDiskUseRoot, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
-    // showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
-    // showServerMemory(serverMemoryUse, startTime);
-    // showServerDisk(serverDiskUseRoot, startTime);
-    // showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
-    //$.unblockUI(blockUI_opt_all);
-};
-
-
-var processView = function(hostid, startTime) {
+function processView(hostid, startTime) {
     var lastProcessData = callApiForProcessTable(hostid);
     var processTbl = '';
     var MAX_PROCCOUNT = 7;
@@ -57,10 +48,9 @@ var processView = function(hostid, startTime) {
     $("#processTime").text(topProcessLastTime);
     $("#serverProcessList").empty();
     $("#serverProcessList").append(processTbl);
-}
+};
 
-
-var EventListView = function(hostid) { //서버정보요약 - 이벤트목록
+function EventListView(hostid) { //서버정보요약 - 이벤트목록
     var data_EventList = callApiForServerEvent(hostid);
     var eventTbl = '';
 
@@ -79,11 +69,11 @@ var EventListView = function(hostid) { //서버정보요약 - 이벤트목록
     eventTbl += "<tbody>";
 
     $.each(data_EventList, function(k, v) {
-        var severity = convPriorityServer(v.priority);
-        var status = convStatusServer(v.value);
+        var severity = convPriority(v.priority);
+        var status = convStatus(v.value);
         var lastchange = convTime(v.lastchange);
         var age = convDeltaTime(v.lastchange);
-        var ack = convAckServer(v.lastEvent.acknowledged);
+        var ack = convAck(v.lastEvent.acknowledged);
         var host = v.hosts[0].host;
         var description = v.description;
 
@@ -97,13 +87,12 @@ var EventListView = function(hostid) { //서버정보요약 - 이벤트목록
         eventTbl += "<td>" + description + "</td>";
         eventTbl += "</tr>";
     });
-
     eventTbl += "</tbody>";
     $("#serverEventList").empty();
     $("#serverEventList").append(eventTbl);
 }
 
-var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
+function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
     $("#serverInfo").empty();
 
     var serverInfoTbl = '';
@@ -115,30 +104,24 @@ var serverOverViewInfo = function(serverTitle, serverIP, serverOS, serverName, s
     $("#serverInfo").append(serverInfoTbl);
 };
 
-
-
 function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
     var serverTraInEth0Arr = [];
     var serverTraOutEth0Arr = [];
     var serverTraTotEth0Arr = [];
 
-    var history_traInEth0 = null;
-    var history_traOutEth0 = null;
-    var history_traTotEth0 = null;
-
-    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, 3).then(function(data) {
+    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         serverTraInEth0Arr = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, 3);
+        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         serverTraOutEth0Arr = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, 3);
+        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         serverTraTotEth0Arr = zbxApi.getHistory.success(data);
+
         var chartId = "trafficUse";
         var title = '트래픽 사용량';
-
         var series = [{
             name: 'Traffic In Eth0',
             data: serverTraInEth0Arr
@@ -149,11 +132,9 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
             name: 'Traffic Total Eth0',
             data: serverTraTotEth0Arr
         }];
-
         chartCall(chartId, title, series, Label.percent);
-
     })
-}
+};
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
     var serverCpuSystemArr = [];
@@ -161,16 +142,12 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     var serverCpuIoWaitArr = [];
     var serverCpuStealArr = [];
 
-    var history_cpuSytem = null;
     var history_cpuUser = null;
-    var history_cpuIoWait = null;
-    var history_cpuSteal = null;
 
-    zbxApi.getHistory.get(serverCpuSystem.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(serverCpuSystem.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverCpuSystemArr = zbxApi.getHistory.success(data);
-
     }).then(function() {
-        return zbxApi.getHistory.get(serverCpuUser.result[0].itemid, startTime, 0);
+        return zbxApi.getHistory.get(serverCpuUser.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         history_cpuUser = zbxApi.getHistory.success(data);
         $.each(history_cpuUser.result, function(k, v) {
@@ -179,18 +156,17 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
             serverCpuUserArr[k][1] = parseFloat(v.value);
         });
     }).then(function() {
-        return zbxApi.getHistory.get(serverCpuIoWait.result[0].itemid, startTime, 0);
+        return zbxApi.getHistory.get(serverCpuIoWait.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         serverCpuIoWaitArr = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(serverCpuSteal.result[0].itemid, startTime, 0);
+        return zbxApi.getHistory.get(serverCpuSteal.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         serverCpuStealArr = zbxApi.getHistory.success(data);
 
         var chartId = "cpuUse";
         var title = 'CPU 사용량';
         var name = 'Memory Use';
-
         var series = [{
             name: 'CPU System',
             data: serverCpuSystemArr
@@ -204,40 +180,30 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
             name: 'CPU Steal',
             data: serverCpuStealArr
         }];
-
         chartCall(chartId, title, series, Label.percent);
     });
-
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
     var serverMemoryUseArr = [];
 
-    var history_memoryUse = null;
-
-    zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverMemoryUseArr = zbxApi.getHistory.success(data);
 
         var chartId = "memoryAll";
         var title = '전체메모리';
-
         var series = [{
             name: 'Memory Use',
             data: serverMemoryUseArr
         }];
-
         chartCall(chartId, title, series, Label.percent);
     })
 }
 
-
 function showServerDisk(serverDiskUseRoot, startTime) {
     var serverDiskUseRootArr = [];
 
-    var history_diskUseRoot = null;
-
-    zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, 0).then(function(data) {
-
+    zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverDiskUseRootArr = zbxApi.getHistory.success(data);
 
         var chartId = "diskUse";
@@ -246,9 +212,6 @@ function showServerDisk(serverDiskUseRoot, startTime) {
             name: 'Disk Use : /',
             data: serverDiskUseRootArr
         }]
-
-
         chartCall(chartId, title, series, Label.percent);
-
     })
 }

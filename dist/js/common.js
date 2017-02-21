@@ -3,7 +3,6 @@ function DataObject(name, data){
   this.data=data;
 }
 
-
 var resultToArray = new function(data) {
     var array = [];
     $.each(data, function(k, v) {
@@ -20,7 +19,6 @@ var convStatus = function(status) {
     } else {
         return "problem";
     }
-
 };
 
 var convAck = function(ack) {
@@ -29,7 +27,6 @@ var convAck = function(ack) {
     } else {
         return "Acked";
     }
-
 };
 
 var convPriority = function(priority) {
@@ -47,8 +44,9 @@ var convPriority = function(priority) {
         case "5":
             return "disaster";
     }
-}
+};
 
+/*
 var convAckServer = function(ack) {
     if (ack === "0") {
         return "아니오";
@@ -81,8 +79,7 @@ var convStatusServer = function(status) {
         return "장애 있음";
     }
 };
-
-
+*/
 
 var resultToArray = function(data) {
     var array = [];
@@ -104,7 +101,7 @@ var Label = new function() {
     this.MB = function(val) {
         return Math.round(val / (1024 * 1024)) + 'MB';
     };
-}
+};
 
 function chartCall(chartId, title, series, label, colorArr) {
     if (label == null) {
