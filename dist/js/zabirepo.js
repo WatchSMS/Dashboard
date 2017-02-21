@@ -928,12 +928,11 @@ var rowClickEvent = function(table, hostid, startTime) {
     });
 }
 
-var callApiForServerEvent = function(hostid) {
+function callApiForServerEvent(hostid) {
     return zbxSyncApi.serverViewTrigger(hostid);
-}
+};
 
-var showProcessTable = function(finalProcArr, topProcessLastTime) {
-
+function showProcessTable(finalProcArr, topProcessLastTime) {
     var maxRefValue;
     var processGaugeValue;
     var cpuProcessTbl = '';
