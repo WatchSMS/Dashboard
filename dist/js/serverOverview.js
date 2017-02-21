@@ -11,8 +11,9 @@ var allServerViewHost = function() {
     });
 }
 
-var serverOverView = function(server_data) {
+function serverOverView(server_data) {
     $.blockUI(blockUI_opt_all);
+    var serverStatus = '';
     var serverName = '';
     var serverIP = '';
     var serverPerCPU = 0;
@@ -29,6 +30,7 @@ var serverOverView = function(server_data) {
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
+    serverOverViewHTML += '<th id="serverStatus" style="width: 5%;">상태</th>';
     serverOverViewHTML += '<th id="serverName" style="width: 10%;" class="sorting" aria-sort="descending">서버명</th>';
     serverOverViewHTML += '<th id="serverIpAddr" style="width: 10%;">IP주소</th>';
     serverOverViewHTML += '<th id="serverPerCpu" style="width: 17%;">CPU(%)</th>';
@@ -42,6 +44,7 @@ var serverOverView = function(server_data) {
     serverOverViewHTML += '<tbody>';
 
     $.each(server_data.result, function(k, v) {
+        serverStatus = '';
         serverName = v.name;
         serverIP = v.interfaces[0].ip;
         hostid = v.hostid;
@@ -105,6 +108,7 @@ var serverOverView = function(server_data) {
 
         var tableDataObj = new Object();
         tableDataObj.hostid = hostid;
+        tableDataObj.status = serverStatus;
         tableDataObj.name = serverName;
         tableDataObj.ip = serverIP;
         tableDataObj.perCPU = serverPerCPU;
@@ -116,6 +120,7 @@ var serverOverView = function(server_data) {
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr role="row" class="odd">';
+        serverOverViewHTML += '<td id="Status_' + hostid + '">' + serverStatus + '</td>';
         serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</td>';
         serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div id="perCPU_'+hostid+'" class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
@@ -191,6 +196,7 @@ var serverOverView = function(server_data) {
             for(var i=0; i<MAX_COUNT; i++){
                 var hostid = tableDataArr[i].hostid;
                 sortTable += '<tr id="overView_' + hostid + '" role="row" class="odd">';
+                sortTable += '<td id="Status_' + hostid + '">' + tableDataArr[i].status + '</td>';
                 sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].name + '</td>';
                 sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].ip + '</td>';
                 sortTable += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perCPU + '%">' + tableDataArr[i].perCPU + '%</div></td>';
