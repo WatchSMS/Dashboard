@@ -319,7 +319,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                     }
                                     return hours + ":" + minutes + ":" + seconds;
                                 }
-                            },
+                            }
                         },
                         yAxis: {
                             title: {
