@@ -204,6 +204,14 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
             var currentTickInterval = defaultTickInterval;
 
             $(document).ready(function () {
+                function unzoom() {
+                    chart_IO.options.chart.isZoomed = false;
+                    chart_Total.options.chart.isZoomed = false;
+
+                    chart_IO.xAxis[0].setExtremes(null, null);
+                    chart_Total.xAxis[0].setExtremes(null, null);
+                }
+
                 function syncronizeCrossHairs(chart) {
                     var container = $(chart.container);
                     var offset = container.offset();
@@ -278,6 +286,24 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,
+                            events: {
+                                afterSetExtremes: function() {
+                                    if (!this.chart.options.chart.isZoomed) {
+                                        var xMin = this.chart.xAxis[0].min;
+                                        var xMax = this.chart.xAxis[0].max;
+                                        var zmRange = computeTickInterval(xMin, xMax);
+                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].isDirty = true;
+                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
+                                        chart_Total.xAxis[0].isDirty = true;
+
+                                        chart_Total.options.chart.isZoomed = true;
+                                        chart_Total.xAxis[0].setExtremes(xMin, xMax, true);
+
+                                        chart_Total.options.chart.isZoomed = false;
+                                    }
+                                }
+                            },
                             labels: {
                                 formatter: function() {
                                     var d2 = new Date(this.value);
@@ -365,6 +391,24 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,
+                            events: {
+                                afterSetExtremes: function() {
+                                    if (!this.chart.options.chart.isZoomed) {
+                                        var xMin = this.chart.xAxis[0].min;
+                                        var xMax = this.chart.xAxis[0].max;
+                                        var zmRange = computeTickInterval(xMin, xMax);
+                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].isDirty = true;
+                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
+                                        chart_Total.xAxis[0].isDirty = true;
+
+                                        chart_IO.options.chart.isZoomed = true;
+                                        chart_IO.xAxis[0].setExtremes(xMin, xMax, true);
+
+                                        chart_IO.options.chart.isZoomed = false;
+                                    }
+                                }
+                            },
                             labels: {
                                 formatter: function () {
                                     var d2 = new Date(this.value);
