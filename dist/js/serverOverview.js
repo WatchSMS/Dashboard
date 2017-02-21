@@ -44,11 +44,12 @@ function serverOverView(server_data) {
     serverOverViewHTML += '<tbody>';
 
     $.each(server_data.result, function(k, v) {
-        serverStatus = '';
         serverName = v.name;
-        serverIP = v.interfaces[0].ip;
         hostid = v.hostid;
-        console.log("호스트 정보 : " + hostid);
+        serverStatus = zbxSyncApi.serverOverView().result[0].status;
+        serverStatus = convStatus(serverStatus);
+        serverIP = v.interfaces[0].ip;
+        console.log("호스트 정보 : " + hostid + " / serverName : " + serverName + " / serverStatus : " + serverStatus);
         var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
         if (osInfo === undefined) {
             serverOS = '-';

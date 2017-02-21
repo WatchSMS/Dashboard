@@ -30,12 +30,7 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
-
-        //console.log("param 123 : " + JSON.stringify(param));
         var result = zbxSyncApi.callAjax(param);
-        console.log(JSON.stringify(result));
         return result.result[0];
     },
 
@@ -52,11 +47,7 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
-        //console.log("param 123 : " + JSON.stringify(param));
         var result = zbxSyncApi.callAjax(param);
-        console.log(JSON.stringify(result));
         return result.result[0];
     },
 
@@ -72,12 +63,7 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
-        //console.log("param 123 : " + JSON.stringify(param));
         var result = zbxSyncApi.callAjax(param);
-        //console.log(JSON.stringify(result));
-        console.log(JSON.stringify(result.result[0]));
         return result.result[0];
     },
 
@@ -137,13 +123,31 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
-        //console.log("param 123 : " + JSON.stringify(param));
         var result = zbxSyncApi.callAjax(param);
-        //console.log(JSON.stringify(result));
-        console.log(JSON.stringify(result.result[0]));
         return result.result[0];
+    },
+
+    serverOverView: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": ["description", "priority", "status"],
+                "monitored": true,
+                "skipDependent": true,
+                "expandDescription": true,
+                "selectGroups": ["name"],
+                "selectHosts": ["host", "maintenance_status"],
+                "sortfield": "description",
+                "only_true": true,
+                "selectLastEvent": "true"
+            },
+            "id": 1,
+            "auth": authid
+        }
+        var data = zbxSyncApi.callAjax(param);
+        console.log("result : ///// : " + JSON.stringify(data));
+        return data;
     },
 
     getDiskDuRule: function (hostid, key_) {
@@ -158,11 +162,7 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         }
-        console.log(JSON.stringify(param));
-
         var result = zbxSyncApi.callAjax(param);
-        console.log("ABCD : " + JSON.stringify(result));
-        console.log(JSON.stringify(result.result[0]));
         return result.result[0];
     },
 
