@@ -14,6 +14,7 @@ var allServerViewHost = function() {
 function serverOverView(server_data) {
     $.blockUI(blockUI_opt_all);
     var serverStatus = '';
+    var hostid = '';
     var serverName = '';
     var serverIP = '';
     var serverPerCPU = 0;
@@ -22,7 +23,6 @@ function serverOverView(server_data) {
     var serverOS = '-';
     var serverCPU = '-';
     var serverRAM = '-';
-    var hostid = '';
 
     var tableDataObj = new Object();
     var tableDataArr = [];
