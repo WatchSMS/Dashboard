@@ -292,7 +292,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                         var xMin = this.chart.xAxis[0].min;
                                         var xMax = this.chart.xAxis[0].max;
                                         var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
                                         chart_IO.xAxis[0].isDirty = true;
                                         chart_Total.xAxis[0].options.tickInterval = zmRange;
                                         chart_Total.xAxis[0].isDirty = true;
@@ -397,7 +397,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                         var xMin = this.chart.xAxis[0].min;
                                         var xMax = this.chart.xAxis[0].max;
                                         var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval =zmRange;
+                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
                                         chart_IO.xAxis[0].isDirty = true;
                                         chart_Total.xAxis[0].options.tickInterval = zmRange;
                                         chart_Total.xAxis[0].isDirty = true;
