@@ -333,7 +333,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             },
                             labels: {
                                 formatter: function() {
-                                    return this.value +'%';
+                                    return Math.floor(this.value * 100)/100 +'%';
                                 }
                             }
                         },
@@ -352,7 +352,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 if (seconds.length == 1) {
                                     seconds = "0" + seconds;
                                 }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + Math.floor(this.y * 100)/100 + "% </b>";
                             }
                         },
                         plotOptions: {
@@ -433,7 +433,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             },
                             labels: {
                                 formatter: function () {
-                                    return this.value +'%';
+                                    return Math.floor(this.value * 100)/100 +'%';
                                 }
                             }
                         },
@@ -452,7 +452,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 if (seconds.length == 1) {
                                     seconds = "0" + seconds;
                                 }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + Math.floor(this.y * 100)/100 + "% </b>";
                             }
                         },
                         plotOptions: {
