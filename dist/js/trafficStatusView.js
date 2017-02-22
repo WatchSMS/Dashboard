@@ -275,7 +275,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                             text: ''
                         },
                         xAxis: {
-                            tickInterval:5,
+                            tickInterval : 300000,
                             tickmarkPlacement: 'on',
                             title: {
                                 enabled: false
@@ -382,7 +382,8 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                             text: ''
                         },
                         xAxis: {
-                            tickInterval:5,
+                            tickInterval : 300000,
+                            tickmarkPlacement: 'on',
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,

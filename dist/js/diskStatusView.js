@@ -286,7 +286,8 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             text: ''
                         },
                         xAxis: {
-                            tickInterval:5,
+                            tickInterval : 300000,
+                            tickmarkPlacement: 'on',
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,
@@ -312,13 +313,10 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 formatter: function() {
                                     console.log("this.value : " + this.value);
                                     var d2 = new Date(this.value);
-                                    console.log("d2 : " + d2);
                                     var hours = "" + d2.getHours();
-                                    console.log("d2.hours : " + hours);
                                     var minutes = "" + d2.getMinutes();
-                                    console.log("d2.minutes : " + minutes);
                                     var seconds = "" + d2.getSeconds();
-                                    console.log("d2.seconds : " + seconds);
+                                    console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
                                     if (hours.length == 1) {
                                         hours = "0" + hours;
                                     }
@@ -348,11 +346,9 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 var d2 = new Date(this.x);
                                 console.log("d2 : " + d2);
                                 var hours = "" + d2.getHours();
-                                console.log("d2.hours : " + hours);
                                 var minutes = "" + d2.getMinutes();
-                                console.log("d2.minutes : " + minutes);
                                 var seconds = "" + d2.getSeconds();
-                                console.log("d2.seconds : " + seconds);
+                                console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
 
                                 if (hours.length == 1) {
                                     hours = "0" + hours;
@@ -397,7 +393,8 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             text: ''
                         },
                         xAxis: {
-                            tickInterval:5,
+                            tickInterval : 300000,
+                            tickmarkPlacement: 'on',
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,
