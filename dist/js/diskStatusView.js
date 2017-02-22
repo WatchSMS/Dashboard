@@ -226,7 +226,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         chart_IO_xAxis1.removePlotLine("myPlotLineId");
                         chart_IO_xAxis1.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
-                            width: 1,
+                            width: 2,
                             color: 'red',
                             id: "myPlotLineId"
                         });
@@ -235,7 +235,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         chart_Total_xAxis2.removePlotLine("myPlotLineId");
                         chart_Total_xAxis2.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
-                            width: 1,
+                            width: 2,
                             color: 'red',
                             id: "myPlotLineId"
                         });
@@ -270,9 +270,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                     chart_IO = new Highcharts.Chart({
                         chart: {
                             renderTo: 'chart_diskIo',
-                            zoomType: 'x',
-                            borderColor: '#003399',
-                            borderWidth: 1
+                            zoomType: 'x'
                         },
                         title: {
                             text: '디스크 I/O',
@@ -372,12 +370,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                     chart_Total = new Highcharts.Chart({
                         chart: {
                             renderTo: 'chart_diskUse',
-                            zoomType: 'x',
-                            type: 'area',
-                            borderColor: '#003399',
-                            borderWidth: 1,
-                            spacingTop: 2,
-                            spacingBottom: 0
+                            zoomType: 'x'
                         },
                         title: {
                             text: '디스크 Total',

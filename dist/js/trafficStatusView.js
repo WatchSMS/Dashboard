@@ -6,18 +6,15 @@ function callApiForTraffic(hostid, startTime){
 
     zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
         data_topDisk = zbxApi.getNetworkItem.success(data);
-        console.log("dataItem : " + JSON.stringify(data_topDisk));
         networkInfoView(hostid, startTime, data_topDisk);
     })
 }
 
 function networkInfoView(hostid, startTime, data_topDisk){
-    console.log("networkInfoView");
     var networkTableHTML = '';
     var MAX_NETWORKCOUNT = 10;
     var tableDataObj = new Object();
     var tableDataArr = [];
-
     var networkItemId = '';
     var networkItemName = '';
     var networkItemUsed = 0;
@@ -224,16 +221,15 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         chart_IO_xAxis1.removePlotLine("myPlotLineId");
                         chart_IO_xAxis1.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
-                            width: 1,
+                            width: 2,
                             color: 'red',
                             id: "myPlotLineId"
                         });
-                        //remove old crosshair and draw new crosshair on chart2
                         var chart_Total_xAxis2 = chart_Total.xAxis[0];
                         chart_Total_xAxis2.removePlotLine("myPlotLineId");
                         chart_Total_xAxis2.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
-                            width: 1,
+                            width: 2,
                             color: 'red',
                             id: "myPlotLineId"
                         });
@@ -268,9 +264,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                     chart_IO = new Highcharts.Chart({
                         chart: {
                             renderTo: 'chart_trafficIo',
-                            zoomType: 'x',
-                            borderColor: '#003399',
-                            borderWidth: 1
+                            zoomType: 'x'
                         },
                         title: {
                             text: '트래픽 I/O',
@@ -281,6 +275,10 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         xAxis: {
                             tickInterval:5,
+                            tickmarkPlacement: 'on',
+                            title: {
+                                enabled: false
+                            },
                             startOnTick: true,
                             endOnTick: true,
                             showLastLabel: true,
@@ -329,7 +327,8 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                 formatter: function() {
                                     return this.value / 1000 + 'k';
                                 }
-                            }
+                            },
+                            showFirstLabel: false
                         },
                         tooltip: {
                             formatter: function() {
@@ -346,11 +345,13 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                 if (seconds.length == 1) {
                                     seconds = "0" + seconds;
                                 }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
-                            }
+                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + (this.y / 1000) + "kbps </b>";
+                            },
+                            crosshairs: true
                         },
                         plotOptions: {
                             series: {
+                                cursor: 'pointer',
                                 marker: {
                                     enabled: false //false
                                 }
@@ -370,12 +371,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                     chart_Total = new Highcharts.Chart({
                         chart: {
                             renderTo: 'chart_trafficTotal',
-                            zoomType: 'x',
-                            type: 'area',
-                            borderColor: '#003399',
-                            borderWidth: 1,
-                            spacingTop: 2,
-                            spacingBottom: 0
+                            zoomType: 'x'
                         },
                         title: {
                             text: '트래픽 Total',
