@@ -183,13 +183,6 @@ var hostInfoView = function() {
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 callApiForDisk(hostid, startTime);
-                /*
-                var disk_data = '';
-                zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
-                    disk_data = zbxApi.getDiskItem.success(data);
-                    diskView(hostid, disk_data, startTime);
-                })
-                */
             });
 
             $("#traffic_" + hostid).click(function() {
@@ -197,13 +190,6 @@ var hostInfoView = function() {
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 callApiForTraffic(hostid, startTime);
-                /*
-                var network_data = '';
-                 zbxApi.getNetworkItem.get(hostid).done(function(data, status, jqXHR) {
-                 network_data = zbxApi.getNetworkItem.success(data);
-                 networkView(hostid, network_data, startTime);
-                 })
-                 */
             });
 
             $("#" + tagId).click(function() {
@@ -218,4 +204,4 @@ var hostInfoView = function() {
     }).always(function() {
         $(".info-box-content").unblock(blockUI_opt_el);
     });
-}
+};
