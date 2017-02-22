@@ -158,11 +158,6 @@ function rowClickNetworkEvent(table, hostid, startTime) {
                 var networkItemKeyOut = "net.if.out[" + currentNetworkItemId + "]";
                 var networkItemKeyTotal = "net.if.total[" + currentNetworkItemId + "]";
 
-                console.log(">>>>> hostid <<<<< : " + hostid);
-                console.log("networkItemKeyIn : " + networkItemKeyIn);
-                console.log("networkItemKeyOut : " + networkItemKeyOut);
-                console.log("networkItemKeyTotal : " + networkItemKeyTotal);
-
                 zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
                     networkIn = zbxApi.serverViewGraph.success(data);
                 }).then(function() {
