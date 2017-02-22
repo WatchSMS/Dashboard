@@ -310,10 +310,15 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             },
                             labels: {
                                 formatter: function() {
+                                    console.log("this.value : " + this.value);
                                     var d2 = new Date(this.value);
+                                    console.log("d2 : " + d2);
                                     var hours = "" + d2.getHours();
+                                    console.log("d2.hours : " + hours);
                                     var minutes = "" + d2.getMinutes();
+                                    console.log("d2.minutes : " + minutes);
                                     var seconds = "" + d2.getSeconds();
+                                    console.log("d2.seconds : " + seconds);
                                     if (hours.length == 1) {
                                         hours = "0" + hours;
                                     }
@@ -339,10 +344,16 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         tooltip: {
                             formatter: function() {
+                                console.log("this.x : " + this.x);
                                 var d2 = new Date(this.x);
+                                console.log("d2 : " + d2);
                                 var hours = "" + d2.getHours();
+                                console.log("d2.hours : " + hours);
                                 var minutes = "" + d2.getMinutes();
+                                console.log("d2.minutes : " + minutes);
                                 var seconds = "" + d2.getSeconds();
+                                console.log("d2.seconds : " + seconds);
+
                                 if (hours.length == 1) {
                                     hours = "0" + hours;
                                 }
