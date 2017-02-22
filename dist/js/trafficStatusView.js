@@ -147,9 +147,6 @@ function rowClickNetworkEvent(table, hostid, startTime) {
                 $(".selectedNetwork").removeClass("selectedNetwork");
                 $(this).addClass("selectedNetwork");
                 $(this).children().css("background", "#A2F0F1");
-               /* $(this).children().css("border-top", "3px #FF5E00 solid").css("border-bottom", "3px #FF5E00 solid");
-                $(this).children().eq(0).css("border-left", "3px #FF5E00 solid");
-                $(this).children().eq(3).css("border-right", "3px #FF5E00 solid");*/
                 $(this).prevAll().children().removeAttr('style');
                 $(this).nextAll().children().removeAttr('style');
 
