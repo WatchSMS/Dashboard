@@ -83,6 +83,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
             var sortTable = '';
             var currentThObj = $(this);
             var MAX_COUNT = tableDataArr.length;
+            var tmpNetworkName = $(".selectedNetwork").attr('id');
 
             if($(this).is('.sorting_desc')) {
                 console.log(" >>>>> sorting_desc <<<<<");
@@ -111,6 +112,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
                 sortTable += "</tr>";
             }
             $('tbody', $table).append(sortTable);
+            $("#" + tmpNetworkName).addClass("selectedNetwork");
         })
     });
 
@@ -142,7 +144,13 @@ function rowClickNetworkEvent(table, hostid, startTime) {
         if (row > 0) {
             $(this).click(function() {
                 var currentNetworkItemId = $(this).attr('id');
-                console.log("currentNetworkItemId : " + currentNetworkItemId);
+                $(".selectedNetwork").removeClass("selectedNetwork");
+                $(this).addClass("selectedNetwork");
+                $(this).children().css("border-top", "3px #FF5E00 solid").css("border-bottom", "3px #FF5E00 solid");
+                $(this).children().eq(0).css("border-left", "3px #FF5E00 solid");
+                $(this).children().eq(3).css("border-right", "39x #FF5E00 solid");
+                $(this).prevAll().children().removeAttr('style');
+                $(this).nextAll().children().removeAttr('style');
 
                 var networkIn = '';
                 var networkOut = '';
