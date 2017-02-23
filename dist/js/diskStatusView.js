@@ -375,7 +375,17 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         }, {
                             name: 'Disk Free',
                             data: diskFreeArr
-                        }]
+                        }],
+                        exporting: {
+                            buttons: {
+                                reloadButton: {
+                                    text: 'Reload',
+                                    onclick: function() {
+                                        alert("RELOAD");
+                                    }
+                                }
+                            }
+                        }
                     }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
                         syncronizeCrossHairs(chart);
                     });
@@ -473,7 +483,17 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         series: [{
                             name: 'Disk Use',
                             data: diskUseArr
-                        }]
+                        }],
+                        exporting: {
+                            buttons: {
+                                reloadButton: {
+                                    text: 'Reload',
+                                    onclick: function() {
+                                        alert("RELOAD");
+                                    }
+                                }
+                            }
+                        }
                     }, function(chart) {
                         syncronizeCrossHairs(chart);
                     });

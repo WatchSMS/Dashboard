@@ -364,7 +364,17 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         }, {
                             name: 'Traffic Out',
                             data: networkOutArr
-                        }]
+                        }],
+                        exporting: {
+                            buttons: {
+                                reloadButton: {
+                                    text: 'Reload',
+                                    onclick: function() {
+                                        alert("RELOAD");
+                                    }
+                                }
+                            }
+                        }
                     }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
                         syncronizeCrossHairs(chart);
                     });
@@ -462,7 +472,17 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         series: [{
                             name: 'Traffic Total',
                             data: networkTotalArr
-                        }]
+                        }],
+                        exporting: {
+                            buttons: {
+                                reloadButton: {
+                                    text: 'Reload',
+                                    onclick: function() {
+                                        alert("RELOAD");
+                                    }
+                                }
+                            }
+                        }
                     }, function(chart) {
                         syncronizeCrossHairs(chart);
                     });
