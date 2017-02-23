@@ -350,17 +350,17 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 var seconds = "" + d2.getSeconds();
                                 console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
 
-                                if (hours.length == 1) {
-                                    hours = "0" + hours;
-                                }
-                                if (minutes.length == 1) {
-                                    minutes = "0" + minutes;
-                                }
-                                if (seconds.length == 1) {
-                                    seconds = "0" + seconds;
-                                }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + Math.floor(this.y * 100)/100 + "% </b>";
-                            }
+                                if (hours.length == 1) { hours = "0" + hours; }
+                                if (minutes.length == 1) { minutes = "0" + minutes; }
+                                if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                                var s = [];
+                                $.each(this.points, function(i, point) {
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(this.y * 100)/100 + '%';
+                                });
+                                return s;
+                            },
+                            shared: true
                         },
                         plotOptions: {
                             series: {
@@ -461,17 +461,17 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 var hours = "" + d2.getHours();
                                 var minutes = "" + d2.getMinutes();
                                 var seconds = "" + d2.getSeconds();
-                                if (hours.length == 1) {
-                                    hours = "0" + hours;
-                                }
-                                if (minutes.length == 1) {
-                                    minutes = "0" + minutes;
-                                }
-                                if (seconds.length == 1) {
-                                    seconds = "0" + seconds;
-                                }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + Math.floor(this.y * 100)/100 + "% </b>";
-                            }
+                                if (hours.length == 1) { hours = "0" + hours; }
+                                if (minutes.length == 1) { minutes = "0" + minutes; }
+                                if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                                var s = [];
+                                $.each(this.points, function(i, point) {
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(this.y * 100)/100 + '%';
+                                });
+                                return s;
+                            },
+                            shared: true
                         },
                         plotOptions: {
                             series: {

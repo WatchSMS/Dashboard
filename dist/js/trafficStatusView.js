@@ -337,18 +337,17 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                 var hours = "" + d2.getHours();
                                 var minutes = "" + d2.getMinutes();
                                 var seconds = "" + d2.getSeconds();
-                                if (hours.length == 1) {
-                                    hours = "0" + hours;
-                                }
-                                if (minutes.length == 1) {
-                                    minutes = "0" + minutes;
-                                }
-                                if (seconds.length == 1) {
-                                    seconds = "0" + seconds;
-                                }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + (this.y / 1000) + "kbps </b>";
+                                if (hours.length == 1) { hours = "0" + hours; }
+                                if (minutes.length == 1) { minutes = "0" + minutes; }
+                                if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                                var s = [];
+                                $.each(this.points, function(i, point) {
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (this.y / 1000) + 'kbps';
+                                });
+                                return s;
                             },
-                            crosshairs: true
+                            shared: true
                         },
                         plotOptions: {
                             series: {
@@ -450,17 +449,17 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                 var hours = "" + d2.getHours();
                                 var minutes = "" + d2.getMinutes();
                                 var seconds = "" + d2.getSeconds();
-                                if (hours.length == 1) {
-                                    hours = "0" + hours;
-                                }
-                                if (minutes.length == 1) {
-                                    minutes = "0" + minutes;
-                                }
-                                if (seconds.length == 1) {
-                                    seconds = "0" + seconds;
-                                }
-                                return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "Kbps </b>";
-                            }
+                                if (hours.length == 1) { hours = "0" + hours; }
+                                if (minutes.length == 1) { minutes = "0" + minutes; }
+                                if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                                var s = [];
+                                $.each(this.points, function(i, point) {
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (this.y / 1000) + 'kbps';
+                                });
+                                return s;
+                            },
+                            shared: true
                         },
                         plotOptions: {
                             series: {
