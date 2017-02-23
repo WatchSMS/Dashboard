@@ -354,9 +354,9 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 if (minutes.length == 1) { minutes = "0" + minutes; }
                                 if (seconds.length == 1) { seconds = "0" + seconds; }
 
-                                var s = [];
+                                var s = '';
                                 $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(this.y * 100)/100 + '%';
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(point.y * 100)/100 + '%';
                                 });
                                 return s;
                             },
@@ -467,7 +467,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
 
                                 var s = [];
                                 $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(this.y * 100)/100 + '%';
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(point.y * 100)/100 + '%';
                                 });
                                 return s;
                             },

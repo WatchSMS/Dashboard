@@ -344,7 +344,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
 
                                 var s = [];
                                 $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (this.y / 1000) + 'kbps';
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
                                 });
                                 return s;
                             },
@@ -456,7 +456,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
 
                                 var s = [];
                                 $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (this.y / 1000) + 'kbps';
+                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
                                 });
                                 return s;
                             },
