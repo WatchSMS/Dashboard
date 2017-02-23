@@ -113,7 +113,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
             }
             $('tbody', $table).append(sortTable);
             $("#" + tmpNetworkName).addClass("selectedNetwork");
-        })
+            rowClickNetworkEvent($table, hostid, startTime);
+        });
     });
 
     //page reloag

@@ -83,7 +83,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     $("#btn_disk.btn").click(function() {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
         rowClickDiskEvent($table, hostid, startTime);
-    })
+    });
 
     rowClickDiskEvent($table, hostid, startTime);
 
@@ -113,7 +113,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
                 currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
             }
             $('tbody', $table).empty();
-
             for (var i = 0; i < MAX_COUNT; i++) {
                 sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='odd'>";
                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
@@ -123,7 +122,8 @@ function diskInfoView(hostid, data_topDisk, startTime){
             }
             $('tbody', $table).append(sortTable);
             $("#" + tmpDiskName).addClass("selectedDisk");
-        })
+            rowClickDiskEvent($table, hostid, startTime);
+        });
     });
 
     //page reloag
