@@ -32,9 +32,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
     diskTableHTML += "<tbody>";
 
     $.each(data_topDisk.result, function(k, v) {
-        /*var test = zbxSyncApi.getDiskDuRule(hostid, "Mounted filesystem device discovery");
-         console.log(" <<<<< getDiskDuRule test >>>>> ");
-         console.log(test);*/
         diskItemId = v.itemId;
         var name = v.key_;
         diskItemName = name.substring(name.indexOf("[") + 1, name.indexOf(","));
