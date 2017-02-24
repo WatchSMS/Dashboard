@@ -440,9 +440,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             }
                         },
                         yAxis: {
-                            title: {
-                                text: ''
-                            },
+                            title: { text: '' },
                             labels: {
                                 formatter: function () {
                                     return Math.floor(this.value * 100)/100 +'%';
