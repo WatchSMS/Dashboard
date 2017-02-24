@@ -328,9 +328,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             }
                         },
                         yAxis: {
-                            title: {
-                                text: ''
-                            },
+                            title: { text: '' },
                             labels: {
                                 formatter: function() {
                                     return Math.floor(this.value * 100)/100 +'%';
@@ -338,7 +336,8 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             }
                         },
                         tooltip: {
-                            formatter: function() {
+                            shared: true,
+                            formatter: function(){
                                 console.log("this.x : " + this.x);
                                 var d2 = new Date(this.x);
                                 console.log("d2 : " + d2);
@@ -351,13 +350,16 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 if (minutes.length == 1) { minutes = "0" + minutes; }
                                 if (seconds.length == 1) { seconds = "0" + seconds; }
 
-                                var s = '';
-                                $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + Math.floor(point.y * 100)/100 + '%';
-                                });
-                                return s;
-                            },
-                            shared: true
+                                var points = this.points;
+                                var pointsLength = points.length;
+                                var index;
+                                var markUp = pointsLength ? '<span style="font-size: 10px">' + hours + ':' + minutes + ':' + seconds + '</span><br/>' : '';
+
+                                for(index=0; index<pointsLength; index++){
+                                    markUp += '<br/><b>' + points[index].series.name + ' : </b>' + Math.floor(points[index].y * 100)/100 + '%';
+                                }
+                                return markUp;
+                            }
                         },
                         plotOptions: {
                             series: {
