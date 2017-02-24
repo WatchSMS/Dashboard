@@ -363,6 +363,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         plotOptions: {
                             series: {
+                                stacking: 'normal',
                                 marker: {
                                     enabled: false //false
                                 }
@@ -471,6 +472,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         plotOptions: {
                             series: {
+                                stacking: 'normal',
                                 marker: {
                                     enabled: false //false
                                 }

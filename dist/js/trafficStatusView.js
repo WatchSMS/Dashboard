@@ -345,7 +345,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         plotOptions: {
                             series: {
-                                cursor: 'pointer',
+                                stacking: 'normal',
                                 marker: {
                                     enabled: false //false
                                 }
@@ -454,6 +454,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         plotOptions: {
                             series: {
+                                stacking: 'normal',
                                 marker: {
                                     enabled: false //false
                                 }
