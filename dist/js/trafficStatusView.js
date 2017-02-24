@@ -277,12 +277,6 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
-                            tickmarkPlacement: 'on',
-                            title: {
-                                enabled: false
-                            },
-                            startOnTick: true,
-                            endOnTick: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {
@@ -329,8 +323,7 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                                 formatter: function() {
                                     return this.value / 1000 + 'k';
                                 }
-                            },
-                            showFirstLabel: false
+                            }
                         },
                         tooltip: {
                             formatter: function() {
@@ -393,9 +386,6 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
-                            tickmarkPlacement: 'on',
-                            startOnTick: true,
-                            endOnTick: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {
