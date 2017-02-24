@@ -378,7 +378,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 reloadButton: {
                                     text: 'Reload',
                                     onclick: function() {
-                                        alert("RELOAD");
+                                        alert("디스크 I/O RELOAD");
                                     }
                                 }
                             }
@@ -490,7 +490,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 reloadButton: {
                                     text: 'Reload',
                                     onclick: function() {
-                                        alert("RELOAD");
+                                        alert("디스크 Total RELOAD");
                                     }
                                 }
                             }
