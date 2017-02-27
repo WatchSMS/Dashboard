@@ -284,6 +284,8 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
+                            gridLineWidth: 1,
+                            showFirstLabel: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {
@@ -401,6 +403,8 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
+                            gridLineWidth: 1,
+                            showFirstLabel: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {

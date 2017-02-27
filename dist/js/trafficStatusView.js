@@ -277,6 +277,8 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
+                            gridLineWidth: 1,
+                            showFirstLabel: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {
@@ -386,6 +388,8 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
                         },
                         xAxis: {
                             tickInterval : 300000,
+                            gridLineWidth: 1,
+                            showFirstLabel: true,
                             showLastLabel: true,
                             events: {
                                 afterSetExtremes: function() {
