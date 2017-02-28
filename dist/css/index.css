@@ -8,7 +8,7 @@
 }
 
 table#table {
-	margin: 2 auto;
+	margin: auto;
 	width: 100%;
 }
 
@@ -131,7 +131,8 @@ table#table {
 .flash {
 	animation: Flash 1s infinite;
 }
+/*
 
 @keyframes(Flash) { 
 	50%{opacity: 0;}
-}
+}*/
