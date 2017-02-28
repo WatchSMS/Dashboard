@@ -653,6 +653,10 @@ table.table-striped {
 	vertical-align: middle;
 }
 
+table> thead> tr> td.sorting, table> thead> tr> td.sorting_asc, table> thead> tr> td.sorting_desc, table.table-hover> tbody> tr {
+	cursor: pointer;
+}
+
 table> thead> tr> th.sorting, table> thead> tr> th.sorting_asc, table> thead> tr> th.sorting_desc, table.table-hover> tbody> tr {
 	cursor: pointer;
 }

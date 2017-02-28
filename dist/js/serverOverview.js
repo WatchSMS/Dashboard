@@ -30,15 +30,15 @@ function serverOverView(server_data) {
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
-    serverOverViewHTML += '<th id="serverStatus" style="width: 5%;">상태</th>';
-    serverOverViewHTML += '<th id="serverName" style="width: 10%;" class="sorting" aria-sort="descending">서버명</th>';
-    serverOverViewHTML += '<th id="serverIpAddr" style="width: 10%;">IP주소</th>';
-    serverOverViewHTML += '<th id="serverPerCpu" style="width: 17%;">CPU(%)</th>';
-    serverOverViewHTML += '<th id="serverMemory" style="width: 17%;">메모리(%)</th>';
-    serverOverViewHTML += '<th id="serverDisk" style="width: 17%;">디스크(%)</th>';
-    serverOverViewHTML += '<th id="serverOS" style="width: 10%;">운영체제</th>';
-    serverOverViewHTML += '<th id="serverCPU" style="width: 10%;">CPU</th>';
-    serverOverViewHTML += '<th id="serverRAM" style="width: 10%;">RAM</th>';
+    serverOverViewHTML += '<td id="serverStatus" width="45" class="line">상태</td>';
+    serverOverViewHTML += '<td id="serverName" width="188" class="sorting line" aria-sort="descending">서버명</td>';
+    serverOverViewHTML += '<td id="serverIpAddr" width="122" class="line">IP주소</td>';
+    serverOverViewHTML += '<td id="serverPerCpu" width="131" class="line">CPU(%)</td>';
+    serverOverViewHTML += '<td id="serverMemory" width="131" class="line">메모리(%)</td>';
+    serverOverViewHTML += '<td id="serverDisk" width="131" class="line">디스크(%)</td>';
+    serverOverViewHTML += '<td id="serverOS" width="150" class="line">운영체제</td>';
+    serverOverViewHTML += '<td id="serverCPU" width="117" class="line">CPU</td>';
+    serverOverViewHTML += '<td id="serverRAM" width="97" class="line">RAM</td>';
     serverOverViewHTML += '</tr>';
     serverOverViewHTML += '</thead>';
     serverOverViewHTML += '<tbody>';
@@ -121,15 +121,24 @@ function serverOverView(server_data) {
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr role="row" class="odd">';
-        serverOverViewHTML += '<td id="Status_' + hostid + '">' + serverStatus + '</td>';
-        serverOverViewHTML += '<td id="Name_' + hostid + '">' + serverName + '</td>';
-        serverOverViewHTML += '<td id="IP_' + hostid + '">' + serverIP + '</td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerCPU_' + hostid + '"><div id="perCPU_'+hostid+'" class="progress-bar" style="width:' + serverPerCPU + '%">' + serverPerCPU + '%</div></td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerMemory_' + hostid + '"><div id="perMemory_'+hostid+'" class="progress-bar" style="width:' + serverPerMemory + '%">' + serverPerMemory + '%</div></td>';
-        serverOverViewHTML += '<td class="progress-background" id="PerDisk_' + hostid + '"><div id="perDisk_'+hostid+'" class="progress-bar" style="width:' + serverPerDisk + '%">' + serverPerDisk + '%</div></td>';
-        serverOverViewHTML += '<td>' + serverOS + '</td>';
-        serverOverViewHTML += '<td>' + serverCPU + '</td>';
-        serverOverViewHTML += '<td>' + serverRAM + '</td>';
+        serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line">' + serverStatus + '</td>';
+        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line align_left">' + serverName + '</td>';
+        serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line">' + serverIP + '</td>';
+        serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
+            '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
+            '</div>' +
+            '<div class="fr mt2 mr5 f11">' + serverPerCPU + '%</div></td>';
+        serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line"><div class="scw">' +
+            '<div class="mt2 bg8 br3" style="width:' + serverPerMemory + '%; height:5px;"></div>' +
+            '</div>' +
+            '<div class="fr mt2 mr5 f11">' + serverPerMemory + '%</div></td>';
+        serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line"><div class="scw">' +
+            '<div class="mt2 bg8 br3" style="width:' + serverPerDisk + '%; height:5px;"></div>' +
+            '</div>' +
+            '<div class="fr mt2 mr5 f11">' + serverPerDisk + '%</div></td>';
+        serverOverViewHTML += '<td width="150" class="line">' + serverOS + '</td>';
+        serverOverViewHTML += '<td width="117" class="line">' + serverCPU + '</td>';
+        serverOverViewHTML += '<td width="97" class="line">' + serverRAM + '</td>';
         serverOverViewHTML += '</tr>';
     });
 
@@ -167,9 +176,9 @@ function serverOverView(server_data) {
         });
     });
 
-    //테이블의 th col 클릭시 정렬된 테이블 내용 생성
+    //테이블의 td col 클릭시 정렬된 테이블 내용 생성
     var $table = $("#serverList");
-    $('th', $table).each(function (column) {
+    $('td', $table).each(function (column) {
         $(this).click(function() {
             var sortTable = '';
             var currentThObj = $(this);
@@ -196,16 +205,22 @@ function serverOverView(server_data) {
 
             for(var i=0; i<MAX_COUNT; i++){
                 var hostid = tableDataArr[i].hostid;
-                sortTable += '<tr id="overView_' + hostid + '" role="row" class="odd">';
-                sortTable += '<td id="Status_' + hostid + '">' + tableDataArr[i].status + '</td>';
-                sortTable += '<td class="sorting_1" id="Name_' + hostid + '">' + tableDataArr[i].name + '</td>';
-                sortTable += '<td id = "IP_' + hostid + '">' + tableDataArr[i].ip + '</td>';
-                sortTable += '<td class="progress-background" id="PerCPU_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perCPU + '%">' + tableDataArr[i].perCPU + '%</div></td>';
-                sortTable += '<td class="progress-background" id="PerMemory_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perMemory + '%">' + tableDataArr[i].perMemory + '%</div></td>';
-                sortTable += '<td class="progress-background" id="PerDisk_' + hostid + '"><div class="progress-bar" style="width:' + tableDataArr[i].perDisk + '%">' + tableDataArr[i].perDisk + '%</div></td>';
-                sortTable += '<td>' + tableDataArr[i].OS + '</td>';
-                sortTable += '<td>' + tableDataArr[i].CPU + '</td>';
-                sortTable += '<td>' + tableDataArr[i].RAM + '</td>';
+                sortTable += '<tr id = "overView_' + hostid + '" role="row" class="odd">';
+                sortTable += '<td id = "Status_' + hostid + '" width="45" class="line">' + tableDataArr[i].status + '</td>';
+                sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line align_left">' + tableDataArr[i].name + '</td>';
+                sortTable += '<td id = "IP_' + hostid + '" width="122" class="line">' + tableDataArr[i].ip + '</td>';
+                sortTable += '<td id = "PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
+                    '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perCPU + '%; height:5px;"></div>' +
+                    '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perCPU + '%</div></td>';
+                sortTable += '<td id = "PerMemory_' + hostid + '" width="131" class="line"><div class="scw">' +
+                    '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perMemory + '%; height:5px;"></div>' +
+                    '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perMemory + '%</div></td>';
+                sortTable += '<td id = "PerDisk_' + hostid + '" width="131" class="line"><div class="scw">' +
+                    '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perDisk + '%; height:5px;"></div>' +
+                    '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perDisk + '%</div></td>';
+                sortTable += '<td width="150" class="line">' + tableDataArr[i].OS + '</td>';
+                sortTable += '<td width="117" class="line">' + tableDataArr[i].CPU + '</td>';
+                sortTable += '<td width="97" class="line">' + tableDataArr[i].RAM + '</td>';
                 sortTable += '</tr>';
             }//end for
             $('tbody', $table).append(sortTable);

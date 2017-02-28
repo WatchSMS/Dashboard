@@ -1,4 +1,5 @@
-<section class="content-header">
+<!--
+<section class="content">
 	<h1>전체 서버 상태</h1>
 </section>
 
@@ -7,10 +8,10 @@
 		<div class="box-header with-border">
 			<h3 class="box-title"></h3>
 			<div class="pull-right">
-				<!--
+				&lt;!&ndash;
                 <input type="text" id = "searchSerInput"></input>
                 <button type="submit" id ="searchServer">검색</button>
-                -->
+                &ndash;&gt;
 			</div>
 			<div>
 				<button id="reload_serverOverview" type="button" class="btn  btn-default pull-right">
@@ -25,6 +26,71 @@
 
 				</table>
 			</div>
+		</div>
+	</div>
+</section>-->
+
+<section class="content">
+	<div class="content-only">
+		<div class="d5">
+			<button id="reload_serverOverview" type="button" class="btn btn-default pull-right valignm">
+				<i class="glyphicon glyphicon-refresh"></i>
+			</button>
+			<img src="dist/img/tit_sbl06.gif"/>
+		</div>
+
+		<div class="sec-inbox">
+			<table class="table-tool">
+				<thead>
+					<tr>
+						<td width="50%" class="br7_lt align_left valignm">
+							<div class="s1 f1">
+								<li class="p1"><span class="o1 bg10"></span> <span class="e1">위험</span></li>
+								<li class="p1"><span class="o1 bg11"></span> <span class="e1">경고</span></li>
+								<li class="p1"><span class="o1 bg12"></span> <span class="e1">정상</span></li>
+								<li class="p1"><span class="o1 bg13"></span> <span class="e1">일시정지</span></li>
+							</div>
+						</td>
+
+						<td width="50%" class="br7_rt align_right valignm">
+							<div class="mr17">
+								<button class="button_1">
+									<label>태그</label>
+								</button>
+
+
+								<div class="search_inside">
+									<ul>
+										<li class="se1" style="">
+											<input type="text" class="search_inside_inbg" name="input" value="" style="width:132px;" maxlength="40" size="12" onkeyup="javascript:enterlogin(this);" onfocus="this.className='input_focus'" onblur="if (this.value.length==0){this.className='search_inside_inbg';}else{this.className='input_focus';}"/>
+										</li>
+										<li class="se2" style=""><a href=""><img src="dist/img/search_inside_bt.png" class="mCS_img_loaded"/></a></li>
+									</ul>
+								</div>
+
+								<button class="button_1">
+									<label>추가</label>
+								</button>
+								<div id="select_box">
+									<label>Action</label>
+									<select name="color" id="color">
+										<option selected="selected">color</option>
+										<option>red</option>
+										<option>blue</option>
+										<option>yellow</option>
+										<option>black</option>
+									</select>
+								</div>
+							</div>
+
+						</td>
+					</tr>
+				</thead>
+			</table>
+
+			<table class="table1" id="serverList">
+
+			</table>
 		</div>
 	</div>
 </section>
