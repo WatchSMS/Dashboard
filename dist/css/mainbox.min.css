@@ -1,54 +1,54 @@
 /* base out box */
-.wrapper {
+.wrapper-custom {
 	position: relative; min-height: 100%; background-color: #3d476b;
 }
-.wrapper::before {
+.wrapper-custom::before {
 	display: table; content: " ";
 }
-.wrapper::after {
+.wrapper-custom::after {
 	display: table; content: " ";
 }
-.wrapper::after {
+.wrapper-custom::after {
 	clear: both;
 }
 
 
 
 
-.main-header {
+.dashboard-header {
 	position: relative; z-index: 1030; /*max-height: 100px;*/
 	background:url('../img/logo_top_bg.jpg')repeat-x;
 	border-bottom: 1px solid #49526f;
 }
-.main-header > .navbar {
+.dashboard-header > .navbar {
 	border-radius: 0px; border: currentColor; transition:margin-left 0.1s ease-in-out; border-image: none; min-width:535px;
 	margin-bottom: 0px; margin-left: 221px; min-height: 50px; -webkit-transition: margin-left 0.1s ease-in-out; -o-transition: margin-left 0.1s ease-in-out;
 }
-.main-header > .navbar .mbox {
+.dashboard-header > .navbar .mbox {
 	height:56px; float:right; cursor: pointer;
 }
-.main-header > .navbar .mbox:hover {
+.dashboard-header > .navbar .mbox:hover {
 	height:56px; float:right; cursor: pointer; color:#8189c0;
 }
-.main-header > .navbar .mbox > div {
+.dashboard-header > .navbar .mbox > div {
 	width:38px; height:30px; float:left; margin:13px 2px 13px 0;
 }
-.main-header > .navbar .mbox > div > ul {
+.dashboard-header > .navbar .mbox > div > ul {
 	margin:-1px 7px 4px 0; padding:0px; height:30px;
 }
-.main-header > .navbar .mbox > div > ul > li {
+.dashboard-header > .navbar .mbox > div > ul > li {
 	display:inline-block;;
 }
-.main-header > .navbar .mbox .mem {
+.dashboard-header > .navbar .mbox .mem {
 	width:91px; height:30px; float:right; margin:9px 10px 13px 0;
 }
-.main-header > .navbar .mbox .mem ul {
+.dashboard-header > .navbar .mbox .mem ul {
 	margin:5px 7px 0 0; padding:6px; height:43px;
 }
-.main-header > .navbar .mbox .mem .minfo {
+.dashboard-header > .navbar .mbox .mem .minfo {
 	margin:0px; float:right; right:14px; top:57px; width:150px; position:absolute; z-index:2000;
 }
-.main-header > .navbar .mbox .mem .minfo .pp1 {
+.dashboard-header > .navbar .mbox .mem .minfo .pp1 {
 	border-left:1px solid #555b7b; border-right:1px solid #555b7b;
 	width:149px;
 	height:35px;
@@ -57,7 +57,7 @@
 	background-position:0;
 	padding: 9px 0 0 45px
 }
-.main-header > .navbar .mbox .mem .minfo .pp1:hover {
+.dashboard-header > .navbar .mbox .mem .minfo .pp1:hover {
 	border-left:1px solid #555b7b; border-right:1px solid #555b7b;
 	width:149px;
 	height:35px;
@@ -66,7 +66,7 @@
 	background-position:0;
 	padding: 9px 0 0 45px
 }
-.main-header > .navbar .mbox .mem .minfo .pp2 {
+.dashboard-header > .navbar .mbox .mem .minfo .pp2 {
 	border:1px solid #555b7b;
 	width:149px;
 	height:36px;
@@ -75,7 +75,7 @@
 	background-position:0;
 	padding: 8px 0 0 45px
 }
-.main-header > .navbar .mbox .mem .minfo .pp2:hover {
+.dashboard-header > .navbar .mbox .mem .minfo .pp2:hover {
 	border:1px solid #555b7b;
 	width:149px;
 	height:36px;
@@ -84,47 +84,47 @@
 	background-position:0;
 	padding: 8px 0 0 45px
 }
-.main-header > .navbar .search {
+.dashboard-header > .navbar .search {
 	width:192px; height:30px; float:left; margin:13px 12px 13px 21px; background:url('../img/search_bg.png') no-repeat
 }
-.main-header > .navbar .search > ul {
+.dashboard-header > .navbar .search > ul {
 	margin:4px 7px 4px 12px; padding:0px; height:22px;
 }
-.main-header > .navbar .search > ul .s1 {
+.dashboard-header > .navbar .search > ul .s1 {
 	display:inline-block;
 }
-.main-header > .navbar .search > ul .s2 {
+.dashboard-header > .navbar .search > ul .s2 {
 	display:inline-block; float:right;
 }
-.main-header > .navbar .search > ul > li > input {
+.dashboard-header > .navbar .search > ul > li > input {
 	width:145px; height:22px;
 }
-.main-header .logo {
+.dashboard-header .logo {
 	color: rgb(255, 255, 255); border-bottom-color: transparent; border-bottom-width: 0px; border-bottom-style: solid; background-color: #dedede;
 	background:url('../img/logo_top.jpg') no-repeat;
 	padding: 0px; transition:width 0.1s ease-in-out; width: 221px; height: 56px; text-align: center; line-height: 50px; overflow: hidden; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 20px; font-weight: 300; float: left; display: block; -webkit-transition: width 0.1s ease-in-out; -o-transition: width 0.1s ease-in-out;
 }
-.main-header .navbar {
+.dashboard-header .navbar {
 	background-color: #3d476b;
 }
-.main-header .sidebar-toggle {
+.dashboard-header .sidebar-toggle {
 	padding: 15px; font-family: fontAwesome; float: left;
 }
-.main-header .sidebar-toggle::before {
+.dashboard-header .sidebar-toggle::before {
 }
-.main-header .sidebar-toggle:hover {
+.dashboard-header .sidebar-toggle:hover {
 	color: rgb(255, 255, 255);
 }
-.main-header .sidebar-toggle:focus {
+.dashboard-header .sidebar-toggle:focus {
 	background: none;
 }
-.main-header .sidebar-toggle:active {
+.dashboard-header .sidebar-toggle:active {
 	background: none;
 }
-.main-header .sidebar-toggle .icon-bar {
+.dashboard-header .sidebar-toggle .icon-bar {
 	display: none;
 }
-.main-header .navbar .sidebar-toggle {
+.dashboard-header .navbar .sidebar-toggle {
 	color: rgb(255, 255, 255);
 	background:url('../img/icon_bg_img.gif') no-repeat;
 	display:block;
@@ -132,7 +132,7 @@
 	background-position:8px -61px;
 
 }
-.main-header .navbar .sidebar-toggle:hover {
+.dashboard-header .navbar .sidebar-toggle:hover {
 	background-color: #dedede;
 	background:url('../img/icon_bg_img.gif') no-repeat;
 	display:block;
@@ -334,17 +334,17 @@
 .sidebar-collapse.sidebar-mini .sidebar-menu li.header {
 	display: none !important; -webkit-transform: translateZ(0);
 }
-.sidebar-collapse.sidebar-mini .main-header .logo {
+.sidebar-collapse.sidebar-mini .dashboard-header .logo {
 	width: 50px;
 	background:url('../img/logo_top_small.jpg') no-repeat;
 }
-.sidebar-collapse.sidebar-mini .main-header .logo > .logo-mini {
+.sidebar-collapse.sidebar-mini .dashboard-header .logo > .logo-mini {
 	font-size: 18px; margin-right: -15px; margin-left: -15px; display: block;
 }
-.sidebar-collapse.sidebar-mini .main-header .logo > .logo-lg {
+.sidebar-collapse.sidebar-mini .dashboard-header .logo > .logo-lg {
 	display: none;
 }
-.sidebar-collapse.sidebar-mini .main-header .navbar {
+.sidebar-collapse.sidebar-mini .dashboard-header .navbar {
 	margin-left: 50px;
 }
 
