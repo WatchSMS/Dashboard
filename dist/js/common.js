@@ -117,14 +117,15 @@ function chartCall(chartId, title, series, label, colorArr) {
             colors: colorArr,
             chart: {
                 zoomType: 'x',
-                height: 250,
+                height: 150,
                 spacingTop: 10,
                 spacingBottom: 0,
                 spacingLeft: 0,
                 spacingRight: 0
             },
             title: {
-                text: title
+                //text: title
+                text: ''
             },
             subtitle: {
                 text: ''

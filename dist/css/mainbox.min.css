@@ -98,7 +98,7 @@
 }
 .dashboard-header .logo {
 	color: rgb(255, 255, 255); border-bottom-color: transparent; border-bottom-width: 0px; border-bottom-style: solid; background-color: #dedede;
-	background:url('../img/logo_top.jpg') no-repeat;
+	background:url('../img/logo_top_custom.jpg') no-repeat;
 	padding: 0px; transition:width 0.1s ease-in-out; width: 221px; height: 56px; text-align: center; line-height: 50px; overflow: hidden; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 20px; font-weight: 300; float: left; display: block; -webkit-transition: width 0.1s ease-in-out; -o-transition: width 0.1s ease-in-out;
 }
 .dashboard-header .navbar {
@@ -235,7 +235,7 @@
 /*s - close */
 @media all and (min-width:50px)
 {
-	.sidebar-collapse.sidebar-mini .content-wrapper {
+	.sidebar-collapse.sidebar-mini .content-wrapper-custom {
 		margin-left: 50px !important; z-index: 840;
 	}
 	.sidebar-collapse.sidebar-mini .main-sidebar1 {
@@ -442,7 +442,7 @@
 
 
 /* 2017.02.22 - s */
-.content-wrapper {
+.content-wrapper-custom {
 	z-index: 800; min-height: 100%; background: #313b5f url('../img/main_bg.gif') repeat-y;  min-width: 1339px !important;
 	margin-left: 221px; -webkit-transition: -webkit-transform 0.1s ease-in-out, margin 0.1s ease-in-out; -o-transition: -o-transform 0.1s ease-in-out, margin 0.1s ease-in-out; -moz-transition: -moz-transform 0.1s ease-in-out, margin 0.1s ease-in-out;
 }

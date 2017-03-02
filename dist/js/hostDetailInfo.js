@@ -11,14 +11,18 @@ function processView(hostid, startTime) {
     var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
     lastProcessData = sortProcInCpuOrder(lastProcessData, topProcessLastTime);
 
+    /*
     processTbl += "<thead>";
     processTbl += "<tr role='row'>";
-    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>이름</th>";
-    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>cpu</th>";
-    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>메모리</th>";
-    processTbl += "<th tabindex='0' aria-controls='processList' rowspan='1' colspan='1'>수</th>";
+    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>이름</td>";
+    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='auto' class='br7_rt'>개수</td>";
+    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>CPU</td>";
+    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='br7_rt'>메모리</td>";
     processTbl += "</tr>";
     processTbl += "</thead>";
+
+    processTbl += "</table>";
+     */
 
     processTbl += "<tbody>";
 
@@ -34,11 +38,11 @@ function processView(hostid, startTime) {
             var procCpuValue = v.totalCpuVal.toFixed(1);
             var procMemValue = v.totalMemVal.toFixed(1);
 
-            processTbl += "<tr id='" + v.procName + "' role='row' class='odd'>";
-            processTbl += "<td><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
-            processTbl += "<td>" + procCpuValue + "</td>";
-            processTbl += "<td>" + procMemValue + "<span class='smaller'>MB</span></td>";
-            processTbl += "<td>" + v.procCnt + "</td>";
+            processTbl += "<tr id='" + v.procName + "' role='row' class='odd h34'>";
+            processTbl += "<td width='170' class='align_left line p115' title='" + v.procName + "'>" + v.procName + "</td>";
+            processTbl += "<td width='90' class='line'>" + v.procCnt + "</td>";
+            processTbl += "<td width='120' class='line'>" + procCpuValue + "</td>";
+            processTbl += "<td width='auton'>" + procMemValue + "<span class='smaller'>MB</span></td>";
             processTbl += "</tr>";
         }
     });
@@ -48,47 +52,6 @@ function processView(hostid, startTime) {
     $("#processTime").text(topProcessLastTime);
     $("#serverProcessList").empty();
     $("#serverProcessList").append(processTbl);
-}
-function EventListView(hostid) { //서버정보요약 - 이벤트목록
-    var data_EventList = callApiForServerEvent(hostid);
-    var eventTbl = '';
-
-    eventTbl += "<thead>";
-    eventTbl += "<tr role='row'>";
-    eventTbl += "<th>이벤트 등급</th>";
-    eventTbl += "<th>상태</th>";
-    eventTbl += "<th>발생시간</th>";
-    eventTbl += "<th>지속시간</th>";
-    eventTbl += "<th>인지</th>";
-    eventTbl += "<th>호스트명</th>";
-    eventTbl += "<th>비고</th>";
-    eventTbl += "</tr>";
-    eventTbl += "</thead>";
-
-    eventTbl += "<tbody>";
-
-    $.each(data_EventList, function(k, v) {
-        var severity = convPriority(v.priority);
-        var status = convStatus(v.value);
-        var lastchange = convTime(v.lastchange);
-        var age = convDeltaTime(v.lastchange);
-        var ack = convAck(v.lastEvent.acknowledged);
-        var host = v.hosts[0].host;
-        var description = v.description;
-
-        eventTbl += "<tr role='row'>";
-        eventTbl += "<td>" + severity + "</td>";
-        eventTbl += "<td>" + status + "</td>";
-        eventTbl += "<td>" + lastchange + "</td>";
-        eventTbl += "<td>" + age + "</td>";
-        eventTbl += "<td>" + ack + "</td>";
-        eventTbl += "<td>" + host + "</td>";
-        eventTbl += "<td>" + description + "</td>";
-        eventTbl += "</tr>";
-    });
-    eventTbl += "</tbody>";
-    $("#serverEventList").empty();
-    $("#serverEventList").append(eventTbl);
 }
 
 function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
@@ -102,6 +65,53 @@ function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverA
     serverInfoTbl += "<tr><td>에이전트</td><td>" + serverAgentVersion + "</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
 }
+
+function EventListView(hostid) { //서버정보요약 - 이벤트목록
+    var data_EventList = callApiForServerEvent(hostid);
+    var eventTbl = '';
+
+    /*
+    eventTbl += "<thead>";
+    eventTbl += "<tr role='row'>";
+    eventTbl += "<th>이벤트 등급</th>";
+    eventTbl += "<th>상태</th>";
+    eventTbl += "<th>발생시간</th>";
+    eventTbl += "<th>지속시간</th>";
+    eventTbl += "<th>인지</th>";
+    eventTbl += "<th>호스트명</th>";
+    eventTbl += "<th>비고</th>";
+    eventTbl += "</tr>";
+    eventTbl += "</thead>";
+    */
+
+    eventTbl += "<tbody>";
+
+    $.each(data_EventList, function(k, v) {
+        var severity = convPriority(v.priority);
+        var status = convStatus(v.value);
+        var lastchange = convTime(v.lastchange);
+        var age = convDeltaTime(v.lastchange);
+        var ack = convAck(v.lastEvent.acknowledged);
+        var host = v.hosts[0].host;
+        var description = v.description;
+
+        eventTbl += "<tr role='row'>";
+        eventTbl += "<td width='110' class='line c_b1'>" + severity + "</td>";
+        eventTbl += "<td width='120' class='line'>" + status + "</td>";
+        eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
+        eventTbl += "<td width='120' class='line'>" + age + "</td>";
+        eventTbl += "<td width='120' class='line'>" + ack + "</td>";
+        eventTbl += "<td width='140' class='line'>" + host + "</td>";
+        eventTbl += "<td width='auto' class='align_left ponter'>" +
+            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+            "<span class='smd'>" + description + "</span></a></td>";
+        eventTbl += "</tr>";
+    });
+    eventTbl += "</tbody>";
+    $("#serverEventList").empty();
+    $("#serverEventList").append(eventTbl);
+}
+
 function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
     var serverTraInEth0Arr = [];
     var serverTraOutEth0Arr = [];
