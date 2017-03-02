@@ -1,241 +1,240 @@
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>OBICs-Watch</title>
-		<!-- for operating -->
-		<!-- for responsive -->
-		<!-- <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> -->
-		<meta content="width=devisce-width" name="viewport">
+<head>
+	<meta charset="utf-8">
+	<title>OBICs-Watch</title>
+	<!-- for operating -->
+	<!-- for responsive -->
+	<!-- <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> -->
+	<meta content="width=devisce-width" name="viewport">
 
-		<!-- JQuery UI -->
-		<link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-		<!-- bootstrap -->
-		<link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<!-- bootstrap-multiselect -->
-		<link href="plugins/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
-		<!-- font awesome -->
-		<link href="plugins/Font-Awesome/css/font-awesome.min.css" rel="stylesheet">
-		<!-- ionicons -->
-		<link href="plugins/ionicons/ionicons.min.css" rel="stylesheet" type="text/css" />
-		<!-- adminLTE style -->
-		<link href="plugins/adminLTE/AdminLTE.min.css" rel="stylesheet" type="text/css" />
-		<link href="plugins/adminLTE/skin-red.min.css" rel="stylesheet" type="text/css" />
-		<!-- c3.js -->
-		<link href="plugins/c3.js/c3.min.css" rel="stylesheet" type="text/css" />
-		<!-- pivot.js -->
-		<link href="plugins/pivot.js/pivot.css" rel="stylesheet" type="text/css" />
-		<!-- zoom.js -->
-		<link href="plugins/zoomjs/zoom.css" rel="stylesheet" type="text/css" />
-		<!-- multi-select.js -->
-		<link href="plugins/jquery.multi-select.js/multi-select.css" rel="stylesheet" type="text/css" media="screen">
-		<!-- dc.js -->
-		<link href="plugins/dc.js/dc.css" rel="stylesheet" type="text/css" />
-		<!-- jQRangeSlider-min.js -->
-		<link href="plugins/jQRangeSlider/css/iThing-min.css" rel="stylesheet" type="text/css" />
-		<!-- main -->
-		<link href="dist/css/index.css" rel="stylesheet" type="text/css" />
-		<!-- custom -->
-		<link href="dist/css/custom.css" rel="stylesheet" type="text/css" />
+	<!-- JQuery UI -->
+	<link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+	<!-- bootstrap -->
+	<link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<!-- bootstrap-multiselect -->
+	<link href="plugins/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+	<!-- font awesome -->
+	<link href="plugins/Font-Awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!-- ionicons -->
+	<link href="plugins/ionicons/ionicons.min.css" rel="stylesheet" type="text/css" />
+	<!-- adminLTE style -->
+	<link href="plugins/adminLTE/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+	<link href="plugins/adminLTE/skin-red.min.css" rel="stylesheet" type="text/css" />
+	<!-- c3.js -->
+	<link href="plugins/c3.js/c3.min.css" rel="stylesheet" type="text/css" />
+	<!-- pivot.js -->
+	<link href="plugins/pivot.js/pivot.css" rel="stylesheet" type="text/css" />
+	<!-- zoom.js -->
+	<link href="plugins/zoomjs/zoom.css" rel="stylesheet" type="text/css" />
+	<!-- multi-select.js -->
+	<link href="plugins/jquery.multi-select.js/multi-select.css" rel="stylesheet" type="text/css" media="screen">
+	<!-- dc.js -->
+	<link href="plugins/dc.js/dc.css" rel="stylesheet" type="text/css" />
+	<!-- jQRangeSlider-min.js -->
+	<link href="plugins/jQRangeSlider/css/iThing-min.css" rel="stylesheet" type="text/css" />
+	<!-- main -->
+	<link href="dist/css/index.css" rel="stylesheet" type="text/css" />
+	<!-- custom -->
+	<link href="dist/css/custom.css" rel="stylesheet" type="text/css" />
 
-		<link href="dist/css/bootstrap_v1.min.css" rel="stylesheet" type="text/css" />
-		<link href="dist/css/fonts.googleapis.css" rel="stylesheet" type="text/css" />
-		<link href="dist/css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
-		<link href="dist/css/jquery-tooltip.css" rel="stylesheet" type="text/css" />
-		<link href="dist/css/mainbox.min.css" rel="stylesheet" type="text/css" />
-	</head>
+	<link href="dist/css/bootstrap_v1.min.css" rel="stylesheet" type="text/css" />
+	<link href="dist/css/fonts.googleapis.css" rel="stylesheet" type="text/css" />
+	<link href="dist/css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
+	<link href="dist/css/jquery-tooltip.css" rel="stylesheet" type="text/css" />
+	<link href="dist/css/mainbox.min.css" rel="stylesheet" type="text/css" />
+</head>
 
-	<body class="skin-blue sidebar-mini login-page">
-	<div id="top_login">
-		<div class="login-box">
-			<div class="login-logo">
-				<div href="">
-					<b>OBICs-Watch</b>
-				</div>
-			</div>
-			<div class="login-box-body">
-				<div class="form-group">
-					<input id="inputUser" class="form-control" placeholder="Zabbix User" /> <span class="glyphicon form-control-feedback"></span>
-				</div>
-
-				<div class="form-group ">
-					<input id="inputPasswd" type="password" class="form-control" placeholder="Password" /> <span class="glyphicon form-control-feedback"></span>
-				</div>
-
-				<div class="row">
-					<div class="col-xs-4"></div>
-					<div class="col-xs-4">
-						<button id="submit_login" type="submit" class="btn btn-primary btn-block btn-flat">Sign in</button>
-					</div>
-					<div class="col-xs-4"></div>
-				</div>
+<body class="skin-blue sidebar-mini login-page">
+<div id="top_login">
+	<div class="login-box">
+		<div class="login-logo">
+			<div href="">
+				<b>OBICs-Watch</b>
 			</div>
 		</div>
-		<!-- /.login-box -->
+		<div class="login-box-body">
+			<div class="form-group">
+				<input id="inputUser" class="form-control" placeholder="Zabbix User" /> <span class="glyphicon form-control-feedback"></span>
+			</div>
+
+			<div class="form-group ">
+				<input id="inputPasswd" type="password" class="form-control" placeholder="Password" /> <span class="glyphicon form-control-feedback"></span>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">
+					<button id="submit_login" type="submit" class="btn btn-primary btn-block btn-flat">Sign in</button>
+				</div>
+				<div class="col-xs-4"></div>
+			</div>
+		</div>
 	</div>
+	<!-- /.login-box -->
+</div>
 
-	<div id="top_contents" style="display: none;">
-		<div class="wrapper">
-			<!-- header -->
-			<header class="dashboard-header">
-				<a href=""><div class="logo"></div></a>
-				<nav class="navbar" role="navigation">
-					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
-					<!--회원정보, 로그아웃-->
-					<div class="mbox" onmouseover="info01.style.display=''" onmouseout="info01.style.display='none'">
-						<div>
-							<ul>
-								<li><img src="dist/img/member_icon.png"/></li>
-							</ul>
-						</div>
-
-						<div class="mem">
-							<ul>
-								<li>홍길동님<img src="dist/img/memb_aricon.gif"/></li>
-							</ul>
-							<div id="info01" class="minfo" style="display:none;" onmouseover="info01.style.display=''">
-								<a href="#"><div class="pp1">회원정보수정</div></a>
-								<a href="#"><div class="pp2">로그아웃</div></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="search">
+<div id="top_contents" style="display: none;">
+	<div class="wrapper">
+		<!-- header -->
+		<header class="dashboard-header">
+			<a href=""><div class="logo"></div></a>
+			<nav class="navbar" role="navigation">
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
+				<!--회원정보, 로그아웃-->
+				<div class="mbox" onmouseover="info01.style.display=''" onmouseout="info01.style.display='none'">
+					<div>
 						<ul>
-							<li class="s1">
-								<input type="text" class="search_inbg" name="UserID" value="" style="ime-mode:inactive;" maxlength="40" size="12" onkeyup="enterlogin(this);" onfocus="this.className='input_focus'" onblur="if (this.value.length==0) {this.className='search_inbg';} else {this.className='input_focus';}">
-							</li>
+							<li><img src="dist/img/member_icon.png"/></li>
 						</ul>
 					</div>
-				</nav>
-			</header>
-			<!-- end header -->
 
-			<!-- sidebar -->
-			<aside class="main-sidebar">
-				<section class="sidebar" style="height: auto;">
-					<ul class="sidebar-menu">
-						<li class="header">MAIN NAVIGATION</li>
-						<li><a href="#" id="menu_dashboard"><i
-								class="fa fa-dashboard"></i> <span>대시보드</span> </a></li>
-						<li><a href="#"><i class="fa fa-history"></i> <span>이벤트</span>
-							<i class="fa fa-angle-left pull-right"></i></a>
-							<ul class="treeview-menu">
-								<li><a href="#" id="menu_histogram"><i
-										class="fa fa-bar-chart"></i> Histogram</a></li>
-								<li><a href="#" id="menu_pivottable"><i
-										class="fa fa-table"></i> PivotTable</a></li>
-								<li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i>
-									TreeMap</a></li>
-								<li><a href="#" id="menu_free"><i
-										class="fa fa-circle-o"></i> Free</a></li>
-							</ul>
+					<div class="mem">
+						<ul>
+							<li>홍길동님<img src="dist/img/memb_aricon.gif"/></li>
+						</ul>
+						<div id="info01" class="minfo" style="display:none;" onmouseover="info01.style.display=''">
+							<a href="#"><div class="pp1">회원정보수정</div></a>
+							<a href="#"><div class="pp2">로그아웃</div></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="search">
+					<ul>
+						<li class="s1">
+							<input type="text" class="search_inbg" name="UserID" value="" style="ime-mode:inactive;" maxlength="40" size="12" onkeyup="enterlogin(this);" onfocus="this.className='input_focus'" onblur="if (this.value.length==0) {this.className='search_inbg';} else {this.className='input_focus';}">
 						</li>
-
-						<li><a href="#"><i class="fa fa-history"></i> <span>서버상태</span>
-							<i class="fa fa-angle-left pull-right"></i></a>
-							<ul class="treeview-menu">
-								<li><a href="#" id="menu_overview"><i
-										class="fa fa-bar-chart"></i> 개요</a></li>
-								<li>
-									<a href="#" id="menu_serverlist"><i class="fa fa-table"></i> 서버 목록</a>
-									<ul class="treeview-menu" id="serverlist"></ul>
-								</li>
-							</ul>
-						</li>
-
-						<li class="treeview">
-							<a href="#"> <i class="fa fa-line-chart"></i> <span>Graphs</span> <i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="#"><i class="fa fa-circle-o"></i>Group to
-									Item<i class="fa fa-angle-left pull-right"></i></a>
-									<ul class="treeview-menu" id="menu_group_top"></ul>
-								</li>
-								<li><a href="#"><i class="fa fa-circle-o"></i> Item to
-									Group <i class="fa fa-angle-left pull-right"></i></a>
-
-									<ul class="treeview-menu" id="menu_item_top"></ul>
-								</li>
-							</ul>
-						</li>
-
-						<li><a href="#" id="menu_setting"><i class="fa fa-gears"></i>
-							<span>Setting</span></a></li>
 					</ul>
-				</section>
-			</aside>
-			<!-- end sidebar -->
-
-			<!-- content -->
-			<div class="content-wrapper">
-				<!-- for dashboard -->
-				<div id="base_dashboard">
 				</div>
-				<!-- end dashboard -->
+			</nav>
+		</header>
+		<!-- end header -->
 
-				<!-- for event -->
-				<div id="base_event" style="display: none;">
-				</div>
-				<!-- end event -->
+		<!-- sidebar -->
+		<aside class="main-sidebar">
+			<section class="sidebar" style="height: 100%;">
+				<ul class="sidebar-menu">
+					<li class="header">MAIN NAVIGATION</li>
+					<li><a href="#" id="menu_dashboard"><i
+							class="fa fa-dashboard"></i> <span>대시보드</span> </a></li>
+					<li><a href="#"><i class="fa fa-history"></i> <span>이벤트</span>
+						<i class="fa fa-angle-left pull-right"></i></a>
+						<ul class="treeview-menu">
+							<li><a href="#" id="menu_histogram"><i
+									class="fa fa-bar-chart"></i> Histogram</a></li>
+							<li><a href="#" id="menu_pivottable"><i
+									class="fa fa-table"></i> PivotTable</a></li>
+							<li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i>
+								TreeMap</a></li>
+							<li><a href="#" id="menu_free"><i
+									class="fa fa-circle-o"></i> Free</a></li>
+						</ul>
+					</li>
 
-				<!-- for report  -->
-				<div id="base_graph" style="display: none;">
-				</div>
-				<!-- end graph -->
+					<li><a href="#"><i class="fa fa-history"></i> <span>서버상태</span>
+						<i class="fa fa-angle-left pull-right"></i></a>
+						<ul class="treeview-menu">
+							<li><a href="#" id="menu_overview"><i
+									class="fa fa-bar-chart"></i> 개요</a></li>
+							<li>
+								<a href="#" id="menu_serverlist"><i class="fa fa-table"></i> 서버 목록</a>
+								<ul class="treeview-menu" id="serverlist"></ul>
+							</li>
+						</ul>
+					</li>
 
-				<!-- for setting -->
-				<div id="base_setting" style="display: none;">
+					<li class="treeview">
+						<a href="#"> <i class="fa fa-line-chart"></i> <span>Graphs</span> <i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="#"><i class="fa fa-circle-o"></i>Group to
+								Item<i class="fa fa-angle-left pull-right"></i></a>
+								<ul class="treeview-menu" id="menu_group_top"></ul>
+							</li>
+							<li><a href="#"><i class="fa fa-circle-o"></i> Item to
+								Group <i class="fa fa-angle-left pull-right"></i></a>
 
-				</div>
-				<!-- end setting -->
+								<ul class="treeview-menu" id="menu_item_top"></ul>
+							</li>
+						</ul>
+					</li>
 
-				<div id="base_cpuinfo" style="display: none;">
-				</div>
+					<li><a href="#" id="menu_setting"><i class="fa fa-gears"></i>
+						<span>Setting</span></a></li>
+				</ul>
+			</section>
+		</aside>
+		<!-- end sidebar -->
 
-				<!-- 전체 서버 상태 2017-01-02 -->
-				<div id="base_server" style="display: none;">
-				</div>
-
-				<!-- 서버 정보 요약 2017-01-11 -->
-				<div id="base_serverInfo" style="display: none;">
-				</div>
-
-				<!-- 메모리 통계 2017-01-18 -->
-				<div id="base_memoryInfo" style="display: none;">
-				</div>
-
-				<!-- 프로세스 사용량 2017-01-24 -->
-				<div id="base_processInfo" style="display: none;">
-				</div>
-
-				<!-- 디스크 사용량 -->
-				<div id="base_diskInfo" style="display: none;">
-				</div>
-
-				<!-- 네트워크 사용량 -->
-				<div id="base_networkInfo" style="display: none;">
-				</div>
+		<!-- content -->
+		<div class="content-wrapper">
+			<!-- for dashboard -->
+			<div id="base_dashboard">
 			</div>
-			<!-- end content -->
+			<!-- end dashboard -->
 
-			<!-- footer -->
-			<!--<footer class="main-footer">
-				<div id="zabirepoVersion" class="pull-right hidden-xs"></div>
-				<strong> ZabiRepo ©2016 usiusi360, last update : #lastupdate</strong>
-			</footer>-->
-			<footer class="main-footer">
-				<div class="d1">
-					<ul class="s1">
-						<div class="p1"><img src="dist/img/logo_bottom.png"/></div>
-						<span class="p2">
+			<!-- for event -->
+			<div id="base_event" style="display: none;">
+			</div>
+			<!-- end event -->
+
+			<!-- for report  -->
+			<div id="base_graph" style="display: none;">
+			</div>
+			<!-- end graph -->
+
+			<!-- for setting -->
+			<div id="base_setting" style="display: none;">
+
+			</div>
+			<!-- end setting -->
+
+			<div id="base_cpuinfo" style="display: none;">
+			</div>
+
+			<!-- 전체 서버 상태 2017-01-02 -->
+			<div id="base_server" style="display: none;">
+			</div>
+
+			<!-- 서버 정보 요약 2017-01-11 -->
+			<div id="base_serverInfo" style="display: none;">
+			</div>
+
+			<!-- 메모리 통계 2017-01-18 -->
+			<div id="base_memoryInfo" style="display: none;">
+			</div>
+
+			<!-- 프로세스 사용량 2017-01-24 -->
+			<div id="base_processInfo" style="display: none;">
+			</div>
+
+			<!-- 디스크 사용량 -->
+			<div id="base_diskInfo" style="display: none;">
+			</div>
+
+			<!-- 네트워크 사용량 -->
+			<div id="base_networkInfo" style="display: none;">
+			</div>
+		</div>
+		<!-- end content -->
+
+		<!-- footer -->
+		<!--<footer class="main-footer">
+            <div id="zabirepoVersion" class="pull-right hidden-xs"></div>
+            <strong> ZabiRepo ©2016 usiusi360, last update : #lastupdate</strong>
+        </footer>-->
+		<footer class="main-footer">
+			<div class="d1">
+				<ul class="s1">
+					<div class="p1"><img src="dist/img/logo_bottom.png"/></div>
+					<span class="p2">
 							<li>(060-777) 서울 서초구 효령로 179, 070-47168-2900</li>
 							<li>COPYRIGHT @ 2013 kt ds, ALL RIGHTS RESERVED.</li>
 						</span>
-					</ul>
-				</div>
-				<div class="d2 c_b6 pull-right hidden-xs">본 사이트는 <strong>"Chrome"</strong> 브라우저에 최적화 되어 있습니다.</div>
-			</footer>
-		</div>
+				</ul>
+			</div>
+			<div class="d2 c_b6 pull-right hidden-xs">본 사이트는 <strong>"Chrome"</strong> 브라우저에 최적화 되어 있습니다.</div>
+		</footer>
 		<!-- end wrapper -->
 	</div>
 
@@ -293,8 +292,8 @@
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 	<script>
-		$("#inputUser").val("Admin");
-		$("#inputPasswd").val("P@ssw0rd");
+        $("#inputUser").val("Admin");
+        $("#inputPasswd").val("P@ssw0rd");
 	</script>
-	</body>
+</body>
 </html>
