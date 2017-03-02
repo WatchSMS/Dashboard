@@ -710,7 +710,7 @@ var int = {
             chartSeverity.width(250).height(200).cx(160).radius(90).innerRadius(35).slicesCap(Infinity) // すべて表示
                 .dimension(dimSeverity).group(gpSeverity).ordering(function(t) {
                 return -t.value;
-            }).legend(dc.legend())
+            }).legend(dc.legend());
             chartSeverity.label(function(d) {
                 return d.key + ' : ' + d.value;
             });
@@ -926,12 +926,11 @@ var rowClickEvent = function(table, hostid, startTime) {
             });
         }
     });
-}
+};
 
 function callApiForServerEvent(hostid) {
     return zbxSyncApi.serverViewTrigger(hostid);
-};
-
+}
 function showProcessTable(finalProcArr, topProcessLastTime) {
     var maxRefValue;
     var processGaugeValue;
@@ -1495,7 +1494,7 @@ var sortObject = function(object, key) {
     });
 
     return sorted;
-}
+};
 
 var sortObjectStr = function(object, key) {
     var sorted = [];
@@ -1515,7 +1514,7 @@ var sortObjectStr = function(object, key) {
         });
     });
     return sorted;
-}
+};
 
 var blockUI_opt_all_custom = {
     message: '<h4><img src="./dist/img/loading.gif" />　Please Wait...</h4>',

@@ -1,7 +1,7 @@
 var generateProcessResource = function(hostid, processName, startTime) {
 
     var itemId = null;
-    var dataObj = new Object();
+    var dataObj = {};
     var cpuArr = [];
     var memArr = [];
     var dataSet = [];
@@ -58,10 +58,10 @@ var generateProcessResource = function(hostid, processName, startTime) {
                 }
             });
             // 각 히스토리 데이터 cpu, mem의 sum값을 data 배열에 담는다.
-            cpuArr[j] = new Array();
+            cpuArr[j] = [];
             cpuArr[j][0] = parseInt(data.result[i].clock) * 1000;
             cpuArr[j][1] = parseFloat(cpuSumVal.toFixed(1));
-            memArr[j] = new Array();
+            memArr[j] = [];
             memArr[j][0] = parseInt(data.result[i].clock) * 1000;
             memArr[j][1] = parseFloat(memSumVal.toFixed(1));
         }
@@ -90,7 +90,7 @@ var generateProcessResource = function(hostid, processName, startTime) {
         // showBasicLineChart('chart_processCpu', 'CPU', cpuDataSet, Label.percent, ['#00B700', '#DB9700', '#E3C4FF', '#8F8AFF']);
         // showBasicAreaChart('chart_processMem', 'Memory', memDataSet, Label.MB, ['#E3C4FF', '#8F8AFF', '#00B700', '#DB9700']);
     });
-}
+};
 
 
 var procUsageView = function(hostid, startTime) {
@@ -100,7 +100,7 @@ var procUsageView = function(hostid, startTime) {
     var ProcessTableHTML = '';
     var MAX_PROCCOUNT = 13;
     var currentProcessName = null;
-    var tableDataObj = new Object();
+    var tableDataObj = {};
     var tableDataArr = [];
     var lastProcessData = callApiForProcessTable(hostid);
     var lastClockLongType = parseInt(lastProcessData.lastclock) * 1000;
@@ -121,7 +121,7 @@ var procUsageView = function(hostid, startTime) {
     //ps 데이터의  마지막  값을 테이블에 삽입
     $.each(sortProcessForTable, function(k, v) {
 
-        tableDataObj = new Object();
+        tableDataObj = {};
 
         tableDataObj.procName = v.procName;
         tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
@@ -218,4 +218,4 @@ var procUsageView = function(hostid, startTime) {
     }); // end th col
 
     $.unblockUI(blockUI_opt_all);
-}
+};

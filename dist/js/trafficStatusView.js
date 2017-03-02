@@ -13,7 +13,7 @@ function callApiForTraffic(hostid, startTime){
 function networkInfoView(hostid, startTime, data_topDisk){
     var networkTableHTML = '';
     var MAX_NETWORKCOUNT = 10;
-    var tableDataObj = new Object();
+    var tableDataObj = {};
     var tableDataArr = [];
     var networkItemId = '';
     var networkItemName = '';
@@ -47,7 +47,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
             console.log(e);
         }
 
-        tableDataObj = new Object();
+        tableDataObj = {};
         tableDataObj.networkItemId = networkItemId;
         tableDataObj.networkItemName = networkItemName;
         tableDataObj.networkItemUsed = networkItemUsed;
@@ -174,8 +174,7 @@ function rowClickNetworkEvent(table, hostid, startTime) {
             });
         }
     });
-};
-
+}
 function trafficView(networkIn, networkOut, networkTotal, startTime) {
     var networkInArr = [];
     var networkOutArr = [];

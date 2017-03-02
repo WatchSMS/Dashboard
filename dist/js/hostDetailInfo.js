@@ -2,7 +2,7 @@ function processView(hostid, startTime) {
     var lastProcessData = callApiForProcessTable(hostid);
     var processTbl = '';
     var MAX_PROCCOUNT = 7;
-    var tableDataObj = new Object();
+    var tableDataObj = {};
     var tableDataArr = [];
 
     var topProcessLastClock = parseInt(lastProcessData.lastclock) * 1000;
@@ -23,7 +23,7 @@ function processView(hostid, startTime) {
     processTbl += "<tbody>";
 
     $.each(sortProcessForTable, function(k, v) {
-        tableDataObj = new Object();
+        tableDataObj = {};
 
         tableDataObj.procName = v.procName;
         tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
@@ -48,8 +48,7 @@ function processView(hostid, startTime) {
     $("#processTime").text(topProcessLastTime);
     $("#serverProcessList").empty();
     $("#serverProcessList").append(processTbl);
-};
-
+}
 function EventListView(hostid) { //서버정보요약 - 이벤트목록
     var data_EventList = callApiForServerEvent(hostid);
     var eventTbl = '';
@@ -102,8 +101,7 @@ function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverA
     serverInfoTbl += "<tr><td>호스트명</td><td>" + serverName + "</td></tr>";
     serverInfoTbl += "<tr><td>에이전트</td><td>" + serverAgentVersion + "</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
-};
-
+}
 function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
     var serverTraInEth0Arr = [];
     var serverTraOutEth0Arr = [];
@@ -134,8 +132,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
         }];
         chartCall(chartId, title, series, Label.percent);
     })
-};
-
+}
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
     var serverCpuSystemArr = [];
     var serverCpuUserArr = [];
@@ -151,7 +148,7 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     }).then(function(data) {
         history_cpuUser = zbxApi.getHistory.success(data);
         $.each(history_cpuUser.result, function(k, v) {
-            serverCpuUserArr[k] = new Array();
+            serverCpuUserArr[k] = [];
             serverCpuUserArr[k][0] = parseInt(v.clock) * 1000;
             serverCpuUserArr[k][1] = parseFloat(v.value);
         });
@@ -211,7 +208,7 @@ function showServerDisk(serverDiskUseRoot, startTime) {
         var series = [{
             name: 'Disk Use : /',
             data: serverDiskUseRootArr
-        }]
+        }];
         chartCall(chartId, title, series, Label.percent);
     })
 }

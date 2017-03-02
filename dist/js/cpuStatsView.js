@@ -23,7 +23,7 @@ var cpuStatsView = function(hostid, startTime) {
 
         $.unblockUI(blockUI_opt_all);
     });
-}
+};
 
 //** 함수이름 cpu 통계 화면 관리 명으로 변경(역할 : 화면 열고, 데이터 채우고 --> 각각 function으로분리), cpu data manager 객체 : api 호출해서 dataset 만들어서 넘김
 
@@ -65,7 +65,7 @@ var callApiForCpuUsage = function(hostid, startTime) {
     dataSet.push(new DataObject('CPU Steal', CpuStealArr));
 
     return dataSet;
-}
+};
 
 
 var callApiForCpuLoadAvg = function(hostid, startTime) {
@@ -92,7 +92,7 @@ var callApiForCpuLoadAvg = function(hostid, startTime) {
     loadAvg15Arr = resultToArray(zbxSyncApi.getHistory(data_loadavg15.itemid, startTime, HISTORY_TYPE.FLOAT));
 
 
-    var dataObj = new Object();
+    var dataObj = {};
 
 
     dataSet.push(new DataObject('1분 평균', loadAvg1Arr));
@@ -100,7 +100,7 @@ var callApiForCpuLoadAvg = function(hostid, startTime) {
     dataSet.push(new DataObject('15분 평균', loadAvg15Arr));
 
     return dataSet;
-}
+};
 
 function showBasicAreaChart(chartId, chartTitle, dataSet, label, colorArr) {
     chartCall(chartId, chartTitle, dataSet, label, colorArr);
@@ -109,7 +109,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, label, colorArr) {
 
 var callApiForProcessTable = function(hostid) {
     return zbxSyncApi.getItem(hostid, "system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
-}
+};
 
 var sortProcInCpuOrder = function(data_topProcess) {
 
@@ -137,7 +137,7 @@ var sortProcInCpuOrder = function(data_topProcess) {
 
         procNameOrderByCpu[k] = procName;
 
-        dataObj = new Object();
+        dataObj = {};
         dataObj.procName = procName;
         dataObj.procCpu = parseFloat(topProcColArr[7]);
         dataObj.procMem = parseFloat(topProcColArr[6]);
@@ -149,7 +149,7 @@ var sortProcInCpuOrder = function(data_topProcess) {
     var procUniqueObj = null;
     var procTotalArr = [];
     $.each(procUniqueName, function(k, v) {
-        procUniqueObj = new Object();
+        procUniqueObj = {};
         procUniqueObj.procName = v;
         procUniqueObj.totalCpuVal = 0;
         procUniqueObj.totalMemVal = 0;
@@ -174,4 +174,4 @@ var sortProcInCpuOrder = function(data_topProcess) {
         return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
     });
     return procTotalArr;
-}
+};

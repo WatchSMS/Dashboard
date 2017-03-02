@@ -13,7 +13,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     console.log(" =========== diskInfoView =========== ");
     var diskTableHTML = '';
     var MAX_DISKCOUNT = 10;
-    var tableDataObj = new Object();
+    var tableDataObj = {};
     var tableDataArr = [];
 
     var diskItemId = '';
@@ -54,7 +54,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
             console.log(e);
         }
 
-        tableDataObj = new Object();
+        tableDataObj = {};
         tableDataObj.diskItemId = diskItemId;
         tableDataObj.diskItemName = diskItemName;
         tableDataObj.diskItemUsed = diskItemUsed;
@@ -144,8 +144,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
 
     //자동 새로고침
     //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
-};
-
+}
 function rowClickDiskEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
         if (row > 0) {
@@ -180,8 +179,7 @@ function rowClickDiskEvent(table, hostid, startTime) {
             });
         }
     });
-};
-
+}
 function showDiskView(diskInode, diskFree, diskUse, startTime) {
     var diskInodeArr = [];
     var diskFreeArr = [];
@@ -506,4 +504,4 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
             });
         });
     })
-};
+}

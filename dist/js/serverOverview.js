@@ -9,7 +9,7 @@ var allServerViewHost = function() {
         server_data = zbxApi.getDiskItem.success(data);
         serverOverView(server_data);
     });
-}
+};
 
 function serverOverView(server_data) {
     $.blockUI(blockUI_opt_all);
@@ -24,7 +24,7 @@ function serverOverView(server_data) {
     var serverCPU = '-';
     var serverRAM = '-';
 
-    var tableDataObj = new Object();
+    var tableDataObj = {};
     var tableDataArr = [];
 
     var serverOverViewHTML = '';
@@ -107,7 +107,7 @@ function serverOverView(server_data) {
             serverRAM = splitInfo[1].slice(5);
         }
 
-        var tableDataObj = new Object();
+        var tableDataObj = {};
         tableDataObj.hostid = hostid;
         tableDataObj.status = serverStatus;
         tableDataObj.name = serverName;
@@ -226,7 +226,7 @@ function serverOverView(server_data) {
             $('tbody', $table).append(sortTable);
 
         })//end click function
-    }) //end each
+    });; //end each
 
     //page reloag
     $("#reload_serverOverview").click(function(){
@@ -303,4 +303,4 @@ function serverOverView(server_data) {
     setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);
 
     $.unblockUI(blockUI_opt_all);
-};
+}

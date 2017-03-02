@@ -12,7 +12,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": null
-        }
+        };
         var result = zbxSyncApi.callAjax(authInfo);
         authid = result.result;
     },
@@ -29,7 +29,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
@@ -46,7 +46,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
@@ -62,7 +62,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
@@ -82,7 +82,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result;
     },
@@ -106,7 +106,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result;
     },
@@ -122,7 +122,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
@@ -144,7 +144,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var data = zbxSyncApi.callAjax(param);
         console.log("result : ///// : " + JSON.stringify(data));
         return data;
@@ -161,7 +161,7 @@ var zbxSyncApi = {
             },
             "id": 1,
             "auth": authid
-        }
+        };
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
@@ -182,10 +182,10 @@ var zbxSyncApi = {
                 alert("request : " + JSON.stringify(errorThrown));
                 alert("error : " + textStatus);
             },
-        })
+        });
         //console.log("callAjax :" + JSON.stringify(result));
         return result;
     }
-}
+};
 
 zbxSyncApi.auth();

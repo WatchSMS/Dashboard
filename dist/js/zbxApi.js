@@ -145,7 +145,7 @@ var zbxApi = {
                 console.log(JSON.stringify(v));
                 console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
                 //("#infobox_alertTrigger").text(data.result);
-            })
+            });
             return data;
         }
     },
@@ -167,7 +167,7 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log(JSON.stringify(v));
                 console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
-            })
+            });
             return data;
         }
     },
@@ -190,7 +190,7 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log(JSON.stringify(v));
                 console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
-            })
+            });
             return data;
         }
     },
@@ -210,7 +210,7 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log("host JSON > " + JSON.stringify(v));
                 console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
-            })
+            });
             return data;
         }
     },
@@ -280,7 +280,7 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log("serverViewGraph : " + JSON.stringify(v));
                 console.log(" serverViewGraph >> 키 값 : " + v.key_ + ", 마지막 값 : " + v.lastvalue);
-            })
+            });
             return data;
         }
     },
@@ -300,7 +300,7 @@ var zbxApi = {
         },
         success: function (data) {
             $.each(data.result, function (k, v) {
-            })
+            });
             return data;
         }
     },
@@ -343,7 +343,7 @@ var zbxApi = {
             //console.log(" 전체 서버 상태 2 / : " + JSON.stringify(data));
             $.each(data.result, function (k, v) {
                 //console.log(" 전체 서버 상태 2 >> 키 값 : " + v.key_ + ", 마지막 값 : " + v.lastvalue);
-            })
+            });
             return data;
         }
     },
@@ -362,7 +362,7 @@ var zbxApi = {
         },
         success: function (data) {
             $.each(data.result, function (k, v) {
-            })
+            });
             return data;
         }
     },
