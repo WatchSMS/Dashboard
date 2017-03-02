@@ -174,11 +174,11 @@
 .sidebar-menu > li .badge {
 	margin-top: 3px; margin-right: 5px;
 }
-.sidebar-menu li.header {
+.sidebar-menu li.header-custom {
 	padding: 4px 0 0 0; font-size: 12px;
 	background: #323c60; border-bottom:1px solid #454d6e; color: rgb(75, 100, 111); height:52px; text-align:center;
 }
-.sidebar-menu li.header span {
+.sidebar-menu li.header-custom span {
 	background:url('../img/category_tag.gif') no-repeat center; text-align:center; width:221px; height:41px; display:inline-block;
 }
 .sidebar-menu li > a > .fa-angle-left {
