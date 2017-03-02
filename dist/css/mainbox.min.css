@@ -143,7 +143,7 @@
 
 /* */
 
-.main-sidebar {
+.main-sidebar-custom {
 	overflow:hidden; transition:transform 0.1s ease-in-out, width 0.1s ease-in-out; left: 0px; top: 0px; width: 221px; padding-top: 56px; position: absolute; z-index: 0; -webkit-transition: -webkit-transform 0.1s ease-in-out, width 0.1s ease-in-out; -o-transition: -o-transform 0.1s ease-in-out, width 0.1s ease-in-out; -moz-transition: -moz-transform 0.1s ease-in-out, width 0.1s ease-in-out;
 }
 /* s menu */
