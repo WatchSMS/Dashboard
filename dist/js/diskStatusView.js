@@ -270,6 +270,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
 
                     chart_IO = new Highcharts.Chart({
                         chart: {
+                            backgroundColor: '#424973',
                             renderTo: 'chart_diskIo',
                             zoomType: 'x'
                         },

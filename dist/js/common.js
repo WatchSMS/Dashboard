@@ -116,8 +116,9 @@ function chartCall(chartId, title, series, label, colorArr) {
         Highcharts.chart(chartId, {
             colors: colorArr,
             chart: {
+                backgroundColor: '#424973',
                 zoomType: 'x',
-                height: 150,
+                height: 200,
                 spacingTop: 10,
                 spacingBottom: 0,
                 spacingLeft: 0,
@@ -131,6 +132,10 @@ function chartCall(chartId, title, series, label, colorArr) {
                 text: ''
             },
             xAxis: {
+                gridLineColor: '#707073',
+                lineColor: '#707073',
+                minorGridLineColor: '#505053',
+                tickColor: '#707073',
                 labels: {
                     formatter: function() {
                         var d2 = new Date(this.value);
@@ -151,6 +156,10 @@ function chartCall(chartId, title, series, label, colorArr) {
                 }
             },
             yAxis: {
+                gridLineColor: '#707073',
+                lineColor: '#707073',
+                minorGridLineColor: '#505053',
+                tickColor: '#707073',
                 title: {
                     text: ''
                 },
