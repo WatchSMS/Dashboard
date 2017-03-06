@@ -741,3 +741,94 @@ var removeAllChart = function(){
 	Highcharts.charts.splice(0);
 }
 
+
+var callApiForProcessTable = function(hostid){
+    return zbxSyncApi.getItem(hostid,"system.run[\"ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort=-pcpu\"]");
+}
+
+
+var sortProcess = function(data_topProcess, sortField){
+
+    var topProcRowArr = data_topProcess.lastvalue.split("\n"); //각 행들의 집합
+    var procUniqueName = [];
+    var procNameOrderByCpu = [];
+    var dataObj = null;
+    var dataSet = [];
+
+    //모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
+    $.each(topProcRowArr, function(k,v) {
+        while(topProcRowArr[k].indexOf("  ") != -1){
+            topProcRowArr[k] = topProcRowArr[k].replace('  ',' ');
+        }
+
+        var topProcColArr = topProcRowArr[k].split(" ");
+        var orgName='';
+        var procNameArr = [];
+        var procName = '';
+        for(var i=9; i<topProcColArr.length; i++){
+        	orgName += topProcColArr[i];
+        }
+        if(topProcColArr[9].indexOf("/0") != -1){
+            procName = topProcColArr[9];
+        }else{
+            procNameArr = topProcColArr[9].split("/");
+            procName = procNameArr[procNameArr.length-1];
+        }
+        procName = procName.replace(/\:/g, '');
+
+        procNameOrderByCpu[k] = procName;
+
+        dataObj = new Object();
+        dataObj.procName = procName;
+        dataObj.orgName = orgName;
+        dataObj.procCpu = parseFloat(topProcColArr[7]);
+        dataObj.procMem = parseFloat(topProcColArr[6]);
+        //dataObj.pid = topProcColArr[1];
+        dataSet.push(dataObj);
+    });
+
+    // 프로세스명 중복 제거 후, 프로세스 별 cpu 합 초기화
+    procUniqueName = $.unique(procNameOrderByCpu);
+    var procUniqueObj = null;
+    var procTotalArr = [];
+    $.each(procUniqueName, function(k,v){
+        procUniqueObj = new Object();
+        procUniqueObj.procName = v;
+        procUniqueObj.totalCpuVal = 0;
+        procUniqueObj.totalMemVal = 0;
+        procUniqueObj.procCnt = 0;
+        procTotalArr.push(procUniqueObj);
+    });
+
+    // 같은 프로세스 명끼리 cpu값 더함
+    procTotalArr.splice(0,1);
+    $.each(procTotalArr, function(k1,v1){
+    	var childProcessArr = [];
+    	var childCpuArr = [];
+    	var childMemArr = [];
+        $.each(dataSet, function(k2,v2){
+            if(v1.procName == v2.procName){
+                v1.totalCpuVal += v2.procCpu;
+                v1.totalMemVal += v2.procMem;
+                v1.procCnt += 1;
+                childProcessArr.push(v2.orgName + "\\n");
+                childCpuArr.push(v2.procCpu);
+                childMemArr.push(v2.procMem);
+            }
+        });
+        v1.childName = childProcessArr;
+        v1.childCpu = childCpuArr;
+        v1.childMem = childMemArr;
+    });
+    
+    // cpu값을 기준으로 객체배열 내림차순 정렬
+    procTotalArr.sort(function (a, b) {
+        if(sortField == "CPU"){
+        	return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
+        }else if(sortField == "MEM"){
+        	return a.totalMemVal > b.totalMemVal ? -1 : a.totalMemVal < b.totalMemVal ? 1 : 0;
+        }
+    });
+    
+    return procTotalArr;
+}

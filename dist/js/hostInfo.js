@@ -165,14 +165,19 @@ var hostInfoView = function() {
             });
 
             $("#memory_" + hostid).click(function() { //Memory
-                //var oneDayLongTime = 3600000;
-
-                $("#btn_mem.btn").click(function() {
+            	currentHostId = v.hostid;
+                $("#btn_mem.btn").off().on('click',function() {
+                	offTimer();
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    callApiForMem(hostid, startTime);
+                    callApiForMem(v.hostid,startTime);
                 });
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                callApiForMem(hostid, startTime);
+                
+                offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                $("[id^=base]").hide();
+                $("#base_memoryInfo").show();
+                $("#mem_hostid").html(v.hostid);
+                callApiForMem(v.hostid,startTime);
             });
 
             $("#process_" + hostid).click(function() { //Process
