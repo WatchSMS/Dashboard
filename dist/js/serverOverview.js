@@ -30,15 +30,15 @@ function serverOverView(server_data) {
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
-    serverOverViewHTML += '<td id="serverStatus" width="45" class="line">상태</td>';
-    serverOverViewHTML += '<td id="serverName" width="188" class="sorting line" aria-sort="descending">서버명</td>';
-    serverOverViewHTML += '<td id="serverIpAddr" width="122" class="line">IP주소</td>';
-    serverOverViewHTML += '<td id="serverPerCpu" width="131" class="line">CPU(%)</td>';
-    serverOverViewHTML += '<td id="serverMemory" width="131" class="line">메모리(%)</td>';
-    serverOverViewHTML += '<td id="serverDisk" width="131" class="line">디스크(%)</td>';
-    serverOverViewHTML += '<td id="serverOS" width="150" class="line">운영체제</td>';
-    serverOverViewHTML += '<td id="serverCPU" width="117" class="line">CPU</td>';
-    serverOverViewHTML += '<td id="serverRAM" width="97" class="line">RAM</td>';
+    serverOverViewHTML += '<th id="serverStatus" width="45" class="line">상태</th>';
+    serverOverViewHTML += '<th id="serverName" width="188" class="sorting line" aria-sort="descending">서버명</th>';
+    serverOverViewHTML += '<th id="serverIpAddr" width="122" class="line">IP주소</th>';
+    serverOverViewHTML += '<th id="serverPerCpu" width="131" class="line">CPU(%)</th>';
+    serverOverViewHTML += '<th id="serverMemory" width="131" class="line">메모리(%)</th>';
+    serverOverViewHTML += '<th id="serverDisk" width="131" class="line">디스크(%)</th>';
+    serverOverViewHTML += '<th id="serverOS" width="150" class="line">운영체제</th>';
+    serverOverViewHTML += '<th id="serverCPU" width="117" class="line">CPU</th>';
+    serverOverViewHTML += '<th id="serverRAM" width="97" class="line">RAM</th>';
     serverOverViewHTML += '</tr>';
     serverOverViewHTML += '</thead>';
     serverOverViewHTML += '<tbody>';
@@ -122,7 +122,7 @@ function serverOverView(server_data) {
 
         serverOverViewHTML += '<tr role="row" class="odd">';
         serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line">' + serverStatus + '</td>';
-        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line align_left">' + serverName + '</td>';
+        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line">' + serverIP + '</td>';
         serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
@@ -147,29 +147,34 @@ function serverOverView(server_data) {
     $("#serverList").append(serverOverViewHTML);
 
     $.each(server_data.result, function(k, v) {
+        console.log("IN function");
         hostid = v.hostid;
         var item_id = '';
 
         //화면 이동
         $("#Name_" + hostid).dblclick(function () {
+            console.log("IN function Name_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_")+1);
             $("#info_" + hostid).click();
         });
 
         $("#PerCPU_" + hostid).dblclick(function () {
+            console.log("IN function PerCPU_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#cpu_" + hostid).click();
         });
 
         $("#PerMemory_" + hostid).dblclick(function () {
+            console.log("IN function PerMemory_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#memory_" + hostid).click();
         });
 
         $("#PerDisk_" + hostid).dblclick(function () {
+            console.log("IN function PerDisk_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#disk_" + hostid).click();
@@ -178,7 +183,7 @@ function serverOverView(server_data) {
 
     //테이블의 td col 클릭시 정렬된 테이블 내용 생성
     var $table = $("#serverList");
-    $('td', $table).each(function (column) {
+    $('th', $table).each(function (column) {
         $(this).click(function() {
             var sortTable = '';
             var currentThObj = $(this);
@@ -207,7 +212,7 @@ function serverOverView(server_data) {
                 var hostid = tableDataArr[i].hostid;
                 sortTable += '<tr id = "overView_' + hostid + '" role="row" class="odd">';
                 sortTable += '<td id = "Status_' + hostid + '" width="45" class="line">' + tableDataArr[i].status + '</td>';
-                sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line align_left">' + tableDataArr[i].name + '</td>';
+                sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line">' + tableDataArr[i].name + '</td>';
                 sortTable += '<td id = "IP_' + hostid + '" width="122" class="line">' + tableDataArr[i].ip + '</td>';
                 sortTable += '<td id = "PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
                     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perCPU + '%; height:5px;"></div>' +

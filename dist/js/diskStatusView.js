@@ -490,6 +490,9 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         }],
                         exporting: {
                             buttons: {
+                                printButton: {
+                                    enabled: false
+                                },
                                 reloadButton: {
                                     text: 'Reload',
                                     onclick: function() {
