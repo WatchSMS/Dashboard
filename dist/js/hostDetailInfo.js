@@ -12,16 +12,16 @@ function processView(hostid, startTime) {
     lastProcessData = sortProcInCpuOrder(lastProcessData, topProcessLastTime);
 
     /*
-    processTbl += "<thead>";
-    processTbl += "<tr role='row'>";
-    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>이름</td>";
-    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='auto' class='br7_rt'>개수</td>";
-    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>CPU</td>";
-    processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='br7_rt'>메모리</td>";
-    processTbl += "</tr>";
-    processTbl += "</thead>";
+     processTbl += "<thead>";
+     processTbl += "<tr role='row'>";
+     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>이름</td>";
+     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='auto' class='br7_rt'>개수</td>";
+     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>CPU</td>";
+     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='br7_rt'>메모리</td>";
+     processTbl += "</tr>";
+     processTbl += "</thead>";
 
-    processTbl += "</table>";
+     processTbl += "</table>";
      */
 
     processTbl += "<tbody>";
@@ -52,17 +52,24 @@ function processView(hostid, startTime) {
     $("#processTime").text(topProcessLastTime);
     $("#serverProcessList").empty();
     $("#serverProcessList").append(processTbl);
+
+    //화면 이동
+    $("#processDetail_").click(function () {
+        console.log("IN function processDetail_");
+        console.log(hostid);
+        $("#process_" + hostid).click();
+    });
 }
 
 function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
     $("#serverInfo").empty();
 
     var serverInfoTbl = '';
-    serverInfoTbl += "<tr><td>운영체제</td><td>" + serverOS + "</td></tr>";
-    serverInfoTbl += "<tr><td>서버명</td><td>" + serverTitle + "</td></tr>";
-    serverInfoTbl += "<tr><td>IP주소</td><td>" + serverIP + "</td></tr>";
-    serverInfoTbl += "<tr><td>호스트명</td><td>" + serverName + "</td></tr>";
-    serverInfoTbl += "<tr><td>에이전트</td><td>" + serverAgentVersion + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>운영체제</td><td class='line-td br7_rt'>" + serverOS + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>서버명</td><td class='line-td br7_rt'>" + serverTitle + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>IP주소</td><td class='line-td br7_rt'>" + serverIP + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>호스트명</td><td class='line-td br7_rt'>" + serverName + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>에이전트</td><td class='line-td br7_rt'>" + serverAgentVersion + "</td></tr>";
     $("#serverInfo").append(serverInfoTbl);
 }
 
@@ -71,18 +78,18 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
     var eventTbl = '';
 
     /*
-    eventTbl += "<thead>";
-    eventTbl += "<tr role='row'>";
-    eventTbl += "<th>이벤트 등급</th>";
-    eventTbl += "<th>상태</th>";
-    eventTbl += "<th>발생시간</th>";
-    eventTbl += "<th>지속시간</th>";
-    eventTbl += "<th>인지</th>";
-    eventTbl += "<th>호스트명</th>";
-    eventTbl += "<th>비고</th>";
-    eventTbl += "</tr>";
-    eventTbl += "</thead>";
-    */
+     eventTbl += "<thead>";
+     eventTbl += "<tr role='row'>";
+     eventTbl += "<th>이벤트 등급</th>";
+     eventTbl += "<th>상태</th>";
+     eventTbl += "<th>발생시간</th>";
+     eventTbl += "<th>지속시간</th>";
+     eventTbl += "<th>인지</th>";
+     eventTbl += "<th>호스트명</th>";
+     eventTbl += "<th>비고</th>";
+     eventTbl += "</tr>";
+     eventTbl += "</thead>";
+     */
 
     eventTbl += "<tbody>";
 
