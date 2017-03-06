@@ -103,7 +103,7 @@ var Label = new function() {
     };
 };
 
-function chartCall(chartId, title, series, label, colorArr) {
+function chartCall(chartId, title, series, label, enable, colorArr) {
     if (label == null) {
         label = Label.default;
     }
@@ -200,12 +200,12 @@ function chartCall(chartId, title, series, label, colorArr) {
                 }
             },
             legend: {
-                enabled: false
+                enabled: enable
             },
             exporting: {
                 buttons: {
                     contextButton: {
-                        enabled: false
+                        enabled: enable
                     }
                 }
             },

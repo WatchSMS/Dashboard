@@ -41,7 +41,8 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
             name: 'CPU Steal',
             data: serverCpuStealArr
         }];
-        chartCall(chartId, title, series, Label.percent);
+        var enable = false;
+        chartCall(chartId, title, series, Label.percent, enable);
     });
 
     /*exporting: {
@@ -80,7 +81,8 @@ function showServerMemory(serverMemoryUse, startTime) {
             name: 'Memory Use',
             data: serverMemoryUseArr
         }];
-        chartCall(chartId, title, series, Label.percent);
+        var enable = false;
+        chartCall(chartId, title, series, Label.percent, enable);
     })
 }
 
@@ -112,7 +114,8 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
             name: 'Traffic Total Eth0',
             data: serverTraTotEth0Arr
         }];
-        chartCall(chartId, title, series, Label.percent);
+        var enable = false;
+        chartCall(chartId, title, series, Label.percent, enable);
     })
 }
 
@@ -190,7 +193,8 @@ function showServerDisk(serverDiskUseRoot, startTime) {
             name: 'Disk Use : /',
             data: serverDiskUseRootArr
         }];
-        chartCall(chartId, title, series, Label.percent);
+        var enable = false;
+        chartCall(chartId, title, series, Label.percent, enable);
     })
 }
 
