@@ -147,16 +147,21 @@ var hostInfoView = function() {
             });
 
             $("#cpu_" + hostid).click(function() { //CPU
-                $("#btn_cpu.btn").click(function() {
+            	currentHostId = v.hostid;
+                $("#btn_cpu.btn").off().on('click', function() {
+                	offTimer();
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    cpuStatsView(hostid, startTime);
+                    //updateCpuLoadAvg(v.hostid);
+                    cpuStatsView(v.hostid,startTime);
                 });
-
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                
+                offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 $("[id^=base]").hide();
                 $("#base_cpuinfo").show();
-                //1 callApiForCpu(v.hostid,startTime);
-                cpuStatsView(hostid, startTime);
+                $("#cpu_hostid").html(v.hostid);
+                // callApiForCpu(v.hostid,startTime);
+                cpuStatsView(v.hostid,startTime);
             });
 
             $("#memory_" + hostid).click(function() { //Memory
