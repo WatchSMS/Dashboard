@@ -56,7 +56,7 @@ function processView(hostid, startTime) {
     //화면 이동
     $("#processDetail_").click(function () {
         console.log("IN function processDetail_");
-        console.log(hostid);
+        console.log(hostid + " / " + startTime);
         $("#process_" + hostid).click();
     });
 }
@@ -180,7 +180,6 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
 
         var chartId = "cpuUse";
         var title = 'CPU 사용량';
-        var name = 'Memory Use';
         var series = [{
             name: 'CPU System',
             data: serverCpuSystemArr
