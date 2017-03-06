@@ -516,8 +516,6 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 	   	     }
         }*/
     	
-    	console.log("yyyyyyyyyyyyyyyyy");
-        console.log(dataSet);
         
         chart1 = new Highcharts.chart(chartId, {
         	exporting: { 
@@ -831,4 +829,25 @@ var sortProcess = function(data_topProcess, sortField){
     });
     
     return procTotalArr;
+}
+
+
+var viewMoreProcess = function(){
+	$('tr#lastrow').off().on('click',function(){
+		
+    	var optionRows = $("tr.optionrow");
+    	if($(this).attr('isopen') == 'false'){
+	    	$.each(optionRows, function(k,v) {
+	    		$(this).css('display','');
+	    		$('tr#lastrow').attr("isopen","true");
+	    		$('tr#lastrow').children().children().html("[ 닫기 ]");
+	    	});
+    	}else{
+    		$.each(optionRows, function(k,v) {
+	    		$(this).css('display','none');
+	    		$('tr#lastrow').attr("isopen","false");
+	    		$('tr#lastrow').children().children().html("[ 더 보기 ]");
+	    	});
+    	}
+    });
 }

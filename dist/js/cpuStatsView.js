@@ -320,23 +320,7 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
          });
     });
 
-    $('tr#lastrow').click(function(){
-
-    	var optionRows = $("tr.optionrow");
-    	if($(this).attr('isopen') == 'false'){
-	    	$.each(optionRows, function(k,v) {
-	    		$(this).css('display','');
-	    		$('tr#lastrow').attr("isopen","true");
-	    		$('tr#lastrow').children().children().html("[ 닫기 ]");
-	    	});
-    	}else{
-    		$.each(optionRows, function(k,v) {
-	    		$(this).css('display','none');
-	    		$('tr#lastrow').attr("isopen","false");
-	    		$('tr#lastrow').children().children().html("[ 더 보기 ]");
-	    	});
-    	}
-    });
+    viewMoreProcess();
     
     $("#btn_cpu_charttime").click(function(){
     	$("#cpu_timeInput").val("");

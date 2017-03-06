@@ -917,27 +917,10 @@ var int = {
     }
 };
 
-var rowClickEvent = function(table, hostid, startTime) {
-    $('tr', table).each(function(row) {
-        if (row > 0) {
-            $(this).click(function() {
-                var currentProcessName = $(this).attr('id');
-                $(".selectedProcess").removeClass("selectedProcess");
-                $(this).addClass("selectedProcess");
-                $(this).children().css("border-top", "1px #FF5E00 solid").css("border-bottom", "1px #FF5E00 solid");
-                $(this).children().eq(0).css("border-left", "1px #FF5E00 solid");
-                $(this).children().eq(3).css("border-right", "1px #FF5E00 solid");
-                $(this).prevAll().children().removeAttr('style');
-                $(this).nextAll().children().removeAttr('style');
-                generateProcessResource(hostid, currentProcessName, startTime);
-            });
-        }
-    });
-};
-
 function callApiForServerEvent(hostid) {
     return zbxSyncApi.serverViewTrigger(hostid);
 }
+
 function showProcessTable(finalProcArr, topProcessLastTime) {
     var maxRefValue;
     var processGaugeValue;
@@ -982,91 +965,6 @@ function showProcessTable(finalProcArr, topProcessLastTime) {
     $("#processTime").text(topProcessLastTime);
     $("#cpuProcess").empty();
     $("#cpuProcess").append(cpuProcessTbl);
-}
-
-
-function showCpuUsedProcess(data_topProcess) {
-
-    $("#cpuProcess").empty();
-    var procArrOrderByCpu = [];
-    var orgProcArrOrderByCpu = [];
-    var finalProcArr = [];
-    var topProcRowArr = data_topProcess.result[0].lastvalue.split("\n");
-    var topProcessLastClock = parseInt(data_topProcess.result[0].lastclock) * 1000;
-    var d2 = new Date(topProcessLastClock);
-    var topProcessLastTime = d2.getFullYear() + "-" + (parseInt(d2.getMonth()) + 1) + "-" + d2.getDate() + " " + d2.getHours() + ":" + d2.getMinutes();
-    $("#processTime").text(topProcessLastTime);
-    var cpuProcessTbl = '';
-    var maxRefValue;
-    var processGaugeValue;
-    var MAX_PROCCOUNT = 13;
-
-    //** 프로세스 객체로 만들어도 좋을 것. 객체에 대해서 utility한 function 만드는것 추천
-    //모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
-    $.each(topProcRowArr, function(k, v) {
-        while (topProcRowArr[k].indexOf("  ") != -1) {
-            topProcRowArr[k] = topProcRowArr[k].replace('  ', ' ');
-        }
-        var topProcColArr = topProcRowArr[k].split(" ");
-        procArrOrderByCpu[k] = parseFloat(topProcColArr[7]);
-        orgProcArrOrderByCpu[k] = parseFloat(topProcColArr[7]);
-    });
-    orgProcArrOrderByCpu = procArrOrderByCpu;
-    procArrOrderByCpu.splice(0, 1);
-    procArrOrderByCpu.sort(function(a, b) {
-        return b - a;
-    });
-
-    for (var i = 0; i < procArrOrderByCpu.length; i++) {
-        for (var j = 0; j < orgProcArrOrderByCpu.length; ++j) {
-            if (procArrOrderByCpu[i] == orgProcArrOrderByCpu[j]) {
-                finalProcArr[i] = topProcRowArr[j];
-                orgProcArrOrderByCpu[j] = -1;
-                break;
-            }
-        }
-    }
-
-    //** 트리맵 : 키가 정렬되서들어감. 키를 cpu 사용률로 하고 value를 항목으로.
-
-    cpuProcessTbl += "<thead>";
-    cpuProcessTbl += "<tr class='display-none' role='row'>";
-    cpuProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-    cpuProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
-    cpuProcessTbl += "</tr>";
-    cpuProcessTbl += "</thead>";
-    cpuProcessTbl += "<tbody>";
-
-    $.each(finalProcArr, function(k, v) {
-        if (k > 0 && k < MAX_PROCCOUNT) {
-            var temp = finalProcArr[k].split(" ");
-            var procName = '';
-            var processPercentValue = parseFloat(temp[7]);
-            if (k == 1) {
-                maxRefValue = processPercentValue;
-                processGaugeValue = 100;
-            } else {
-                processGaugeValue = (processPercentValue * 100) / maxRefValue;
-            }
-            for (var i = 9; i <= temp.length; ++i) {
-                if (temp[i] != null) {
-                    procName += " " + temp[i];
-                }
-            }
-            cpuProcessTbl += "<tr role='row' class='odd'>";
-            cpuProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
-            cpuProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
-            cpuProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
-            cpuProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
-            cpuProcessTbl += "</div></div>";
-            cpuProcessTbl += "</td>";
-            cpuProcessTbl += "<td class=' display-none'>httpd</td>";
-            cpuProcessTbl += "</tr>";
-        }
-    });
-    cpuProcessTbl += "</tbody>";
-    $("#cpuProcess").append(cpuProcessTbl);
-
 }
 
 function type(d, i, columns) {

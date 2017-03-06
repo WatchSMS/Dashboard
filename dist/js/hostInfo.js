@@ -181,11 +181,13 @@ var hostInfoView = function() {
             });
 
             $("#process_" + hostid).click(function() { //Process
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+            	offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                currentHostId = v.hostid;
                 $.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
                 $("#base_processInfo").show();
-                procUsageView(hostid, startTime);
+                procUsageView(v.hostid, startTime);
             });
 
             $("#disk_" + hostid).click(function() { //Disk
