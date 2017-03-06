@@ -1,6 +1,6 @@
 function DataObject(name, data){
-  this.name=name;
-  this.data=data;
+    this.name=name;
+    this.data=data;
 }
 
 var resultToArray = new function(data) {
@@ -47,39 +47,39 @@ var convPriority = function(priority) {
 };
 
 /*
-var convAckServer = function(ack) {
-    if (ack === "0") {
-        return "아니오";
-    } else {
-        return "예";
-    }
-};
+ var convAckServer = function(ack) {
+ if (ack === "0") {
+ return "아니오";
+ } else {
+ return "예";
+ }
+ };
 
-var convPriorityServer = function(priority) {
-    switch (priority) {
-        case "0":
-            return "미분류";
-        case "1":
-            return "정보";
-        case "2":
-            return "경고";
-        case "3":
-            return "가벼운 장애";
-        case "4":
-            return "중증 장애";
-        case "5":
-            return "심각한 장애";
-    }
-};
+ var convPriorityServer = function(priority) {
+ switch (priority) {
+ case "0":
+ return "미분류";
+ case "1":
+ return "정보";
+ case "2":
+ return "경고";
+ case "3":
+ return "가벼운 장애";
+ case "4":
+ return "중증 장애";
+ case "5":
+ return "심각한 장애";
+ }
+ };
 
-var convStatusServer = function(status) {
-    if (status === "0") {
-        return "장애 없음";
-    } else {
-        return "장애 있음";
-    }
-};
-*/
+ var convStatusServer = function(status) {
+ if (status === "0") {
+ return "장애 없음";
+ } else {
+ return "장애 있음";
+ }
+ };
+ */
 
 var resultToArray = function(data) {
     var array = [];
@@ -187,6 +187,13 @@ function chartCall(chartId, title, series, label, colorArr) {
                         seconds = "0" + seconds;
                     }
                     return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false
+                    }
                 }
             },
             plotOptions: {

@@ -1,155 +1,3 @@
-function processView(hostid, startTime) {
-    var lastProcessData = callApiForProcessTable(hostid);
-    var processTbl = '';
-    var MAX_PROCCOUNT = 7;
-    var tableDataObj = {};
-    var tableDataArr = [];
-
-    var topProcessLastClock = parseInt(lastProcessData.lastclock) * 1000;
-    var d2 = new Date(topProcessLastClock);
-    var topProcessLastTime = d2.getFullYear() + "-" + d2.getMonth() + 1 + "-" + d2.getDate() + " " + d2.getHours() + ":" + d2.getMinutes();
-    var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
-    lastProcessData = sortProcInCpuOrder(lastProcessData, topProcessLastTime);
-
-    /*
-     processTbl += "<thead>";
-     processTbl += "<tr role='row'>";
-     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>이름</td>";
-     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='auto' class='br7_rt'>개수</td>";
-     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='line'>CPU</td>";
-     processTbl += "<td tabindex='0' aria-controls='processList' rowspan='1' colspan='1' width='170' class='br7_rt'>메모리</td>";
-     processTbl += "</tr>";
-     processTbl += "</thead>";
-
-     processTbl += "</table>";
-     */
-
-    processTbl += "<tbody>";
-
-    $.each(sortProcessForTable, function(k, v) {
-        tableDataObj = {};
-
-        tableDataObj.procName = v.procName;
-        tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
-        tableDataObj.memValue = parseFloat(v.totalMemVal.toFixed(1));
-        tableDataObj.procCnt = parseInt(v.procCnt);
-        tableDataArr.push(tableDataObj);
-        if (k < MAX_PROCCOUNT) {
-            var procCpuValue = v.totalCpuVal.toFixed(1);
-            var procMemValue = v.totalMemVal.toFixed(1);
-
-            processTbl += "<tr id='" + v.procName + "' role='row' class='odd h34'>";
-            processTbl += "<td width='170' class='align_left line p115' title='" + v.procName + "'>" + v.procName + "</td>";
-            processTbl += "<td width='90' class='line'>" + v.procCnt + "</td>";
-            processTbl += "<td width='120' class='line'>" + procCpuValue + "</td>";
-            processTbl += "<td width='auton'>" + procMemValue + "<span class='smaller'>MB</span></td>";
-            processTbl += "</tr>";
-        }
-    });
-
-    processTbl += "</tbody>";
-
-    $("#processTime").text(topProcessLastTime);
-    $("#serverProcessList").empty();
-    $("#serverProcessList").append(processTbl);
-
-    //화면 이동
-    $("#processDetail_").click(function () {
-        console.log("IN function processDetail_");
-        console.log(hostid + " / " + startTime);
-        $("#process_" + hostid).click();
-    });
-}
-
-function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
-    $("#serverInfo").empty();
-
-    var serverInfoTbl = '';
-    serverInfoTbl += "<tr><td class='line-td' width='170'>운영체제</td><td class='line-td br7_rt'>" + serverOS + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>서버명</td><td class='line-td br7_rt'>" + serverTitle + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>IP주소</td><td class='line-td br7_rt'>" + serverIP + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>호스트명</td><td class='line-td br7_rt'>" + serverName + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>에이전트</td><td class='line-td br7_rt'>" + serverAgentVersion + "</td></tr>";
-    $("#serverInfo").append(serverInfoTbl);
-}
-
-function EventListView(hostid) { //서버정보요약 - 이벤트목록
-    var data_EventList = callApiForServerEvent(hostid);
-    var eventTbl = '';
-
-    /*
-     eventTbl += "<thead>";
-     eventTbl += "<tr role='row'>";
-     eventTbl += "<th>이벤트 등급</th>";
-     eventTbl += "<th>상태</th>";
-     eventTbl += "<th>발생시간</th>";
-     eventTbl += "<th>지속시간</th>";
-     eventTbl += "<th>인지</th>";
-     eventTbl += "<th>호스트명</th>";
-     eventTbl += "<th>비고</th>";
-     eventTbl += "</tr>";
-     eventTbl += "</thead>";
-     */
-
-    eventTbl += "<tbody>";
-
-    $.each(data_EventList, function(k, v) {
-        var severity = convPriority(v.priority);
-        var status = convStatus(v.value);
-        var lastchange = convTime(v.lastchange);
-        var age = convDeltaTime(v.lastchange);
-        var ack = convAck(v.lastEvent.acknowledged);
-        var host = v.hosts[0].host;
-        var description = v.description;
-
-        eventTbl += "<tr role='row'>";
-        eventTbl += "<td width='110' class='line c_b1'>" + severity + "</td>";
-        eventTbl += "<td width='120' class='line'>" + status + "</td>";
-        eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
-        eventTbl += "<td width='120' class='line'>" + age + "</td>";
-        eventTbl += "<td width='120' class='line'>" + ack + "</td>";
-        eventTbl += "<td width='140' class='line'>" + host + "</td>";
-        eventTbl += "<td width='auto' class='align_left ponter'>" +
-            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-            "<span class='smd'>" + description + "</span></a></td>";
-        eventTbl += "</tr>";
-    });
-    eventTbl += "</tbody>";
-    $("#serverEventList").empty();
-    $("#serverEventList").append(eventTbl);
-}
-
-function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
-    var serverTraInEth0Arr = [];
-    var serverTraOutEth0Arr = [];
-    var serverTraTotEth0Arr = [];
-
-    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-        serverTraInEth0Arr = zbxApi.getHistory.success(data);
-    }).then(function() {
-        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
-    }).then(function(data) {
-        serverTraOutEth0Arr = zbxApi.getHistory.success(data);
-    }).then(function() {
-        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
-    }).then(function(data) {
-        serverTraTotEth0Arr = zbxApi.getHistory.success(data);
-
-        var chartId = "trafficUse";
-        var title = '트래픽 사용량';
-        var series = [{
-            name: 'Traffic In Eth0',
-            data: serverTraInEth0Arr
-        }, {
-            name: 'Traffic Out Eth0',
-            data: serverTraOutEth0Arr
-        }, {
-            name: 'Traffic Total Eth0',
-            data: serverTraTotEth0Arr
-        }];
-        chartCall(chartId, title, series, Label.percent);
-    })
-}
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
     var serverCpuSystemArr = [];
     var serverCpuUserArr = [];
@@ -195,6 +43,29 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         }];
         chartCall(chartId, title, series, Label.percent);
     });
+
+    /*exporting: {
+        buttons: {
+            contextButton: {
+                enabled: false
+            },
+            exportButton: {
+                text: 'Download',
+                    // Use only the download related menu items from the default context button
+                    menuItems: Highcharts.getOptions().exporting.buttons.contextButton.menuItems.splice(2)
+            },
+            printButton: {
+                text: 'Print',
+                    onclick: function () {
+                    this.print();
+                }
+            }
+        }
+    }*/
+    /*$("#exporting").click(function () {
+        console.log("Click exporting Button");
+        Highcharts.getOptions().exporting.buttons.contextButton.menuItems
+    })*/
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
@@ -213,6 +84,100 @@ function showServerMemory(serverMemoryUse, startTime) {
     })
 }
 
+function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
+    var serverTraInEth0Arr = [];
+    var serverTraOutEth0Arr = [];
+    var serverTraTotEth0Arr = [];
+
+    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+        serverTraInEth0Arr = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data) {
+        serverTraOutEth0Arr = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data) {
+        serverTraTotEth0Arr = zbxApi.getHistory.success(data);
+
+        var chartId = "trafficUse";
+        var title = '트래픽 사용량';
+        var series = [{
+            name: 'Traffic In Eth0',
+            data: serverTraInEth0Arr
+        }, {
+            name: 'Traffic Out Eth0',
+            data: serverTraOutEth0Arr
+        }, {
+            name: 'Traffic Total Eth0',
+            data: serverTraTotEth0Arr
+        }];
+        chartCall(chartId, title, series, Label.percent);
+    })
+}
+
+function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
+    $("#serverInfo").empty();
+
+    var serverInfoTbl = '';
+    serverInfoTbl += "<tr><td class='line-td' width='170'>운영체제</td><td class='line-td br7_rt'>" + serverOS + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>서버명</td><td class='line-td br7_rt'>" + serverTitle + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>IP주소</td><td class='line-td br7_rt'>" + serverIP + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>호스트명</td><td class='line-td br7_rt'>" + serverName + "</td></tr>";
+    serverInfoTbl += "<tr><td class='line-td' width='170'>에이전트</td><td class='line-td br7_rt'>" + serverAgentVersion + "</td></tr>";
+    $("#serverInfo").append(serverInfoTbl);
+}
+
+function processView(hostid, startTime) {
+    var lastProcessData = callApiForProcessTable(hostid);
+    var processTbl = '';
+    var MAX_PROCCOUNT = 7;
+    var tableDataObj = {};
+    var tableDataArr = [];
+
+    var topProcessLastClock = parseInt(lastProcessData.lastclock) * 1000;
+    var d2 = new Date(topProcessLastClock);
+    var topProcessLastTime = d2.getFullYear() + "-" + d2.getMonth() + 1 + "-" + d2.getDate() + " " + d2.getHours() + ":" + d2.getMinutes();
+    var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
+    lastProcessData = sortProcInCpuOrder(lastProcessData, topProcessLastTime);
+
+    processTbl += "<tbody>";
+
+    $.each(sortProcessForTable, function(k, v) {
+        tableDataObj = {};
+
+        tableDataObj.procName = v.procName;
+        tableDataObj.cpuValue = parseFloat(v.totalCpuVal.toFixed(1));
+        tableDataObj.memValue = parseFloat(v.totalMemVal.toFixed(1));
+        tableDataObj.procCnt = parseInt(v.procCnt);
+        tableDataArr.push(tableDataObj);
+        if (k < MAX_PROCCOUNT) {
+            var procCpuValue = v.totalCpuVal.toFixed(1);
+            var procMemValue = v.totalMemVal.toFixed(1);
+
+            processTbl += "<tr id='" + v.procName + "' role='row' class='odd h34'>";
+            processTbl += "<td width='170' class='align_left line p115' title='" + v.procName + "'>" + v.procName + "</td>";
+            processTbl += "<td width='90' class='line'>" + v.procCnt + "</td>";
+            processTbl += "<td width='120' class='line'>" + procCpuValue + "</td>";
+            processTbl += "<td width='auton'>" + procMemValue + "<span class='smaller'>MB</span></td>";
+            processTbl += "</tr>";
+        }
+    });
+
+    processTbl += "</tbody>";
+
+    $("#processTime").text(topProcessLastTime);
+    $("#serverProcessList").empty();
+    $("#serverProcessList").append(processTbl);
+
+    //화면 이동
+    $("#processDetail_").click(function () {
+        console.log("IN function processDetail_");
+        console.log(hostid + " / " + startTime);
+        $("#process_" + hostid).click();
+    });
+}
+
 function showServerDisk(serverDiskUseRoot, startTime) {
     var serverDiskUseRootArr = [];
 
@@ -227,4 +192,36 @@ function showServerDisk(serverDiskUseRoot, startTime) {
         }];
         chartCall(chartId, title, series, Label.percent);
     })
+}
+
+function EventListView(hostid) { //서버정보요약 - 이벤트목록
+    var data_EventList = callApiForServerEvent(hostid);
+    var eventTbl = '';
+
+    eventTbl += "<tbody>";
+
+    $.each(data_EventList, function(k, v) {
+        var severity = convPriority(v.priority);
+        var status = convStatus(v.value);
+        var lastchange = convTime(v.lastchange);
+        var age = convDeltaTime(v.lastchange);
+        var ack = convAck(v.lastEvent.acknowledged);
+        var host = v.hosts[0].host;
+        var description = v.description;
+
+        eventTbl += "<tr role='row'>";
+        eventTbl += "<td width='110' class='line c_b1'>" + severity + "</td>";
+        eventTbl += "<td width='120' class='line'>" + status + "</td>";
+        eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
+        eventTbl += "<td width='120' class='line'>" + age + "</td>";
+        eventTbl += "<td width='120' class='line'>" + ack + "</td>";
+        eventTbl += "<td width='140' class='line'>" + host + "</td>";
+        eventTbl += "<td width='auto' class='align_left ponter'>" +
+            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+            "<span class='smd'>" + description + "</span></a></td>";
+        eventTbl += "</tr>";
+    });
+    eventTbl += "</tbody>";
+    $("#serverEventList").empty();
+    $("#serverEventList").append(eventTbl);
 }
