@@ -137,6 +137,9 @@ function chartCall(chartId, title, series, label, colorArr) {
                 minorGridLineColor: '#505053',
                 tickColor: '#707073',
                 labels: {
+                    style:{
+                        color: '#E0E0E3'
+                    },
                     formatter: function() {
                         var d2 = new Date(this.value);
                         var hours = "" + d2.getHours();
@@ -166,12 +169,19 @@ function chartCall(chartId, title, series, label, colorArr) {
                 min: 0,
                 max: 100,
                 labels: {
+                    style:{
+                        color: '#E0E0E3'
+                    },
                     formatter: function() {
                         return label(this.value);
                     }
                 }
             },
             tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                style: {
+                    color: '#F0F0F0'
+                },
                 formatter: function() {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
@@ -188,6 +198,9 @@ function chartCall(chartId, title, series, label, colorArr) {
                     }
                     return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
                 }
+            },
+            legend: {
+                enabled: false
             },
             exporting: {
                 buttons: {
