@@ -30,15 +30,15 @@ function serverOverView(server_data) {
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
-    serverOverViewHTML += '<th id="serverStatus" width="45" class="line">상태</th>';
-    serverOverViewHTML += '<th id="serverName" width="188" class="sorting line" aria-sort="descending">서버명</th>';
-    serverOverViewHTML += '<th id="serverIpAddr" width="122" class="line">IP주소</th>';
-    serverOverViewHTML += '<th id="serverPerCpu" width="131" class="line">CPU(%)</th>';
-    serverOverViewHTML += '<th id="serverMemory" width="131" class="line">메모리(%)</th>';
-    serverOverViewHTML += '<th id="serverDisk" width="131" class="line">디스크(%)</th>';
-    serverOverViewHTML += '<th id="serverOS" width="150" class="line">운영체제</th>';
-    serverOverViewHTML += '<th id="serverCPU" width="117" class="line">CPU</th>';
-    serverOverViewHTML += '<th id="serverRAM" width="97" class="line">RAM</th>';
+    serverOverViewHTML += '<th id="serverStatus" width="45" class="line-th">상태</th>';
+    serverOverViewHTML += '<th id="serverName" width="188" class="sorting line-td" aria-sort="descending">서버명</th>';
+    serverOverViewHTML += '<th id="serverIpAddr" width="122" class="line-td">IP주소</th>';
+    serverOverViewHTML += '<th id="serverPerCpu" width="131" class="line-td">CPU(%)</th>';
+    serverOverViewHTML += '<th id="serverMemory" width="131" class="line-td">메모리(%)</th>';
+    serverOverViewHTML += '<th id="serverDisk" width="131" class="line-td">디스크(%)</th>';
+    serverOverViewHTML += '<th id="serverOS" width="150" class="line-td">운영체제</th>';
+    serverOverViewHTML += '<th id="serverCPU" width="117" class="line-td">CPU</th>';
+    serverOverViewHTML += '<th id="serverRAM" width="97" class="line-td">RAM</th>';
     serverOverViewHTML += '</tr>';
     serverOverViewHTML += '</thead>';
     serverOverViewHTML += '<tbody>';
@@ -121,24 +121,24 @@ function serverOverView(server_data) {
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr role="row" class="odd">';
-        serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line">' + serverStatus + '</td>';
-        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line">' + serverName + '</td>';
-        serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line">' + serverIP + '</td>';
-        serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
+        serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td">' + serverStatus + '</td>';
+        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td">' + serverName + '</td>';
+        serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
+        serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
             '</div>' +
             '<div class="fr mt2 mr5 f11">' + serverPerCPU + '%</div></td>';
-        serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line"><div class="scw">' +
+        serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerMemory + '%; height:5px;"></div>' +
             '</div>' +
             '<div class="fr mt2 mr5 f11">' + serverPerMemory + '%</div></td>';
-        serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line"><div class="scw">' +
+        serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerDisk + '%; height:5px;"></div>' +
             '</div>' +
             '<div class="fr mt2 mr5 f11">' + serverPerDisk + '%</div></td>';
-        serverOverViewHTML += '<td width="150" class="line">' + serverOS + '</td>';
-        serverOverViewHTML += '<td width="117" class="line">' + serverCPU + '</td>';
-        serverOverViewHTML += '<td width="97" class="line">' + serverRAM + '</td>';
+        serverOverViewHTML += '<td width="150" class="line-td">' + serverOS + '</td>';
+        serverOverViewHTML += '<td width="117" class="line-td">' + serverCPU + '</td>';
+        serverOverViewHTML += '<td width="97" class="line-td">' + serverRAM + '</td>';
         serverOverViewHTML += '</tr>';
     });
 
@@ -210,22 +210,22 @@ function serverOverView(server_data) {
 
             for(var i=0; i<MAX_COUNT; i++){
                 var hostid = tableDataArr[i].hostid;
-                sortTable += '<tr id = "overView_' + hostid + '" role="row" class="odd">';
-                sortTable += '<td id = "Status_' + hostid + '" width="45" class="line">' + tableDataArr[i].status + '</td>';
-                sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line">' + tableDataArr[i].name + '</td>';
-                sortTable += '<td id = "IP_' + hostid + '" width="122" class="line">' + tableDataArr[i].ip + '</td>';
-                sortTable += '<td id = "PerCPU_' + hostid + '" width="131" class="line"><div class="scw">' +
+                sortTable += '<tr role="row" class="odd">';
+                sortTable += '<td id = "Status_' + hostid + '" width="45" class="line-td">' + tableDataArr[i].status + '</td>';
+                sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line-td">' + tableDataArr[i].name + '</td>';
+                sortTable += '<td id = "IP_' + hostid + '" width="122" class="line-td">' + tableDataArr[i].ip + '</td>';
+                sortTable += '<td id = "PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
                     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perCPU + '%; height:5px;"></div>' +
                     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perCPU + '%</div></td>';
-                sortTable += '<td id = "PerMemory_' + hostid + '" width="131" class="line"><div class="scw">' +
+                sortTable += '<td id = "PerMemory_' + hostid + '" width="131" class="line-td"><div class="scw">' +
                     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perMemory + '%; height:5px;"></div>' +
                     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perMemory + '%</div></td>';
-                sortTable += '<td id = "PerDisk_' + hostid + '" width="131" class="line"><div class="scw">' +
+                sortTable += '<td id = "PerDisk_' + hostid + '" width="131" class="line-td"><div class="scw">' +
                     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perDisk + '%; height:5px;"></div>' +
                     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perDisk + '%</div></td>';
-                sortTable += '<td width="150" class="line">' + tableDataArr[i].OS + '</td>';
-                sortTable += '<td width="117" class="line">' + tableDataArr[i].CPU + '</td>';
-                sortTable += '<td width="97" class="line">' + tableDataArr[i].RAM + '</td>';
+                sortTable += '<td width="150" class="line-td">' + tableDataArr[i].OS + '</td>';
+                sortTable += '<td width="117" class="line-td">' + tableDataArr[i].CPU + '</td>';
+                sortTable += '<td width="97" class="line-td">' + tableDataArr[i].RAM + '</td>';
                 sortTable += '</tr>';
             }//end for
             $('tbody', $table).append(sortTable);
