@@ -22,12 +22,12 @@ function diskInfoView(hostid, data_topDisk, startTime){
     var diskItemSize = 0;
 
     /*diskTableHTML += "<thead>";
-    diskTableHTML += "<tr role='row'>";
-    diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
-    diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-    diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(GB)</span></th>";
-    diskTableHTML += "</tr>";
-    diskTableHTML += "</thead>";*/
+     diskTableHTML += "<tr role='row'>";
+     diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
+     diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
+     diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(GB)</span></th>";
+     diskTableHTML += "</tr>";
+     diskTableHTML += "</thead>";*/
 
     diskTableHTML += "<tbody>";
 
@@ -63,10 +63,10 @@ function diskInfoView(hostid, data_topDisk, startTime){
 
         if (k < MAX_DISKCOUNT) {
             /*diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='odd'>";
-            diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" + diskItemName + "</span></td>";
-            diskTableHTML += "<td class='text-right'>" + diskItemUsed + "<span class='smaller'>%</span></td>";
-            diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>GB</span></td>";
-            diskTableHTML += "</tr>";*/
+             diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" + diskItemName + "</span></td>";
+             diskTableHTML += "<td class='text-right'>" + diskItemUsed + "<span class='smaller'>%</span></td>";
+             diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>GB</span></td>";
+             diskTableHTML += "</tr>";*/
             diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='h51 odd'>";
             diskTableHTML += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
             diskTableHTML += "<td width='auto'>";
@@ -120,10 +120,10 @@ function diskInfoView(hostid, data_topDisk, startTime){
             $('tbody', $table).empty();
             for (var i = 0; i < MAX_COUNT; i++) {
                 /*sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='odd'>";
-                sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemUsed + "<span class='smaller'>%</span></td>";
-                sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>GB</span></td>";
-                sortTable += "</tr>";*/
+                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
+                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemUsed + "<span class='smaller'>%</span></td>";
+                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>GB</span></td>";
+                 sortTable += "</tr>";*/
                 sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='h51 odd'>";
                 sortTable += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
                 sortTable += "<td width='auto'>";
@@ -162,13 +162,14 @@ function diskInfoView(hostid, data_topDisk, startTime){
     //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
 }
 function rowClickDiskEvent(table, hostid, startTime) {
-    $('td', table).each(function(row) {
+    $('div', table).each(function(row) {
         if (row > 0) {
             $(this).click(function() {
                 var currentDiskItemId = $(this).attr('id');
+                alert(currentDiskItemId);
                 $(".selectedDisk").removeClass("selectedDisk");
                 $(this).addClass("selectedDisk");
-                $(this).children().css("background", "#A2F0F1");
+                $(this).css("background", "#A2F0F1");
                 $(this).prevAll().children().removeAttr('style');
                 $(this).nextAll().children().removeAttr('style');
 

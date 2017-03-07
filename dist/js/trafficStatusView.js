@@ -20,13 +20,13 @@ function networkInfoView(hostid, startTime, data_topDisk){
     var networkItemUsed = 0;
     var networkItemSize = 0;
 
-    networkTableHTML += "<thead>";
+    /*networkTableHTML += "<thead>";
     networkTableHTML += "<tr role='row'>";
     networkTableHTML += "<th class='percent-text sorting' aria-sort='descending'>NETWORK</th>";
     //networkTableHTML += "<th width='15%' class='text-right'>USED<span class='smaller'>(%)</span></th>";
     //networkTableHTML += "<th width='15%' class='text-right'>SIZE<span class='smaller'>(MB)</span></th>";
     networkTableHTML += "</tr>";
-    networkTableHTML += "</thead>";
+    networkTableHTML += "</thead>";*/
 
     networkTableHTML += "<tbody>";
 
@@ -55,10 +55,17 @@ function networkInfoView(hostid, startTime, data_topDisk){
         tableDataArr.push(tableDataObj);
 
         if(k < MAX_NETWORKCOUNT){
-            networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='odd'>";
+            /*networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='odd'>";
             networkTableHTML += "<td class='text-left'><span class='ellipsis' title='" + networkItemName + "'>" + networkItemName + "</span></td>";
             //networkTableHTML += "<td class='text-right'>" + networkItemUsed + "<span class='smaller'>%</span></td>";
             //networkTableHTML += "<td class='text-right'>" + networkItemSize + "<span class='smaller'>MB</span></td>";
+            networkTableHTML += "</tr>";*/
+
+            networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='h51 odd'>";
+            networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>"
+            networkTableHTML += "<td width='auto' class='align_left p113'>";
+            networkTableHTML += "<div class='mt2 f11'>" + networkItemName + "</div>";
+            networkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + "b/s / RX : " + networkItemSize + "'b/z</div>";
             networkTableHTML += "</tr>";
         }
     });
@@ -105,11 +112,19 @@ function networkInfoView(hostid, startTime, data_topDisk){
             $('tbody', $table).empty();
 
             for (var i = 0; i < MAX_COUNT; i++) {
-                sortTable += "<tr id='" + tableDataArr[i].networkItemName + "' role='row' class='odd'>";
+                /*sortTable += "<tr id='" + tableDataArr[i].networkItemName + "' role='row' class='odd'>";
                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].networkItemName + "'>" + tableDataArr[i].networkItemName + "</span></td>";
                 //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemUsed + "<span class='smaller'>%</span></td>";
                 //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemSize + "<span class='smaller'>MB</span></td>";
-                sortTable += "</tr>";
+                sortTable += "</tr>";*/
+
+                networkTableHTML += "<tr class='h51'>";
+                networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>"
+                networkTableHTML += "<td width='auto' class='align_left p113'>";
+                networkTableHTML += "<div class='mt2 f11'>" + tableDataArr[i].networkItemName + "</div>";
+                networkTableHTML += "<div class='mt2 f11'> TX : " + tableDataArr[i].networkItemUsed + "b/s / RX : " +
+                    tableDataArr[i].networkItemSize + "'b/z</div>";
+                networkTableHTML += "</tr>";
             }
             $('tbody', $table).append(sortTable);
             $("#" + tmpNetworkName).addClass("selectedNetwork");
@@ -147,7 +162,7 @@ function rowClickNetworkEvent(table, hostid, startTime) {
                 var currentNetworkItemId = $(this).attr('id');
                 $(".selectedNetwork").removeClass("selectedNetwork");
                 $(this).addClass("selectedNetwork");
-                $(this).children().css("background", "#A2F0F1");
+                $(this).css("background", "#A2F0F1");
                 $(this).prevAll().children().removeAttr('style');
                 $(this).nextAll().children().removeAttr('style');
 
