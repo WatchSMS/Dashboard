@@ -6979,7 +6979,7 @@ input[type="checkbox"]:checked + label{
 	background-position: -44px -189px; top: 0px; left: 0px; 
 /*	background-color:#dedede;*/
 }
-input[type="checkbox"]{display:none}
+/*input[type="checkbox"]{display:none}*/
 
 
 /* button input select */

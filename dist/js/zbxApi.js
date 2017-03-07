@@ -1,4 +1,57 @@
 var zbxApi = {
+		
+	getTrigger: {
+        get: function (hostId, triggerId, itemName) {
+            var method = "trigger.get";
+            var params = {
+                "hostids": hostId,
+                "selectFunctions": "extend",
+                "selectItems": "extend",
+                "selectHosts": "extend",
+                "search": {
+                	"description": itemName
+                }
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getTrigger data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+	    
+    updateTrigger: {
+        update: function (triggerId,expression) {
+            var method = "trigger.update";
+            var params = {
+                "triggerid": triggerId,
+                "expression": expression
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getTrigger data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+	    
+    enableTrigger: {
+        enable: function (triggerId, status) {
+            var method = "trigger.update";
+            var params = {
+            	"triggerid": triggerId,
+                "status": status
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getTrigger data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
 
     getTest1: {
         get: function (hostid,startTime) {

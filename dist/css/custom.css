@@ -857,3 +857,16 @@ table.simple-list> tbody> tr.row_selected td:first-child:before {
 	padding-bottom: 2px;
 	font-size: 11px;
 }
+
+.simple-list .usage {
+	vertical-align: super;
+	right: 5px;
+	position: absolute;
+	padding-bottom: 2px;
+	font-size: 11px;
+}
+
+
+.btn {
+	background-color: #626992;
+}

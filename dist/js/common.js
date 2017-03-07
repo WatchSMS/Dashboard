@@ -240,6 +240,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 	       	},
             colors: colorArr,
             chart: {
+            	backgroundColor: '#424973',
                 //type: 'area'
             	renderTo: chartId,
                 zoomType: 'x',
@@ -544,6 +545,13 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
         	},
             colors: colorArr,
             chart: {
+            	backgroundColor: '#424973',
+                //zoomType: 'x',
+                //height: 200,
+                //spacingTop: 10,
+                //spacingBottom: 0,
+                //spacingLeft: 0,
+                //spacingRight: 0
                 type: 'area',
                 zoomType: 'x',
                 events: {

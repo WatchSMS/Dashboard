@@ -34,6 +34,7 @@ $(document).ready(function() {
 
     $("#base_diskInfo").load("base_diskInfo.html"); //디스크 통계
     $("#base_networkInfo").load("base_networkInfo.html"); //네트워크통계
+    $("#base_configure").load("base_configure.html"); //네트워크통계
 });
 
 var LONGTIME_ONEHOUR = 3600000;

@@ -42,6 +42,7 @@
 	<link href="dist/css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
 	<link href="dist/css/jquery-tooltip.css" rel="stylesheet" type="text/css" />
 	<link href="dist/css/mainbox.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="d3.slider2.css" media="screen" />
 </head>
 
 <body class="skin-blue sidebar-mini login-page">
@@ -207,6 +208,11 @@
 			<!-- 네트워크 사용량 -->
 			<div id="base_networkInfo" style="display: none;">
 			</div>
+			
+			<!-- 임계치 설정  -->
+			<div id="base_configure"  style="display: none;">
+			</div>
+			
 		</div>
 		<!-- end content -->
 
@@ -280,9 +286,14 @@
 	<script src="dist/js/memStatsView.js" type="text/javascript"></script>
 	<script src="dist/js/diskStatusView.js" type="text/javascript"></script>
 	<script src="dist/js/trafficStatusView.js" type="text/javascript"></script>
+	<script src="dist/js/triggerSettingView.js" type="text/javascript"></script>
 
 	<script src="plugins/highcharts/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<script src="d3.v3.min2.js"></script>
+	<script src="d3.slider2.js"></script>  
+	
 
 	<script>
         $("#inputUser").val("Admin");
