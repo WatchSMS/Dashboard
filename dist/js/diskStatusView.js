@@ -93,7 +93,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
     rowClickDiskEvent($table, hostid, startTime);
 
     //테이블의 th col 클릭시 정렬
-    $('td', $table).each(function(column) {
+    $('th', $table).each(function(column) {
         $(this).click(function() {
             var sortTable = '';
             var currentThObj = $(this);
@@ -162,39 +162,36 @@ function diskInfoView(hostid, data_topDisk, startTime){
     //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
 }
 function rowClickDiskEvent(table, hostid, startTime) {
-    $('div', table).each(function(row) {
-        if (row > 0) {
-            $(this).click(function() {
-                var currentDiskItemId = $(this).attr('id');
-                alert(currentDiskItemId);
-                $(".selectedDisk").removeClass("selectedDisk");
-                $(this).addClass("selectedDisk");
-                $(this).css("background", "#A2F0F1");
-                $(this).prevAll().children().removeAttr('style');
-                $(this).nextAll().children().removeAttr('style');
+    $('tr', table).each(function(row) {
+        $(this).dblclick(function() {
+            var currentDiskItemId = $(this).attr('id');
+            $(".selectedDisk").removeClass("selectedDisk");
+            $(this).addClass("selectedDisk");
+            $(this).children().css("background", "#A2F0F1");
+            $(this).prevAll().children().removeAttr('style');
+            $(this).nextAll().children().removeAttr('style');
 
-                var diskInode = '';
-                var diskFree = '';
-                var diskUse = '';
+            var diskInode = '';
+            var diskFree = '';
+            var diskUse = '';
 
-                var diskItemKeyInode = "vfs.fs.inode[" + currentDiskItemId + ",pfree]";
-                var diskItemKeyFree = "vfs.fs.size[" + currentDiskItemId + ",pfree]";
-                var diskItemKeyUse = "vfs.fs.size[" + currentDiskItemId + ",pused]";
+            var diskItemKeyInode = "vfs.fs.inode[" + currentDiskItemId + ",pfree]";
+            var diskItemKeyFree = "vfs.fs.size[" + currentDiskItemId + ",pfree]";
+            var diskItemKeyUse = "vfs.fs.size[" + currentDiskItemId + ",pused]";
 
-                zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
-                    diskInode = zbxApi.serverViewGraph.success(data);
-                }).then(function() {
-                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
-                }).then(function(data) {
-                    diskFree = zbxApi.serverViewGraph.success(data);
-                }).then(function() {
-                    return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
-                }).then(function(data) {
-                    diskUse = zbxApi.serverViewGraph.success(data);
-                    showDiskView(diskInode, diskFree, diskUse, startTime);
-                });
+            zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
+                diskInode = zbxApi.serverViewGraph.success(data);
+            }).then(function() {
+                return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
+            }).then(function(data) {
+                diskFree = zbxApi.serverViewGraph.success(data);
+            }).then(function() {
+                return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
+            }).then(function(data) {
+                diskUse = zbxApi.serverViewGraph.success(data);
+                showDiskView(diskInode, diskFree, diskUse, startTime);
             });
-        }
+        });
     });
 }
 function showDiskView(diskInode, diskFree, diskUse, startTime) {
@@ -245,7 +242,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         chart_IO_xAxis1.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
                             width: 2,
-                            color: 'red',
+                            color: '#FFFFFF',
                             id: "myPlotLineId"
                         });
                         //remove old crosshair and draw new crosshair on chart2
@@ -254,7 +251,7 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         chart_Total_xAxis2.addPlotLine({
                             value: chart.xAxis[0].translate(x, true),
                             width: 2,
-                            color: 'red',
+                            color: '#FFFFFF',
                             id: "myPlotLineId"
                         });
                     });
@@ -292,13 +289,16 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             zoomType: 'x'
                         },
                         title: {
-                            text: '디스크 I/O',
-                            align: 'left'
+                            text: '',
                         },
                         subtitle: {
                             text: ''
                         },
                         xAxis: {
+                            gridLineColor: '#707073',
+                            lineColor: '#707073',
+                            minorGridLineColor: '#505053',
+                            tickColor: '#707073',
                             tickInterval : 300000,
                             gridLineWidth: 1,
                             showFirstLabel: true,
@@ -322,6 +322,9 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 }
                             },
                             labels: {
+                                style:{
+                                    color: '#E0E0E3'
+                                },
                                 formatter: function() {
                                     console.log("this.value : " + this.value);
                                     var d2 = new Date(this.value);
@@ -343,14 +346,25 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             }
                         },
                         yAxis: {
+                            gridLineColor: '#707073',
+                            lineColor: '#707073',
+                            minorGridLineColor: '#505053',
+                            tickColor: '#707073',
                             title: { text: '' },
                             labels: {
+                                style:{
+                                    color: '#E0E0E3'
+                                },
                                 formatter: function() {
                                     return Math.floor(this.value * 100)/100 +'%';
                                 }
                             }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                            style: {
+                                color: '#F0F0F0'
+                            },
                             shared: true,
                             formatter: function(){
                                 console.log("this.x : " + this.x);
@@ -386,18 +400,20 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         series: [{
                             name: 'Disk Inode',
-                            data: diskInodeArr
+                            data: diskInodeArr,
+                            color: '#FC4747'
                         }, {
                             name: 'Disk Free',
-                            data: diskFreeArr
+                            data: diskFreeArr,
+                            color: '#F2F234'
                         }],
+                        legend: {
+                            enabled: false
+                        },
                         exporting: {
                             buttons: {
-                                reloadButton: {
-                                    text: 'Reload',
-                                    onclick: function() {
-                                        alert("디스크 I/O RELOAD");
-                                    }
+                                contextButton: {
+                                    enabled: false
                                 }
                             }
                         }
@@ -407,17 +423,21 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
 
                     chart_Total = new Highcharts.Chart({
                         chart: {
+                            backgroundColor: '#424973',
                             renderTo: 'chart_diskUse',
                             zoomType: 'x'
                         },
                         title: {
-                            text: '디스크 Total',
-                            align: 'left'
+                            text: '',
                         },
                         subtitle: {
                             text: ''
                         },
                         xAxis: {
+                            gridLineColor: '#707073',
+                            lineColor: '#707073',
+                            minorGridLineColor: '#505053',
+                            tickColor: '#707073',
                             tickInterval : 300000,
                             gridLineWidth: 1,
                             showFirstLabel: true,
@@ -441,6 +461,9 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                 }
                             },
                             labels: {
+                                style:{
+                                    color: '#E0E0E3'
+                                },
                                 formatter: function () {
                                     var d2 = new Date(this.value);
                                     var hours = "" + d2.getHours();
@@ -460,14 +483,25 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             }
                         },
                         yAxis: {
+                            gridLineColor: '#707073',
+                            lineColor: '#707073',
+                            minorGridLineColor: '#505053',
+                            tickColor: '#707073',
                             title: { text: '' },
                             labels: {
+                                style:{
+                                    color: '#E0E0E3'
+                                },
                                 formatter: function () {
                                     return Math.floor(this.value * 100)/100 +'%';
                                 }
                             }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                            style: {
+                                color: '#F0F0F0'
+                            },
                             shared: true,
                             formatter: function(){
                                 console.log("this.x : " + this.x);
@@ -503,18 +537,16 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                         },
                         series: [{
                             name: 'Disk Use',
-                            data: diskUseArr
+                            data: diskUseArr,
+                            color: '#FA60CE'
                         }],
+                        legend: {
+                            enabled: false
+                        },
                         exporting: {
                             buttons: {
-                                printButton: {
+                                contextButton: {
                                     enabled: false
-                                },
-                                reloadButton: {
-                                    text: 'Reload',
-                                    onclick: function() {
-                                        alert("디스크 Total RELOAD");
-                                    }
                                 }
                             }
                         }
