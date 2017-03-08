@@ -231,7 +231,7 @@ function serverOverView(server_data) {
             $('tbody', $table).append(sortTable);
 
         })//end click function
-    });; //end each
+    }); //end each
 
     //page reloag
     $("#reload_serverOverview").click(function(){
