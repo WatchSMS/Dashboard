@@ -181,6 +181,10 @@ var hostInfoView = function() {
             $("#disk_" + hostid).click(function() { //Disk
                 console.log(">>>>> IN clickDiskView <<<<<");
 
+                $("#btn_disk.btn").click(function() {
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                    callApiForDisk(hostid, startTime);
+                });
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 callApiForDisk(hostid, startTime);
             });
@@ -188,6 +192,10 @@ var hostInfoView = function() {
             $("#traffic_" + hostid).click(function() {
                 console.log(">>>>> IN clickNetworkView <<<<<");
 
+                $("#btn_network.btn").click(function() {
+                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                    callApiForTraffic(hostid, startTime);
+                });
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 callApiForTraffic(hostid, startTime);
             });
