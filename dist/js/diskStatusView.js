@@ -326,12 +326,10 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                                     color: '#E0E0E3'
                                 },
                                 formatter: function() {
-                                    console.log("this.value : " + this.value);
                                     var d2 = new Date(this.value);
                                     var hours = "" + d2.getHours();
                                     var minutes = "" + d2.getMinutes();
                                     var seconds = "" + d2.getSeconds();
-                                    console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
                                     if (hours.length == 1) {
                                         hours = "0" + hours;
                                     }
@@ -367,13 +365,10 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             },
                             shared: true,
                             formatter: function(){
-                                console.log("this.x : " + this.x);
                                 var d2 = new Date(this.x);
-                                console.log("d2 : " + d2);
                                 var hours = "" + d2.getHours();
                                 var minutes = "" + d2.getMinutes();
                                 var seconds = "" + d2.getSeconds();
-                                console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
 
                                 if (hours.length == 1) { hours = "0" + hours; }
                                 if (minutes.length == 1) { minutes = "0" + minutes; }
@@ -504,13 +499,10 @@ function showDiskView(diskInode, diskFree, diskUse, startTime) {
                             },
                             shared: true,
                             formatter: function(){
-                                console.log("this.x : " + this.x);
                                 var d2 = new Date(this.x);
-                                console.log("d2 : " + d2);
                                 var hours = "" + d2.getHours();
                                 var minutes = "" + d2.getMinutes();
                                 var seconds = "" + d2.getSeconds();
-                                console.log("d2.time : " + hours + " : " + minutes + " : " + seconds);
 
                                 if (hours.length == 1) { hours = "0" + hours; }
                                 if (minutes.length == 1) { minutes = "0" + minutes; }
