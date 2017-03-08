@@ -24,6 +24,7 @@ var hostInfoView = function() {
             tagText2 += '<li><a class="treeview-menu" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
             tagText2 += '<li><a class="treeview-menu" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
             tagText2 += '<li><a class="treeview-menu" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
+            tagText2 += '<li><a class="treeview-menu" href="#" id="configure_' + v.hostid + '"><i class="fa fa-bar-chart"></i>임계치 설정</a></li>';
 
             $("#" + tagId + "_performlist").append(tagText2);
 
@@ -147,35 +148,47 @@ var hostInfoView = function() {
             });
 
             $("#cpu_" + hostid).click(function() { //CPU
-                $("#btn_cpu.btn").click(function() {
+            	currentHostId = v.hostid;
+                $("#btn_cpu.btn").off().on('click', function() {
+                	offTimer();
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    cpuStatsView(hostid, startTime);
+                    //updateCpuLoadAvg(v.hostid);
+                    cpuStatsView(v.hostid,startTime);
                 });
-
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+                
+                offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 $("[id^=base]").hide();
                 $("#base_cpuinfo").show();
-                //1 callApiForCpu(v.hostid,startTime);
-                cpuStatsView(hostid, startTime);
+                $("#cpu_hostid").html(v.hostid);
+                // callApiForCpu(v.hostid,startTime);
+                cpuStatsView(v.hostid,startTime);
             });
 
             $("#memory_" + hostid).click(function() { //Memory
-                //var oneDayLongTime = 3600000;
-
-                $("#btn_mem.btn").click(function() {
+            	currentHostId = v.hostid;
+                $("#btn_mem.btn").off().on('click',function() {
+                	offTimer();
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    callApiForMem(hostid, startTime);
+                    callApiForMem(v.hostid,startTime);
                 });
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
-                callApiForMem(hostid, startTime);
+                
+                offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                $("[id^=base]").hide();
+                $("#base_memoryInfo").show();
+                $("#mem_hostid").html(v.hostid);
+                callApiForMem(v.hostid,startTime);
             });
 
             $("#process_" + hostid).click(function() { //Process
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * 12) / 1000);
+            	offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                currentHostId = v.hostid;
                 $.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
                 $("#base_processInfo").show();
-                procUsageView(hostid, startTime);
+                procUsageView(v.hostid, startTime);
             });
 
             $("#disk_" + hostid).click(function() { //Disk
@@ -205,6 +218,133 @@ var hostInfoView = function() {
                 //$("#base_hostinfo").show();
                 //hostinfoView();
             });
+            
+            $("#configure_" + v.hostid).click(function () { //임계치 설정
+            	offTimer();
+            	if(slider != null){
+            		$("#slider").empty();
+            		$("#slider22").empty();
+            		slider = null;
+            		slider22 = null;
+            	}
+            	
+                $("[id^=base]").hide();
+                $("#base_configure").show();
+                $("#conf_hostid").html(v.hostid);
+                
+                $("input:checkbox").unbind("click").bind('click', function() {
+                	var targetId = $(this).parent().nextAll("div")[0].id;
+                    console.log(targetId);
+                    if( $(this).prop('checked') ) {
+                    	$("#" + targetId).css("pointer-events","auto");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value_disable").attr("class","d3slider-rect-value");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value2_disable").attr("class","d3slider-rect-value2");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value3_disable").attr("class","d3slider-rect-value3");
+                      
+                    }else {
+                    	$("#" + targetId).css("pointer-events","none");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value").attr("class","d3slider-rect-value_disable");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value2").attr("class","d3slider-rect-value2_disable");
+                    	$("#" + targetId + " rect").filter(".d3slider-rect-value3").attr("class","d3slider-rect-value3_disable");
+                    }
+                });
+                
+                $("#btnCancelTrigger").unbind("click").bind("click",function(){
+                	var hostId = $("#conf_hostid").html();
+                	$("#configure_" + hostId).trigger('click');
+                });
+                
+                $("#btnSaveTrigger").unbind("click").bind("click",function() {
+                	$.blockUI(blockUI_opt_all);
+                	var warnTriggerId = null;
+                	var warnExpression = null;
+                	var highTriggerId = null;
+                	var highExpression = null;
+                	var hostName = new Array;
+                	var itemKey = new Array; 
+                	var warnValue = new Array; 
+                	var highValue = new Array; 
+                	var highTriggerId = new Array;
+                	var warnTriggerId = new Array;
+                	var enableCheckBox = new Array;
+                	
+                	$(".hostName").each(function(){
+                		hostName.push($(this).text());
+                	});
+                	
+                	$(".itemKey").each(function(){
+                		itemKey.push($(this).text());
+                	}); 
+                	
+                	$(".warnValue").each(function(){
+                		warnValue.push($(this).text());
+                	}); 
+                		
+                	$(".highValue").each(function(){
+                		highValue.push($(this).text());
+                	}); 
+                	
+                	$(".warnTriggerId").each(function(){
+                		warnTriggerId.push($(this).text());
+                	}); 
+
+            		$(".highTriggerId").each(function(){
+            			highTriggerId.push($(this).text());
+            		}); 
+            		
+
+            		 $(".alertCheck:checked").each(function(){
+            			console.log($(this).val());
+            			enableCheckBox.push($(this).val());
+            		 });
+            		 
+            		var apiCallCnt = 0;
+            		for(var i=0; i<$(".warnValue").length; ++i){
+            			
+            			if((itemKey[i].indexOf("cpu") != -1 && $("input[name=cpuAlert]").prop('checked') == true) || (itemKey[i].indexOf("memory") != -1 && $("input[name=memAlert]").prop('checked') == true)){
+            				warnExpression = "{" + hostName[i] + ":" + itemKey[i] + ".last()}>=" + warnValue[i] + " and {" + hostName[i] + ":" + itemKey[i] + ".last()}<" + highValue[i];
+            	            highExpression = "{" + hostName[i] + ":" + itemKey[i] + ".last()}>=" + highValue[i];
+            	             zbxApi.updateTrigger.update(warnTriggerId[i], warnExpression).then(function(data){
+            	            	 console.log(zbxApi.updateTrigger.success(data));
+            	             });
+            	             
+            	             zbxApi.updateTrigger.update(highTriggerId[i], highExpression).then(function(data){
+            	            	 console.log(zbxApi.updateTrigger.success(data));
+            	             });
+            	             
+            	             zbxApi.enableTrigger.enable(warnTriggerId[i], "0").then(function(data){
+            	            	 console.log(zbxApi.enableTrigger.success(data));
+            	             });
+            	             
+            	             zbxApi.enableTrigger.enable(highTriggerId[i], "0").then(function(data){
+            	            	 console.log(zbxApi.enableTrigger.success(data));
+            	            	 apiCallCnt++;
+            	            	 if(apiCallCnt==$(".warnValue").length){
+            	            		 $.unblockUI(blockUI_opt_all);
+            	            	 }
+            	             });
+            			}else if((itemKey[i].indexOf("cpu") != -1 && $("input[name=cpuAlert]").prop('checked') != true) || (itemKey[i].indexOf("memory") != -1 && $("input[name=memAlert]").prop('checked') != true)){
+            				zbxApi.enableTrigger.enable(warnTriggerId[i], "1").then(function(data){
+            	            	 console.log(zbxApi.enableTrigger.success(data));
+            	            });
+            				
+            				zbxApi.enableTrigger.enable(highTriggerId[i], "1").then(function(data){
+            	            	 console.log(zbxApi.enableTrigger.success(data));
+            	            	 apiCallCnt++;
+            	            	 if(apiCallCnt==$(".warnValue").length){
+            	            		 $.unblockUI(blockUI_opt_all);
+            	            	 }
+            	            });
+            			}
+                		
+                	}
+                });
+                
+                
+                alertSettingView(v.hostid);
+                
+            });
+                
         })
     }).fail(function() {
         console.log("dashboardView : Network Error");

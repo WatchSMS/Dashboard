@@ -1,6 +1,15 @@
-/* 2016.12.21 CSS 추가*/
+/* 2016.12.21 CSS 異붽�*/
 .col{
 	width: 50%;
+	float: left;
+	position: relative;
+	margin-top: -15px;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.col-100{
+	width: 100%;
 	float: left;
 	position: relative;
 	margin-top: -15px;
@@ -39,6 +48,23 @@
 	height: 40%;
 }
 
+
+.col-c20{
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+
+
+.col-c20-block{
+	min-height: 1px;
+	padding-top: 15px;
+	padding-right: 7px;
+	padding-left: 7px;
+	height: 20%;
+}
+
+
 .col-c25-block{
 	width: 50%;
 	float: left;
@@ -47,6 +73,16 @@
 	padding-top: 15px;
 	padding-right: 7px;
 	padding-left: 7px;
+}
+
+
+.col-50{
+	width: 50%;
+	float: left;
+	position: relative;
+	margin-top: -15px;
+	margin-right: -15px;
+	margin-left: -15px;
 }
 
 /* 2017.01.09 */
@@ -820,4 +856,17 @@ table.simple-list> tbody> tr.row_selected td:first-child:before {
 	position: absolute;
 	padding-bottom: 2px;
 	font-size: 11px;
+}
+
+.simple-list .usage {
+	vertical-align: super;
+	right: 5px;
+	position: absolute;
+	padding-bottom: 2px;
+	font-size: 11px;
+}
+
+
+.btn {
+	background-color: #626992;
 }
