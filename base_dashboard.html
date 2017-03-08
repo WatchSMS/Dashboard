@@ -1,168 +1,1169 @@
-					<section class="content-header">
-						<h1>대시보드</h1>
-					</section>
-<!--  -->
-					<section class="content">
+<section class="content">
+	<div class="content-header">
+		<div class="d1">
+			<img src="dist/img/tit_bbl01.gif">
+		</div>
 
-						<!-- Alert Information -->
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
-								<div class="info-box">
+		<!--이벤트 현황 s-->
+		<div class="d2 br7">
+			<table class="table1">
+				<thead>
+				<tr>
+					<td class="r1 line">전체발생</td>
+					<td class="r1 line">처리 전</td>
+					<td class="r1">금일발생</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="p0">
+					<td class="line">
+						<li class="s1"><img src="dist/img/monitor_icon01.png"></li>
+						<li class="s2" id="infobox_alertTrigger"></li>
+					</td>
+					<td class="line">
+						<li class="s1"><img src="dist/img/monitor_icon02.png"></li>
+						<li class="s2" id="unAcknowledgedEvents"></li>
+					</td>
+					<td class="">
+						<li class="s1"><img src="dist/img/monitor_icon03.png"></li>
+						<li class="s2"></li>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--이벤트 현황 e-->
+
+		<!--호스트별 장애현황 s-->
+		<div class="d3">
+			<img src="dist/img/tit_sbl01.gif">
+		</div>
+		<div class="d4">
+			<table class="table1">
+				<thead>
+				<tr>
+					<td width="48px" class="br7_lt line">no</td>
+					<td width="165px" class="line">서버명</td>
+					<td width="73px" class="line">수치</td>
+					<td width="auto%" class="br7_rt">그래프</td>
+				</tr>
+				</thead>
+			</table>
+
+			<section id="in-scl">
+				<div id="content-0" class="br7_b content_in">
+					<table class="table1" style="width:100%;">
+						<tbody>
+						<tr class="p1">
+							<td width="48px" class="line">1</td>
+							<td width="165px" class="line align_left">Zabbix Server</td>
+							<td width="73px" class="line">32</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample1.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+
+						<tr class="p1">
+							<td class="line">2</td>
+							<td class="line align_left">Zabbix Server</td>
+							<td class="line">38</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample2.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+
+						<tr class="p1">
+							<td class="line">3</td>
+							<td class="line align_left">Zabbix Server</td>
+							<td class="line">27</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample3.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+
+						<tr class="p1">
+							<td width="48px" class="line">1</td>
+							<td width="165px" class="line align_left">Zabbix Server</td>
+							<td width="73px" class="line">32</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample1.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+
+						<tr class="p1">
+							<td class="line">2</td>
+							<td class="line align_left">Zabbix Server</td>
+							<td class="line">38</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample2.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+
+						<tr class="p1">
+							<td class="line">3</td>
+							<td class="line align_left">Zabbix Server</td>
+							<td class="line">27</td>
+							<td width="auto">
+								<!-- 그래프 영역 호스트별 장애 현황 -->
+								<img src="dist/img/host_sample3.png" style="width:100%; height:59px">
+								<!--// 그래프 영역 호스트별 장애 현황 -->
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+		<!--호스트별 장애현황 e-->
+
+		<!--이벤트 발생목록 s-->
+		<div class="d5">
+			<img src="dist/img/tit_sbl02.gif">
+		</div>
+
+		<table class="table1">
+			<thead>
+			<tr>
+				<td width="87" class="br7_lt line">이벤트등급</td>
+				<td width="79" class="line">상태</td>
+				<td width="128" class="line">발생시간</td>
+				<td width="95" class="line">지속시간</td>
+				<td width="69" class="line">인지</td>
+				<td width="110" class="line">호스트명</td>
+				<td width="auto" class="br7_rt">비고</td>
+			</tr>
+			</thead>
+		</table>
+
+		<section id="in-scl">
+			<div id="content-1" class="br7 content_in">
+				<table class="table1" style="width:100%;">
+					<tbody>
+					<tr>
+						<td width="87" class="line c_b1">worning</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line">Acked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b3">high</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line c_red">Unacked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b2">average</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line c_red">Unacked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_vil1">level</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line">Acked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b1">worning</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line">Acked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b3">high</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line">Acked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b2">average</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line c_red">Unacked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="87" class="line c_b1">worning</td>
+						<td width="79" class="line">problem</td>
+						<td width="128" class="line">2016.12.12/23:21:30</td>
+						<td width="95" class="line">1d 20h 24m</td>
+						<td width="69" class="line c_red">Unacked</td>
+						<td width="110" class="line">ERP-WAS</td>
+						<td  width="auto" class="align_left ponter">
+							<a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+					    <span class="smd">
+					    IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+   					    </span>
+							</a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+	<!--이벤트 발생목록 e-->
+
+	<div class="content-right">
+		<!--이벤트 인지처리 s-->
+		<div class="d1"><img src="dist/img/tit_sbl04.gif"></div>
+		<div class="d2">
+
+			<div class="s1">
+				<li class="p1">
+					<span class="o1"></span>
+					<span class="e1">인지</span>
+				</li>
+				<li class="p2" >
+					<span class="o1"></span>
+					<span class="e1">비인지</span>
+				</li>
+			</div>
+
+			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;">
+				<!-- 그래프 영역 인지 처리 -->
+				<img src="dist/img/event_ign_sample.gif" style="width:100%; height:211px"><!-- 임시 이미지 -->
+				<!--// 그래프 영역 인지 처리 -->
+			</div>
+
+
+		</div>
+		<!--이벤트 인지처리 e-->
+
+		<!--요일별 이벤트 발생 빈도 s-->
+		<div class="d3"><img src="dist/img/tit_sbl05.gif"></div>
+		<div class="d4">
+
+			<div class="s1">
+				<li class="p1">
+					<span class="o1"></span>
+					<span class="e1">level</span>
+				</li>
+				<li class="p1">
+					<span class="o2"></span>
+					<span class="e1">high</span>
+				</li>
+				<li class="p1">
+					<span class="o3"></span>
+					<span class="e1">average</span>
+				</li>
+				<li class="p2">
+					<span class="o4"></span>
+					<span class="e1">warning</span>
+				</li>
+			</div>
+
+			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;">
+				<!-- 그래프 영역 요일별 이벤트 발생 빈도 -->
+				<img src="dist/img/event_week_sample.gif" style="width:100%; height:304px"><!-- 임시 이미지 -->
+				<!--// 그래프 영역 요일별 이벤트 발생 빈도 -->
+			</div>
+
+		</div>
+		<!--요일별 이벤트 발생 빈도 e-->
+	</div>
+
+	<div class="content-bottom">
+	<!--요일별 TOP 이벤트 s-->
+		<div class="d1"><img src="dist/img/tit_sbl03.gif"></div>
+		<div class="d2">
+
+			<table class="table1">
+				<thead>
+				<tr>
+					<!-- 2017.02.22 [class 수정] -->
+					<td width="14.29%" class="br7_lt line">월요일</td>
+					<td width="14.29%" class="line">화요일</td>
+					<td width="14.29%" class="line">수요일</td>
+					<td width="14.29%" class="line">목요일</td>
+					<td width="14.29%" class="line">금요일</td>
+					<td width="14.29%" class="line">토요일</td>
+					<td width="14.29%" class="br7_rt">일요일</td>
+					<!--// 2017.02.22 [class 수정] -->
+				</tr>
+				</thead>
+			</table>
+
+			<table class="table1 t1">
+				<tbody>
+				<!-- 2017.02.22 [class 수정] 기존:p2-->
+				<tr class="p0">
+					<!-- 2017.02.22 [class 수정]-->
+					<!-- 2017.02.22 [class 수정] 기존:br7-->
+					<td width="14.29%" class="br_b line valignt align_center">
+						<!--// 2017.02.22 [class 수정] -->
+						<div class="s1">10</div>
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<!-- 2017.02.24 [ % 퍼센트 수정] -->
+								<div class="o1">40%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:40%; height:5px;"></div></div>
+								<!--// 2017.02.24 [% 퍼센트 수정] -->
+							</li>
+							<li class="p2">4건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<!-- 2017.02.24 [수정] % 설정 -->
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+								<!--// 2017.02.24 [수정] % 설정 -->
+							</li>
+							<li class="p2">2건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<!-- 2017.02.24 [수정] % 설정 -->
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+								<!--// 2017.02.24 [수정] % 설정 -->
+							</li>
+							<li class="p2">2건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<!-- 2017.02.24 [수정] % 설정 -->
+								<div class="o1">10%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:10%; height:5px;"></div></div
+								><!--// 2017.02.24 [수정] % 설정 -->
+							</li>
+							<li class="p2">1건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<!-- 2017.02.24 [수정] % 설정 -->
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div
+								><!--// 2017.02.24 [수정] % 설정 -->
+							</li>
+							<li class="p2">1건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+					<td width="14.29%" class="line valignt align_center">
+						<div class="s1">7</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+
+					<td width="14.29%" class="line valignt align_center">
+						<div class="s1">3</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+
+					<td width="14.29%" class="line valignt align_center">
+						<div class="s1">11</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+
+					<td width="14.29%" class="line valignt align_center">
+						<div class="s1">8</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+
+					<td width="14.29%" class="line valignt align_center">
+						<div class="s1">7</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+
+
+
+					<td width="14.29%" class="br7 valignt align_center">
+						<div class="s1">3</div>
+
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">60%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:60%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">20%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:20%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+
+
+						<!-- week event line -->
+						<div class="s2 align_center valignt">
+							<li class="line p1">
+								<div class="o1">5%</div>
+								<div class="scw br3"><div class="mt2 bg7 br3" style="width:5%; height:5px;"></div></div>
+							</li>
+							<li class="p2">22건</li>
+						</div>
+						<div class="s3 align_left">
+
+							<a style="width:100%; height:18px; display:inline-block;" title="EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)">
+					    <span class="smd">
+					    EVENT TITLE NO001-009 TITLE 이벤트명 (남부지사 서버장비)
+   					    </span>
+							</a>
+
+						</div>
+						<!--// week event line -->
+					</td>
+				</tr>
+				</tbody>
+
+			</table>
+
+		</div>
+	<!--요일별 TOP 이벤트 e-->
+	</div>
+</section>
+
+<!--
+<section class="content-header">
+	<h1>대시보드</h1>
+</section>
+
+<section class="content">
+	&lt;!&ndash; Alert Information &ndash;&gt;
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
+			<div class="info-box">
 									<span class="info-box-icon bg-red"><i
-										class="fa fa-exclamation-triangle"></i></span>
+											class="fa fa-exclamation-triangle"></i></span>
 
-									<div class="info-box-content">
-										<span class="info-box-text">이벤트 수</span><span
-											class="info-box-number" id="infobox_alertTrigger">--</span>
-									</div>
-									<!-- /.info-box-content -->
-								</div>
-								<!-- /.info-box -->
-							</div>
-							<!-- /.col -->
-							<div class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
-								<div class="info-box">
+				<div class="info-box-content">
+					<span class="info-box-text">이벤트 수</span><span
+						class="info-box-number" id="infobox_alertTrigger">&#45;&#45;</span>
+				</div>
+				&lt;!&ndash; /.info-box-content &ndash;&gt;
+			</div>
+			&lt;!&ndash; /.info-box &ndash;&gt;
+		</div>
+		&lt;!&ndash; /.col &ndash;&gt;
+		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
+			<div class="info-box">
 									<span class="info-box-icon bg-yellow"><i
-										class="fa fa-exclamation-circle"></i></span>
+											class="fa fa-exclamation-circle"></i></span>
 
-									<div class="info-box-content">
-										<span class="info-box-text">처리 전 이벤트</span><span
-											class="info-box-number" id="unAcknowledgedEvents">--</span>
-									</div>
-									<!-- /.info-box-content -->
-								</div>
-								<!-- /.info-box -->
-							</div>
-							<!-- /.col -->
+				<div class="info-box-content">
+					<span class="info-box-text">처리 전 이벤트</span><span
+						class="info-box-number" id="unAcknowledgedEvents">&#45;&#45;</span>
+				</div>
+				&lt;!&ndash; /.info-box-content &ndash;&gt;
+			</div>
+			&lt;!&ndash; /.info-box &ndash;&gt;
+		</div>
+		&lt;!&ndash; /.col &ndash;&gt;
 
-							<!-- fix for small devices only -->
-							<!-- <div class="clearfix visible-sm-block"></div> -->
+		&lt;!&ndash; fix for small devices only &ndash;&gt;
+		&lt;!&ndash; <div class="clearfix visible-sm-block"></div> &ndash;&gt;
 
-							<div
-								class="col-xs-3 col-sm-2 col-md-2 col-lg-1 form-group pull-right"
-								style="float: left;">
-								<select id="reload_dashboard_selecter"
-									class="form-control pull-right">
-									<option value="0">Manual</option>
-									<option value="3">3s</option>
-									<option value="30">30s</option>
-									<option value="60">60s</option>>
-								</select>
-							</div>
-							<div>
-								<button id="reload_dashboard" type="button"
-									class="btn  btn-default pull-right">
-									<i class="glyphicon glyphicon-refresh"></i>
-									<text id="countDownTimer"></text>
-								</button>
-							</div>
+		<div
+				class="col-xs-3 col-sm-2 col-md-2 col-lg-1 form-group pull-right"
+				style="float: left;">
+			<select id="reload_dashboard_selecter"
+					class="form-control pull-right">
+				<option value="0">Manual</option>
+				<option value="3">3s</option>
+				<option value="30">30s</option>
+				<option value="60">60s</option>>
+			</select>
+		</div>
+		<div>
+			<button id="reload_dashboard" type="button"
+					class="btn  btn-default pull-right">
+				<i class="glyphicon glyphicon-refresh"></i>
+				<text id="countDownTimer"></text>
+			</button>
+		</div>
 
-							<div class="col-xs-1 pull-right"></div>
-							<div class="pull-right" style="clear: left;">
-								<b>Last Update: </b>
-								<text id="lastUpdateDashboard"></text>
-							</div>
+		<div class="col-xs-1 pull-right"></div>
+		<div class="pull-right" style="clear: left;">
+			<b>Last Update: </b>
+			<text id="lastUpdateDashboard"></text>
+		</div>
 
-						</div>
-						<!-- /.row -->
+	</div>
+	&lt;!&ndash; /.row &ndash;&gt;
 
-						<div class="box box-info">
-							<div class="box-header with-border">
-								<h3 class="box-title">이벤트 발생 현황</h3>
+	<div class="box box-info">
+		<div class="box-header with-border">
+			<h3 class="box-title">이벤트 발생 현황</h3>
 
-								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool"
-										data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool"
+						data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
 
-								</div>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="row">
-									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-										<div id="chart_severity">
-											<p>이벤트 등급</p>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-										<div id="chart_hostGroup">
-											<p>호스트그룹</p>
-										</div>
-									</div>
+			</div>
+		</div>
+		&lt;!&ndash; /.box-header &ndash;&gt;
+		<div class="box-body">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+					<div id="chart_severity">
+						<p>이벤트 등급</p>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+					<div id="chart_hostGroup">
+						<p>호스트그룹</p>
+					</div>
+				</div>
 
-									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-										<div id="chart_host">
-											<p>호스트</p>
-										</div>
-									</div>
-								</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+					<div id="chart_host">
+						<p>호스트</p>
+					</div>
+				</div>
+			</div>
 
-							</div>
-							<!-- /.box-body -->
+		</div>
+		&lt;!&ndash; /.box-body &ndash;&gt;
 
-						</div>
-						<!-- /.box -->
+	</div>
+	&lt;!&ndash; /.box &ndash;&gt;
 
-						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
-								style="display: none;">
-								<div class="box box-info">
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+			 style="display: none;">
+			<div class="box box-info">
 
-									<div class="box-header with-border">
-										<h3 class="box-title">Problem Events History</h3>
+				<div class="box-header with-border">
+					<h3 class="box-title">Problem Events History</h3>
 
-										<div class="box-tools pull-right">
-											<button type="button" class="btn btn-box-tool"
-												data-widget="collapse">
-												<i class="fa fa-minus"></i>
-											</button>
-										</div>
-									</div>
-									<!-- /.box-header -->
-									<div class="box-body">
-										<div class="row"></div>
-									</div>
-									<!-- /.box-body -->
-								</div>
-								<!-- /.box -->
-							</div>
-						</div>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				&lt;!&ndash; /.box-header &ndash;&gt;
+				<div class="box-body">
+					<div class="row"></div>
+				</div>
+				&lt;!&ndash; /.box-body &ndash;&gt;
+			</div>
+			&lt;!&ndash; /.box &ndash;&gt;
+		</div>
+	</div>
 
-						<!-- TABLE: LATEST ORDERS -->
-						<div class="box box-info">
-							<div class="box-header with-border">
-								<h3 class="box-title">이벤트 목록</h3>
+	&lt;!&ndash; TABLE: LATEST ORDERS &ndash;&gt;
+	<div class="box box-info">
+		<div class="box-header with-border">
+			<h3 class="box-title">이벤트 목록</h3>
 
-								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool"
-										data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
-								</div>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="table-responsive">
-									<table
-										class="table no-margin table-condensed table-hover table-striped"
-										id="eventList">
-										<thead>
-											<tr>
-												<th>이벤트 등급</th>
-												<th>상태</th>
-												<th>발생시간</th>
-												<th>지속시간</th>
-												<th>인지</th>
-												<th>호스트명</th>
-												<th>비고</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
-								<!-- /.table-responsive -->
-							</div>
-						</div>
-						<!-- /.box -->
-					</section>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool"
+						data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		&lt;!&ndash; /.box-header &ndash;&gt;
+		<div class="box-body">
+			<div class="table-responsive">
+				<table
+						class="table no-margin table-condensed table-hover table-striped"
+						id="eventList">
+					<thead>
+					<tr>
+						<th>이벤트 등급</th>
+						<th>상태</th>
+						<th>발생시간</th>
+						<th>지속시간</th>
+						<th>인지</th>
+						<th>호스트명</th>
+						<th>비고</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			&lt;!&ndash; /.table-responsive &ndash;&gt;
+		</div>
+	</div>
+	&lt;!&ndash; /.box &ndash;&gt;
+</section>-->
