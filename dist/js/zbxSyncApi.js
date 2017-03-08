@@ -111,6 +111,29 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    /*  대시보드 - 이벤트 목록 */
+    dashboardTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": ["description", "priority", "value", "lastchange"],
+                "monitored": true,
+                "skipDependent": true,
+                "expandDescription": true,
+                "selectGroups": ["name"],
+                "selectHosts": ["host", "maintenance_status"],
+                "sortfield": "description",
+                "only_true": true,
+                "selectLastEvent": "true"
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        return result.result;
+    },
+
     getDiskItem: function (hostid, key_) {
         var param = {
             "jsonrpc": "2.0",

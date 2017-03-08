@@ -71,7 +71,8 @@ var int = {
             $(".body").removeClass("login-page");
             $("#top_contents").show();
             // for dashboard
-            int.dashboardView();
+            dashboardView();
+            //int.dashboardView();
         }).then(function() {
             // for multiSelectHostGroup in setting
             int.createMultiSelectHostGroupNames();
