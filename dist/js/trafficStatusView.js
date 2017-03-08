@@ -84,54 +84,6 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
     rowClickNetworkEvent($table, hostid, startTime);
 
-    //테이블의 th col 클릭시 정렬
-    $('th', $table).each(function(column) {
-        $(this).click(function() {
-            var sortTable = '';
-            var currentThObj = $(this);
-            var MAX_COUNT = tableDataArr.length;
-            var tmpNetworkName = $(".selectedNetwork").attr('id');
-
-            if($(this).is('.sorting_desc')) {
-                console.log(" >>>>> sorting_desc <<<<<");
-                tableDataArr.sort(function(a, b) {
-                    if (column == 0) {
-                        return a.networkItemName < b.networkItemName ? -1 : a.networkItemName > b.networkItemName ? 1 : 0;
-                    }
-                });
-                currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
-            } else {
-                tableDataArr.sort(function(a, b){
-                    console.log(" >>>>> sorting_asc <<<<<");
-                    if (column == 0) {
-                        return a.networkItemName > b.networkItemName ? -1 : a.networkItemName < b.networkItemName ? 1 : 0;
-                    }
-                });
-                currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
-            }
-            $('tbody', $table).empty();
-
-            for (var i = 0; i < MAX_COUNT; i++) {
-                /*sortTable += "<tr id='" + tableDataArr[i].networkItemName + "' role='row' class='odd'>";
-                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].networkItemName + "'>" + tableDataArr[i].networkItemName + "</span></td>";
-                 //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemUsed + "<span class='smaller'>%</span></td>";
-                 //sortTable += "<td class='text-right'>" + tableDataArr[i].networkItemSize + "<span class='smaller'>MB</span></td>";
-                 sortTable += "</tr>";*/
-
-                networkTableHTML += "<tr class='h51'>";
-                networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>"
-                networkTableHTML += "<td width='auto' class='align_left p113'>";
-                networkTableHTML += "<div class='mt2 f11'>" + tableDataArr[i].networkItemName + "</div>";
-                networkTableHTML += "<div class='mt2 f11'> TX : " + tableDataArr[i].networkItemUsed + "b/s / RX : " +
-                    tableDataArr[i].networkItemSize + "'b/z</div>";
-                networkTableHTML += "</tr>";
-            }
-            $('tbody', $table).append(sortTable);
-            $("#" + tmpNetworkName).addClass("selectedNetwork");
-            rowClickNetworkEvent($table, hostid, startTime);
-        });
-    });
-
     //page reloag
     $("#reload_networkInfo").click(function() {
         console.log(">>>>> reload_networkInfo <<<<<");
@@ -157,7 +109,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
 function rowClickNetworkEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
-        $(this).dblclick(function() {
+        $(this).click(function() {
             var currentNetworkItemId = $(this).attr('id');
             $(".selectedNetwork").removeClass("selectedNetwork");
             $(this).addClass("selectedNetwork");

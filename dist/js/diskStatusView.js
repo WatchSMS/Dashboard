@@ -92,53 +92,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
 
     rowClickDiskEvent($table, hostid, startTime);
 
-    //테이블의 th col 클릭시 정렬
-    $('th', $table).each(function(column) {
-        $(this).click(function() {
-            var sortTable = '';
-            var currentThObj = $(this);
-            var MAX_COUNT = tableDataArr.length;
-            var tmpDiskName = $(".selectedDisk").attr('id');
-
-            if ($(this).is('.sorting_desc')) {
-                console.log(" >>>>> sorting_desc <<<<< ");
-                tableDataArr.sort(function(a, b) {
-                    if (column == 0) {
-                        return a.diskItemName < b.diskItemName ? -1 : a.diskItemName > b.diskItemName ? 1 : 0;
-                    }
-                });
-                currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
-            } else {
-                tableDataArr.sort(function(a, b) {
-                    console.log(" >>>>> sorting_asc <<<<< ");
-                    if (column == 0) {
-                        return a.diskItemName > b.diskItemName ? -1 : a.diskItemName < b.diskItemName ? 1 : 0;
-                    }
-                });
-                currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
-            }
-            $('tbody', $table).empty();
-            for (var i = 0; i < MAX_COUNT; i++) {
-                /*sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='odd'>";
-                 sortTable += "<td class='text-left'><span class='ellipsis' title='" + tableDataArr[i].diskItemName + "'>" + tableDataArr[i].diskItemName + "</span></td>";
-                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemUsed + "<span class='smaller'>%</span></td>";
-                 sortTable += "<td class='text-right'>" + tableDataArr[i].diskItemSize + "<span class='smaller'>GB</span></td>";
-                 sortTable += "</tr>";*/
-                sortTable += "<tr id='" + tableDataArr[i].diskItemName + "' role='row' class='h51 odd'>";
-                sortTable += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
-                sortTable += "<td width='auto'>";
-                sortTable += "<div class='f1 mt2 f11'>" + tableDataArr[i].diskItemName + " : " + tableDataArr[i].diskItemUsed + "% </div>";
-                sortTable += "<div class='scw br3'><div class='mt2 bg8 br3' style='height:5px; width: '" + tableDataArr[i].diskItemUsed + "%;'>" + "</div></div>";
-                sortTable += "<div class='fr mt2 mr5 f11'>"+ tableDataArr[i].diskItemSize +"GB </div>";
-                sortTable += "</td>";
-                sortTable += "</tr>";
-            }
-            $('tbody', $table).append(sortTable);
-            $("#" + tmpDiskName).addClass("selectedDisk");
-            rowClickDiskEvent($table, hostid, startTime);
-        });
-    });
-
     //page reloag
     $("#reload_diskInfo").click(function() {
         console.log(">>>>> reload_diskInfo <<<<<");
@@ -163,7 +116,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
 }
 function rowClickDiskEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
-        $(this).dblclick(function() {
+        $(this).click(function() {
             var currentDiskItemId = $(this).attr('id');
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
