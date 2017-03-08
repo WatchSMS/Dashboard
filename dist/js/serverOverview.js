@@ -192,7 +192,7 @@ function serverOverView(server_data) {
             if($(this).is('.sorting_desc')){
                 console.log(" >>>>> sorting_desc <<<<<");
                 tableDataArr.sort(function (a, b) {
-                    if(column == 0) {
+                    if(column == 1) {
                         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
                     }
                 });
@@ -200,7 +200,7 @@ function serverOverView(server_data) {
             }else{
                 tableDataArr.sort(function (a, b) {
                     console.log(" >>>>> sorting_asc <<<<<");
-                    if(column == 0){
+                    if(column == 1){
                         return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
                     }
                 });

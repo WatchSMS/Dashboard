@@ -141,8 +141,7 @@ function processView(hostid, startTime) {
     var topProcessLastClock = parseInt(lastProcessData.lastclock) * 1000;
     var d2 = new Date(topProcessLastClock);
     var topProcessLastTime = d2.getFullYear() + "-" + d2.getMonth() + 1 + "-" + d2.getDate() + " " + d2.getHours() + ":" + d2.getMinutes();
-    var sortProcessForTable = sortProcInCpuOrder(lastProcessData);
-    lastProcessData = sortProcInCpuOrder(lastProcessData, topProcessLastTime);
+    var sortProcessForTable = sortProcess(lastProcessData, "CPU");
 
     processTbl += "<tbody>";
 
