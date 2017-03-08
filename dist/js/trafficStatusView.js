@@ -161,7 +161,7 @@ function rowClickNetworkEvent(table, hostid, startTime) {
             var currentNetworkItemId = $(this).attr('id');
             $(".selectedNetwork").removeClass("selectedNetwork");
             $(this).addClass("selectedNetwork");
-            $(this).children().css("background", "#A2F0F1");
+            $(this).children().css("background", "#62A6EF");
             $(this).prevAll().children().removeAttr('style');
             $(this).nextAll().children().removeAttr('style');
 

@@ -167,7 +167,7 @@ function rowClickDiskEvent(table, hostid, startTime) {
             var currentDiskItemId = $(this).attr('id');
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
-            $(this).children().css("background", "#A2F0F1");
+            $(this).children().css("background", "#62A6EF");
             $(this).prevAll().children().removeAttr('style');
             $(this).nextAll().children().removeAttr('style');
 
