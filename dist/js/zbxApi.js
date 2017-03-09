@@ -523,6 +523,7 @@ var zbxApi = {
         }
     },
 
+    /* 대시보드 이벤트 현황 - 전체 발생 */
     alertTrigger: {
         get: function () {
             var method = "trigger.get";
@@ -530,9 +531,6 @@ var zbxApi = {
                 "output": "",
                 "monitored": true,
                 "skipDependent": true,
-                "filter": {
-                    "value": "1"
-                },
                 "countOutput": true,
                 "limit": "10000"
             };
@@ -543,6 +541,7 @@ var zbxApi = {
         }
     },
 
+    /* 대시보드 이벤트 현황 - 처리전 */
     unAckknowledgeEvent: {
         get: function () {
             var method = "trigger.get";
@@ -558,6 +557,25 @@ var zbxApi = {
         },
         success: function (data) {
             $("#unAcknowledgedEvents").text(data.result);
+        }
+    },
+
+    /* 대시보드 이벤트 현황 - 금일발생 */
+    todayEvent: {
+        get: function () {
+            var method = "trigger.get";
+            var params = {
+                "output": "",
+                "monitored": true,
+                "skipDependent": true,
+                "withUnacknowledgedEvents": true,
+                "countOutput": true,
+                "limit": "10000"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $("#todayEvents").text(data.result);
         }
     },
 

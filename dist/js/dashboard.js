@@ -1,8 +1,23 @@
 function dashboardView(){
     $(".info-box-content").block(blockUI_opt_el);
 
+    //이벤트 현황
+    dashboardEventStatus();
     //이벤트 목록
     dashboardEventList();
+}
+
+function dashboardEventStatus(){
+    $.when(zbxApi.alertTrigger.get(), zbxApi.unAckknowledgeEvent.get(), zbxApi.todayEvent.get()).done(function(data_a, data_b, data_c) {
+        zbxApi.alertTrigger.success(data_a[0]);
+        zbxApi.unAckknowledgeEvent.success(data_b[0]);
+        zbxApi.todayEvent.success(data_c[0]);
+        $("#lastUpdateDashboard").text(convTime());
+
+    }).fail(function() {
+        console.log("dashboardView : Network Error");
+        alertDiag("Network Error");
+    });
 }
 
 function dashboardEventList() {
