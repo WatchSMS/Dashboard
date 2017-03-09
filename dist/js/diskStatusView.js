@@ -5,12 +5,13 @@ function callApiForDisk(hostid, startTime){
     var data_topDisk = '';
     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
         data_topDisk = zbxApi.getDiskItem.success(data);
-        diskInfoView(hostid, data_topDisk, startTime);
+        diskInfoList(hostid, data_topDisk, startTime);
     })
 }
 
-function diskInfoView(hostid, data_topDisk, startTime){
-    console.log(" =========== diskInfoView =========== ");
+function diskInfoList(hostid, data_topDisk, startTime) {
+    console.log("IN diskInfoList");
+
     var diskTableHTML = '';
     var MAX_DISKCOUNT = 10;
     var tableDataObj = {};
@@ -75,32 +76,11 @@ function diskInfoView(hostid, data_topDisk, startTime){
     $("#btn_disk.btn").click(function() {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
         rowClickDiskEvent($table, hostid, startTime);
-    });
+    })
 
     rowClickDiskEvent($table, hostid, startTime);
-
-    //page reloag
-    $("#reload_diskInfo").click(function() {
-        console.log(">>>>> reload_diskInfo <<<<<");
-        $("#disk_" + hostid).click();
-    });
-
-    $(function($) {
-        $('#reload_diskInfo_selecter').change(function() {
-            var selectVal = $(this).val();
-            if (selectVal != 0) {
-                $("#reload_diskInfo").attr({
-                    "disabled": "disabled"
-                });
-            } else {
-                $("#reload_diskInfo").removeAttr("disabled");
-            }
-        });
-    });
-
-    //자동 새로고침
-    //setInterval('$("#reload_diskInfo").click()', PAGE_RELOAD_TIME);
 }
+
 function rowClickDiskEvent(table, hostid, startTime) {
     $('tr', table).each(function(row) {
         $(this).click(function() {
@@ -129,363 +109,257 @@ function rowClickDiskEvent(table, hostid, startTime) {
                 return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
             }).then(function(data) {
                 diskUse = zbxApi.serverViewGraph.success(data);
-                showDiskView(diskInode, diskFree, diskUse, startTime);
+                showDisk(diskInode, diskFree, diskUse,  startTime);
             });
         });
     });
 }
-function showDiskView(diskInode, diskFree, diskUse, startTime) {
+
+function showDisk(diskInode, diskFree, diskUse,  startTime){
+    showDiskIo(diskInode, diskFree, startTime);
+    showDiskUse(diskUse, startTime);
+}
+
+function showDiskIo(diskInode, diskFree, startTime){
     var diskInodeArr = [];
     var diskFreeArr = [];
 
-    var diskUseArr = [];
-
-    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data) {
         diskInodeArr  = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
     }).then(function(data) {
         diskFreeArr= zbxApi.getHistory.success(data);
-    }).then(function() {
-        return zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
-    }).then(function(data) {
+
+        $(function() {
+            Highcharts.chart('chart_diskIo', {
+                chart: {
+                    backgroundColor: '#424973',
+                    zoomType: 'x',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '',
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickInterval : 300000,
+                    gridLineWidth: 1,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: { text: '' },
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            return Math.floor(this.value * 100)/100 +'%';
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    },
+                    formatter: function() {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+
+                        if (hours.length == 1) { hours = "0" + hours; }
+                        if (minutes.length == 1) { minutes = "0" + minutes; }
+                        if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                        var points = this.points;
+                        var pointsLength = points.length;
+                        var index;
+                        var markUp = pointsLength ? '<span style="font-size: 10px">' + hours + ':' + minutes + ':' + seconds + '</span><br/>' : '';
+
+                        for(index=0; index<pointsLength; index++){
+                            markUp += '<br/><b>' + points[index].series.name + ' : </b>' + Math.floor(points[index].y * 100)/100 + '%';
+                        }
+                        return markUp;
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        marker: {
+                            enabled: false //false
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Inode',
+                    data: diskInodeArr,
+                    color: '#FC4747'
+                }, {
+                    name: 'Disk Free',
+                    data: diskFreeArr,
+                    color: '#F2F234'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+        });
+    })
+}
+
+function showDiskUse(diskUse, startTime){
+    var diskUseArr = [];
+
+    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data) {
         diskUseArr  = zbxApi.getHistory.success(data);
 
-        $(function () {
-            var chart_IO;
-            var chart_Total;
-
-            var defaultTickInterval = 5;
-            var currentTickInterval = defaultTickInterval;
-
-            $(document).ready(function () {
-                function unzoom() {
-                    chart_IO.options.chart.isZoomed = false;
-                    chart_Total.options.chart.isZoomed = false;
-
-                    chart_IO.xAxis[0].setExtremes(null, null);
-                    chart_Total.xAxis[0].setExtremes(null, null);
-                }
-
-                function syncronizeCrossHairs(chart) {
-                    var container = $(chart.container);
-                    var offset = container.offset();
-                    var x;
-                    var y;
-
-                    container.mousemove(function (evt) {
-                        x = evt.clientX - chart.plotLeft - offset.left;
-                        y = evt.clientY - chart.plotTop - offset.top;
-                        var xAxis = chart.xAxis[0];
-                        var chart_IO_xAxis1 = chart_IO.xAxis[0];
-                        chart_IO_xAxis1.removePlotLine("myPlotLineId");
-                        chart_IO_xAxis1.addPlotLine({
-                            value: chart.xAxis[0].translate(x, true),
-                            width: 2,
-                            color: '#FFFFFF',
-                            id: "myPlotLineId"
-                        });
-                        //remove old crosshair and draw new crosshair on chart2
-                        var chart_Total_xAxis2 = chart_Total.xAxis[0];
-                        chart_Total_xAxis2.removePlotLine("myPlotLineId");
-                        chart_Total_xAxis2.addPlotLine({
-                            value: chart.xAxis[0].translate(x, true),
-                            width: 2,
-                            color: '#FFFFFF',
-                            id: "myPlotLineId"
-                        });
-                    });
-                }
-
-                function computeTickInterval(xMin, xMax) {
-                    var zoomRange = xMax - xMin;
-
-                    if (zoomRange <= 2)
-                        currentTickInterval = 0.5;
-                    if (zoomRange < 20)
-                        currentTickInterval = 1;
-                    else if (zoomRange < 100)
-                        currentTickInterval = 5;
-                }
-
-                function setTickInterval(event) {
-                    var xMin = event.xAxis[0].min;
-                    var xMax = event.xAxis[0].max;
-                    computeTickInterval(xMin, xMax);
-
-                    chart_IO.xAxis[0].options.tickInterval = currentTickInterval;
-                    chart_IO.xAxis[0].isDirty = true;
-                    chart_Total.xAxis[0].options.tickInterval = currentTickInterval;
-                    chart_Total.xAxis[0].isDirty = true;
-                }
-
-                $(document).ready(function () {
-                    var myPlotLineId = "myPlotLine";
-
-                    chart_IO = new Highcharts.Chart({
-                        chart: {
-                            backgroundColor: '#424973',
-                            renderTo: 'chart_diskIo',
-                            zoomType: 'x'
+        $(function() {
+            Highcharts.chart('chart_diskUse', {
+                chart: {
+                    backgroundColor: '#424973',
+                    zoomType: 'x',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '',
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickInterval : 300000,
+                    gridLineWidth: 1,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
                         },
-                        title: {
-                            text: '',
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            tickInterval : 300000,
-                            gridLineWidth: 1,
-                            showFirstLabel: true,
-                            showLastLabel: true,
-                            events: {
-                                afterSetExtremes: function() {
-                                    if (!this.chart.options.chart.isZoomed) {
-                                        var xMin = this.chart.xAxis[0].min;
-                                        var xMax = this.chart.xAxis[0].max;
-                                        var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
-                                        chart_IO.xAxis[0].isDirty = true;
-                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
-                                        chart_Total.xAxis[0].isDirty = true;
-
-                                        chart_Total.options.chart.isZoomed = true;
-                                        chart_Total.xAxis[0].setExtremes(xMin, xMax, true);
-
-                                        chart_Total.options.chart.isZoomed = false;
-                                    }
-                                }
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function() {
-                                    var d2 = new Date(this.value);
-                                    var hours = "" + d2.getHours();
-                                    var minutes = "" + d2.getMinutes();
-                                    var seconds = "" + d2.getSeconds();
-                                    if (hours.length == 1) {
-                                        hours = "0" + hours;
-                                    }
-                                    if (minutes.length == 1) {
-                                        minutes = "0" + minutes;
-                                    }
-                                    if (seconds.length == 1) {
-                                        seconds = "0" + seconds;
-                                    }
-                                    return hours + ":" + minutes + ":" + seconds;
-                                }
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
                             }
-                        },
-                        yAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            title: { text: '' },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function() {
-                                    return Math.floor(this.value * 100)/100 +'%';
-                                }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
                             }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                            style: {
-                                color: '#F0F0F0'
-                            },
-                            shared: true,
-                            formatter: function(){
-                                var d2 = new Date(this.x);
-                                var hours = "" + d2.getHours();
-                                var minutes = "" + d2.getMinutes();
-                                var seconds = "" + d2.getSeconds();
-
-                                if (hours.length == 1) { hours = "0" + hours; }
-                                if (minutes.length == 1) { minutes = "0" + minutes; }
-                                if (seconds.length == 1) { seconds = "0" + seconds; }
-
-                                var points = this.points;
-                                var pointsLength = points.length;
-                                var index;
-                                var markUp = pointsLength ? '<span style="font-size: 10px">' + hours + ':' + minutes + ':' + seconds + '</span><br/>' : '';
-
-                                for(index=0; index<pointsLength; index++){
-                                    markUp += '<br/><b>' + points[index].series.name + ' : </b>' + Math.floor(points[index].y * 100)/100 + '%';
-                                }
-                                return markUp;
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
                             }
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal',
-                                marker: {
-                                    enabled: false //false
-                                }
-                            }
-                        },
-                        series: [{
-                            name: 'Disk Inode',
-                            data: diskInodeArr,
-                            color: '#FC4747'
-                        }, {
-                            name: 'Disk Free',
-                            data: diskFreeArr,
-                            color: '#F2F234'
-                        }],
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            buttons: {
-                                contextButton: {
-                                    enabled: false
-                                }
-                            }
+                            return hours + ":" + minutes + ":" + seconds;
                         }
-                    }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
-                        syncronizeCrossHairs(chart);
-                    });
-
-                    chart_Total = new Highcharts.Chart({
-                        chart: {
-                            backgroundColor: '#424973',
-                            renderTo: 'chart_diskUse',
-                            zoomType: 'x'
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: { text: '' },
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
                         },
-                        title: {
-                            text: '',
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            tickInterval : 300000,
-                            gridLineWidth: 1,
-                            showFirstLabel: true,
-                            showLastLabel: true,
-                            events: {
-                                afterSetExtremes: function() {
-                                    if (!this.chart.options.chart.isZoomed) {
-                                        var xMin = this.chart.xAxis[0].min;
-                                        var xMax = this.chart.xAxis[0].max;
-                                        var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
-                                        chart_IO.xAxis[0].isDirty = true;
-                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
-                                        chart_Total.xAxis[0].isDirty = true;
-
-                                        chart_IO.options.chart.isZoomed = true;
-                                        chart_IO.xAxis[0].setExtremes(xMin, xMax, true);
-
-                                        chart_IO.options.chart.isZoomed = false;
-                                    }
-                                }
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function () {
-                                    var d2 = new Date(this.value);
-                                    var hours = "" + d2.getHours();
-                                    var minutes = "" + d2.getMinutes();
-                                    var seconds = "" + d2.getSeconds();
-                                    if (hours.length == 1) {
-                                        hours = "0" + hours;
-                                    }
-                                    if (minutes.length == 1) {
-                                        minutes = "0" + minutes;
-                                    }
-                                    if (seconds.length == 1) {
-                                        seconds = "0" + seconds;
-                                    }
-                                    return hours + ":" + minutes + ":" + seconds;
-                                }
-                            }
-                        },
-                        yAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            title: { text: '' },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function () {
-                                    return Math.floor(this.value * 100)/100 +'%';
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                            style: {
-                                color: '#F0F0F0'
-                            },
-                            shared: true,
-                            formatter: function(){
-                                var d2 = new Date(this.x);
-                                var hours = "" + d2.getHours();
-                                var minutes = "" + d2.getMinutes();
-                                var seconds = "" + d2.getSeconds();
-
-                                if (hours.length == 1) { hours = "0" + hours; }
-                                if (minutes.length == 1) { minutes = "0" + minutes; }
-                                if (seconds.length == 1) { seconds = "0" + seconds; }
-
-                                var points = this.points;
-                                var pointsLength = points.length;
-                                var index;
-                                var markUp = pointsLength ? '<span style="font-size: 10px">' + hours + ':' + minutes + ':' + seconds + '</span><br/>' : '';
-
-                                for(index=0; index<pointsLength; index++){
-                                    markUp += '<br/><b>' + points[index].series.name + ' : </b>' + Math.floor(points[index].y * 100)/100 + '%';
-                                }
-                                return markUp;
-                            }
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal',
-                                marker: {
-                                    enabled: false //false
-                                }
-                            }
-                        },
-                        series: [{
-                            name: 'Disk Use',
-                            data: diskUseArr,
-                            color: '#FA60CE'
-                        }],
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            buttons: {
-                                contextButton: {
-                                    enabled: false
-                                }
-                            }
+                        formatter: function() {
+                            return this.value + '%';
                         }
-                    }, function(chart) {
-                        syncronizeCrossHairs(chart);
-                    });
-                });
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    },
+                    formatter: function() {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
+                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        marker: {
+                            enabled: false //false
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Disk Use',
+                    data: diskUseArr,
+                    color: '#FA60CE'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false
+                        }
+                    }
+                }
             });
         });
     })
