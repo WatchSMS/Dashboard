@@ -58,7 +58,7 @@ function diskInfoView(hostid, data_topDisk, startTime){
             diskTableHTML += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
             diskTableHTML += "<td width='auto'>";
             diskTableHTML += "<div class='f1 mt2 f11'>" + diskItemName + " : " + diskItemUsed + "% </div>";
-            diskTableHTML += "<div class='scw br3'><div class='mt2 bg8 br3' style='height:5px; width: '" + diskItemUsed + "%;'></div></div>";
+            diskTableHTML += "<div class='scw br3'><div class='mt2 bg8 br3' style='height:5px; width: " + diskItemUsed + "%;'></div></div>";
             diskTableHTML += "<div class='fr mt2 mr5 f11'>"+ diskItemSize +"GB </div>";
             diskTableHTML += "</td>";
             diskTableHTML += "</tr>";
