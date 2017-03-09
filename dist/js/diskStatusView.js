@@ -21,14 +21,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
     var diskItemUsed = 0;
     var diskItemSize = 0;
 
-    /*diskTableHTML += "<thead>";
-     diskTableHTML += "<tr role='row'>";
-     diskTableHTML += "<th class='percent-text sorting' aria-sort='descending'>DISK</th>";
-     diskTableHTML += "<th width='15%' class='text-left'>USED<span class='smaller'>(%)</span></th>";
-     diskTableHTML += "<th width='15%' class='text-left'>SIZE<span class='smaller'>(GB)</span></th>";
-     diskTableHTML += "</tr>";
-     diskTableHTML += "</thead>";*/
-
     diskTableHTML += "<tbody>";
 
     $.each(data_topDisk.result, function(k, v) {
@@ -62,11 +54,6 @@ function diskInfoView(hostid, data_topDisk, startTime){
         tableDataArr.push(tableDataObj);
 
         if (k < MAX_DISKCOUNT) {
-            /*diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='odd'>";
-             diskTableHTML += "<td class='text-left'><span class='ellipsis' title='" + diskItemName + "'>" + diskItemName + "</span></td>";
-             diskTableHTML += "<td class='text-right'>" + diskItemUsed + "<span class='smaller'>%</span></td>";
-             diskTableHTML += "<td class='text-right'>" + diskItemSize + "<span class='smaller'>GB</span></td>";
-             diskTableHTML += "</tr>";*/
             diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='h51 odd'>";
             diskTableHTML += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
             diskTableHTML += "<td width='auto'>";
