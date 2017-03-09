@@ -196,7 +196,8 @@ function showDiskIo(diskInode, diskFree, startTime){
                     style: {
                         color: '#F0F0F0'
                     },
-                    formatter: function() {
+                    shared: true,
+                    formatter: function(){
                         var d2 = new Date(this.x);
                         var hours = "" + d2.getHours();
                         var minutes = "" + d2.getMinutes();
@@ -320,21 +321,26 @@ function showDiskUse(diskUse, startTime){
                     style: {
                         color: '#F0F0F0'
                     },
-                    formatter: function() {
+                    shared: true,
+                    formatter: function(){
                         var d2 = new Date(this.x);
                         var hours = "" + d2.getHours();
                         var minutes = "" + d2.getMinutes();
                         var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
+
+                        if (hours.length == 1) { hours = "0" + hours; }
+                        if (minutes.length == 1) { minutes = "0" + minutes; }
+                        if (seconds.length == 1) { seconds = "0" + seconds; }
+
+                        var points = this.points;
+                        var pointsLength = points.length;
+                        var index;
+                        var markUp = pointsLength ? '<span style="font-size: 10px">' + hours + ':' + minutes + ':' + seconds + '</span><br/>' : '';
+
+                        for(index=0; index<pointsLength; index++){
+                            markUp += '<br/><b>' + points[index].series.name + ' : </b>' + Math.floor(points[index].y * 100)/100 + '%';
                         }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
-                        return "<b>" + hours + ":" + minutes + ":" + seconds + "<br/>" + this.y + "% </b>";
+                        return markUp;
                     }
                 },
                 plotOptions: {
