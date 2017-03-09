@@ -124,7 +124,8 @@ var zbxSyncApi = {
                 "selectGroups": ["name"],
                 "selectHosts": ["host", "maintenance_status"],
                 "sortfield": "description",
-                "only_true": true,
+                "sortorder": "lastchange",
+                //"only_true": true,
                 "selectLastEvent": "true"
             },
             "id": 1,
