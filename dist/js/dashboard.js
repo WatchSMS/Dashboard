@@ -35,7 +35,7 @@ function dashboardEventList() {
         var lastchange = convTime(v.lastchange);
         var age = convDeltaTime(v.lastchange);
         var ack = convAck(v.lastEvent.acknowledged);
-        var ackTime = v.lastchangeSince;
+        var ackTime = convTime(v.lastEvent.clock);
         var host = v.hosts[0].host;
         var description = v.description;
 

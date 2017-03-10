@@ -117,7 +117,8 @@ var zbxSyncApi = {
             "jsonrpc": "2.0",
             "method": "trigger.get",
             "params": {
-                "output": ["description", "priority", "value", "lastchange", "lastChangeSince"],
+                //"output": ["description", "priority", "value", "lastchange", "lastChangeSince"],
+                "output": "extend",
                 "monitored": true,
                 "skipDependent": true,
                 "expandDescription": true,
@@ -125,9 +126,6 @@ var zbxSyncApi = {
                 "selectHosts": ["host", "maintenance_status"],
                 "sortfield": "lastchange",
                 "maintenance": "true",
-                // "filter":{
-                //     "value": 1
-                // },
                 "withUnacknowledgedEvents": "true",
                 "selectLastEvent": "true"
             },
@@ -135,6 +133,8 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
+        console.log("dashboardTrigger");
+        console.log(result);
         return result.result;
     },
 
