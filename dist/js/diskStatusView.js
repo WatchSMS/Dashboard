@@ -76,7 +76,7 @@ function diskInfoList(hostid, data_topDisk, startTime) {
     $("#btn_disk.btn").click(function() {
         var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
         rowClickDiskEvent($table, hostid, startTime);
-    })
+    });
 
     rowClickDiskEvent($table, hostid, startTime);
 }
