@@ -10,6 +10,8 @@ function callApiForTraffic(hostid, startTime){
 }
 
 function networkInfoView(hostid, startTime, data_topDisk){
+    console.log("IN diskInfoList");
+
     var networkTableHTML = '';
     var MAX_NETWORKCOUNT = 10;
     var tableDataObj = {};
@@ -69,30 +71,32 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
     rowClickNetworkEvent($table, hostid, startTime);
 
-    //page reloag
-    $("#reload_networkInfo").click(function() {
-        console.log(">>>>> reload_networkInfo <<<<<");
-        $("#traffic_" + hostid).click();
-    });
+    /*
+     //page reloag
+     $("#reload_networkInfo").click(function() {
+     console.log(">>>>> reload_networkInfo <<<<<");
+     $("#traffic_" + hostid).click();
+     });
 
-    $(function($) {
-        $('#reload_networkInfo_selecter').change(function() {
-            var selectVal = $(this).val();
-            if (selectVal != 0) {
-                $("#reload_networkInfo").attr({
-                    "disabled": "disabled"
-                });
-            } else {
-                $("#reload_networkInfo").removeAttr("disabled");
-            }
-        });
-    });
+     $(function($) {
+     $('#reload_networkInfo_selecter').change(function() {
+     var selectVal = $(this).val();
+     if (selectVal != 0) {
+     $("#reload_networkInfo").attr({
+     "disabled": "disabled"
+     });
+     } else {
+     $("#reload_networkInfo").removeAttr("disabled");
+     }
+     });
+     });
 
-    //자동 새로고침
-    //setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
+     //자동 새로고침
+     setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
+     */
 }
 
-function rowClickNetworkEvent(table, hostid, startTime) {
+function rowClickNetworkEvent(table, hostid, startTime){
     $('tr', table).each(function(row) {
         $(this).click(function() {
             var currentNetworkItemId = $(this).attr('id');
@@ -120,17 +124,20 @@ function rowClickNetworkEvent(table, hostid, startTime) {
                 return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
             }).then(function(data) {
                 networkTotal = zbxApi.serverViewGraph.success(data);
-                trafficView(networkIn, networkOut, networkTotal, startTime);
+                showTraffic(networkIn, networkOut, networkTotal, startTime);
             });
         });
     });
 }
 
-function trafficView(networkIn, networkOut, networkTotal, startTime) {
+function showTraffic(networkIn, networkOut, networkTotal, startTime){
+    showTrafficIo(networkIn, networkOut, startTime);
+    showTrafficTotal(networkTotal, startTime);
+}
+
+function showTrafficIo(networkIn, networkOut, startTime){
     var networkInArr = [];
     var networkOutArr = [];
-
-    var networkTotalArr = [];
 
     zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkInArr = zbxApi.getHistory.success(data);
@@ -138,339 +145,252 @@ function trafficView(networkIn, networkOut, networkTotal, startTime) {
         return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         networkOutArr = zbxApi.getHistory.success(data);
-    }).then(function() {
-        return zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
-    }).then(function(data) {
-        networkTotalArr  = zbxApi.getHistory.success(data);
+
+        $(function() {
+            Highcharts.chart('chart_trafficIo', {
+                chart: {
+                    backgroundColor: '#424973',
+                    zoomType: 'x',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '',
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickInterval : 300000,
+                    gridLineWidth: 1,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: { text: '' },
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            return Math.floor(this.value * 100)/100 +'%';
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    },
+                    shared: true,
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
+
+                        var s = [];
+                        $.each(this.points, function (i, point) {
+                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
+                        });
+                        return s;
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        marker: {
+                            enabled: false //false
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic In',
+                    data: networkInArr,
+                    color: '#FC4747'
+                }, {
+                    name: 'Traffic Out',
+                    data: networkOutArr,
+                    color: '#F2F234'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill:'#626992'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    })
+}
+
+function showTrafficTotal(networkTotal, startTime){
+    var networkTotalArr = [];
+
+    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+        networkTotalArr = zbxApi.getHistory.success(data);
 
         $(function () {
-            var chart_IO;
-            var chart_Total;
+            Highcharts.chart('chart_trafficTotal', {
+                chart: {
+                    backgroundColor: '#424973',
+                    zoomType: 'x',
+                    spacingTop: 2,
+                    spacingBottom: 0
+                },
+                title: {
+                    text: '',
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickInterval: 300000,
+                    gridLineWidth: 1,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        },
+                        formatter: function () {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {text: ''},
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        },
+                        formatter: function () {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    },
+                    shared: true,
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
 
-            var defaultTickInterval = 5;
-            var currentTickInterval = defaultTickInterval;
-
-            $(document).ready(function () {
-                function unzoom() {
-                    chart_IO.options.chart.isZoomed = false;
-                    chart_Total.options.chart.isZoomed = false;
-
-                    chart_IO.xAxis[0].setExtremes(null, null);
-                    chart_Total.xAxis[0].setExtremes(null, null);
-                }
-
-                function syncronizeCrossHairs(chart) {
-                    var container = $(chart.container);
-                    var offset = container.offset();
-                    var x;
-                    var y;
-
-                    container.mousemove(function (evt) {
-                        x = evt.clientX - chart.plotLeft - offset.left;
-                        y = evt.clientY - chart.plotTop - offset.top;
-                        var xAxis = chart.xAxis[0];
-                        var chart_IO_xAxis1 = chart_IO.xAxis[0];
-                        chart_IO_xAxis1.removePlotLine("myPlotLineId");
-                        chart_IO_xAxis1.addPlotLine({
-                            value: chart.xAxis[0].translate(x, true),
-                            width: 2,
-                            color: '#FFFFFF',
-                            id: "myPlotLineId"
+                        var s = [];
+                        $.each(this.points, function (i, point) {
+                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
                         });
-                        var chart_Total_xAxis2 = chart_Total.xAxis[0];
-                        chart_Total_xAxis2.removePlotLine("myPlotLineId");
-                        chart_Total_xAxis2.addPlotLine({
-                            value: chart.xAxis[0].translate(x, true),
-                            width: 2,
-                            color: '#FFFFFF',
-                            id: "myPlotLineId"
-                        });
-                    });
-                }
-
-                function computeTickInterval(xMin, xMax) {
-                    var zoomRange = xMax - xMin;
-
-                    if (zoomRange <= 2)
-                        currentTickInterval = 0.5;
-                    if (zoomRange < 20)
-                        currentTickInterval = 1;
-                    else if (zoomRange < 100)
-                        currentTickInterval = 5;
-                }
-
-                function setTickInterval(event) {
-                 var xMin = event.xAxis[0].min;
-                 var xMax = event.xAxis[0].max;
-                 computeTickInterval(xMin, xMax);
-
-                 chart_IO.xAxis[0].options.tickInterval = currentTickInterval;
-                 chart_IO.xAxis[0].isDirty = true;
-                 chart_Total.xAxis[0].options.tickInterval = currentTickInterval;
-                 chart_Total.xAxis[0].isDirty = true;
-                 }
-
-                $(document).ready(function () {
-                    var myPlotLineId = "myPlotLine";
-
-                    chart_IO = new Highcharts.Chart({
-                        chart: {
-                            backgroundColor: '#424973',
-                            renderTo: 'chart_trafficIo',
-                            zoomType: 'x'
-                        },
-                        title: {
-                            text: ''
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            tickInterval : 300000,
-                            gridLineWidth: 1,
-                            showFirstLabel: true,
-                            showLastLabel: true,
-                            events: {
-                                afterSetExtremes: function() {
-                                    if (!this.chart.options.chart.isZoomed) {
-                                        var xMin = this.chart.xAxis[0].min;
-                                        var xMax = this.chart.xAxis[0].max;
-                                        var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
-                                        chart_IO.xAxis[0].isDirty = true;
-                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
-                                        chart_Total.xAxis[0].isDirty = true;
-
-                                        chart_Total.options.chart.isZoomed = true;
-                                        chart_Total.xAxis[0].setExtremes(xMin, xMax, true);
-
-                                        chart_Total.options.chart.isZoomed = false;
-                                    }
-                                }
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function() {
-                                    var d2 = new Date(this.value);
-                                    var hours = "" + d2.getHours();
-                                    var minutes = "" + d2.getMinutes();
-                                    var seconds = "" + d2.getSeconds();
-                                    if (hours.length == 1) {
-                                        hours = "0" + hours;
-                                    }
-                                    if (minutes.length == 1) {
-                                        minutes = "0" + minutes;
-                                    }
-                                    if (seconds.length == 1) {
-                                        seconds = "0" + seconds;
-                                    }
-                                    return hours + ":" + minutes + ":" + seconds;
-                                }
-                            }
-                        },
-                        yAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            title: {
-                                text: ''
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function() {
-                                    return this.value / 1000 + 'k';
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                            style: {
-                                color: '#F0F0F0'
-                            },
-                            formatter: function() {
-                                var d2 = new Date(this.x);
-                                var hours = "" + d2.getHours();
-                                var minutes = "" + d2.getMinutes();
-                                var seconds = "" + d2.getSeconds();
-                                if (hours.length == 1) { hours = "0" + hours; }
-                                if (minutes.length == 1) { minutes = "0" + minutes; }
-                                if (seconds.length == 1) { seconds = "0" + seconds; }
-
-                                var s = [];
-                                $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
-                                });
-                                return s;
-                            },
-                            shared: true
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal',
-                                marker: {
-                                    enabled: false //false
-                                }
-                            }
-                        },
-                        series: [{
-                            name: 'Traffic In',
-                            data: networkInArr,
-                            color: '#FC4747'
-                        }, {
-                            name: 'Traffic Out',
-                            data: networkOutArr,
-                            color: '#F2F234'
-                        }],
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            buttons: {
-                                contextButton: {
-                                    enabled: false
-                                }
+                        return s;
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        marker: {
+                            enabled: false //false
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic Total',
+                    data: networkTotalArr,
+                    color: '#FA60CE'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill: '#626992'
                             }
                         }
-                    }, function(chart) { //add this function to the chart definition to get synchronized crosshairs
-                        syncronizeCrossHairs(chart);
-                    });
-
-                    chart_Total = new Highcharts.Chart({
-                        chart: {
-                            backgroundColor: '#424973',
-                            renderTo: 'chart_trafficTotal',
-                            zoomType: 'x'
-                        },
-                        title: {
-                            text: ''
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            tickInterval : 300000,
-                            gridLineWidth: 1,
-                            showFirstLabel: true,
-                            showLastLabel: true,
-                            events: {
-                                afterSetExtremes: function() {
-                                    if (!this.chart.options.chart.isZoomed) {
-                                        var xMin = this.chart.xAxis[0].min;
-                                        var xMax = this.chart.xAxis[0].max;
-                                        var zmRange = computeTickInterval(xMin, xMax);
-                                        chart_IO.xAxis[0].options.tickInterval = zmRange;
-                                        chart_IO.xAxis[0].isDirty = true;
-                                        chart_Total.xAxis[0].options.tickInterval = zmRange;
-                                        chart_Total.xAxis[0].isDirty = true;
-
-                                        chart_IO.options.chart.isZoomed = true;
-                                        chart_IO.xAxis[0].setExtremes(xMin, xMax, true);
-
-                                        chart_IO.options.chart.isZoomed = false;
-                                    }
-                                }
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function () {
-                                    var d2 = new Date(this.value);
-                                    var hours = "" + d2.getHours();
-                                    var minutes = "" + d2.getMinutes();
-                                    var seconds = "" + d2.getSeconds();
-                                    if (hours.length == 1) {
-                                        hours = "0" + hours;
-                                    }
-                                    if (minutes.length == 1) {
-                                        minutes = "0" + minutes;
-                                    }
-                                    if (seconds.length == 1) {
-                                        seconds = "0" + seconds;
-                                    }
-                                    return hours + ":" + minutes + ":" + seconds;
-                                }
-                            }
-                        },
-                        yAxis: {
-                            gridLineColor: '#707073',
-                            lineColor: '#707073',
-                            minorGridLineColor: '#505053',
-                            tickColor: '#707073',
-                            title: {
-                                text: ''
-                            },
-                            labels: {
-                                style:{
-                                    color: '#E0E0E3'
-                                },
-                                formatter: function () {
-                                    return this.value / 1000 + 'k';
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                            style: {
-                                color: '#F0F0F0'
-                            },
-                            formatter: function () {
-                                var d2 = new Date(this.x);
-                                var hours = "" + d2.getHours();
-                                var minutes = "" + d2.getMinutes();
-                                var seconds = "" + d2.getSeconds();
-                                if (hours.length == 1) { hours = "0" + hours; }
-                                if (minutes.length == 1) { minutes = "0" + minutes; }
-                                if (seconds.length == 1) { seconds = "0" + seconds; }
-
-                                var s = [];
-                                $.each(this.points, function(i, point) {
-                                    s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
-                                });
-                                return s;
-                            },
-                            shared: true
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal',
-                                marker: {
-                                    enabled: false //false
-                                }
-                            }
-                        },
-                        series: [{
-                            name: 'Traffic Total',
-                            data: networkTotalArr,
-                            color: '#FA60CE'
-                        }],
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            buttons: {
-                                contextButton: {
-                                    enabled: false
-                                }
-                            }
-                        }
-                    }, function(chart) {
-                        syncronizeCrossHairs(chart);
-                    });
-                });
+                    }
+                }
             });
         });
     })
