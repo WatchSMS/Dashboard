@@ -3,7 +3,6 @@ function callApiForTraffic(hostid, startTime){
     $("#base_networkInfo").show();
 
     var data_topDisk = '';
-
     zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
         data_topDisk = zbxApi.getNetworkItem.success(data);
         networkInfoView(hostid, startTime, data_topDisk);
@@ -19,14 +18,6 @@ function networkInfoView(hostid, startTime, data_topDisk){
     var networkItemName = '';
     var networkItemUsed = 0;
     var networkItemSize = 0;
-
-    /*networkTableHTML += "<thead>";
-     networkTableHTML += "<tr role='row'>";
-     networkTableHTML += "<th class='percent-text sorting' aria-sort='descending'>NETWORK</th>";
-     //networkTableHTML += "<th width='15%' class='text-right'>USED<span class='smaller'>(%)</span></th>";
-     //networkTableHTML += "<th width='15%' class='text-right'>SIZE<span class='smaller'>(MB)</span></th>";
-     networkTableHTML += "</tr>";
-     networkTableHTML += "</thead>";*/
 
     networkTableHTML += "<tbody>";
 
@@ -55,12 +46,6 @@ function networkInfoView(hostid, startTime, data_topDisk){
         tableDataArr.push(tableDataObj);
 
         if(k < MAX_NETWORKCOUNT){
-            /*networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='odd'>";
-             networkTableHTML += "<td class='text-left'><span class='ellipsis' title='" + networkItemName + "'>" + networkItemName + "</span></td>";
-             //networkTableHTML += "<td class='text-right'>" + networkItemUsed + "<span class='smaller'>%</span></td>";
-             //networkTableHTML += "<td class='text-right'>" + networkItemSize + "<span class='smaller'>MB</span></td>";
-             networkTableHTML += "</tr>";*/
-
             networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='h51 odd'>";
             networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>"
             networkTableHTML += "<td width='auto' class='align_left p113'>";
@@ -140,6 +125,7 @@ function rowClickNetworkEvent(table, hostid, startTime) {
         });
     });
 }
+
 function trafficView(networkIn, networkOut, networkTotal, startTime) {
     var networkInArr = [];
     var networkOutArr = [];
