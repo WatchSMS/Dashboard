@@ -1774,6 +1774,8 @@ th {
 
 /*s*/
 .line { border-right: 1px solid #51597e; }
+.line-th { border-right: 1px solid #51597e; text-align: center;}
+.line-td { border-right: 1px solid #51597e; text-align: center;}
 .b_line { border-bottom: 1px solid #51597e; }
 /* -  border-radius: 5px; -webkit-border-radius: 15px; -moz-border-radius: 15px; */
 .table1 {
