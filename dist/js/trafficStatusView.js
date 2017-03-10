@@ -49,7 +49,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
         if(k < MAX_NETWORKCOUNT){
             networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='h51 odd'>";
-            networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>"
+            networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>";
             networkTableHTML += "<td width='auto' class='align_left p113'>";
             networkTableHTML += "<div class='mt2 f11'>" + networkItemName + "</div>";
             networkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + "b/s / RX : " + networkItemSize + "'b/z</div>";
