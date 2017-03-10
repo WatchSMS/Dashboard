@@ -1,6 +1,6 @@
 function callApiForTraffic(hostid, startTime){
-    $("[id^=base]").hide();
-    $("#base_networkInfo").show();
+    /*$("[id^=base]").hide();
+    $("#base_networkInfo").show();*/
 
     var data_topDisk = '';
     zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
@@ -10,7 +10,7 @@ function callApiForTraffic(hostid, startTime){
 }
 
 function networkInfoView(hostid, startTime, data_topDisk){
-    console.log("IN diskInfoList");
+    console.log("IN networkInfoView");
 
     var networkTableHTML = '';
     var MAX_NETWORKCOUNT = 10;
@@ -20,6 +20,8 @@ function networkInfoView(hostid, startTime, data_topDisk){
     var networkItemName = '';
     var networkItemUsed = 0;
     var networkItemSize = 0;
+
+    var currentNetworkName = null;
 
     networkTableHTML += "<tbody>";
 
@@ -61,15 +63,68 @@ function networkInfoView(hostid, startTime, data_topDisk){
 
     $("#networkInfoTable").empty();
     $("#networkInfoTable").append(networkTableHTML);
+    $("#chart_trafficIo").empty();
+    $("#chart_trafficTotal").empty();
     var $table = $("#networkInfoTable");
+    $("#networkInfoTable > tbody > tr").eq(0).addClass("selectedNetwork");
+    $("#networkInfoTable > tbody > tr").eq(0).css("background", "#62A6EF");
 
-    //table의 row 클릭시 해당 그래프 만드는 이벤트
-    $("#btn_network.btn").click(function() {
-        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-        rowClickNetworkEvent($table, hostid, startTime);
-    });
+    currentNetworkName = $(".selectedNetwork").attr('id');
+
+    generateNetworkResource(hostid, currentNetworkName, startTime);
 
     rowClickNetworkEvent($table, hostid, startTime);
+
+    $("#btn_network.btn").off().on('click', function () {
+        var startTime_select = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+        var currentDiskName = $(".selectedNetwork").attr('id');
+        generateNetworkResource(hostid, currentDiskName, startTime_select);
+    });
+
+    $("#btn_network.btn_etc").off().on('click', function(){
+        console.log(" 기타 시간 버튼 클릭 ");
+        $('#selectNetworkTimeInput').val("");
+        $('#network_InputTimecontent').lightbox_me({
+            centered: true,
+            closeSelector: ".close",
+            onLoad: function() {
+                $('#network_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+            },
+            overlayCSS:{background: 'white', opacity: .8}
+        });
+    });
+}
+
+function generateNetworkResource(hostid, currentNetworkName, startTime){
+    var networkIn = '';
+    var networkOut = '';
+    var networkTotal = '';
+
+    var networkItemKeyIn = "net.if.in[" + currentNetworkName + "]";
+    var networkItemKeyOut = "net.if.out[" + currentNetworkName + "]";
+    var networkItemKeyTotal = "net.if.total[" + currentNetworkName + "]";
+
+    zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
+        networkIn = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
+    }).then(function(data) {
+        networkOut = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
+    }).then(function(data) {
+        networkTotal = zbxApi.serverViewGraph.success(data);
+        showTraffic(networkIn, networkOut, networkTotal, startTime);
+    });
+}
+
+function clickInputTimeNetwork(){
+    console.log(" IN clickInputTimeNetwork ");
+    var inputTime = $('#network_InputTimecontent').find('input:first').val();
+    var currentNetworkName = $(".selectedNetwork").attr('id');
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
+    console.log(" 시간 입력 확인 버튼 클릭 ");
+    generateNetworkResource(currentHostId, currentNetworkName, startTime);
 }
 
 function rowClickNetworkEvent(table, hostid, startTime){
@@ -82,26 +137,7 @@ function rowClickNetworkEvent(table, hostid, startTime){
             $(this).prevAll().children().removeAttr('style');
             $(this).nextAll().children().removeAttr('style');
 
-            var networkIn = '';
-            var networkOut = '';
-            var networkTotal = '';
-
-            var networkItemKeyIn = "net.if.in[" + currentNetworkItemId + "]";
-            var networkItemKeyOut = "net.if.out[" + currentNetworkItemId + "]";
-            var networkItemKeyTotal = "net.if.total[" + currentNetworkItemId + "]";
-
-            zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
-                networkIn = zbxApi.serverViewGraph.success(data);
-            }).then(function() {
-                return zbxApi.serverViewGraph.get(hostid, networkItemKeyOut);
-            }).then(function(data) {
-                networkOut = zbxApi.serverViewGraph.success(data);
-            }).then(function() {
-                return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
-            }).then(function(data) {
-                networkTotal = zbxApi.serverViewGraph.success(data);
-                showTraffic(networkIn, networkOut, networkTotal, startTime);
-            });
+            generateNetworkResource(hostid, currentNetworkItemId, startTime);
         });
     });
 }

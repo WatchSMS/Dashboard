@@ -134,10 +134,10 @@ function generateDiskResource(hostid, currentDiskName, startTime){
 function clickInputTimeDisk(){
     console.log(" IN clickInputTime ");
     var inputTime = $('#disk_InputTimecontent').find('input:first').val();
-    var currentProcessName = $(".selectedDisk").attr('id');
+    var currentDiskName = $(".selectedDisk").attr('id');
     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
         console.log(" 시간 입력 확인 버튼 클릭 ");
-    generateDiskResource(currentHostId, currentProcessName, startTime);
+    generateDiskResource(currentHostId, currentDiskName, startTime);
 }
 
 function rowClickDiskEvent(table, hostid, startTime) {

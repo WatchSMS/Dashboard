@@ -198,23 +198,16 @@ var hostInfoView = function() {
                 $("#base_diskInfo").show();
 
                 callApiForDisk(v.hostid, startTime);
-
-                /*$("#btn_disk.btn").click(function() {
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    callApiForDisk(hostid, startTime);
-                });
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
-                callApiForDisk(hostid, startTime);*/
             });
 
             $("#traffic_" + hostid).click(function() {
                 console.log(">>>>> IN clickNetworkView <<<<<");
 
-                $("#btn_network.btn").click(function() {
-                    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    callApiForTraffic(hostid, startTime);
-                });
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
+                currentHostId = v.hostid;
+                $("[id^=base]").hide();
+                $("#base_networkInfo").show();
+
                 callApiForTraffic(hostid, startTime);
             });
 
