@@ -10,6 +10,7 @@ function callApiForMem(hostid,startTime){
     showMemUsage(hostid, startTime);
     showMemTotal(hostid, startTime);
     showMemProcessList(hostid);
+    
     $.unblockUI(blockUI_opt_all);
     
     TIMER_ARR.push(setInterval(function(){reloadChartForMemUsage(hostid); reloadChartForMemTotal(hostid);}, 10000));
@@ -18,8 +19,11 @@ function callApiForMem(hostid,startTime){
 }
 
 var resetMemChartTime = function(){
-	offTimer();
+
 	var inputTime = $('#mem_time_content').find('input:first').val();
+	if(inputTime == ""){
+		inputTime = "1";
+	}
     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
     
     removeAllChart();
@@ -31,9 +35,6 @@ var resetMemChartTime = function(){
 function showMemUsage(hostid, startTime){
 	
 	var data_MemPused, data_SwapMemPused = null;
-	
-    var memPusedArr = [];
-    var swapMemPuesdArr = [];
 
     var history_MemPused = null;
     var history_SwapMemPused = null;
@@ -45,19 +46,22 @@ function showMemUsage(hostid, startTime){
     
     zbxApi.getItem.get(hostid,"vm.memory.size[pused]").then(function(data) {
         data_MemPused = zbxApi.getItem.success(data);
-        //console.log("dataItem : " + JSON.stringify(dataItem));
+        
     }).then(function() {
-        // for suggest
         return zbxApi.getItem.get(hostid,"system.swap.size[,pused]");
+        
     }).then(function(data) {
         data_SwapMemPused = zbxApi.getItem.success(data);
+        
     }).then(function() {
     	return zbxApi.getHistory.get(data_MemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    	
     }).then(function(data) {
     	history_MemPused = zbxApi.getHistory.success(data);
         
     }).then(function() {
     	return zbxApi.getHistory.get(data_SwapMemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    	
     }).then(function(data) {
     	history_SwapMemPused = zbxApi.getHistory.success(data);
         
@@ -98,10 +102,6 @@ function showMemUsage(hostid, startTime){
 function showMemTotal(hostid, startTime){
 
 	var data_MemBuffers, data_MemCached, data_MemUsed = null;
-	
-	var memBufferArr = [];
-    var memCachedArr = [];
-    var memUsedArr = [];
 
     var history_MemBuffers = null;
     var history_MemCached = null;
@@ -114,32 +114,34 @@ function showMemTotal(hostid, startTime){
     
     zbxApi.getItem.get(hostid,"vm.memory.size[buffers]").then(function(data) {
     	data_MemBuffers = zbxApi.getItem.success(data);
-        //console.log("dataItem : " + JSON.stringify(dataItem));
+    	
     }).then(function() {
-        // for suggest
         return zbxApi.getItem.get(hostid,"vm.memory.size[cached]");
+        
     }).then(function(data) {
         data_MemCached = zbxApi.getItem.success(data);
+        
     }).then(function() {
-        // for suggest
         return zbxApi.getItem.get(hostid,"vm.memory.size[used]");
+        
     }).then(function(data) {
         data_MemUsed = zbxApi.getItem.success(data);
+        
     }).then(function() {
-        // for suggest
         return zbxApi.getHistory.get(data_MemBuffers.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+        
     }).then(function(data) {
     	history_MemBuffers = zbxApi.getHistory.success(data);
         
     }).then(function() {
-        // for suggest
         return zbxApi.getHistory.get(data_MemCached.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+        
     }).then(function(data) {
     	history_MemCached = zbxApi.getHistory.success(data);
         
     }).then(function() {
-        // for suggest
     	return zbxApi.getHistory.get(data_MemUsed.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    	
     }).then(function(data) {
     	history_MemUsed = zbxApi.getHistory.success(data);
     	
@@ -158,7 +160,7 @@ function showMemTotal(hostid, startTime){
         dataObj.data = history_MemUsed;
         dataSet.push(dataObj);
 
-        showBasicLineChart('chart_memTotal', '전체 메모리 사용량', dataSet, "MB", ['#00B700','#DB9700','#E3C4FF']);
+        showBasicLineChart('chart_memTotal', '전체 메모리 사용량', dataSet, "MB", ['#fa7796', '#8bb1d8', '#88e64a', '#00B700','#DB9700','#E3C4FF']);
         
         $('#chart_memTotal').off().on('mousemove touchmove touchstart', function (e) {
     	    var chart,
@@ -179,7 +181,6 @@ function showMemTotal(hostid, startTime){
     });
     
 }
-
 
 function showMemProcessList(hostid){
 	
@@ -294,13 +295,7 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
     var processGaugeValue;
     var memProcessTbl = '';
     var MAX_PROCCOUNT = 24;
-
-    memProcessTbl += "<thead>";
-    memProcessTbl += "<tr class='display-none' role='row'>";
-    memProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-    memProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
-    memProcessTbl += "</tr>";
-    memProcessTbl += "</thead>";
+    
     memProcessTbl += "<tbody>";
 
     $.each(finalProcArr, function(k,v) {
@@ -316,26 +311,24 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
             }
             
             if(k< (MAX_PROCCOUNT-10)){
-            	memProcessTbl += "<tr role='row' class='odd'>";
+            	memProcessTbl += "<tr class='h35'>";
             }else{
-            	memProcessTbl += "<tr role='row' class='odd optionrow' style='display:none;'>";
+            	memProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
             }
-            memProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
-            memProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
-            memProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
-            memProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
-            memProcessTbl += "</div></div>";
+            memProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
+            memProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName +" " + processPercentValue + "%</div>";
+            memProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
             memProcessTbl += "</td>";
             memProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
             memProcessTbl += "<td style='display:none' title='" + v.childMem + "'></td>";
             memProcessTbl += "</tr>";
         }
     });
-    memProcessTbl += "<tr id='lastrow' isopen='false' role='row'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
+    memProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
     memProcessTbl += "</tbody>";
   
     
-    $("#memProcessTime").text(topProcessLastTime);
+    $("#memProcessTime").children().eq(0).text(topProcessLastTime);
     $("#memProcess").empty();
     $("#memProcess").append(memProcessTbl);
     
@@ -358,23 +351,16 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
 	        	 }else{
 	        		 childNameArr = childName.split("\\n,");
 	        	 }
-	             procDetailHTML += "<table class='table table-bordered simple-list dataTable no-footer table-striped table-hover' role='grid'>";
-	             procDetailHTML += "<thead>";
-	             procDetailHTML += "<tr class='display-none' role='row'>";
-	             procDetailHTML += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "</tr>";
-	             procDetailHTML += "</thead>";
-	             procDetailHTML += "<tbody>";
+	        	 procDetailHTML += "<table class='table1' style='width:100%;'><tbody>";	
+	        	 
 	             $.each(childNameArr, function(k,v){
-	            	 procDetailHTML += "<tr>";
-	            	 procDetailHTML += "<td>" + (k+1) + "</td>";
-	                 procDetailHTML += "<td style='word-break:break-all;'>" + childNameArr[k] + "</td>";
-	                 procDetailHTML += "<td>" + childMemArr[k] + "%</td>";
+	            	 procDetailHTML += "<tr class='h35'>";
+	            	 procDetailHTML += "<td width='50' class='align_left pl10 pr10'>" + (k+1) + "</td>";
+	                 procDetailHTML += "<td width='200' class='align_left pl10 pr10'>" + childNameArr[k] + "</td>";
+	                 procDetailHTML += "<td width='170' class='align_left pl10 pr10'>" + childMemArr[k] + "%</td>";
 	                 procDetailHTML += "</tr>";
 	             });
-	             procDetailHTML += "</tbody>";
+	             procDetailHTML += "</tbody></table>";
 	             $("#memChildProcTbl").empty();
 	             $("#memDetailProcTitle").html($(this).children(":first").children(":first").attr('title'));
 	        	 $("#memChildProcTbl").append(procDetailHTML);
@@ -392,7 +378,7 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
     
     viewMoreProcess();
     
-    $("#btn_mem_charttime").click(function(){
+    $("#btn_mem_charttime").off().on('click', function(){
     	$("#mem_timeInput").val("");
     	$("#mem_time_content").lightbox_me({
  		   centered: true, 
@@ -404,9 +390,8 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
       });
     });
     
-    $("#reload_memProcTable").click(function(){
-    	var hostId = $("#mem_hostid").html();
-    	showMemProcessTable(hostId);
+    $("#reload_memProcTable").off().on('click', function(){
+    	showMemProcessTable(currentHostId);
     });
     
     $("#memProcess_wrapper").unblock(blockUI_opt_all_custom);

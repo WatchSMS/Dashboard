@@ -460,6 +460,31 @@ var int = {
                 });
             });
         });
+        
+        // 2017.03.08 - CUSTOM Chart Event 
+        $(".btn_ExportChart").off().on('click',function(){
+        	var chartId = $(this).val();
+        	$('#selectChartOutOption').lightbox_me({
+        		   centered: true, 
+        		   closeSelector: ".close",
+        		   onLoad: function() { 
+        		       $('#selectChartOutOption').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+        		       console.log(chartId);
+        		       $('#selectedChartId').text(chartId);
+        		   },
+        		   overlayCSS:{background: 'white', opacity: .8} 
+        	});
+        });
+        
+        $(".btn_printChart").off().on('click',function(){
+        	var chartId = $(this).val();
+        	
+        	for(var i=0; i<Highcharts.charts.length; ++i){
+        		if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
+        			Highcharts.charts[i].print();
+        		}
+        	}
+        });
 
     },
 

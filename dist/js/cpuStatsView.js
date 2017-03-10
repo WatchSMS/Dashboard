@@ -10,6 +10,7 @@ var cpuStatsView = function(hostid, startTime) {
 	showCpuUsage(hostid, startTime);
 	showCpuLoadAvg(hostid, startTime);
 	showCpuProcessList(hostid);
+	
     $.unblockUI(blockUI_opt_all);
     
     //TIMER_ARR.push(setInterval(function(){showCpuUsage(hostid, startTime)}, 500000));
@@ -22,11 +23,6 @@ function showCpuUsage(hostid, startTime){
 	
 	var data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal = null;
 	
-    var CpuSystemArr = [];
-    var CpuUserArr = [];
-    var CpuIOwaitArr = [];
-    var CpuStealArr = [];
-
     var history_CpuSystem = null;
     var history_CpuUser = null;
     var history_CpuIOwait = null;
@@ -36,8 +32,6 @@ function showCpuUsage(hostid, startTime){
     var dataObj = new Object();
     
     $("#chart_cpuUsage").block(blockUI_opt_all_custom);
-    
-   
     
     zbxApi.getItem.get(hostid,"system.cpu.util[,system]").then(function(data) {
     	data_CpuSystem = zbxApi.getItem.success(data);
@@ -103,7 +97,7 @@ function showCpuUsage(hostid, startTime){
         dataObj.data = history_CpuSteal;
         dataSet.push(dataObj);
 
-        showBasicAreaChart('chart_cpuUsage', 'CPU 사용량', dataSet, "%", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+        showBasicAreaChart('chart_cpuUsage', 'CPU 사용량', dataSet, "%", ['#e85c2a', '#e574ff', '#37d5f2', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
         
         $('#chart_cpuUsage').off().on('mousemove touchmove touchstart', function (e) {
     	    var chart,
@@ -187,7 +181,7 @@ function showCpuLoadAvg(hostid, startTime){
 	    dataObj.data = history_loadavg15;
 	    dataSet.push(dataObj);
 	    
-	    showBasicLineChart('chart_loadAverage', '평균 부하량', dataSet, "", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+	    showBasicLineChart('chart_loadAverage', '평균 부하량', dataSet, "", ['#fa7796', '#8bb1d8', '#a58eda', '#00B700','#DB9700', '#1266FF', '#E3C4FF', '#8F8AFF']);
 	    
 	    $('#chart_loadAverage').off().on('mousemove touchmove touchstart', function (e) {
 		    var chart,
@@ -225,12 +219,6 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
     var processGaugeValue;
     var cpuProcessTbl = '';
     var MAX_PROCCOUNT = 24;
-    cpuProcessTbl += "<thead>";
-    cpuProcessTbl += "<tr class='display-none' role='row'>";
-    cpuProcessTbl += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-    cpuProcessTbl += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
-    cpuProcessTbl += "</tr>";
-    cpuProcessTbl += "</thead>";
     cpuProcessTbl += "<tbody>";
 
     $.each(finalProcArr, function(k,v) {
@@ -246,26 +234,24 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
             }
             
             if(k< (MAX_PROCCOUNT-10)){
-            	cpuProcessTbl += "<tr role='row' class='odd'>";
+            	cpuProcessTbl += "<tr class='h35'>";
             }else{
-            	cpuProcessTbl += "<tr role='row' class='odd optionrow' style='display:none;'>";
+            	cpuProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
             }
-            cpuProcessTbl += "<td class=' pt-xs pb-xs'><span class='name ellipsis' title='" + procName + "'>" + procName + "</span>";
-            cpuProcessTbl += "<span class='bold value percent-text'>" + processPercentValue + "</span>";
-            cpuProcessTbl += "<div class='progress-wrapper'><div class='progress' style='width:" + processGaugeValue + "%;'>";
-            cpuProcessTbl += "<div class='progress-bar' role='progressbar' aria=valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%;'></div>";
-            cpuProcessTbl += "</div></div>";
+            cpuProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
+            cpuProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName +" " + processPercentValue + "%</div>";
+            cpuProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
             cpuProcessTbl += "</td>";
             cpuProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
             cpuProcessTbl += "<td style='display:none' title='" + v.childCpu + "'></td>";
             cpuProcessTbl += "</tr>";
         }
     });
-    cpuProcessTbl += "<tr id='lastrow' isopen='false' role='row'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
+    cpuProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
     cpuProcessTbl += "</tbody>";
-  
     
-    $("#processTime").text(topProcessLastTime);
+    
+    $("#cpuProcessTime").children().eq(0).text(topProcessLastTime);
     $("#cpuProcess").empty();
     $("#cpuProcess").append(cpuProcessTbl);
     
@@ -288,31 +274,25 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
 	        	 }else{
 	        		 childNameArr = childName.split("\\n,");
 	        	 }
-	             procDetailHTML += "<table class='table table-bordered simple-list dataTable no-footer table-striped table-hover' role='grid'>";
-	             procDetailHTML += "<thead>";
-	             procDetailHTML += "<tr class='display-none' role='row'>";
-	             procDetailHTML += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "<th class='sorting_disabled pt-xs pb-xs' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "<th class='sorting_disabled display-none' rowspan='1' colspan='1'></th>";
-	             procDetailHTML += "</tr>";
-	             procDetailHTML += "</thead>";
-	             procDetailHTML += "<tbody>";
+	        	 
+	        	 procDetailHTML += "<table class='table1' style='width:100%;'><tbody>";	             
+	             
 	             $.each(childNameArr, function(k,v){
-	            	 procDetailHTML += "<tr>";
-	            	 procDetailHTML += "<td>" + (k+1) + "</td>";
-	                 procDetailHTML += "<td style='word-break:break-all;'>" + childNameArr[k] + "</td>";
-	                 procDetailHTML += "<td>" + childCpuArr[k] + "%</td>";
-	                 procDetailHTML += "</tr>";
+	            	 procDetailHTML += "<tr class='h35'>";
+	            	 procDetailHTML += "<td width='50' class='align_left pl10 pr10'>" + (k+1) + "</td>";
+	            	 procDetailHTML += "<td width='200' class='align_left pl10 pr10'>" + childNameArr[k] + "</td>";
+	            	 procDetailHTML += "<td width='170' class='align_left pl10 pr10'>" + childCpuArr[k] + "%</td>";
+	            	 procDetailHTML += "</tr>";
 	             });
-	             procDetailHTML += "</tbody>";
+	             procDetailHTML += "</tbody></table>";
 	             $("#childProcTbl").empty();
 	             $("#detailProcessTitle").html($(this).children(":first").children(":first").attr('title'));
 	        	 $("#childProcTbl").append(procDetailHTML);
-	        	 $('#sign_up').lightbox_me({
+	        	 $('#cpuChildProcessForm').lightbox_me({
 	   			   centered: true, 
 	   			   closeSelector: ".close",
 	   			   onLoad: function() { 
-	   			       $('#sign_up').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+	   			       $('#cpuChildProcessForm').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
 	   			   },
 	   			   overlayCSS:{background: 'white', opacity: .8} 
 	          	});
@@ -321,22 +301,21 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
     });
 
     viewMoreProcess();
-    
-    $("#btn_cpu_charttime").click(function(){
+   
+    $("#btn_cpu_charttime").off().on('click', function() {
     	$("#cpu_timeInput").val("");
     	$("#cpu_time_content").lightbox_me({
  		   centered: true, 
  		   closeSelector: ".close",
  		   onLoad: function() { 
- 		       $('#sign_up').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+ 		       $('#cpuChildProcessForm').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
  		   },
  		   overlayCSS:{background: 'white', opacity: .8} 
       });
     });
     
-    $("#reload_cpuProcTable").click(function(){
-    	var hostId = $("#cpu_hostid").html();
-    	showCpuProcessList(hostId);
+    $("#reload_cpuProcTable").off().on('click', function() {
+    	showCpuProcessList(currentHostId);
     });
     $("#cpuProcess_wrapper").unblock(blockUI_opt_all_custom);
 }
