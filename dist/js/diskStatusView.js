@@ -131,7 +131,7 @@ function generateDiskResource(hostid, currentDiskName, startTime){
     });
 }
 
-function clickInputTime(){
+function clickInputTimeDisk(){
     console.log(" IN clickInputTime ");
     var inputTime = $('#disk_InputTimecontent').find('input:first').val();
     var currentProcessName = $(".selectedDisk").attr('id');
