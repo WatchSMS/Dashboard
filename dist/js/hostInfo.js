@@ -154,7 +154,7 @@ var hostInfoView = function() {
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
                     cpuStatsView(v.hostid,startTime);
                 });
-                
+
                 offTimer();
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 $("[id^=base]").hide();
@@ -170,7 +170,7 @@ var hostInfoView = function() {
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
                     callApiForMem(v.hostid,startTime);
                 });
-                
+
                 offTimer();
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 $("[id^=base]").hide();
@@ -192,12 +192,19 @@ var hostInfoView = function() {
             $("#disk_" + hostid).click(function() { //Disk
                 console.log(">>>>> IN clickDiskView <<<<<");
 
-                $("#btn_disk.btn").click(function() {
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
+                currentHostId = v.hostid;
+                $("[id^=base]").hide();
+                $("#base_diskInfo").show();
+
+                callApiForDisk(v.hostid, startTime);
+
+                /*$("#btn_disk.btn").click(function() {
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
                     callApiForDisk(hostid, startTime);
                 });
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
-                callApiForDisk(hostid, startTime);
+                callApiForDisk(hostid, startTime);*/
             });
 
             $("#traffic_" + hostid).click(function() {
@@ -216,7 +223,7 @@ var hostInfoView = function() {
                 //$("#base_hostinfo").show();
                 //hostinfoView();
             });
-            
+
             $("#configure_" + v.hostid).click(function () { //임계치 설정
             	offTimer();
             	if(slider != null){
@@ -225,11 +232,11 @@ var hostInfoView = function() {
             		slider = null;
             		slider22 = null;
             	}
-            	
+
                 $("[id^=base]").hide();
                 $("#base_configure").show();
                 $("#conf_hostid").html(v.hostid);
-                
+
                 $("input:checkbox").unbind("click").bind('click', function() {
                 	var targetId = $(this).parent().nextAll("div")[0].id;
                     console.log(targetId);
@@ -238,7 +245,7 @@ var hostInfoView = function() {
                     	$("#" + targetId + " rect").filter(".d3slider-rect-value_disable").attr("class","d3slider-rect-value");
                     	$("#" + targetId + " rect").filter(".d3slider-rect-value2_disable").attr("class","d3slider-rect-value2");
                     	$("#" + targetId + " rect").filter(".d3slider-rect-value3_disable").attr("class","d3slider-rect-value3");
-                      
+
                     }else {
                     	$("#" + targetId).css("pointer-events","none");
                     	$("#" + targetId + " rect").filter(".d3slider-rect-value").attr("class","d3slider-rect-value_disable");
@@ -246,12 +253,12 @@ var hostInfoView = function() {
                     	$("#" + targetId + " rect").filter(".d3slider-rect-value3").attr("class","d3slider-rect-value3_disable");
                     }
                 });
-                
+
                 $("#btnCancelTrigger").unbind("click").bind("click",function(){
                 	var hostId = $("#conf_hostid").html();
                 	$("#configure_" + hostId).trigger('click');
                 });
-                
+
                 $("#btnSaveTrigger").unbind("click").bind("click",function() {
                 	$.blockUI(blockUI_opt_all);
                 	var warnTriggerId = null;
@@ -259,61 +266,61 @@ var hostInfoView = function() {
                 	var highTriggerId = null;
                 	var highExpression = null;
                 	var hostName = new Array;
-                	var itemKey = new Array; 
-                	var warnValue = new Array; 
-                	var highValue = new Array; 
+                	var itemKey = new Array;
+                	var warnValue = new Array;
+                	var highValue = new Array;
                 	var highTriggerId = new Array;
                 	var warnTriggerId = new Array;
                 	var enableCheckBox = new Array;
-                	
+
                 	$(".hostName").each(function(){
                 		hostName.push($(this).text());
                 	});
-                	
+
                 	$(".itemKey").each(function(){
                 		itemKey.push($(this).text());
-                	}); 
-                	
+                	});
+
                 	$(".warnValue").each(function(){
                 		warnValue.push($(this).text());
-                	}); 
-                		
+                	});
+
                 	$(".highValue").each(function(){
                 		highValue.push($(this).text());
-                	}); 
-                	
+                	});
+
                 	$(".warnTriggerId").each(function(){
                 		warnTriggerId.push($(this).text());
-                	}); 
+                	});
 
             		$(".highTriggerId").each(function(){
             			highTriggerId.push($(this).text());
-            		}); 
-            		
+            		});
+
 
             		 $(".alertCheck:checked").each(function(){
             			console.log($(this).val());
             			enableCheckBox.push($(this).val());
             		 });
-            		 
+
             		var apiCallCnt = 0;
             		for(var i=0; i<$(".warnValue").length; ++i){
-            			
+
             			if((itemKey[i].indexOf("cpu") != -1 && $("input[name=cpuAlert]").prop('checked') == true) || (itemKey[i].indexOf("memory") != -1 && $("input[name=memAlert]").prop('checked') == true)){
             				warnExpression = "{" + hostName[i] + ":" + itemKey[i] + ".last()}>=" + warnValue[i] + " and {" + hostName[i] + ":" + itemKey[i] + ".last()}<" + highValue[i];
             	            highExpression = "{" + hostName[i] + ":" + itemKey[i] + ".last()}>=" + highValue[i];
             	             zbxApi.updateTrigger.update(warnTriggerId[i], warnExpression).then(function(data){
             	            	 console.log(zbxApi.updateTrigger.success(data));
             	             });
-            	             
+
             	             zbxApi.updateTrigger.update(highTriggerId[i], highExpression).then(function(data){
             	            	 console.log(zbxApi.updateTrigger.success(data));
             	             });
-            	             
+
             	             zbxApi.enableTrigger.enable(warnTriggerId[i], "0").then(function(data){
             	            	 console.log(zbxApi.enableTrigger.success(data));
             	             });
-            	             
+
             	             zbxApi.enableTrigger.enable(highTriggerId[i], "0").then(function(data){
             	            	 console.log(zbxApi.enableTrigger.success(data));
             	            	 apiCallCnt++;
@@ -325,7 +332,7 @@ var hostInfoView = function() {
             				zbxApi.enableTrigger.enable(warnTriggerId[i], "1").then(function(data){
             	            	 console.log(zbxApi.enableTrigger.success(data));
             	            });
-            				
+
             				zbxApi.enableTrigger.enable(highTriggerId[i], "1").then(function(data){
             	            	 console.log(zbxApi.enableTrigger.success(data));
             	            	 apiCallCnt++;
@@ -334,15 +341,15 @@ var hostInfoView = function() {
             	            	 }
             	            });
             			}
-                		
+
                 	}
                 });
-                
-                
+
+
                 alertSettingView(v.hostid);
-                
+
             });
-                
+
         })
     }).fail(function() {
         console.log("dashboardView : Network Error");

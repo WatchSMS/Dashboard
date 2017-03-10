@@ -1,7 +1,7 @@
 function callApiForDisk(hostid, startTime){
-    $("[id^=base]").hide();
+    /*$("[id^=base]").hide();
     $("#base_diskInfo").show();
-
+*/
     var data_topDisk = '';
     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
         data_topDisk = zbxApi.getDiskItem.success(data);
@@ -21,6 +21,7 @@ function diskInfoList(hostid, data_topDisk, startTime) {
     var diskItemName = '';
     var diskItemUsed = 0;
     var diskItemSize = 0;
+    var currentDiskName = null;
 
     diskTableHTML += "<tbody>";
 
@@ -70,18 +71,77 @@ function diskInfoList(hostid, data_topDisk, startTime) {
 
     $("#diskInfoTable").empty();
     $("#diskInfoTable").append(diskTableHTML);
+    $("#chart_diskIo").empty();
+    $("#chart_diskUse").empty();
     var $table = $("#diskInfoTable");
+    $("#diskInfoTable > tbody > tr").eq(0).addClass("selectedDisk");
+    $("#diskInfoTable > tbody > tr").eq(0).css("background", "#62A6EF");
 
-    //table의 row 클릭시 해당 그래프 만드는 이벤트
-    $("#btn_disk.btn").click(function() {
-        var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-        rowClickDiskEvent($table, hostid, startTime);
-    });
+    currentDiskName = $(".selectedDisk").attr('id');
+
+    generateDiskResource(hostid, currentDiskName, startTime);
 
     rowClickDiskEvent($table, hostid, startTime);
+
+   $("#btn_disk.btn").off().on('click', function () {
+       var startTime_select = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+       var currentDiskName = $(".selectedDisk").attr('id');
+       generateDiskResource(hostid, currentDiskName, startTime_select);
+   });
+
+   $("#btn_disk.btn_etc").off().on('click', function(){
+       console.log(" 기타 시간 버튼 클릭 ");
+       $('#selectDiskTimeInput').val("");
+       $('#disk_InputTimecontent').lightbox_me({
+           centered: true,
+           closeSelector: ".close",
+           onLoad: function() {
+               $('#disk_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+           },
+           overlayCSS:{background: 'white', opacity: .8}
+       });
+   });
+}
+
+function generateDiskResource(hostid, currentDiskName, startTime){
+    console.log(" IN generateDiskResource ");
+    console.log(" currentDiskName  : " + currentDiskName);
+    console.log(" startTime  : " + startTime);
+    //removeAllChart();
+
+    var diskInode = '';
+    var diskFree = '';
+    var diskUse = '';
+
+    var diskItemKeyInode = "vfs.fs.inode[" + currentDiskName + ",pfree]";
+    var diskItemKeyFree = "vfs.fs.size[" + currentDiskName + ",pfree]";
+    var diskItemKeyUse = "vfs.fs.size[" + currentDiskName + ",pused]";
+
+    zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
+        diskInode = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
+    }).then(function(data) {
+        diskFree = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
+    }).then(function(data) {
+        diskUse = zbxApi.serverViewGraph.success(data);
+        showDisk(diskInode, diskFree, diskUse,  startTime);
+    });
+}
+
+function clickInputTime(){
+    console.log(" IN clickInputTime ");
+    var inputTime = $('#disk_InputTimecontent').find('input:first').val();
+    var currentProcessName = $(".selectedDisk").attr('id');
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
+        console.log(" 시간 입력 확인 버튼 클릭 ");
+    generateDiskResource(currentHostId, currentProcessName, startTime);
 }
 
 function rowClickDiskEvent(table, hostid, startTime) {
+    console.log(" IN rowClickDiskEvent ");
     $('tr', table).each(function(row) {
         $(this).click(function() {
             var currentDiskItemId = $(this).attr('id');
@@ -91,43 +151,30 @@ function rowClickDiskEvent(table, hostid, startTime) {
             $(this).prevAll().children().removeAttr('style');
             $(this).nextAll().children().removeAttr('style');
 
-            var diskInode = '';
-            var diskFree = '';
-            var diskUse = '';
-
-            var diskItemKeyInode = "vfs.fs.inode[" + currentDiskItemId + ",pfree]";
-            var diskItemKeyFree = "vfs.fs.size[" + currentDiskItemId + ",pfree]";
-            var diskItemKeyUse = "vfs.fs.size[" + currentDiskItemId + ",pused]";
-
-            zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
-                diskInode = zbxApi.serverViewGraph.success(data);
-            }).then(function() {
-                return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
-            }).then(function(data) {
-                diskFree = zbxApi.serverViewGraph.success(data);
-            }).then(function() {
-                return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
-            }).then(function(data) {
-                diskUse = zbxApi.serverViewGraph.success(data);
-                showDisk(diskInode, diskFree, diskUse,  startTime);
-            });
+            generateDiskResource(hostid, currentDiskItemId, startTime);
         });
     });
 }
 
 function showDisk(diskInode, diskFree, diskUse,  startTime){
+    console.log(" IN showDisk ");
+    console.log(" diskInode : " + diskInode);
+    console.log(" diskFree : " + diskFree);
+    console.log(" diskUse : " + diskUse);
+    console.log(" startTime : " + startTime);
     showDiskIo(diskInode, diskFree, startTime);
     showDiskUse(diskUse, startTime);
 }
 
 function showDiskIo(diskInode, diskFree, startTime){
+    console.log(" IN showDiskIo ");
     var diskInodeArr = [];
     var diskFreeArr = [];
 
-    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         diskInodeArr  = zbxApi.getHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, 0);
+        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         diskFreeArr= zbxApi.getHistory.success(data);
 
@@ -255,9 +302,10 @@ function showDiskIo(diskInode, diskFree, startTime){
 }
 
 function showDiskUse(diskUse, startTime){
+    console.log(" IN showDiskUse ");
     var diskUseArr = [];
 
-    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, 0).then(function(data) {
+    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         diskUseArr  = zbxApi.getHistory.success(data);
 
         $(function() {
