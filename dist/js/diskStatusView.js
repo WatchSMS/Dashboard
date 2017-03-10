@@ -1,7 +1,4 @@
 function callApiForDisk(hostid, startTime){
-    /*$("[id^=base]").hide();
-    $("#base_diskInfo").show();
-*/
     var data_topDisk = '';
     zbxApi.getDiskItem.get(hostid).done(function(data, status, jqXHR) {
         data_topDisk = zbxApi.getDiskItem.success(data);

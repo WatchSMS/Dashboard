@@ -1,7 +1,4 @@
 function callApiForTraffic(hostid, startTime){
-    /*$("[id^=base]").hide();
-    $("#base_networkInfo").show();*/
-
     var data_topDisk = '';
     zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
         data_topDisk = zbxApi.getNetworkItem.success(data);
