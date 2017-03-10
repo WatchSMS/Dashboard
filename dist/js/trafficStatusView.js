@@ -178,7 +178,7 @@ function showTrafficIo(networkIn, networkOut, startTime){
                             color: '#E0E0E3'
                         },
                         formatter: function() {
-                            return Math.floor(this.value * 100)/100 +'%';
+                            return Math.floor(this.value / 1000) +'Kbps';
                         }
                     }
                 },
@@ -307,8 +307,8 @@ function showTrafficTotal(networkTotal, startTime){
                         style: {
                             color: '#E0E0E3'
                         },
-                        formatter: function () {
-                            return this.value + '%';
+                        formatter: function() {
+                            return Math.floor(this.value / 1000) +'Kbps';
                         }
                     }
                 },
