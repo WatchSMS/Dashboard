@@ -101,6 +101,9 @@ var Label = new function() {
     this.MB = function(val) {
         return Math.round(val / (1024 * 1024)) + 'MB';
     };
+    this.bps = function(val) {
+        return Math.round(val / 1000) + 'Kbps';
+    };
 };
 
 function chartCall(chartId, title, series, label, enable, colorArr) {

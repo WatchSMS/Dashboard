@@ -115,7 +115,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
             data: serverTraTotEth0Arr
         }];
         var enable = false;
-        chartCall(chartId, title, series, Label.percent, enable);
+        chartCall(chartId, title, series, Label.bps, enable);
     })
 }
 
