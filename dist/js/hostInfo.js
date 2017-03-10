@@ -59,12 +59,10 @@ var hostInfoView = function() {
                 }).then(function(data) {
                     serverCpuSteal = zbxApi.serverViewGraph.success(data);
                 }).then(function() {
-                    showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
                     return zbxApi.serverViewGraphName.get(hostid, "Used memory(%)");
                 }).then(function(data) {
                     serverMemoryUse = zbxApi.serverViewGraphName.success(data);
                 }).then(function() {
-                    showServerMemory(serverMemoryUse, startTime);
                     return zbxApi.serverViewGraph.get(hostid, "vfs.fs.size[/,pused]");
                 }).then(function(data) {
                     serverDiskUseRoot = zbxApi.serverViewGraph.success(data);
@@ -81,6 +79,8 @@ var hostInfoView = function() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.total[eth0]");
                 }).then(function(data) {
                     serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
+                    showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
+                    showServerMemory(serverMemoryUse, startTime);
                     showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
                 });
 
