@@ -1,73 +1,182 @@
-<!--  -->
-<section class="content-header">
-	<h1>프로세스 사용량</h1>
-</section>
+<section class="content">  
 
-
-<section class="content">
-	
-	<div id='proc_InputTimecontent' style="background:white; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #c1c7ce; width:20%; opacity:1; height:20%;">
+	<div id='proc_InputTimecontent' style="background:#424973; display: none; float:left; margin-left:20px; padding:15px 15px 15px 15px; border:3px solid #c1c7ce; width:px; opacity:1;">
 		<strong style="font-size: 18px">시간 입력 </strong><br><br>
-		 <input type="text" placeholder="ex)3(=3시간)" id="selectProcTimeInput" name="" maxlength="3" value="" title="" style="width:80%;" /><br/><br><br>
+		<input type="number" id="selectProcTimeInput" placeholder="시간" name="" maxlength="2" value="" class="inpTxt t_left" title="" style="width:300px; background: #626992;"/>
 		<span><a onclick="$('#proc_InputTimecontent').trigger('close'); clickBtnInputTime();" href="#none">확인</a></span> 
 		<span><a onclick="$('#proc_InputTimecontent').trigger('close'); return false;" href="#none">취소</a></span>
 	</div> 
-	
-	<div class="col-50">
-		<div class="col-c50">
+
+<!-- event part left --> 
+            <div class="content-header3">
+            
+<!-- 프로세스 사용량 타이틀 -->
+	         <div class="d1"><img src="dist/img/tit_sbl10.gif"></div>
+            
+<!-- 프로세스 -->
+               <section class="sec-inbox br7">
+	              <table class="table_tool">
+	                <thead>
+	                  <tr>
+	                    <td class="align_left valignm br7_t">                        
+                         <div class="s1 fl">
+                          <img src="dist/img/tit_sub_05.gif">
+	                     </div>                    
+                        </td>
+                      </tr>
+                    </thead>
+                  </table>
+                                    
+			    <div class="h645 br7_b" style="width:100%">
+               <table id="processUsageTable1" class="table1">
+                  <thead>
+			        <tr>
+			          <td width="245" class="line percent-text sorting">이름</td>
+			          <td width="200" class="line sorting">CPU</td>
+			          <td width="200" class="line pr-none sorting">메모리</td>                      
+			          <td width="auto" class="br7_rt pr-none sorting"><span class="line">개수</span></td>
+		            </tr>
+			      </thead>
+                </table> 
+                 
+			    <section id="in-scl" class="h616">
+			        <div id="content-1" class="br7 content_in">                    
+	 			    <table id="detailedCpuProc" class="table1" style="width:100%;">   
+	 			    	                
+				      
+			        </table>                    
+			       </div>			
+               </section>
+			 </div> 
+           </section>         
+<!--// 프로세스 -->
+
+            </div>              
+<!--// event part left --> 
+
+
+
+
+
+              
+<!-- event part right -->  
+         <div class="content-right3 pt50">
+
+<!-- CPU -->
 			<div class="row">
 				<div class="col-md-12">
-					<div class="range-selector pull-right">
+					<div class="range-selector">
 						<div>
 							<div class="ranges"> 
-								<button type="button" id="btn_proc" class="btn btn_etc" data-range="custom">기타</button>
-								<button type="button" id="btn_proc" class="btn" data-range="hr" value="24">24시간</button>
-								<button type="button" id="btn_proc" class="btn" data-range="hr" value="12">12시간</button>
-								<button type="button" id="btn_proc" class="btn" data-range="hr" value="6">6시간</button>
-								<button type="button" id="btn_proc" class="btn" data-range="hr" value="3">3시간</button>
-								<button type="button" id="btn_proc" class="btn" data-range="hr" value="1">1시간</button>
+								<button type="button" id="btn_proc" class="btn btn_etc mb5" data-range="custom">기타</button>
+								<button type="button" id="btn_proc" class="btn mb5" data-range="hr" value="24">24시간</button>
+								<button type="button" id="btn_proc" class="btn mb5" data-range="hr" value="12">12시간</button>
+								<button type="button" id="btn_proc" class="btn mb5" data-range="hr" value="6">6시간</button>
+								<button type="button" id="btn_proc" class="btn mb5" data-range="hr" value="3">3시간</button>
+								<button type="button" id="btn_proc" class="btn mb5" data-range="hr" value="1">1시간</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-c50-block">
-				<section class="panel">
-					<header class="panel-heading">
-						<h2 class="panel-title">프로세스</h2>
-						<div>
-							<div class="panel-actions process-date smaller"><div id="detailedProcTime"></div>
-							<button id="reload_procTableList" type="button" style="font-size:10px;" class="btn btn-default pull-right smaller"><i class="glyphicon glyphicon-refresh"></i></button>
-							</div>
-						</div>
-						<div class="clear"></div>
-					</header>
-					<div class="panel-body pl-sm pr-sm">
-						<div id="processList_wrapper" class="dataTables_wrapper no-footer">	
-							<div class="table-responsive pl-sm pr-sm">
-								<table id="detailedCpuProc" class="table table-striped table-hover simple-list dataTable no-foote" role="grid">
-									
-			                    </table>
-			                </div>
-			            </div>
-		            </div>
-	            </section>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-50">
-		<!-- <div class="col-xs-6"> -->
-		
-		<div class="col-c50">
-			<div class="col-c50-block">
-				<div id="chart_processCpu" style="min-width: 310px; height: 290px; margin: 0 auto"></div>
-			</div>
-			
-			<div class="col-c50-block">
-				<div id="chart_processMem" style="min-width: 310px; height: 290px; margin: 0 auto"></div>
-			</div>		
-		</div>
-	</div>
+               <section class="sec-inbox br7">
+	              <table class="table_tool">
+	                <thead>
+	                  <tr>
+	                    <td class="align_left valignm">
+                        
+                         <div class="s1 fl">
+                          <img src="dist/img/tit_sub_14.gif">
+	                     </div>
+                         
+                         <div class="s1 fl">
+                         	<li class="p1"> <span class="o1 bg17"></span> <span class="e1"><a id="processCpuSeries" onclick="chartLegendItemClick(0,'chart_processCpu', this);" href="#none">프로세스 CPU</a></span></li>
+	                     </div>                         
+                        
+                        <!-- button select input -->                        
+	                     <div class="mr8 fr">
+	                        <button class="button_short btn_printChart" value="chart_processCpu">
+	                        <label>출력하기</label>
+	                        </button>                            
+                            
+	                        <button class="button_short btn_ExportChart" value="chart_processCpu">
+	                        <label>내보내기</label>
+	                        </button>
+                         </div>
+	                    <!--// button select input -->
+                          
+                        </td>
+                      </tr>
+                    </thead>
+                  </table>
+                                    
+			    <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : %)</div>
+			    <div class="graph_sub1 h247">
+<!-- 그래프 영역 CPU -->
+			      <div id="chart_processCpu" style="min-width: 310px; height: 245px; margin: 0 auto"></div><!-- 임시 이미지 -->
+<!--// 그래프 영역 CPU  -->
+			    </div>                  
 
-</section>
+              </section>                    
+<!--// CPU -->
+
+
+
+<!-- 하단 마진 -->
+<div class="mt15"></div>
+<!--// 하단 마진 -->
+
+
+
+<!-- 메모리 -->
+               <section class="sec-inbox br7">
+	              <table class="table_tool">
+	                <thead>
+	                  <tr>
+	                    <td class="align_left valignm">
+                        
+                         <div class="s1 fl">
+                          <img src="dist/img/tit_sub_13.gif">
+	                     </div>
+                         
+                         <div class="s1 fl">
+                         	 <li class="p1"> <span class="o1 bg18"></span> <span class="e1"><a id="processMemSeries" onclick="chartLegendItemClick(0,'chart_processMem', this);" href="#none">프로세스 Memory</a></span></li>
+	                     </div>                         
+                        
+                        <!-- button select input -->                        
+	                     <div class="mr8 fr">
+	                        <button class="button_short btn_printChart" value="chart_processMem">
+	                        <label>출력하기</label>
+	                        </button>                            
+                            
+	                        <button class="button_short btn_ExportChart" value="chart_processMem">
+	                        <label>내보내기</label>
+	                        </button>
+                         </div>
+	                    <!--// button select input -->
+                          
+                        </td>
+                      </tr>
+                    </thead>
+                  </table>
+                                    
+			    <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : %)</div>
+			    <div class="graph_sub1 h247">
+<!-- 그래프 영역 메모리 -->
+			      <div id="chart_processMem" style="min-width: 310px; height: 245px; margin: 0 auto"></div><!-- 임시 이미지 -->
+<!--// 그래프 영역 메모리 -->
+			    </div>                  
+
+              </section>                 
+<!--// 메모리 -->
+
+<!-- 하단 마진 -->
+
+
+<div class="mt15"></div>
+<!--// 하단 마진 -->
+
+         </div>         
+<!--// event part right --> 
+
+       </section>

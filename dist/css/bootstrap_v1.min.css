@@ -1773,9 +1773,7 @@ th {
 
 
 /*s*/
-.line { border-right: 1px solid #51597e;}
-.line-th { border-right: 1px solid #51597e; text-align: center;}
-.line-td { border-right: 1px solid #51597e; text-align: center;}
+.line { border-right: 1px solid #51597e; }
 .b_line { border-bottom: 1px solid #51597e; }
 /* -  border-radius: 5px; -webkit-border-radius: 15px; -moz-border-radius: 15px; */
 .table1 {
@@ -1945,7 +1943,7 @@ th {
 	border: 1px solid rgb(221, 221, 221); border-image: none;
 }
 .table-bordered > tbody > tr > td {
-	border: 1px solid rgb(221, 221, 221); border-image: none;
+	border: 1px solid rgb(66, 73, 115); border-image: none;
 }
 .table-bordered > tbody > tr > th {
 	border: 1px solid rgb(221, 221, 221); border-image: none;
@@ -2914,7 +2912,7 @@ fieldset[disabled] a.btn {
 	pointer-events: none;
 }
 .btn-default {
-	border-color: rgb(204, 204, 204); color: rgb(51, 51, 51); background-color: rgb(255, 255, 255);
+	border-color: rgb(204, 204, 204); color: rgb(197, 208, 236); background-color: rgb(73, 81, 126);
 }
 .focus.btn-default {
 	border-color: rgb(140, 140, 140); color: rgb(51, 51, 51); background-color: rgb(230, 230, 230);
@@ -7195,15 +7193,17 @@ div#select_box select#color {
 .h450 {height:450px !important;}
 .h211 {height:211px !important;}
 .h212 {height:212px !important;}
+.h247 {height:247px !important;}
 .h264 {height:264px !important;}
 .h270 {height:270px !important;}
-.h271 {height:271px !important;}
-.h290 {height:290px !important;}
+.h271 {height:271px !important;} 
+.h290 {height:290px !important;} 
 .h310 {height:310px !important;}
 .h618 {height:618px !important;}
 .h631 {height:631px !important;}
 .h645 {height:645px !important;} 
 .h616 {height:616px !important;} 
+.h600 {height:600px !important;} 
 
 
 /*����*/

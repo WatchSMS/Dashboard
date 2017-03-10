@@ -94,7 +94,7 @@
 }
 
 
-/* ������� s */
+/* 占쏙옙占쏙옙占쏙옙占� s */
 .Pstyle {
 	opacity: 1; display: none; position: relative; width: auto; border: 0px solid #fff; padding: 0px;
 	overflow: hidden; height: 650px;  vertical-align: middle; display: inline-block; margin: 0 auto; margin-top:33px; text-align:center;
@@ -769,6 +769,13 @@
 .content-header2 .d1 {
 	padding:14px 0 0 0; width:807; height:50px;
 }
+/* kkj */
+.content-header3 {
+	padding:0 12px 0px 0; position: relative; width:50%; display:inline-block; vertical-align:top; float:left;
+}
+.content-header3 .d1 {
+	padding:14px 0 0 0; width:807; height:50px;
+}
 /* 2017.02.24 - e */
 
 
@@ -1043,7 +1050,7 @@
 }
 
 
-/* 서브 상태 */
+/* �꽌釉� �긽�깭 */
 .content-only .table1 .c0 {
 	position:relative; top:5px; left:0px;
 }
@@ -1219,6 +1226,11 @@
 /* 2017.02.24 - s */
 .content-right2 {
 	width:69.75%; display:inline-block;
+}
+
+/* kkj */
+.content-right3 {
+	width:50%; display:inline-block;
 }
 /* 2017.02.24 - e */
 

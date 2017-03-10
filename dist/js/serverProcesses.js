@@ -4,8 +4,8 @@ var procUsageView = function(hostid, startTime) {
     
     var topProcessLastClock = null;
     var ProcessTableHTML = '';
-    var INIT_PROCCOUNT = 13;
-    var MAX_PROCCOUNT = 20;
+    var INIT_PROCCOUNT = 17;
+    var MAX_PROCCOUNT = 30;
     var currentProcessName = null;
     var tableDataObj = new Object();
     var tableDataArr = [];
@@ -14,15 +14,7 @@ var procUsageView = function(hostid, startTime) {
     var date = new Date(lastClockLongType);
     var lastClockForProcessTable = date.getFullYear() + "-" + (parseInt(date.getMonth())+1) + "-" + date.getDate()  + " " + date.getHours() + ":" + date.getMinutes();
     var sortProcessForTable = sortProcess(lastProcessData, "CPU");
-
-    ProcessTableHTML += "<thead>";
-    ProcessTableHTML += "<tr role='row'>";
-    ProcessTableHTML += "<th class='percent-text sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='CPU: 오름차순 정렬' aria-sort='descending'>이름</th>";
-    ProcessTableHTML += "<th width='15%' class='text-left sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='이름: 오름차순 정렬'>cpu</th>";
-    ProcessTableHTML += "<th class='pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='메모리: 오름차순 정렬'>메모리</th>";
-    ProcessTableHTML += "<th class='text-center pr-none sorting' tabindex='0' aria-controls='processList' rowspan='1' colspan='1' aria-label='수: 오름차순 정렬'>수</th>";
-    ProcessTableHTML += "</tr>";
-    ProcessTableHTML += "</thead>";
+		
     ProcessTableHTML += "<tbody>";
 
     //ps 데이터의  마지막  값을 테이블에 삽입
@@ -41,14 +33,14 @@ var procUsageView = function(hostid, startTime) {
         
         if(k < MAX_PROCCOUNT){
         	if(k < INIT_PROCCOUNT){
-                ProcessTableHTML += "<tr id='" + v.procName + "' role='row' class='odd'>";
+                ProcessTableHTML += "<tr id='" + v.procName + "' class='h34'>";
             }else{
-            	ProcessTableHTML += "<tr id='" + v.procName + "' role='row' class='odd optionrow' style='display:none;'>";
+            	ProcessTableHTML += "<tr id='" + v.procName + "' class='h34 optionrow' style='display:none;'>";
             }
-            ProcessTableHTML += "<td class='text-left sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
-            ProcessTableHTML += "<td class='percent-text sorting_3'>" + procCpuValue + "</td>";
-            ProcessTableHTML += "<td class='percent-text pr-none sorting_2'>" + procMemValue + "<span class='smaller'></span></td>";
-            ProcessTableHTML += "<td class='text-center pr-none'>" + v.procCnt + "</td>";
+            ProcessTableHTML += "<td width='245' class='text-left align_left line sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
+            ProcessTableHTML += "<td width='200' class='line percent-text sorting_3'>" + procCpuValue + "</td>";
+            ProcessTableHTML += "<td width='200' class='line percent-text pr-none sorting_2'>" + procMemValue + "<span class='smaller'></span></td>";
+            ProcessTableHTML += "<td width='auto' class='br7_rt pr-none text-center'>" + v.procCnt + "</td>";
             ProcessTableHTML += "</tr>";
         }
     });
@@ -61,13 +53,10 @@ var procUsageView = function(hostid, startTime) {
     $("#detailedCpuProc").append(ProcessTableHTML);
     $("#chart_processCpu").empty();
     $("#chart_processMem").empty();
+    var $table1 = $("#processUsageTable1");
     var $table = $("#detailedCpuProc");
     $("#detailedCpuProc > tbody > tr").eq(0).addClass("selectedProcess");
-    $("#detailedCpuProc > thead > tr").children().css("border-bottom","1px #FF5E00 solid");
-    $("#detailedCpuProc > tbody > tr").eq(0).children().css("border-top", "1px #FF5E00 solid").css("border-bottom", "1px #FF5E00 solid");
-    $("#detailedCpuProc > tbody > tr").eq(0).children().eq(0).css("border-left", "1px #FF5E00 solid");
-    $("#detailedCpuProc > tbody > tr").eq(0).children().eq(3).css("border-right", "1px #FF5E00 solid");
-  
+    $("#detailedCpuProc > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
               
     currentProcessName = $(".selectedProcess").attr('id');
     
@@ -98,7 +87,7 @@ var procUsageView = function(hostid, startTime) {
     });
 
     // 테이블의 th col 클릭시, 정렬 된 테이블 내용 생성 및 각 행의 클릭이벤트(하이라이트, 차트) 생성
-    $('th', $table).each(function (column){
+    $('td', $table1).each(function (column){
         $(this).click(function(){
             var procTableRow = '';
             var currentThObj = $(this);
@@ -131,26 +120,27 @@ var procUsageView = function(hostid, startTime) {
                 });
                 currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
             }
-          
+            console.log("MAX_PROCCOUNT : " + MAX_PROCCOUNT);
+            console.log("INIT_PROCCOUNT : " + INIT_PROCCOUNT);
             for(var i=0; i<MAX_PROCCOUNT; i++){
             	
             	 if($('tr#lastrow').attr('isopen') == 'false'){
             		 if( i < INIT_PROCCOUNT){
-                 		procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd'>";
+                 		procTableRow += "<tr id='" + tableDataArr[i].procName + "' class='h34'>";
                  	}else{
-                 		procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd optionrow' style='display:none;'>";
+                 		procTableRow += "<tr id='" + tableDataArr[i].procName + "' class='h34 optionrow' style='display:none;'>";
                  	}
             	 }else{
             		 if( i < INIT_PROCCOUNT){
-            			 procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd'>";
+            			 procTableRow += "<tr id='" + tableDataArr[i].procName + "' class='h34'>";
             		 }else{
-            			 procTableRow += "<tr id='" + tableDataArr[i].procName + "' role='row' class='odd optionrow'>";
+            			 procTableRow += "<tr id='" + tableDataArr[i].procName + "' class='h34 optionrow'>";
             		 }
             	 }
-                procTableRow += "<td class='text-left sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
-                procTableRow += "<td class='percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
-                procTableRow += "<td class='percent-text pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'></span></td>";
-                procTableRow += "<td class='text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
+                procTableRow += "<td width='245' class='text-left align_left line sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
+                procTableRow += "<td width='200' class='line percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
+                procTableRow += "<td width='200' class='line percent-text pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'></span></td>";
+                procTableRow += "<td width='auto' class='br7_rt pr-none text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
                 procTableRow += "</tr>";
             }
             if($('tr#lastrow').attr('isopen') == 'false'){
@@ -161,7 +151,7 @@ var procUsageView = function(hostid, startTime) {
             
             $('tbody', $table).empty();
             $('tbody', $table).append(procTableRow);
-            $("#"+tmpProcessName).addClass("selectedProcess");
+            $("#"+tmpProcessName).addClass("selectedProcess").css("border","1px #FF5E00 solid");
             rowClickEvent($table, hostid, startTime);
             viewMoreProcess();
             
@@ -267,8 +257,11 @@ var generateProcessResource = function(hostid, processName, startTime) {
         var cpuChartTitle = "CPU (" + $(".selectedProcess").children().eq(0).text() + ")";
         var memChartTitle = "Memory (" + $(".selectedProcess").children().eq(0).text() + ")";
         
+        $("#processCpuSeries").text($(".selectedProcess").children().eq(0).text());
+        $("#processMemSeries").text($(".selectedProcess").children().eq(0).text());
+        
         showBasicLineChart('chart_processCpu', cpuChartTitle, cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
-        showBasicAreaChart('chart_processMem', memChartTitle, memDataSet, "MB", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+        showBasicAreaChart('chart_processMem', memChartTitle, memDataSet, "%", ['#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
         $('#chart_processCpu').off().on('mousemove touchmove touchstart', function (e) {
     	    var chart,
     	        point,
@@ -378,24 +371,16 @@ function reloadChartForProcess(hostId){
 
 var rowClickEvent = function(table, hostid, startTime){
     $('tr', table).each(function (row){
-        if(row > 0 && row < ($('tr', table).size()-1)){
+        if(row < ($('tr', table).size()-1)){
             $(this).click(function(){
             	
                 var currentProcessName = $(this).attr('id');
                 $(".selectedProcess").removeClass("selectedProcess");
                 $(this).addClass("selectedProcess");
-                $(this).children().css("border-top", "1px #FF5E00 solid").css("border-bottom", "1px #FF5E00 solid");
-                $(this).children().eq(0).css("border-left", "1px #FF5E00 solid");
-                $(this).children().eq(3).css("border-right", "1px #FF5E00 solid");
-                $(this).prevAll().children().removeAttr('style');
-                $(this).nextAll().children().removeAttr('style');
-                $(this).siblings().last().css("text-align", "center");
-                
-                if(row==1){
-                	$("#detailedCpuProc > thead > tr").children().css("border-bottom","1px #FF5E00 solid");
-            	}else{
-            		$("#detailedCpuProc > thead > tr").children().css("border-bottom","");
-            	}
+                $(this).css("border","1px #FF5E00 solid");
+                $(this).prevAll().css("border","");
+                $(this).nextAll().css("border","");
+               
                 generateProcessResource(hostid, currentProcessName, startTime);
             });
         }

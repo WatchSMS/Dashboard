@@ -152,7 +152,6 @@ var hostInfoView = function() {
                 $("#btn_cpu.btn").off().on('click', function() {
                 	offTimer();
                     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-                    //updateCpuLoadAvg(v.hostid);
                     cpuStatsView(v.hostid,startTime);
                 });
                 
@@ -161,7 +160,6 @@ var hostInfoView = function() {
                 $("[id^=base]").hide();
                 $("#base_cpuinfo").show();
                 $("#cpu_hostid").html(v.hostid);
-                // callApiForCpu(v.hostid,startTime);
                 cpuStatsView(v.hostid,startTime);
             });
 
