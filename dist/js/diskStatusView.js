@@ -241,7 +241,11 @@ function showDiskIo(diskInode, diskFree, startTime){
                 exporting: {
                     buttons: {
                         contextButton: {
-                            enabled: false
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill:'#626992'
+                            }
                         }
                     }
                 }
@@ -362,7 +366,11 @@ function showDiskUse(diskUse, startTime){
                 exporting: {
                     buttons: {
                         contextButton: {
-                            enabled: false
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill:'#626992'
+                            }
                         }
                     }
                 }
