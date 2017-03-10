@@ -117,15 +117,18 @@ var zbxSyncApi = {
             "jsonrpc": "2.0",
             "method": "trigger.get",
             "params": {
-                "output": ["description", "priority", "value", "lastchange"],
+                "output": ["description", "priority", "value", "lastchange", "lastChangeSince"],
                 "monitored": true,
                 "skipDependent": true,
                 "expandDescription": true,
                 "selectGroups": ["name"],
                 "selectHosts": ["host", "maintenance_status"],
-                "sortfield": "description",
-                "sortorder": "lastchange",
-                //"only_true": true,
+                "sortfield": "lastchange",
+                "maintenance": "true",
+                // "filter":{
+                //     "value": 1
+                // },
+                "withUnacknowledgedEvents": "true",
                 "selectLastEvent": "true"
             },
             "id": 1,
