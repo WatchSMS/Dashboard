@@ -52,7 +52,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
             networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>";
             networkTableHTML += "<td width='auto' class='align_left p113'>";
             networkTableHTML += "<div class='mt2 f11'>" + networkItemName + "</div>";
-            networkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + "b/s / RX : " + networkItemSize + "'b/z</div>";
+            networkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + " b/s / RX : " + networkItemSize + " b/z</div>";
             networkTableHTML += "</tr>";
         }
     });
@@ -70,30 +70,6 @@ function networkInfoView(hostid, startTime, data_topDisk){
     });
 
     rowClickNetworkEvent($table, hostid, startTime);
-
-    /*
-     //page reloag
-     $("#reload_networkInfo").click(function() {
-     console.log(">>>>> reload_networkInfo <<<<<");
-     $("#traffic_" + hostid).click();
-     });
-
-     $(function($) {
-     $('#reload_networkInfo_selecter').change(function() {
-     var selectVal = $(this).val();
-     if (selectVal != 0) {
-     $("#reload_networkInfo").attr({
-     "disabled": "disabled"
-     });
-     } else {
-     $("#reload_networkInfo").removeAttr("disabled");
-     }
-     });
-     });
-
-     //자동 새로고침
-     setInterval('$("#reload_networkInfo").click()', PAGE_RELOAD_TIME);
-     */
 }
 
 function rowClickNetworkEvent(table, hostid, startTime){
