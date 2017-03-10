@@ -126,16 +126,13 @@ function serverOverView(server_data) {
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
         serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
-            '</div>' +
-            '<div class="fr mt2 mr5 f11">' + serverPerCPU + '%</div></td>';
+            '</div><div class="fr mt2 mr5 f11">' + serverPerCPU + '%</div></td>';
         serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerMemory + '%; height:5px;"></div>' +
-            '</div>' +
-            '<div class="fr mt2 mr5 f11">' + serverPerMemory + '%</div></td>';
+            '</div><div class="fr mt2 mr5 f11">' + serverPerMemory + '%</div></td>';
         serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerDisk + '%; height:5px;"></div>' +
-            '</div>' +
-            '<div class="fr mt2 mr5 f11">' + serverPerDisk + '%</div></td>';
+            '</div><div class="fr mt2 mr5 f11">' + serverPerDisk + '%</div></td>';
         serverOverViewHTML += '<td width="150" class="line-td">' + serverOS + '</td>';
         serverOverViewHTML += '<td width="117" class="line-td">' + serverCPU + '</td>';
         serverOverViewHTML += '<td width="97" class="line-td">' + serverRAM + '</td>';
