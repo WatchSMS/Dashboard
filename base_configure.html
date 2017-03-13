@@ -1,0 +1,133 @@
+<!--  
+<section class="content-header">
+	<h1>임계치 설정</h1>
+</section>
+
+-->
+<!-- 
+    <h2>Slider with slide event: <span id="slider3text">0</span></h2>
+    <div id="slider3"></div>
+ -->
+ 
+ <section class="content">  
+
+            <div class="content-header4">
+
+	        <div class="d1"><img src="dist/img/tit_sbl08.gif"></div>
+            
+           <section class="sec-inbox br7">
+	              <!-- <div class="col-100"> -->
+						<div class="col-c50">
+							<div class="col-c20-block" style="background-color: #626992; padding-top: 5px;">
+								<h3 style="float:left; width:100%; position:relative; top:1px;"><input type="checkbox" class="triggerAlertCheck" value="cpu" name="cpuAlert" checked>CPU</h3><br/>
+								<b class='warnTriggerInfo' style='display:none'></b>
+								<b class='highTriggerInfo' style='display:none'></b>
+								<b class='hostName' style='display:none'></b>
+								<b class='itemKey' style='display:none'></b>
+								<b class='warnValue' style='display:none'></b>
+								<b class='highValue' style='display:none'></b>
+								<b class='warnTriggerId' style='display:none'></b>
+								<b class='highTriggerId' style='display:none'></b>
+								<div id="slider" style="float:left; width:90%; height:50%"></div>
+								<div id="input_slider" style="float:left; width:10%; display:inline-block;">
+										<p style="border-left-style:solid;border-left-width:5px;border-left-color:red;"> 위 험 <input type='text' size='3' style='text-align:right;'>%</p>
+										<p style="border-left-style:solid;border-left-width:5px;border-left-color:yellow;"> 경 고 <input type='text' size='3' style='text-align:right;'>%</p>
+								</div>
+							</div>
+							<br/>
+							<div class="col-c20-block" style="background-color: #626992; padding-top: 5px;">
+								<b class='warnTriggerInfo' style='display:none'></b>
+								<b class='highTriggerInfo' style='display:none'></b>
+								<b class='hostName' style='display:none'></b>
+								<b class='itemKey' style='display:none'></b>
+								<b class='warnValue' style='display:none'></b>
+								<b class='highValue' style='display:none'></b>
+								<b class='warnTriggerId' style='display:none'></b>
+								<b class='highTriggerId' style='display:none'></b>
+								
+								<h3 style="float:left; width:100%; position:relative; top:1px;"><input type="checkbox" class="alertCheck" value="memory" name="memAlert" checked>Memory</h3><br/><br/><br/>
+								<div id="slider22" style="float:left; width:90%; height:50%"></div>
+								<div id="input_slider22" style="float:left; width:10%; display:inline-block;">
+										<p style="border-left-style:solid;border-left-width:5px;border-left-color:red;"> 위 험 <input type='text' size='3' style='text-align:right;'>% </p>
+										<p style="border-left-style:solid;border-left-width:5px;border-left-color:yellow;"> 경 고 <input type='text' size='3' name='warningThreshold' style='text-align:right;'>% </p>
+								</div>
+							</div>
+							<br/>
+							
+							<div class="col-c20-block col-sm-12 text-center">
+					            <button class="btn btn-default btn-action mr-sm" id="btnCancelTrigger" type="button">취소</button>
+					            <button class="btn btn-default btn-action pl-md" id="btnSaveTrigger" type="button">확인</button>
+					        </div>
+							
+						</div>
+						
+				 <!-- </div> -->
+              </section>    
+          </div>                
+
+
+</section>
+ 
+ 
+ 
+ 
+ <!-- 
+<section class="content-header">
+	<h1>임계치 설정</h1>
+</section>
+<br/><br/>
+<div id="conf_hostid" style="display:none"></div>
+<section class="content">
+
+	<div class="col-100">
+		<div class="col-c50">
+			<div class="col-c20-block" style="background-color: #626992; padding-top: 5px;">
+				<h3 style="float:left; width:100%; position:relative; top:1px;"><input type="checkbox" class="triggerAlertCheck" value="cpu" name="cpuAlert" checked>CPU</h3><br/>
+				<b class='warnTriggerInfo' style='display:none'></b>
+				<b class='highTriggerInfo' style='display:none'></b>
+				<b class='hostName' style='display:none'></b>
+				<b class='itemKey' style='display:none'></b>
+				<b class='warnValue' style='display:none'></b>
+				<b class='highValue' style='display:none'></b>
+				<b class='warnTriggerId' style='display:none'></b>
+				<b class='highTriggerId' style='display:none'></b>
+				<div id="slider" style="float:left; width:90%; height:50%"></div>
+				<div id="input_slider" style="float:left; width:10%; display:inline-block;">
+						<p style="border-left-style:solid;border-left-width:5px;border-left-color:red;"> 위 험 <input type='text' size='3' style='text-align:right;'>%</p>
+						<p style="border-left-style:solid;border-left-width:5px;border-left-color:yellow;"> 경 고 <input type='text' size='3' style='text-align:right;'>%</p>
+				</div>
+				
+			</div>
+			<br/>
+			<div class="col-c20-block" style="background-color: #626992; padding-top: 5px;">
+				<b class='warnTriggerInfo' style='display:none'></b>
+				<b class='highTriggerInfo' style='display:none'></b>
+				<b class='hostName' style='display:none'></b>
+				<b class='itemKey' style='display:none'></b>
+				<b class='warnValue' style='display:none'></b>
+				<b class='highValue' style='display:none'></b>
+				<b class='warnTriggerId' style='display:none'></b>
+				<b class='highTriggerId' style='display:none'></b>
+				
+				<h3 style="float:left; width:100%; position:relative; top:1px;"><input type="checkbox" class="alertCheck" value="memory" name="memAlert" checked>Memory</h3><br/><br/><br/>
+				<div id="slider22" style="float:left; width:90%; height:50%"></div>
+				<div id="input_slider22" style="float:left; width:10%; display:inline-block;">
+						<p style="border-left-style:solid;border-left-width:5px;border-left-color:red;"> 위 험 <input type='text' size='3' style='text-align:right;'>% </p>
+						<p style="border-left-style:solid;border-left-width:5px;border-left-color:yellow;"> 경 고 <input type='text' size='3' name='warningThreshold' style='text-align:right;'>% </p>
+				</div>
+			</div>
+			<br/>
+			
+			<br/>
+			
+		</div>
+		<div class="col-sm-12 text-center">
+            <button class="btn btn-default btn-action mr-sm" id="btnCancelTrigger" type="button">취소</button>
+            <button class="btn btn-default btn-action pl-md" id="btnSaveTrigger" type="button">확인</button>
+        </div>
+	</div>
+
+</section>
+
+ -->
+	
