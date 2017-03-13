@@ -563,6 +563,11 @@ var zbxApi = {
     /* 대시보드 이벤트 현황 - 금일발생 */
     todayEvent: {
         get: function () {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDate();
+
             var method = "trigger.get";
             var params = {
                 "output": "",
@@ -570,8 +575,14 @@ var zbxApi = {
                 "skipDependent": true,
                 "withUnacknowledgedEvents": true,
                 "countOutput": true,
-                "limit": "10000"
+                "limit": "10000",
+                "selectLastEvent": "true",
+                "filter": {
+                    "clock": date
+                }
             };
+
+            console.log(year + " 년" + month + " 월" + day + " 일" );
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {

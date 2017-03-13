@@ -36,7 +36,6 @@ function dashboardHostEvent(hostEvent){
     var hostName = '';
     var hostEventCnt = 0;
 
-    var tableDataObj = {};
     var tableDataArr = [];
 
     var dashboardHostEventHTML = '';
@@ -67,7 +66,7 @@ function dashboardHostEvent(hostEvent){
 }
 
 function dashboardEventList() {
-    var dashboard_Event = callApiForDashboardEvent();
+    var dashboard_Event = zbxSyncApi.dashboardTrigger();
     //console.log(dashboard_Event);
     //console.log(JSON.stringify(dashboard_Event));
 
@@ -104,6 +103,16 @@ function dashboardEventList() {
 }
 
 function dashboardDayEvent(){
+    var level_Event = 0;
+    var high_Event = 0;
+    var average_Event = 0;
+    var warring_Event = 0;
+
+    level_Event = zbxSyncApi.levelEventTrigger();
+    high_Event = zbxSyncApi.highEventTrigger();
+    average_Event = zbxSyncApi.averageEventTrigger();
+    warring_Event = zbxSyncApi.warringEventTrigger();
+
     $(function() {
         Highcharts.chart('chart_dayEvent', {
             chart: {
@@ -116,7 +125,7 @@ function dashboardDayEvent(){
                 spacingRight: 0
             },
             title: {
-                text: '',
+                text: ''
             },
             subtitle: {
                 text: ''
@@ -133,7 +142,7 @@ function dashboardDayEvent(){
                     '목요일',
                     '금요일',
                     '토요일',
-                    '일요일',
+                    '일요일'
                 ],
                 title: {
                     text: ''
@@ -172,19 +181,19 @@ function dashboardDayEvent(){
             },
             series: [{
                 name: 'level',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                data: level_Event,
                 color: '#FC4747'
             }, {
                 name: 'High',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                data: high_Event,
                 color: '#F2F234'
             }, {
                 name: 'average',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                data: average_Event,
                 color: '#FA60CE'
             }, {
                 name: 'warring',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                data: warring_Event,
                 color: '#F2F234'
             }],
             legend: {
@@ -203,8 +212,4 @@ function dashboardDayEvent(){
             }
         });
     });
-}
-
-function callApiForDashboardEvent() {
-    return zbxSyncApi.dashboardTrigger();
 }

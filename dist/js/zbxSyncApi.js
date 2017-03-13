@@ -213,6 +213,98 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
+    levelEventTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extends",
+                "monitored": true,
+                "skipDependent": true,
+                "countOutput": true,
+                "limit": "10000",
+                "filter": {
+                    "priority": 1
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log("levelEventTrigger : " + result.result);
+        return result.result;
+    },
+
+    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
+    highEventTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extends",
+                "monitored": true,
+                "skipDependent": true,
+                "countOutput": true,
+                "limit": "10000",
+                "filter": {
+                    "priority": 4
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log("highEventTrigger : " + result.result);
+        return result.result;
+    },
+
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    averageEventTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extends",
+                "monitored": true,
+                "skipDependent": true,
+                "countOutput": true,
+                "limit": "10000",
+                "filter": {
+                    "priority": 3
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log("averageEventTrigger : " + result.result);
+        return result.result;
+    },
+
+    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
+    warringEventTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extends",
+                "monitored": true,
+                "skipDependent": true,
+                "countOutput": true,
+                "limit": "10000",
+                "filter": {
+                    "priority": 2
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log("warringEventTrigger : " + result.result);
+        return result.result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
