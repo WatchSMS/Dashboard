@@ -6,7 +6,7 @@ var allServerViewHost = function() {
 
     var server_data = '';
     zbxApi.allServerViewHost.get().done(function(data, status, jqXHR) {
-        server_data = zbxApi.getDiskItem.success(data);
+        server_data = zbxApi.allServerViewHost.success(data);
         serverOverView(server_data);
     });
 };

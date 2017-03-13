@@ -3,6 +3,14 @@ function dashboardView(){
 
     //이벤트 현황
     dashboardEventStatus();
+
+    //호스트별 장애현황
+    var hostEvent = '';
+    zbxApi.allServerViewHost.get().done(function(data, status, jqxHR){
+        hostEvent = zbxApi.allServerViewHost.success(data);
+        dashboardHostEvent(hostEvent);
+    });
+
     //이벤트 목록
     dashboardEventList();
 }
@@ -18,6 +26,10 @@ function dashboardEventStatus(){
         console.log("dashboardView : Network Error");
         alertDiag("Network Error");
     });
+}
+
+function dashboardHostEvent(){
+
 }
 
 function dashboardEventList() {
