@@ -46,27 +46,27 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     });
 
     /*exporting: {
-        buttons: {
-            contextButton: {
-                enabled: false
-            },
-            exportButton: {
-                text: 'Download',
-                    // Use only the download related menu items from the default context button
-                    menuItems: Highcharts.getOptions().exporting.buttons.contextButton.menuItems.splice(2)
-            },
-            printButton: {
-                text: 'Print',
-                    onclick: function () {
-                    this.print();
-                }
-            }
-        }
-    }*/
+     buttons: {
+     contextButton: {
+     enabled: false
+     },
+     exportButton: {
+     text: 'Download',
+     // Use only the download related menu items from the default context button
+     menuItems: Highcharts.getOptions().exporting.buttons.contextButton.menuItems.splice(2)
+     },
+     printButton: {
+     text: 'Print',
+     onclick: function () {
+     this.print();
+     }
+     }
+     }
+     }*/
     /*$("#exporting").click(function () {
-        console.log("Click exporting Button");
-        Highcharts.getOptions().exporting.buttons.contextButton.menuItems
-    })*/
+     console.log("Click exporting Button");
+     Highcharts.getOptions().exporting.buttons.contextButton.menuItems
+     })*/
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
@@ -102,20 +102,129 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     }).then(function(data) {
         serverTraTotEth0Arr = zbxApi.getHistory.success(data);
 
-        var chartId = "trafficUse";
-        var title = '트래픽 사용량';
-        var series = [{
-            name: 'Traffic In Eth0',
-            data: serverTraInEth0Arr
-        }, {
-            name: 'Traffic Out Eth0',
-            data: serverTraOutEth0Arr
-        }, {
-            name: 'Traffic Total Eth0',
-            data: serverTraTotEth0Arr
-        }];
-        var enable = false;
-        chartCall(chartId, title, series, Label.bps, enable);
+        $(function() {
+            Highcharts.chart('trafficUse', {
+                chart: {
+                    backgroundColor: '#424973',
+                    zoomType: 'x',
+                    height: 200,
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
+                },
+                title: {
+                    text: '',
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            var d2 = new Date(this.value);
+                            var hours = "" + d2.getHours();
+                            var minutes = "" + d2.getMinutes();
+                            var seconds = "" + d2.getSeconds();
+                            if (hours.length == 1) {
+                                hours = "0" + hours;
+                            }
+                            if (minutes.length == 1) {
+                                minutes = "0" + minutes;
+                            }
+                            if (seconds.length == 1) {
+                                seconds = "0" + seconds;
+                            }
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    labels: {
+                        style:{
+                            color: '#E0E0E3'
+                        },
+                        formatter: function() {
+                            return Math.floor(this.value / 1000) +'Kbps';
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    },
+                    shared: true,
+                    formatter: function () {
+                        var d2 = new Date(this.x);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if (hours.length == 1) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes.length == 1) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds.length == 1) {
+                            seconds = "0" + seconds;
+                        }
+
+                        var s = [];
+                        $.each(this.points, function (i, point) {
+                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
+                        });
+                        return s;
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        marker: {
+                            enabled: false //false
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Traffic In Eth0',
+                    data: serverTraInEth0Arr,
+                    color: '#FC4747'
+                }, {
+                    name: 'Traffic Out Eth0',
+                    data: serverTraOutEth0Arr,
+                    color: '#F2F234'
+                }, {
+                    name: 'Traffic Total Eth0',
+                    data: serverTraTotEth0Arr,
+                    color: '#FA60CE'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill:'#626992'
+                            }
+                        }
+                    }
+                }
+            });
+        });
     })
 }
 
