@@ -29,9 +29,9 @@ function dashboardEventStatus(){
 }
 
 function dashboardHostEvent(hostEvent){
-    var hostNum = '';
+    var hostNum = 0;
     var hostName = '';
-    var hostEventCnt = '';
+    var hostEventCnt = 0;
 
     var tableDataObj = {};
     var tableDataArr = [];
@@ -41,7 +41,7 @@ function dashboardHostEvent(hostEvent){
     dashboardHostEventHTML += "<tbody>";
 
     $.each(hostEvent.result, function(k, v){
-        hostNum = 2;
+        hostNum += 1;
         hostName = v.name;
         hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid);
 
