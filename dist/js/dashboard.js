@@ -13,6 +13,9 @@ function dashboardView(){
 
     //이벤트 목록
     dashboardEventList();
+
+    //요일별이벤트발생빈도
+    dashboardDayEvent();
 }
 
 function dashboardEventStatus(){
@@ -98,6 +101,108 @@ function dashboardEventList() {
     eventTable += "</tbody>";
     $("#dashboardEventList").empty();
     $("#dashboardEventList").append(eventTable);
+}
+
+function dashboardDayEvent(){
+    $(function() {
+        Highcharts.chart('chart_dayEvent', {
+            chart: {
+                type: 'column',
+                height: 300,
+                backgroundColor: '#424973',
+                spacingTop: 10,
+                spacingBottom: 0,
+                spacingLeft: 0,
+                spacingRight: 0
+            },
+            title: {
+                text: '',
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                gridLineColor: '#FBFBFB',
+                lineColor: '#FBFBFB',
+                minorGridLineColor: '#505053',
+                tickColor: '#FBFBFB',
+                categories: [
+                    '월요일',
+                    '화요일',
+                    '수요일',
+                    '목요일',
+                    '금요일',
+                    '토요일',
+                    '일요일',
+                ],
+                title: {
+                    text: ''
+                },
+                style: {
+                    color: '#FBFBFB'
+                }
+            },
+            yAxis: {
+                gridLineColor: '#FBFBFB',
+                lineColor: '#FBFBFB',
+                minorGridLineColor: '#505053',
+                tickColor: '#FBFBFB',
+                min: 0,
+                title: {
+                    text: ''
+                },
+                style: {
+                    color: '#FBFBFB'
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                style: {
+                    color: '#FBFBFB'
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                },
+                style: {
+                    color: '#FBFBFB'
+                }
+            },
+            series: [{
+                name: 'level',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                color: '#FC4747'
+            }, {
+                name: 'High',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                color: '#F2F234'
+            }, {
+                name: 'average',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                color: '#FA60CE'
+            }, {
+                name: 'warring',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6],
+                color: '#F2F234'
+            }],
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            }
+        });
+    });
 }
 
 function callApiForDashboardEvent() {

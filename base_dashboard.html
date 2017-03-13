@@ -151,23 +151,27 @@
 			<div class="s1">
 				<li class="p1">
 					<span class="o1"></span>
-					<span class="e1">level</span>
+					<span class="e1">
+						<a onclick="chartLegendItemClick(1,'chart_dayEvent', this);" href="#none">level</a></span>
 				</li>
 				<li class="p1">
 					<span class="o2"></span>
-					<span class="e1">high</span>
+					<span class="e1">
+						<a onclick="chartLegendItemClick(2,'chart_dayEvent', this);" href="#none">high</a></span>
 				</li>
 				<li class="p1">
 					<span class="o3"></span>
-					<span class="e1">average</span>
+					<span class="e1">
+						<a onclick="chartLegendItemClick(3,'chart_dayEvent', this);" href="#none">average</a></span>
 				</li>
 				<li class="p2">
 					<span class="o4"></span>
-					<span class="e1">warning</span>
+					<span class="e1">
+						<a onclick="chartLegendItemClick(4,'chart_dayEvent', this);" href="#none">warning</a></span>
 				</li>
 			</div>
 
-			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;">
+			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;" id="chart_dayEvent">
 				<!-- 그래프 영역 요일별 이벤트 발생 빈도 -->
 				<!--<img src="dist/img/event_week_sample.gif" style="width:100%; height:304px">&lt;!&ndash; 임시 이미지 &ndash;&gt;-->
 				<!--// 그래프 영역 요일별 이벤트 발생 빈도 -->
