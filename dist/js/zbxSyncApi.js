@@ -193,6 +193,26 @@ var zbxSyncApi = {
         return result.result[0];
     },
 
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    alerthostTrigger: function (hostid) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "",
+                "monitored": true,
+                "skipDependent": true,
+                "countOutput": true,
+                "limit": "10000",
+                "hostids": hostid
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        return result.result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({

@@ -28,8 +28,39 @@ function dashboardEventStatus(){
     });
 }
 
-function dashboardHostEvent(){
+function dashboardHostEvent(hostEvent){
+    var hostNum = '';
+    var hostName = '';
+    var hostEventCnt = '';
 
+    var tableDataObj = {};
+    var tableDataArr = [];
+
+    var dashboardHostEventHTML = '';
+
+    dashboardHostEventHTML += "<tbody>";
+
+    $.each(hostEvent.result, function(k, v){
+        hostNum = 2;
+        hostName = v.name;
+        hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid);
+
+        var tableDataObj = {};
+        tableDataObj.hostNum = hostNum;
+        tableDataObj.hostName = hostName;
+        tableDataObj.hostEventCnt = hostEventCnt;
+        tableDataArr.push(tableDataObj);
+
+        dashboardHostEventHTML += "<tr class='p1'>";
+        dashboardHostEventHTML += "<td width='48px' class='line-td'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='165px' class='line-td align_left'>" + hostName + "</td>";
+        dashboardHostEventHTML += "<td width='73px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='auto'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "</tr>";
+    });
+    dashboardHostEventHTML += "</tbody>";
+    $("#hostEventList").empty();
+    $("#hostEventList").append(dashboardHostEventHTML);
 }
 
 function dashboardEventList() {

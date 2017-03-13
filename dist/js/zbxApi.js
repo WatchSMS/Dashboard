@@ -579,6 +579,7 @@ var zbxApi = {
         }
     },
 
+
     event: {
         get: function () {
             var beforeMinites = db.get("beforeDay") * 60 * 60 * 24;
