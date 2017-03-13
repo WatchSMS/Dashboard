@@ -486,6 +486,18 @@ var int = {
         	}
         });
 
+        // 2017.03.13 - CUSTOM Chart Event
+        $(".btn_reloadChart").off().on('click',function(){
+            var chartId = $(this).val();
+            console.log("다시 불러오기 : " + chartId);
+
+            for(var i=0; i<Highcharts.charts.length; ++i){
+                if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
+                    Highcharts.charts[i].reloadId();
+                }
+            }
+        });
+
     },
 
     createGraphMenu: function() {
