@@ -1,6 +1,6 @@
 var zbxApi = {
-		
-	getTrigger: {
+
+    getTrigger: {
         get: function (hostId, triggerId, itemName) {
             var method = "trigger.get";
             var params = {
@@ -9,7 +9,7 @@ var zbxApi = {
                 "selectItems": "extend",
                 "selectHosts": "extend",
                 "search": {
-                	"description": itemName
+                    "description": itemName
                 }
             };
             return server.sendAjaxRequest(method, params);
@@ -20,7 +20,7 @@ var zbxApi = {
             return data;
         }
     },
-	    
+
     updateTrigger: {
         update: function (triggerId,expression) {
             var method = "trigger.update";
@@ -36,12 +36,12 @@ var zbxApi = {
             return data;
         }
     },
-	    
+
     enableTrigger: {
         enable: function (triggerId, status) {
             var method = "trigger.update";
             var params = {
-            	"triggerid": triggerId,
+                "triggerid": triggerId,
                 "status": status
             };
             return server.sendAjaxRequest(method, params);
@@ -91,23 +91,23 @@ var zbxApi = {
                 }).then(function() {
                     return zbxApi.getHistory.get(data_CpuSystem.result[0].itemid, startTime, "0");
                 }).then(function(data) {
-                  CpuSystemArr = zbxApi.getHistory.success(data);
+                    CpuSystemArr = zbxApi.getHistory.success(data);
                 }).then(function() {
                     return zbxApi.getHistory.get(data_CpuUser.result[0].itemid, startTime, "0");
                 }).then(function(data) {
 
-                  CpuUserArr= zbxApi.getHistory.success(data);
+                    CpuUserArr= zbxApi.getHistory.success(data);
 
                 }).then(function() {
                     return zbxApi.getHistory.get(data_CpuIOwait.result[0].itemid, startTime, "0");
                 }).then(function(data) {
 
-                  CpuIOwaitArr = zbxApi.getHistory.success(data);
+                    CpuIOwaitArr = zbxApi.getHistory.success(data);
                 }).then(function() {
                     return zbxApi.getHistory.get(data_CpuSteal.result[0].itemid, startTime, "0");
                 }).then(function(data) {
 
-                  CpuStealArr  = zbxApi.getHistory.success(data);
+                    CpuStealArr  = zbxApi.getHistory.success(data);
 
                     dataSet.push(new DataObject('CPU System', CpuSystemArr));
                     dataSet.push(new DataObject('CPU User', CpuUserArr));
@@ -530,9 +530,10 @@ var zbxApi = {
             var params = {
                 "output": "",
                 "monitored": true,
-                "skipDependent": true,
                 "countOutput": true,
-                "limit": "10000"
+                "filter": {
+                    "value": 1
+                }
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -541,22 +542,18 @@ var zbxApi = {
         }
     },
 
-    /* 대시보드 이벤트 현황 - 처리전 */
     unAckknowledgeEvent: {
-        get: function () {
-            var method = "trigger.get";
+        get: function() {
+            var method = "event.get";
             var params = {
-                "output": "",
-                "monitored": true,
-                "skipDependent": true,
-                "withUnacknowledgedEvents": true,
-                "countOutput": true,
-                "limit": "10000"
+                "output": "eventid",
+                "acknowledged": 1
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            $("#unAcknowledgedEvents").text(data.result);
+            console.log("unAckknowledgeEvent : " + JSON.stringify(data));
+            //$("#unAcknowledgedEvents").text(data.result);
         }
     },
 
