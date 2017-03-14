@@ -91,10 +91,10 @@ function dashboardEventList() {
         eventTable += "<tr>";
         eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
         eventTable += "<td width='70' class='line'>" + status + "</td>";
-        eventTable += "<td width='120' class='line'>" + lastchange + "</td>";
-        eventTable += "<td width='120' class='line'>" + age + "</td>";
+        eventTable += "<td width='70' class='line'>" + lastchange + "</td>";
+        eventTable += "<td width='60' class='line'>" + age + "</td>";
         eventTable += "<td width='69' class='line'>" + ack + "</td>";
-        eventTable += "<td width='120' class='line'>" + ackTime + "</td>";
+        eventTable += "<td width='70' class='line'>" + ackTime + "</td>";
         eventTable += "<td width='100' class='line'>" + host + "</td>";
         eventTable += "<td width='auto' class='align_left ponter'>" +
             "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
