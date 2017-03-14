@@ -19,11 +19,16 @@ function dashboardView(){
 }
 
 function dashboardEventStatus(){
+    var DAYTOMILLS = 1000*60*60*24;
+
+    var today_select = new Date();
+    today_select = today_select-(today_select % DAYTOMILLS);
+
     $.when(zbxApi.alertTrigger.get(), zbxApi.unAckknowledgeEvent.get(), zbxApi.todayEvent.get()).done(function(data_a, data_b, data_c) {
         zbxApi.alertTrigger.success(data_a[0]);
         zbxApi.unAckknowledgeEvent.success(data_b[0]);
         zbxApi.todayEvent.success(data_c[0]);
-        $("#lastUpdateDashboard").text(convTime());
+        console.log("today_select : " + today_select);
 
     }).fail(function() {
         console.log("dashboardView : Network Error");

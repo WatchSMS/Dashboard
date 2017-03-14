@@ -528,7 +528,7 @@ var zbxApi = {
         get: function () {
             var method = "trigger.get";
             var params = {
-                "output": "",
+                "output": "extend",
                 "monitored": true,
                 "countOutput": true,
                 "filter": {
@@ -538,40 +538,46 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            console.log("infobox_alertTrigger : " + JSON.stringify(data));
             $("#infobox_alertTrigger").text(data.result);
         }
     },
 
     unAckknowledgeEvent: {
-        get: function() {
-            var method = "event.get";
+        get: function(eventId) {
+            var method = "trigger.get";
             var params = {
-                "output": "eventid",
-                "acknowledged": 1
+                "output": "extend",
+                "monitored": true,
+                "countOutput": true,
+                "withLastEventUnacknowledged": true,
+                "filter": {
+                    "value": 1
+                }
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
             console.log("unAckknowledgeEvent : " + JSON.stringify(data));
-            //$("#unAcknowledgedEvents").text(data.result);
+            $("#unAcknowledgedEvents").text(data.result);
         }
     },
 
     /* 대시보드 이벤트 현황 - 금일발생 */
     todayEvent: {
-        get: function () {
-            var method = "trigger.get";
+        get: function (today_select) {
+            var method = "event.get";
             var params = {
-                "output": "",
+                "output": "extend",
+                "select_acknowledges": "extend",
                 "monitored": true,
-                "skipDependent": true,
-                "withUnacknowledgedEvents": true,
                 "countOutput": true,
-                "limit": "10000"
+                "time_from": today_select
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            console.log("todayEvent : " + JSON.stringify(data));
             $("#todayEvents").text(data.result);
         }
     },
