@@ -319,7 +319,7 @@ var zbxSyncApi = {
             error: function (request, textStatus, errorThrown) {
                 alert("request : " + JSON.stringify(errorThrown));
                 alert("error : " + textStatus);
-            },
+            }
         });
         //console.log("callAjax :" + JSON.stringify(result));
         return result;
