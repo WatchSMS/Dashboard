@@ -133,8 +133,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log("dashboardTrigger");
-        console.log(result);
+        console.log("dashboardTrigger : " + result.result);
         return result.result;
     },
 
