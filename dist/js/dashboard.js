@@ -40,6 +40,7 @@ function dashboardHostEvent(hostEvent){
     var hostName = '';
     var hostEventCnt = 0;
 
+    var tableDataArr = {};
 
     var dashboardHostEventHTML = '';
 
