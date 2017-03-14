@@ -570,10 +570,7 @@ var zbxApi = {
                 "skipDependent": true,
                 "withUnacknowledgedEvents": true,
                 "countOutput": true,
-                "limit": "10000",
-                "filter": {
-
-                }
+                "limit": "10000"
             };
             return server.sendAjaxRequest(method, params);
         },
