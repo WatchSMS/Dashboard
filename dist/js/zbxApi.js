@@ -577,7 +577,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("todayEvent : " + JSON.stringify(data));
+            //console.log("todayEvent : " + JSON.stringify(data));
             $("#todayEvents").text(data.result);
         }
     },

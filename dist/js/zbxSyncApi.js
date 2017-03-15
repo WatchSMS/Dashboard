@@ -133,7 +133,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log("dashboardTrigger : " + JSON.stringify(result.result));
+        //console.log("dashboardTrigger : " + JSON.stringify(result.result));
         return result.result;
     },
 
@@ -150,7 +150,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log("dashboardEvent : " + JSON.stringify(result));
+        //console.log("dashboardEvent : " + JSON.stringify(result));
         return result.result[0].clock;
     },
 
@@ -230,94 +230,21 @@ var zbxSyncApi = {
     },
 
     /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
-    levelEventTrigger: function () {
+    dashboardDayEvent: function (today_select) {
         var param = {
             "jsonrpc": "2.0",
-            "method": "trigger.get",
+            "method": "event.get",
             "params": {
-                "output": "extends",
-                "monitored": true,
-                "skipDependent": true,
-                "countOutput": true,
-                "limit": "10000",
-                "filter": {
-                    "priority": 1
-                }
+                "output": "extend",
+                "source": 0,
+                "selectRelatedObject": "extend",
+                "time_from": today_select
             },
             "id": 1,
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log("levelEventTrigger : " + result.result);
-        return result.result;
-    },
-
-    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
-    highEventTrigger: function () {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "trigger.get",
-            "params": {
-                "output": "extends",
-                "monitored": true,
-                "skipDependent": true,
-                "countOutput": true,
-                "limit": "10000",
-                "filter": {
-                    "priority": 4
-                }
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        console.log("highEventTrigger : " + result.result);
-        return result.result;
-    },
-
-    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
-    averageEventTrigger: function () {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "trigger.get",
-            "params": {
-                "output": "extends",
-                "monitored": true,
-                "skipDependent": true,
-                "countOutput": true,
-                "limit": "10000",
-                "filter": {
-                    "priority": 3
-                }
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        console.log("averageEventTrigger : " + result.result);
-        return result.result;
-    },
-
-    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
-    warringEventTrigger: function () {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "trigger.get",
-            "params": {
-                "output": "extends",
-                "monitored": true,
-                "skipDependent": true,
-                "countOutput": true,
-                "limit": "10000",
-                "filter": {
-                    "priority": 2
-                }
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        console.log("warringEventTrigger : " + result.result);
+            console.log("levelEvent : " + new Date().getSeconds()+ JSON.stringify(result));
         return result.result;
     },
 

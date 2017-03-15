@@ -86,7 +86,7 @@ function dashboardEventList() {
         var ack = convAck(v.lastEvent.acknowledged);
         var eventId = v.lastEvent.eventid;
         var ackTime = zbxSyncApi.dashboardEvent(eventId);
-            console.log("ackTime : " + ackTime);
+            //console.log("ackTime : " + ackTime);
         ackTime = convTime(ackTime);
         var host = v.hosts[0].host;
         var description = v.description;
@@ -109,18 +109,48 @@ function dashboardEventList() {
     $("#dashboardEventList").append(eventTable);
 }
 
-function dashboardDayEvent(){
-    var level_Event = 0;
-    var high_Event = 0;
-    var average_Event = 0;
-    var warring_Event = 0;
+function dashboardDayEvent(){ //selectRelatedObject
+    //요일 구하기
+    var WEEKTOMILLS = 1000*60*60*24*7;
+    var today_select = new Date();
+    today_select = Math.round((today_select-WEEKTOMILLS)/1000);
 
-    level_Event = zbxSyncApi.levelEventTrigger();
-    high_Event = zbxSyncApi.highEventTrigger();
-    average_Event = zbxSyncApi.averageEventTrigger();
-    warring_Event = zbxSyncApi.warringEventTrigger();
+    var event_data = zbxSyncApi.dashboardDayEvent(today_select);
+    var event_clock = '';
+    var event_priority = 0;
 
-    $(function() {
+    var today = new Date();
+    var day = today.getDay();
+
+    $.each(event_data, function(k, v){
+        event_clock = v.clock;
+        event_priority = v.relatedObject.priority;
+        //console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+
+        if(v.relatedObject.priority == 1){ //information
+            console.log(" information ");
+            console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+            console.log(" information today_select : " + today_select);
+        } else if(v.relatedObject.priority == 2){ //warning
+            console.log(" warning ");
+            console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+            console.log(" warning today_select : " + today_select);
+        } else if(v.relatedObject.priority == 3){ //average
+            console.log(" average ");
+            console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+            console.log(" average today_select : " + today_select);
+        } else if(v.relatedObject.priority == 4){ //high
+            console.log(" high ");
+            console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+            console.log(" high today_select : " + today_select);
+        } else {
+            console.log(" else ");
+            console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+            console.log(" else today_select : " + today_select);
+        }
+    });
+
+    /*$(function() {
         Highcharts.chart('chart_dayEvent', {
             chart: {
                 type: 'column',
@@ -218,5 +248,5 @@ function dashboardDayEvent(){
                 }
             }
         });
-    });
+    });*/
 }
