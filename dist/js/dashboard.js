@@ -130,19 +130,19 @@ function dashboardDayEvent(){ //selectRelatedObject
 
         if(event_priority == 1){ //information
             console.log(" information  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" information today_select : " + today_select);
+            console.log(" information  today_select : " + today_select);
         } else if(event_priority == 2){ //warning
-            console.log(" warning  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" warning today_select : " + today_select);
+            console.log(" warning      EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+            console.log(" warning      today_select : " + today_select);
         } else if(event_priority == 3){ //average
-            console.log(" average  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" average today_select : " + today_select);
+            console.log(" average      EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+            console.log(" average      today_select : " + today_select);
         } else if(event_priority == 4){ //high
-            console.log(" high  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" high today_select : " + today_select);
+            console.log(" high         EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+            console.log(" high         today_select : " + today_select);
         } else {
-            console.log(" else  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" else today_select : " + today_select);
+            console.log(" else         EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+            console.log(" else         today_select : " + today_select);
         }
     });
 

@@ -246,7 +246,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-            console.log("levelEvent : " + new Date().getSeconds()+ JSON.stringify(result));
+            //console.log("levelEvent : " + new Date().getSeconds()+ JSON.stringify(result));
         return result.result;
     },
 
