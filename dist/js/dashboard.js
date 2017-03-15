@@ -127,19 +127,19 @@ function dashboardDayEvent(){ //selectRelatedObject
         event_priority = v.relatedObject.priority;
         //console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
 
-        if(v.relatedObject.priority == 1){ //information
+        if(event_priority == 1){ //information
             console.log(" information ");
             console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
             console.log(" information today_select : " + today_select);
-        } else if(v.relatedObject.priority == 2){ //warning
+        } else if(event_priority == 2){ //warning
             console.log(" warning ");
             console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
             console.log(" warning today_select : " + today_select);
-        } else if(v.relatedObject.priority == 3){ //average
+        } else if(event_priority == 3){ //average
             console.log(" average ");
             console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
             console.log(" average today_select : " + today_select);
-        } else if(v.relatedObject.priority == 4){ //high
+        } else if(event_priority == 4){ //high
             console.log(" high ");
             console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
             console.log(" high today_select : " + today_select);
