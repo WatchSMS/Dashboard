@@ -86,7 +86,7 @@ function dashboardEventList() {
         var ack = convAck(v.lastEvent.acknowledged);
         var eventId = v.lastEvent.eventid;
         var ackTime = zbxSyncApi.dashboardEvent(eventId);
-            //console.log("ackTime : " + ackTime);
+        //console.log("ackTime : " + ackTime);
         ackTime = convTime(ackTime);
         var host = v.hosts[0].host;
         var description = v.description;
@@ -111,9 +111,16 @@ function dashboardEventList() {
 
 function dashboardDayEvent(){ //selectRelatedObject
     //요일 구하기
-    var WEEKTOMILLS = 1000*60*60*24*7;
-    var today_select = new Date();
-        today_select = Math.round((today_select-WEEKTOMILLS)/1000);
+    //var WEEKTOMILLS = 1000*60*60*24*7;
+    //var today_select = new Date();
+    //today_select = Math.round((today_select-WEEKTOMILLS)/1000);
+
+    var DAYTOMILLS = 60*60*24;
+    var date = new Date();
+        date = date.setDate(date.getDate() - 7);
+    var today_select = date - (date % DAYTOMILLS);
+        today_select = Math.round(today_select / 1000);
+    console.log(" 일주일 전 시간 : " + today_select);
 
     var event_data = zbxSyncApi.dashboardDayEvent(today_select);
     var event_id = '';
@@ -147,102 +154,102 @@ function dashboardDayEvent(){ //selectRelatedObject
     });
 
     /*$(function() {
-        Highcharts.chart('chart_dayEvent', {
-            chart: {
-                type: 'column',
-                height: 300,
-                backgroundColor: '#424973',
-                spacingTop: 10,
-                spacingBottom: 0,
-                spacingLeft: 0,
-                spacingRight: 0
-            },
-            title: {
-                text: ''
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                gridLineColor: '#FBFBFB',
-                lineColor: '#FBFBFB',
-                minorGridLineColor: '#505053',
-                tickColor: '#FBFBFB',
-                categories: [
-                    '월요일',
-                    '화요일',
-                    '수요일',
-                    '목요일',
-                    '금요일',
-                    '토요일',
-                    '일요일'
-                ],
-                title: {
-                    text: ''
-                },
-                style: {
-                    color: '#FBFBFB'
-                }
-            },
-            yAxis: {
-                gridLineColor: '#FBFBFB',
-                lineColor: '#FBFBFB',
-                minorGridLineColor: '#505053',
-                tickColor: '#FBFBFB',
-                min: 0,
-                title: {
-                    text: ''
-                },
-                style: {
-                    color: '#FBFBFB'
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                style: {
-                    color: '#FBFBFB'
-                }
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                },
-                style: {
-                    color: '#FBFBFB'
-                }
-            },
-            series: [{
-                name: 'level',
-                data: level_Event,
-                color: '#FC4747'
-            }, {
-                name: 'High',
-                data: high_Event,
-                color: '#F2F234'
-            }, {
-                name: 'average',
-                data: average_Event,
-                color: '#FA60CE'
-            }, {
-                name: 'warring',
-                data: warring_Event,
-                color: '#F2F234'
-            }],
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                buttons: {
-                    contextButton: {
-                        enabled: false,
-                        symbolStroke: 'transparent',
-                        theme: {
-                            fill:'#626992'
-                        }
-                    }
-                }
-            }
-        });
-    });*/
+     Highcharts.chart('chart_dayEvent', {
+     chart: {
+     type: 'column',
+     height: 300,
+     backgroundColor: '#424973',
+     spacingTop: 10,
+     spacingBottom: 0,
+     spacingLeft: 0,
+     spacingRight: 0
+     },
+     title: {
+     text: ''
+     },
+     subtitle: {
+     text: ''
+     },
+     xAxis: {
+     gridLineColor: '#FBFBFB',
+     lineColor: '#FBFBFB',
+     minorGridLineColor: '#505053',
+     tickColor: '#FBFBFB',
+     categories: [
+     '월요일',
+     '화요일',
+     '수요일',
+     '목요일',
+     '금요일',
+     '토요일',
+     '일요일'
+     ],
+     title: {
+     text: ''
+     },
+     style: {
+     color: '#FBFBFB'
+     }
+     },
+     yAxis: {
+     gridLineColor: '#FBFBFB',
+     lineColor: '#FBFBFB',
+     minorGridLineColor: '#505053',
+     tickColor: '#FBFBFB',
+     min: 0,
+     title: {
+     text: ''
+     },
+     style: {
+     color: '#FBFBFB'
+     }
+     },
+     tooltip: {
+     backgroundColor: 'rgba(0, 0, 0, 0.85)',
+     style: {
+     color: '#FBFBFB'
+     }
+     },
+     plotOptions: {
+     column: {
+     pointPadding: 0.2,
+     borderWidth: 0
+     },
+     style: {
+     color: '#FBFBFB'
+     }
+     },
+     series: [{
+     name: 'level',
+     data: level_Event,
+     color: '#FC4747'
+     }, {
+     name: 'High',
+     data: high_Event,
+     color: '#F2F234'
+     }, {
+     name: 'average',
+     data: average_Event,
+     color: '#FA60CE'
+     }, {
+     name: 'warring',
+     data: warring_Event,
+     color: '#F2F234'
+     }],
+     legend: {
+     enabled: false
+     },
+     exporting: {
+     buttons: {
+     contextButton: {
+     enabled: false,
+     symbolStroke: 'transparent',
+     theme: {
+     fill:'#626992'
+     }
+     }
+     }
+     }
+     });
+     });*/
 }
