@@ -238,7 +238,9 @@ var zbxSyncApi = {
                 "output": "extend",
                 "source": 0,
                 "selectRelatedObject": "extend",
-                "time_from": today_select
+                "time_from": today_select,
+                "sortfield": "clock",
+                "sortorder": "ASC"
             },
             "id": 1,
             "auth": authid
