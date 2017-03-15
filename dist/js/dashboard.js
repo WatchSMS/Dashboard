@@ -113,16 +113,13 @@ function dashboardDayEvent(){ //selectRelatedObject
     //요일 구하기
     var WEEKTOMILLS = 1000*60*60*24*7;
     var today_select = new Date();
-    today_select = Math.round((today_select-WEEKTOMILLS)/1000);
+        today_select = Math.round((today_select-WEEKTOMILLS)/1000);
 
     var event_data = zbxSyncApi.dashboardDayEvent(today_select);
     var event_id = '';
     var event_clock = '';
     var event_triggerId = '';
     var event_priority = 0;
-
-    var today = new Date();
-    var day = today.getDay();
 
     $.each(event_data, function(k, v){
         event_id = v.eventid;
