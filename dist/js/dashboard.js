@@ -19,10 +19,9 @@ function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
     var today_select = new Date();
-    today_select = today_select-(today_select % DAYTOMILLS);
-    today_select = Math.round(today_select / 1000);
+        today_select = today_select-(today_select % DAYTOMILLS);
+        today_select = Math.round(today_select / 1000);
 
-    //$.when(zbxSyncApi.alertTrigger(), zbxSyncApi.unAckknowledgeEvent(), zbxSyncApi.todayEvent(today_select)).done(function(data_a, data_b, data_c) {
     zbxSyncApi.alertTrigger();
     zbxSyncApi.unAckknowledgeEvent();
     zbxSyncApi.todayEvent(today_select);
@@ -104,19 +103,21 @@ function dashboardEventList() {
 }
 
 function dashboardDayEvent(){ //selectRelatedObject
-    //요일 구하기
-    //var WEEKTOMILLS = 1000*60*60*24*7;
-    //var today_select = new Date();
-    //today_select = Math.round((today_select-WEEKTOMILLS)/1000);
-
+    //DAY-7
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
-    date = date.setDate(date.getDate() - 7);
-    var today_select = date - (date % DAYTOMILLS);
-    today_select = Math.round(today_select / 1000);
-    console.log(" 일주일 전 시간 : " + today_select);
+    var date2 = date.setDate(date.getDate(new Date(day_select)) - 7);
+    var day_select = date2 - (date2 % DAYTOMILLS);
+        console.log(" today_select - 7 : " + new Date(day_select));
+        console.log(" today_select - 7 : " + day_select);
+        day_select = day_select / 1000;
 
-    var event_data = zbxSyncApi.dashboardDayEvent(today_select);
+    var curTime = new Date();
+        curTime = curTime-(curTime % DAYTOMILLS);
+        console.log("13 curTime : " + new Date(curTime));
+        console.log("13 curTime : " + curTime);
+
+    var event_data = zbxSyncApi.dashboardDayEvent(day_select);
     var event_id = '';
     var event_clock = '';
     var event_triggerId = '';
@@ -124,10 +125,16 @@ function dashboardDayEvent(){ //selectRelatedObject
 
     $.each(event_data, function(k, v){
         event_id = v.eventid;
-        event_clock = v.clock;
+        event_clock = v.clock * 1000;
         event_triggerId = v.relatedObject.triggerid;
         event_priority = v.relatedObject.priority;
-        console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+        console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+
+        for(var i=0; i<7; i++){
+            if(event_clock > (i+1)*(curTime-(i*DAYTOMILLS)) && event_clock < (i+1)*(curTime-((i+1)*DAYTOMILLS))){ //DAY-1
+                console.log(" curTime EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+            }
+        }
     });
 
     /*$(function() {
