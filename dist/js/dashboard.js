@@ -105,20 +105,20 @@ function dashboardEventList() {
 function dashboardDayEvent(){ //selectRelatedObject
     //DAY-7
     var DAYTOMILLS = 1000*60*60*24;
-    var date = new Date();
-    var date2 = '';
-    var day_select = date2 - (date2 % DAYTOMILLS);
-        date2 = date.setDate(date.getDate(new Date(day_select)) - 7);
-        console.log(" today_select - 7 : " + new Date(day_select));
-        console.log(" today_select - 7 : " + day_select);
-        day_select = day_select / 1000;
+    var date2 = new Date();
+    var date = date2.setDate(date2.getDate(new Date(day_select)) - 7);
+    var day_select = date - (date % DAYTOMILLS);
+    var today_select = date - (date % DAYTOMILLS);
+        console.log(" today_select - 7 : " + new Date(today_select));
+        console.log(" today_select - 7 : " + today_select);
+        today_select = today_select / 1000;
 
     var curTime = new Date();
-        curTime = curTime-(curTime % DAYTOMILLS);
+    curTime = curTime-(curTime % DAYTOMILLS);
         console.log("13 curTime : " + new Date(curTime));
         console.log("13 curTime : " + curTime);
 
-    var event_data = zbxSyncApi.dashboardDayEvent(day_select);
+    var event_data = zbxSyncApi.dashboardDayEvent(today_select);
     var event_id = '';
     var event_clock = '';
     var event_triggerId = '';
