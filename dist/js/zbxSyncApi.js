@@ -229,6 +229,24 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    /* 전체 서버 상태 2017-01-02 */
+    dashboardHostInfo: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "host.get",
+            "params": {
+                "output": "extend",
+                "selectInterfaces": ["ip", "disk"],
+                "selectInventory": ["os", "hardware"],
+                "sortfield": "name"
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        return result;
+    },
+
     /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
     dashboardDayEvent: function (today_select) {
         var param = {
@@ -246,8 +264,67 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-            //console.log("levelEvent : " + new Date().getSeconds()+ JSON.stringify(result));
+        //console.log("levelEvent : " + new Date().getSeconds()+ JSON.stringify(result));
         return result.result;
+    },
+
+    /* 대시보드 이벤트 현황 - 전체 발생 */
+    alertTrigger: function () {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extend",
+                "monitored": true,
+                "countOutput": true,
+                "filter": {
+                    "value": 1
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        $("#infobox_alertTrigger").text(result.result);
+    },
+
+    unAckknowledgeEvent: function(eventId) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+                "output": "extend",
+                "monitored": true,
+                "countOutput": true,
+                "withLastEventUnacknowledged": true,
+                "filter": {
+                    "value": 1
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        $("#unAcknowledgedEvents").text(result.result);
+    },
+
+    /* 대시보드 이벤트 현황 - 금일발생 */
+    todayEvent: function (today_select) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "event.get",
+            "params": {
+                "output": "extend",
+                "select_acknowledges": "extend",
+                "monitored": true,
+                "countOutput": true,
+                "time_from": today_select
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        $("#todayEvents").text(result.result);
     },
 
     callAjax: function (param) {

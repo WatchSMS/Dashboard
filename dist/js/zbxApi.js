@@ -523,66 +523,6 @@ var zbxApi = {
         }
     },
 
-    /* 대시보드 이벤트 현황 - 전체 발생 */
-    alertTrigger: {
-        get: function () {
-            var method = "trigger.get";
-            var params = {
-                "output": "extend",
-                "monitored": true,
-                "countOutput": true,
-                "filter": {
-                    "value": 1
-                }
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("infobox_alertTrigger : " + JSON.stringify(data));
-            $("#infobox_alertTrigger").text(data.result);
-        }
-    },
-
-    unAckknowledgeEvent: {
-        get: function(eventId) {
-            var method = "trigger.get";
-            var params = {
-                "output": "extend",
-                "monitored": true,
-                "countOutput": true,
-                "withLastEventUnacknowledged": true,
-                "filter": {
-                    "value": 1
-                }
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("unAckknowledgeEvent : " + JSON.stringify(data));
-            $("#unAcknowledgedEvents").text(data.result);
-        }
-    },
-
-    /* 대시보드 이벤트 현황 - 금일발생 */
-    todayEvent: {
-        get: function (today_select) {
-            var method = "event.get";
-            var params = {
-                "output": "extend",
-                "select_acknowledges": "extend",
-                "monitored": true,
-                "countOutput": true,
-                "time_from": today_select
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            //console.log("todayEvent : " + JSON.stringify(data));
-            $("#todayEvents").text(data.result);
-        }
-    },
-
-
     event: {
         get: function () {
             var beforeMinites = db.get("beforeDay") * 60 * 60 * 24;

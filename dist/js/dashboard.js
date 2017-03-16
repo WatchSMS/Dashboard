@@ -5,11 +5,8 @@ function dashboardView(){
     dashboardEventStatus();
 
     //호스트별 장애현황
-    var hostEvent = '';
-    zbxApi.allServerViewHost.get().done(function(data, status, jqxHR){
-        hostEvent = zbxApi.allServerViewHost.success(data);
-        dashboardHostEvent(hostEvent);
-    });
+    var hostEvent = zbxSyncApi.dashboardHostInfo();
+    dashboardHostEvent(hostEvent);
 
     //이벤트 목록
     dashboardEventList();
@@ -22,18 +19,14 @@ function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
     var today_select = new Date();
-        today_select = today_select-(today_select % DAYTOMILLS);
-        today_select = Math.round(today_select / 1000);
+    today_select = today_select-(today_select % DAYTOMILLS);
+    today_select = Math.round(today_select / 1000);
 
-    $.when(zbxApi.alertTrigger.get(), zbxApi.unAckknowledgeEvent.get(), zbxApi.todayEvent.get(today_select)).done(function(data_a, data_b, data_c) {
-        zbxApi.alertTrigger.success(data_a[0]);
-        zbxApi.unAckknowledgeEvent.success(data_b[0]);
-        zbxApi.todayEvent.success(data_c[0]);
-        console.log("dashboardEventStatus today_select : " + today_select);
-    }).fail(function() {
-        console.log("dashboardView : Network Error");
-        alertDiag("Network Error");
-    });
+    //$.when(zbxSyncApi.alertTrigger(), zbxSyncApi.unAckknowledgeEvent(), zbxSyncApi.todayEvent(today_select)).done(function(data_a, data_b, data_c) {
+    zbxSyncApi.alertTrigger();
+    zbxSyncApi.unAckknowledgeEvent();
+    zbxSyncApi.todayEvent(today_select);
+    console.log("dashboardEventStatus today_select : " + today_select);
 }
 
 function dashboardHostEvent(hostEvent){
@@ -118,9 +111,9 @@ function dashboardDayEvent(){ //selectRelatedObject
 
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
-        date = date.setDate(date.getDate() - 7);
+    date = date.setDate(date.getDate() - 7);
     var today_select = date - (date % DAYTOMILLS);
-        today_select = Math.round(today_select / 1000);
+    today_select = Math.round(today_select / 1000);
     console.log(" 일주일 전 시간 : " + today_select);
 
     var event_data = zbxSyncApi.dashboardDayEvent(today_select);
@@ -134,7 +127,7 @@ function dashboardDayEvent(){ //selectRelatedObject
         event_clock = v.clock;
         event_triggerId = v.relatedObject.triggerid;
         event_priority = v.relatedObject.priority;
-        //console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
+        console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
     });
 
     /*$(function() {
