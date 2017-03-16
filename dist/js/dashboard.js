@@ -106,8 +106,9 @@ function dashboardDayEvent(){ //selectRelatedObject
     //DAY-7
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
-    var date2 = date.setDate(date.getDate(new Date(day_select)) - 7);
+    var date2 = '';
     var day_select = date2 - (date2 % DAYTOMILLS);
+        date2 = date.setDate(date.getDate(new Date(day_select)) - 7);
         console.log(" today_select - 7 : " + new Date(day_select));
         console.log(" today_select - 7 : " + day_select);
         day_select = day_select / 1000;
