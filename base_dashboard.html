@@ -126,15 +126,16 @@
 			<div class="s1">
 				<li class="p1">
 					<span class="o1"></span>
-					<span class="e1">인지</span>
+					<span class="e1"><a onclick="chartLegendItemClick(0,'chart_eventAck', this);" href="#none">인지</a></span>
 				</li>
 				<li class="p2" >
 					<span class="o1"></span>
-					<span class="e1">비인지</span>
+					<span class="e1"><a onclick="chartLegendItemClick(1,'chart_eventAck', this);" href="#none">해소</a></span>
 				</li>
 			</div>
 
 			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;">
+				<div id="chart_eventAck" style="width:100%; height: 211px; margin: 0 auto"></div>
 				<!-- 그래프 영역 인지 처리 -->
 				<!--<img src="dist/img/event_ign_sample.gif" style="width:100%; height:211px">&lt;!&ndash; 임시 이미지 &ndash;&gt;-->
 				<!--// 그래프 영역 인지 처리 -->

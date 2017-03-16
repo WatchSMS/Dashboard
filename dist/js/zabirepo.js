@@ -38,6 +38,7 @@ $(document).ready(function() {
 });
 
 var LONGTIME_ONEHOUR = 3600000;
+var LONGTIME_ONEDAY = 86400000;
 var HISTORY_TYPE = {
     "FLOAT": 0,
     "CHARACTER": 1,
@@ -130,7 +131,8 @@ var int = {
         $("#menu_dashboard").click(function() {
             $("[id^=base]").hide();
             $("#base_dashboard").show();
-            int.dashboardView();
+            //int.dashboardView();
+            dashboardView();
         });
 
         $("#menu_histogram").click(function() {

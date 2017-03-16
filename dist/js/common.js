@@ -743,3 +743,196 @@ var outChart = function(){
 	}
 	
 }
+
+
+function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
+	
+    $(function () {
+        
+    dash_eventAckChart = new Highcharts.chart(chartId, {
+        	
+            colors: colorArr,
+            chart: {
+            	backgroundColor: 'transparent',
+                type: 'scatter',
+                zoomType: 'xy'
+            },
+            title: {
+                text: ""
+            },
+            subtitle: {
+                text: ''
+            },
+            exporting: { 
+	       		 buttons: {
+	                    contextButton: {
+	                        enabled: false
+	                    }
+	                }
+	       	},
+            legend: {
+            	enabled: false
+            },
+            xAxis: {
+            	//min: xAxisMin,
+            	//categories:[1489028400000,1489114800000,1489201200000,1489287600000],
+            	gridLineWidth: 1,
+            	gridLineColor: 'grey',
+                labels: {
+                	style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        var d2 = new Date(this.value);
+                        var month = d2.getMonth()+1;
+                        var date = d2.getDate();
+                        return month + "/" + date;
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                gridLineWidth: 1,
+            	gridLineColor: 'grey',
+                labels: {
+                	style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+//                    	console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+//                    	console.log(this);
+//                    	console.log(this.value);
+//                    	return Highcharts.dateFormat('%H:%M:%S', this.value);
+                    	
+//                    	var d =  new Date(this.value);
+//                    	var month = d.getMonth()+1;
+//                        var date = d.getDate();
+//                    	var hours = d.getHours();
+//                    	var minutes = d.getMinutes();
+//                    	var seconds = d.getSeconds();
+//                    	
+//                    	return month + "/" + date + "  " + hours + ":" + minutes + ":" + seconds;
+                    	
+//                    	return this.value;
+                    	console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+                    	console.log(this);
+                    	console.log(this.value);
+
+                    	var d =  new Date(this.value);
+                    	console.log(d);
+                    	console.log("일 : " + (d.getDate()));
+                    	console.log("시 : " + (d.getHours()-9));
+                    	console.log("분  : " + d.getMinutes());
+                    	console.log("초 : " + d.getSeconds());
+
+                		var duration = "";
+                		
+                		if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
+                			duration += "0";
+                		}
+                		duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
+                		duration += ":";
+                		if( (d.getMinutes()) < 10 ){
+                			duration += "0";
+                		}
+                		duration += d.getMinutes();
+                		duration += ":";
+                		if( (d.getSeconds()) < 10 ){
+                			duration += "0";
+                		}
+                		duration += d.getSeconds();
+                		
+                		return duration;
+                    }
+                }
+            },
+            tooltip: {
+            	borderColor: '#51597e',
+            	borderWidth: 1,
+            	backgroundColor: '#3d476b',
+            	useHTML: true,
+                formatter: function () {
+                	
+                    var d2 = new Date(this.x);
+                    var month = d2.getMonth()+1;
+                    var date = d2.getDate(); 
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+                    if(hours.length==1){
+                        hours = "0" + hours;
+                    }
+                    if(minutes.length==1){
+                        minutes = "0" + minutes;
+                    }
+                    if(seconds.length==1){
+                        seconds = "0" + seconds;
+                    }
+                    
+                    var d =  new Date(this.y);
+            		var duration = "";
+            		if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
+            			duration += "0";
+            		}
+            		duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
+            		duration += ":";
+            		if( (d.getMinutes()) < 10 ){
+            			duration += "0";
+            		}
+            		duration += d.getMinutes();
+            		duration += ":";
+            		if( (d.getSeconds()) < 10 ){
+            			duration += "0";
+            		}
+            		duration += d.getSeconds();         		
+            		
+            		var s = "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'><b>- 서버 :     </b>" + this.point.host + "<br/>";
+            		if(this.point.type == "ack"){
+            			s += "<b>- 인지시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
+            		}else if(this.point.type == "resolve"){
+            			s += "<b>- 해소시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
+            		}
+            		s += "<b>- Duration : </b>" + duration + "<br/>";
+            		s += "<b>- 이벤트명 : </b>" + this.point.description + "<br/>";
+            		if(this.point.priority=="Warning"){
+            			s += "<b>- 이벤트 등급 : </b><span style='color:yellow'>" + this.point.priority + "</span></span>";            			
+            		}else if(this.point.priority=="High"){
+            			s += "<b>- 이벤트 등급 : </b><span style='color:red'>" + this.point.priority + "</span></span>";
+            		}
+                    return s; 
+                }
+            },
+            plotOptions: {
+            	scatter: {
+                    marker: {
+                        radius: 3,
+//                        lineWidth: 1,
+//                        lineColor: 'grey',
+                        symbol: 'circle',
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: true
+                            }
+                        }
+                    }
+//                    ,
+//                    tooltip: {
+//                        headerFormat: '<b>{series.name}</b><br>',
+//                        pointFormat: '{point.x} cm, {point.y} kg'
+//                    }
+                }
+            },
+            series: dataSet
+        });
+    });
+}
