@@ -22,13 +22,14 @@ function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
     var today_select = new Date();
-    today_select = today_select-(today_select % DAYTOMILLS);
+        today_select = today_select-(today_select % DAYTOMILLS);
+        today_select = Math.round(today_select / 1000);
 
     $.when(zbxApi.alertTrigger.get(), zbxApi.unAckknowledgeEvent.get(), zbxApi.todayEvent.get(today_select)).done(function(data_a, data_b, data_c) {
         zbxApi.alertTrigger.success(data_a[0]);
         zbxApi.unAckknowledgeEvent.success(data_b[0]);
         zbxApi.todayEvent.success(data_c[0]);
-        console.log("today_select : " + today_select);
+        console.log("dashboardEventStatus today_select : " + today_select);
     }).fail(function() {
         console.log("dashboardView : Network Error");
         alertDiag("Network Error");
@@ -115,7 +116,7 @@ function dashboardDayEvent(){ //selectRelatedObject
     //var today_select = new Date();
     //today_select = Math.round((today_select-WEEKTOMILLS)/1000);
 
-    var DAYTOMILLS = 60*60*24;
+    var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
         date = date.setDate(date.getDate() - 7);
     var today_select = date - (date % DAYTOMILLS);
@@ -134,23 +135,6 @@ function dashboardDayEvent(){ //selectRelatedObject
         event_triggerId = v.relatedObject.triggerid;
         event_priority = v.relatedObject.priority;
         //console.log(" EVENT ID : " + v.eventid + " / CLOCK : " + v.clock + " / TRIGGER ID : " + v.relatedObject.triggerid + " / PRIORITY : " + v.relatedObject.priority);
-
-        if(event_priority == 1){ //information
-            console.log(" information  EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" information  today_select : " + today_select);
-        } else if(event_priority == 2){ //warning
-            console.log(" warning      EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" warning      today_select : " + today_select);
-        } else if(event_priority == 3){ //average
-            console.log(" average      EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" average      today_select : " + today_select);
-        } else if(event_priority == 4){ //high
-            console.log(" high         EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" high         today_select : " + today_select);
-        } else {
-            console.log(" else         EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            console.log(" else         today_select : " + today_select);
-        }
     });
 
     /*$(function() {
