@@ -694,31 +694,5 @@ var zbxApi = {
             });
             return data;
         }
-    },
-
-    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
-    dashboardHostEvent: {
-        get: function (beforeTime, endTime) {
-            var method = "event.get";
-            var params = {
-                "output": [
-                    "eventid", "objectid", "clock"
-                ],
-                "source": 0,
-                "time_from": beforeTime,
-                "time_end": endTime,
-                "selectHosts": [
-                    "hostid"
-                ],
-                "sortfield": "clock",
-                "sortorder": "ASC"
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            $.each(data.result, function (k, v) {
-            });
-            return data;
-        }
     }
 };

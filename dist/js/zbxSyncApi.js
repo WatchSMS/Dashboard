@@ -288,6 +288,33 @@ var zbxSyncApi = {
         $("#todayEvents").text(result.result);
     },
 
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    dashboardHostEvent: function (beforeTime, endTime, hostid) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "event.get",
+            "params": {
+                "output": [
+                    "eventid", "objectid", "clock"
+                ],
+                "source": 0,
+                "time_from": beforeTime,
+                "time_end": endTime,
+                "hostids": hostid,
+                "selectHosts": [
+                    "hostid"
+                ],
+                "sortfield": "clock",
+                "sortorder": "ASC"
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log("dashboardEvent : " + JSON.stringify(result));
+        return result.result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
