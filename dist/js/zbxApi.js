@@ -694,5 +694,23 @@ var zbxApi = {
             });
             return data;
         }
+    },
+
+    dashboardEvent: {
+        get: function (eventId) {
+            var method = "event.get";
+            var params = {
+                    "output": "extend",
+                    "selectLastEvent": "true",
+                    "eventids": eventId
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log(" RESULT : " + data);
+            $.each(data.result, function (k, v) {
+            });
+            return data.result[0].clock;
+        }
     }
 };

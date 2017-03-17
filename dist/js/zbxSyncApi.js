@@ -137,23 +137,6 @@ var zbxSyncApi = {
         return result.result;
     },
 
-    dashboardEvent: function (eventId) {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "event.get",
-            "params": {
-                "output": "extend",
-                "selectLastEvent": "true",
-                "eventids": eventId
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        //console.log("dashboardEvent : " + JSON.stringify(result));
-        return result.result[0].clock;
-    },
-
     getDiskItem: function (hostid, key_) {
         var param = {
             "jsonrpc": "2.0",

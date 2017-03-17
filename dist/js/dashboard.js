@@ -83,6 +83,10 @@ function dashboardHostEvent(hostEvent){
         try {
             event_clock = eventList[0].clock;
             console.log(" event_clock " + event_clock);
+            event_clock = event_clock * 1000;
+            console.log(" 1000 event_clock " + event_clock);
+            event_clock = event_clock-(event_clock % DAYTOMILLS);
+            console.log(" DAYTOMILLS event_clock " + event_clock);
         } catch (e) {
             console.log(e);
         }
@@ -121,7 +125,10 @@ function dashboardEventList() {
         var age = convDeltaTime(v.lastchange);
         var ack = convAck(v.lastEvent.acknowledged);
         var eventId = v.lastEvent.eventid;
-        var ackTime = zbxSyncApi.dashboardEvent(eventId);
+        var ackTime = '';
+        zbxApi.dashboardEvent.get(eventId).then(function(data){
+            ackTime = zbxApi.dashboardHostInfo.success(data);
+        })
         //console.log("ackTime : " + ackTime);
         ackTime = convTime(ackTime);
         var host = v.hosts[0].host;
@@ -149,6 +156,7 @@ function dashboardDayEvent(){
     var DAYTOMILLS = 1000*60*60*24;
     var date2 = new Date();
     var date = date2.setDate(date2.getDate(new Date(day_select)) - 7);
+    console.log(" 기존 시간 : " + date);
     var day_select = date - (date % DAYTOMILLS);
     var today_select = date - (date % DAYTOMILLS);
     //console.log(" today_select - 7 : " + new Date(today_select));
