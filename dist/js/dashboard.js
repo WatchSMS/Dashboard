@@ -69,7 +69,7 @@ function dashboardHostEvent(hostEvent){
     var eventList = '';
     var start_clock = '';
     var end_clock = '';
-    var event_count = 0;
+    var event_count = 1;
 
     var tableDataArr = [];
     var dataArr = [];
@@ -77,6 +77,9 @@ function dashboardHostEvent(hostEvent){
     var dashboardHostEventHTML = '';
 
     dashboardHostEventHTML += "<tbody>";
+
+    var cpuDataSet=[];
+
 
     $.each(hostEvent.result, function(k, v){
         console.log(" " + v.name + " 아이우에오 " + v.hostid);
@@ -105,112 +108,46 @@ function dashboardHostEvent(hostEvent){
                 //console.log("start_clock : " + start_clock + " / end_clock : " + end_clock);
 
                 if(event_clock > start_clock && event_clock < end_clock){
-                    event_count += 1;
+                    event_count = event_count * 10;
                 }
                 console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
 
-                dataArr[i]={
-                    clock : start_clock,
-                    count : event_count
-                };
+                dataArr[i] = [start_clock,event_count];
+
                 console.log(JSON.stringify(dataArr[i]));
             }
         } catch (e) {
             console.log(e);
         }
 
+        var cpuDataObj = new Object();
+        cpuDataObj.name = "test name";
+        cpuDataObj.data = dataArr;
+        cpuDataSet.push(cpuDataObj);
+/*
         var tableDataObj = {};
         tableDataObj.hostNum = hostNum;
         tableDataObj.hostName = hostName;
         tableDataObj.hostEventCnt = hostEventCnt;
         tableDataObj.hostChart = hostChart;
-        tableDataArr.push(tableDataObj);
+        tableDataArr.push(tableDataObj);*/
 
         dashboardHostEventHTML += "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='48px' class='line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='165px' class='line-td align_left'>" + hostName + "</td>";
         dashboardHostEventHTML += "<td width='73px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' id='hostChart'></td>";
+        dashboardHostEventHTML += "<td width='auto' id='hostChart"+hostNum+"'></td>";
         dashboardHostEventHTML += "</tr>";
+
     });
     dashboardHostEventHTML += "</tbody>";
-    $("#hostEventList").empty();-
-        $("#hostEventList").append(dashboardHostEventHTML);
 
-    $(function () {
-        hostChart = new Highcharts.Chart({
-            exporting: {
-                buttons: {
-                    contextButton: {
-                        enabled: false,
-                        symbolStroke: 'transparent',
-                        theme: {
-                            fill:'#626992'
-                        }
-                    }
-                }
-            },
-            chart: {
-                backgroundColor: '#424973',
-                //type: 'area'
-                renderTo: 'hostChart'
-            },
-            title: {
-                text: "",
-                style: {
-                    color: '#EDEDED'
-                }
-            },
-            subtitle: {
-                text: ''
-            },
-            legend: {
-                enabled: false,
-                itemStyle: {
-                    color: '#a2adcc'
-                }
-            },
-            xAxis: {
-                labels: {
-                    style: {
-                        color: '#a2adcc'
-                    },
-                    formatter: function () {
-                        var d2 = new Date(start_clock);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if(hours.length==1){
-                            hours = "0" + hours;
-                        }
-                        if(minutes.length==1){
-                            minutes = "0" + minutes;
-                        }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes;
+    $("#hostEventList").empty();
+    $("#hostEventList").append(dashboardHostEventHTML);
+    console.log(JSON.stringify(cpuDataSet));
+    showBasicLineChart('hostChart1', "test", cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
 
-                    }
-                }
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                labels: {
-                    style: {
-                        color: '#a2adcc'
-                    }
-                }
-            },
-            tooltip: {
-            },
-            plotOptions: {
-            },
-            series: dataArr
-        });
-    })
+
 }
 
 function dashboardEventList() {
