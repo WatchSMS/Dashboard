@@ -534,6 +534,132 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
     });
 }
 
+function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
+    $(function () {
+        chart2 = new Highcharts.Chart({
+
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
+            colors: colorArr,
+            chart: {
+                backgroundColor: '#424973',
+                //type: 'area'
+                renderTo: chartId,
+                zoomType: 'x',
+                events: {
+                    load: function(event) {
+                        $("#"+chartId).unblock(blockUI_opt_el);
+                        console.log("loaded");
+                        console.log(Highcharts.charts.length);
+                    }
+                }
+            },
+            title: {
+                text: "",
+                style: {
+                    color: '#EDEDED'
+                }
+            },
+            subtitle: {
+                text: ''
+            },
+            legend: {
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
+            },
+            xAxis: {
+                showFirstLabel: true,
+                showLastLabel: true,
+                gridLineWidth: 1,
+                crosshair: true,
+                events: {
+                    setExtremes: syncExtremes
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                    }
+                }
+            },
+            yAxis: {
+                showFirstLabel: true,
+                showLastLabel: true,
+                gridLineWidth: 1,
+                title: {
+                    text: ''
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                    }
+                },
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+
+                    if(hours.length==1){
+                        hours = "0" + hours;
+                    }
+                    if(minutes.length==1){
+                        minutes = "0" + minutes;
+                    }
+                    if(seconds.length==1){
+                        seconds = "0" + seconds;
+                    }
+                    if(unit == "MB"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else{
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                    }
+                }
+            },
+            plotOptions: {
+                series: {
+                    events: {
+                        mouseOver: function(e){
+                            GLOBAL_INDEX = this.index;
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 1
+                }
+            },
+            series: dataSet
+        });
+
+        Highcharts.Point.prototype.highlight = function (event) {
+            //this.onMouseOver(); // Show the hover marker
+            this.series.chart.tooltip.refresh(this); // Show the tooltip
+            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+        };
+
+        Highcharts.Pointer.prototype.reset = function () {
+            return undefined;
+        };
+    });
+}
 
 function syncExtremes(e) {
     var thisChart = this.chart;

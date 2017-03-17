@@ -70,8 +70,7 @@ function dashboardHostEvent(hostEvent){
     var end_clock = '';
     var event_count = 1;
 
-    var cpuDataSet=[];
-    var dataArr = [];
+    var hostDataSet=[];
     var dashboardHostEventHTML = '';
 
     dashboardHostEventHTML += "<tbody>";
@@ -83,11 +82,12 @@ function dashboardHostEvent(hostEvent){
         hostid = v.hostid;
         hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid);
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, v.hostid);
+        var dataArr = [];
         try {
             event_clock = eventList[0].clock;
             event_clock = event_clock * 1000;
-            console.log(" 1000 event_clock " + event_clock);
-            console.log(" 1000 date : " + new Date(event_clock));
+            //console.log(" 1000 event_clock " + event_clock);
+            //console.log(" 1000 date : " + new Date(event_clock));
             var d = new Date();
             var date = d.getDate();
             //var day = d.getDay();
@@ -103,7 +103,7 @@ function dashboardHostEvent(hostEvent){
                 //console.log("start_clock : " + start_clock + " / end_clock : " + end_clock);
 
                 if(event_clock > start_clock && event_clock < end_clock){
-                    event_count = event_count * 10;
+                    event_count += 1;
                 }
                 console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
 
@@ -115,16 +115,16 @@ function dashboardHostEvent(hostEvent){
             console.log(e);
         }
 
-        var cpuDataObj = new Object();
-        cpuDataObj.name = "test name";
-        cpuDataObj.data = dataArr;
-        cpuDataSet.push(cpuDataObj);
+        var hostDataObj = new Object();
+        hostDataObj.name = "hostEvent";
+        hostDataObj.data = dataArr;
+        hostDataSet.push(hostDataObj);
 
         dashboardHostEventHTML += "<tr class='p1'>";
-        dashboardHostEventHTML += "<td width='48px' class='line-td'>" + hostNum + "</td>";
-        dashboardHostEventHTML += "<td width='165px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='73px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' id='hostChart"+hostNum+"'></td>";
+        dashboardHostEventHTML += "<td width='48px' height='80px' class='line-td'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='165px' height='80px' class='line-td align_left'>" + hostName + "</td>";
+        dashboardHostEventHTML += "<td width='73px' height='80px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='auto' height='80px' id='hostChart"+hostNum+"'></td>";
         dashboardHostEventHTML += "</tr>";
 
     });
@@ -132,8 +132,11 @@ function dashboardHostEvent(hostEvent){
 
     $("#hostEventList").empty();
     $("#hostEventList").append(dashboardHostEventHTML);
-    console.log(JSON.stringify(cpuDataSet));
-    showBasicLineChart('hostChart1', "test", cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+    $.each(hostDataSet, function(k,v){
+        var tempArr = [];
+        tempArr.push(v);
+        showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#00B700']);
+    });
 }
 
 function dashboardEventList() {
