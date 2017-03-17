@@ -689,6 +689,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            console.log(" RESULT : " + data);
             $.each(data.result, function (k, v) {
             });
             return data;

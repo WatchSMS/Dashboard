@@ -60,14 +60,15 @@ function dashboardHostEvent(hostEvent){
     console.log(" round endTime : " + endTime);
 
     var hostNum = 0;
+    var hostid = '';
     var hostName = '';
     var hostEventCnt = 0;
 
     var eventList = '';
-    zbxApi.dashboardHostEvent.get(beforeTime, endTime).then(function(data){
+    /*zbxApi.dashboardHostEvent.get(beforeTime, endTime).then(function(data){
         eventList = zbxApi.dashboardHostEvent.success(data);
         console.log(JSON.stringify(eventList));
-    });
+    });*/
 
     var tableDataArr = [];
 
@@ -78,6 +79,7 @@ function dashboardHostEvent(hostEvent){
     $.each(hostEvent.result, function(k, v){
         hostNum += 1;
         hostName = v.name;
+        hostid = v.hostid;
         hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid);
 
         var tableDataObj = {};
@@ -171,6 +173,7 @@ function dashboardDayEvent(){ //selectRelatedObject
             } catch (e) {
                 console.log(e);
             }
+
             //console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
         });
     });
@@ -276,9 +279,7 @@ function dashboardDayEvent(){ //selectRelatedObject
      });*/
 }
 
-
 function dashboardEventAckChart() {
-	
 	var dataObj = new Object();
 	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEDAY * 7) / 1000);
 	var markerObj = new Object();
