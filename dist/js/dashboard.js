@@ -5,8 +5,11 @@ function dashboardView(){
     dashboardEventStatus();
 
     //호스트별 장애현황
-    var hostEvent = zbxSyncApi.dashboardHostInfo();
-    dashboardHostEvent(hostEvent);
+    var hostEvent = '';
+    zbxApi.dashboardHostInfo.get().then(function(data){
+        hostEvent = zbxApi.dashboardHostInfo.success(data);
+        dashboardHostEvent(hostEvent);
+    });
 
     //이벤트 목록
     dashboardEventList();
@@ -48,8 +51,12 @@ function dashboardHostEvent(hostEvent){
     var hostName = '';
     var hostEventCnt = 0;
 
-    var eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime);
-    console.log(JSON.stringify(eventList));
+    var eventList = '';
+    zbxApi.dashboardHostEvent.get(beforeTime, endTime).then(function(data){
+        eventList = zbxApi.dashboardHostEvent.success(data);
+        console.log(JSON.stringify(eventList));
+    });
+
     var tableDataArr = [];
 
     var dashboardHostEventHTML = '';
@@ -134,18 +141,26 @@ function dashboardDayEvent(){ //selectRelatedObject
     //console.log("13 curTime : " + new Date(curTime));
     //console.log("13 curTime : " + curTime);
 
-    var event_data = zbxSyncApi.dashboardDayEvent(today_select);
+    var event_data = '';
     var event_id = '';
     var event_clock = '';
     var event_triggerId = '';
     var event_priority = 0;
 
-    $.each(event_data, function(k, v){
-        event_id = v.eventid;
-        event_clock = v.clock * 1000;
-        event_triggerId = v.relatedObject.triggerid;
-        event_priority = v.relatedObject.priority;
-        //console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+    zbxApi.dashboardDayEvent.get(today_select).then(function(data){
+        event_data = zbxApi.dashboardDayEvent.success(data);
+
+        $.each(event_data, function(k, v){
+            event_id = v.eventid;
+            event_clock = v.clock * 1000;
+            try {
+                event_triggerId = v.relatedObject.triggerid;
+                event_priority = v.relatedObject.priority;
+            } catch (e) {
+                console.log(e);
+            }
+            //console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
+        });
     });
 
     /*$(function() {

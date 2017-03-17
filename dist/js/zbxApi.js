@@ -619,5 +619,71 @@ var zbxApi = {
             // console.log(resultArray);
             return resultArray;
         }
+    },
+
+    /* 전체 서버 상태 2017-01-02 */
+    dashboardHostInfo: {
+        get: function () {
+            var method = "host.get";
+            var params = {
+                "output": "extend",
+                "selectInterfaces": ["ip", "disk"],
+                "selectInventory": ["os", "hardware"],
+                "sortfield": "name"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
+    /* 대시보드 이벤트 현황 - 요일별 이벤트 발생빈도 */
+    dashboardDayEvent: {
+        get: function (today_select) {
+            var method = "event.get";
+            var params = {
+                    "output": "extend",
+                    "source": 0,
+                    "selectRelatedObject": "extend",
+                    "time_from": today_select,
+                    "sortfield": "clock",
+                    "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    dashboardHostEvent: {
+        get: function (beforeTime, endTime) {
+            var method = "event.get";
+            var params = {
+                "output": [
+                    "eventid", "objectid", "clock"
+                ],
+                "source": 0,
+                "time_from": beforeTime,
+                "time_end": endTime,
+                "selectHosts": [
+                    "hostid"
+                ],
+                "sortfield": "clock",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
     }
 };
