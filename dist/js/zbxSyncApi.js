@@ -229,6 +229,33 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    dashboardHostEvent: function (beforeTime, endTime) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "event.get",
+            "params": {
+                "output": [
+                    "eventid", "objectid", "clock"
+                ],
+                "source": 0,
+                "time_from": beforeTime,
+                "time_end": endTime,
+                "selectHosts": [
+                    "hostid"
+                ],
+                "sortfield": "clock",
+                "sortorder": "ASC"
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log(" dashboardHostEvent ");
+        console.log(result);
+        return result.result;
+    },
+
     /* 전체 서버 상태 2017-01-02 */
     dashboardHostInfo: function () {
         var param = {

@@ -19,8 +19,8 @@ function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
     var today_select = new Date();
-        today_select = today_select-(today_select % DAYTOMILLS);
-        today_select = Math.round(today_select / 1000);
+    today_select = today_select-(today_select % DAYTOMILLS);
+    today_select = Math.round(today_select / 1000);
 
     zbxSyncApi.alertTrigger();
     zbxSyncApi.unAckknowledgeEvent();
@@ -29,10 +29,27 @@ function dashboardEventStatus(){
 }
 
 function dashboardHostEvent(hostEvent){
+    //24시간 전 시간 구하기
+    var DAYTOMILLS = 1000*60*60*24;
+    var date = new Date();
+    var beforeTime = date.getTime() - DAYTOMILLS;
+        console.log(" beforeTime : " + new Date(beforeTime));
+        beforeTime = Math.round(beforeTime / 1000);
+    var endTime = date.getTime();
+        console.log(" endTime : " + new Date(endTime));
+        endTime = Math.round(endTime / 1000);
+
+    console.log(" DAYTOMILLS : " + DAYTOMILLS);
+    console.log(" date : " + new Date(date));
+    console.log(" round beforeTime : " + beforeTime);
+    console.log(" round endTime : " + endTime);
+
     var hostNum = 0;
     var hostName = '';
     var hostEventCnt = 0;
 
+    var eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime);
+    console.log(JSON.stringify(eventList));
     var tableDataArr = [];
 
     var dashboardHostEventHTML = '';
@@ -58,8 +75,8 @@ function dashboardHostEvent(hostEvent){
         dashboardHostEventHTML += "</tr>";
     });
     dashboardHostEventHTML += "</tbody>";
-    $("#hostEventList").empty();
-    $("#hostEventList").append(dashboardHostEventHTML);
+    $("#hostEventList").empty();-
+        $("#hostEventList").append(dashboardHostEventHTML);
 }
 
 function dashboardEventList() {
@@ -103,20 +120,19 @@ function dashboardEventList() {
 }
 
 function dashboardDayEvent(){ //selectRelatedObject
-    //DAY-7
     var DAYTOMILLS = 1000*60*60*24;
     var date2 = new Date();
     var date = date2.setDate(date2.getDate(new Date(day_select)) - 7);
     var day_select = date - (date % DAYTOMILLS);
     var today_select = date - (date % DAYTOMILLS);
-        console.log(" today_select - 7 : " + new Date(today_select));
-        console.log(" today_select - 7 : " + today_select);
-        today_select = today_select / 1000;
+    //console.log(" today_select - 7 : " + new Date(today_select));
+    //console.log(" today_select - 7 : " + today_select);
+    today_select = today_select / 1000;
 
     var curTime = new Date();
     curTime = curTime-(curTime % DAYTOMILLS);
-        console.log("13 curTime : " + new Date(curTime));
-        console.log("13 curTime : " + curTime);
+    //console.log("13 curTime : " + new Date(curTime));
+    //console.log("13 curTime : " + curTime);
 
     var event_data = zbxSyncApi.dashboardDayEvent(today_select);
     var event_id = '';
@@ -129,13 +145,7 @@ function dashboardDayEvent(){ //selectRelatedObject
         event_clock = v.clock * 1000;
         event_triggerId = v.relatedObject.triggerid;
         event_priority = v.relatedObject.priority;
-        console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-
-        for(var i=0; i<7; i++){
-            if(event_clock > (i+1)*(curTime-(i*DAYTOMILLS)) && event_clock < (i+1)*(curTime-((i+1)*DAYTOMILLS))){ //DAY-1
-                console.log(" curTime EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-            }
-        }
+        //console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
     });
 
     /*$(function() {
