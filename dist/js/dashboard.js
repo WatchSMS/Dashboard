@@ -1,4 +1,9 @@
 function dashboardView(){
+	
+	$.blockUI(blockUI_opt_all);
+	offTimer();
+	removeAllChart();
+	
     $(".info-box-content").block(blockUI_opt_el);
 
     //이벤트 현황
@@ -16,6 +21,13 @@ function dashboardView(){
 
     //요일별이벤트발생빈도
     dashboardDayEvent();
+    
+    //이벤트 인지 차트
+    dashboardEventAckChart();
+    
+    $.unblockUI(blockUI_opt_all);
+    
+    TIMER_ARR.push(setInterval(function(){addEventAckChart();}, 10000));
 }
 
 function dashboardEventStatus(){
@@ -262,4 +274,167 @@ function dashboardDayEvent(){ //selectRelatedObject
      }
      });
      });*/
+}
+
+
+function dashboardEventAckChart() {
+	
+	var dataObj = new Object();
+	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEDAY * 7) / 1000);
+	var markerObj = new Object();
+	var hoverObj = new Object();
+    var eventArr = [];
+    var ackArr = [];
+    var dataSet = [];
+    
+    var resolveEventArr = [];
+    
+	zbxApi.getEvent.getByTime(startTime).then(function(data) {
+    	eventArr = data.result;
+    	
+ 
+    	$.each(eventArr, function(k,v){
+        	if(v.value == 0){ //상태가 OK인 event 에서 
+        		
+        		var triggerId = v.relatedObject.triggerid;
+        		
+        		for(var i=1; i< k; i++){ // 같은 triggerId인 가장 최근 Problem 찾기
+        			
+        			if(eventArr[k-i].relatedObject.triggerid == triggerId && eventArr[k-i].value == 1){
+        				
+        				var okEventTime = new Date(parseInt(v.clock) * 1000);
+        				var problemEventTime = new Date(parseInt(eventArr[k-i].clock) * 1000);
+        				
+        				var resolveObj = new Object();
+        				resolveObj.x = parseInt(v.clock) * 1000;
+        				resolveObj.y = okEventTime - problemEventTime;
+        				resolveObj.host = v.hosts[0].host;
+        				resolveObj.description = v.relatedObject.description;
+        				resolveObj.type = "resolve";
+        				
+                		if(v.relatedObject.priority == 2){
+                			resolveObj.priority = "Warning";
+                		}else if(v.relatedObject.priority == 4){
+                			resolveObj.priority = "High";
+                		}
+                		resolveEventArr.push(resolveObj);
+        				break;
+        			}
+        		}
+//        		for(var i=1; i< eventArr.length-k; i++){ // 같은 triggerId인 가장 최근 Problem 찾기
+//        			
+//        			if(eventArr[k+i].relatedObject.triggerid == triggerId && eventArr[k+i].value == 1){
+//        				
+//        				var okEventTime = new Date(parseInt(v.clock) * 1000);
+//        				var problemEventTime = new Date(parseInt(eventArr[k+i].clock) * 1000);
+//        				
+//        				var resolveObj = new Object();
+//        				resolveObj.x = parseInt(v.clock) * 1000;
+//        				resolveObj.y = okEventTime - problemEventTime;
+//        				resolveObj.host = v.hosts[0].host;
+//        				resolveObj.description = v.relatedObject.description;
+//        				resolveObj.type = "resolve";
+//        				
+//                		if(v.relatedObject.priority == 2){
+//                			resolveObj.priority = "Warning";
+//                		}else if(v.relatedObject.priority == 4){
+//                			resolveObj.priority = "High";
+//                		}
+//                		resolveEventArr.push(resolveObj);
+//        				break;
+//        			}
+//        		}
+        	}
+        	
+        	if(v.acknowledged == "1"){
+        		
+        		var eventAckTime =  new Date(parseInt(v.acknowledges[0].clock) * 1000);
+        		var eventCreateTime =  new Date(parseInt(v.clock) * 1000);
+        		
+        		var ackObj = new Object();
+        		ackObj.x = parseInt(v.acknowledges[0].clock) * 1000;
+        		ackObj.y = eventAckTime-eventCreateTime;
+        		ackObj.host = v.hosts[0].host;
+        		ackObj.description = v.relatedObject.description;
+        		ackObj.type = "ack";
+        		
+        		if(v.relatedObject.priority == 2){
+        			ackObj.priority = "Warning";
+        		}else if(v.relatedObject.priority == 4){
+        			ackObj.priority = "High";
+        		}
+        		lastAckEventId = v.eventid;
+        		console.log("lastAckEventId : " + lastAckEventId);
+        		ackArr.push(ackObj);
+        	}
+    	});
+    	
+    	dataObj = new Object();
+		dataObj.name = '이벤트 인지';
+		dataObj.color = 'rgba(255, 165, 0, 0.5)';//'#ee6866';
+		dataObj.data = ackArr;
+		markerObj = new Object();
+		markerObj.lineColor = 'rgba(255, 140, 0, 0.7)';//'red';
+		markerObj.lineWidth = 1;
+		
+//		hoverObj = new Object();
+//		hoverObj.enabled = true;
+//		hoverObj.lineColor = 'red';
+//		markerObj.states = hoverObj;
+		
+		dataObj.marker = markerObj;
+		dataSet.push(dataObj);
+		
+		dataObj = new Object();
+		dataObj.name = '이벤트 해소';
+		dataObj.color = 'rgba(0, 191, 255, 0.5)';//'#0088CE';
+		dataObj.data = resolveEventArr;
+		markerObj = new Object();
+		markerObj.lineColor = 'rgba(135, 206, 235, 0.7)';//'#91b3d8';
+		markerObj.lineWidth = 1;
+		dataObj.marker = markerObj;
+		dataSet.push(dataObj);
+		
+    	showScatterPlotChart("chart_eventAck", (LONGTIME_ONEDAY * 7 * 1000), dataSet, ['red','blue']);
+    	
+    });
+	
+	
+}
+
+function addEventAckChart(){
+	
+    zbxApi.getEvent.getById(lastAckEventId).then(function(data) {
+    	console.log("lastAckEventId : " + lastAckEventId);
+    	console.log("ack Data Adding ..");
+    	console.log(data);
+    	eventArr = data.result;
+    	$.each(eventArr, function(k,v){
+    		if(v.acknowledged == "1"){
+    			//dash_eventAckChart.series[0].addPoint([v[0], v[1]]);
+    			
+    			var eventAckTime =  new Date(parseInt(v.acknowledges[0].clock) * 1000);
+        		var eventCreateTime =  new Date(parseInt(v.clock) * 1000);
+        		
+        		var ackObj = new Object();
+        		ackObj.x = parseInt(v.acknowledges[0].clock) * 1000;
+        		ackObj.y = eventAckTime-eventCreateTime;
+        		ackObj.host = v.hosts[0].host;
+        		ackObj.description = v.relatedObject.description;
+        		ackObj.type = "ack";
+        		
+        		if(v.relatedObject.priority == 2){
+        			ackObj.priority = "Warning";
+        		}else if(v.relatedObject.priority == 4){
+        			ackObj.priority = "High";
+        		}
+        		lastAckEventId = v.eventid;
+        		console.log("lastAckEventId : " + lastAckEventId);
+        		//ackArr.push(ackObj);
+        		dash_eventAckChart.series[0].addPoint(ackObj);
+        		
+    		}
+    	});
+    	
+    });
 }

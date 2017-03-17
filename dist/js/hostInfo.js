@@ -228,8 +228,8 @@ var hostInfoView = function() {
 
                 $("[id^=base]").hide();
                 $("#base_configure").show();
-                $("#conf_hostid").html(v.hostid);
-
+                currentHostId = v.hostid;
+                
                 $("input:checkbox").unbind("click").bind('click', function() {
                 	var targetId = $(this).parent().nextAll("div")[0].id;
                     console.log(targetId);
@@ -248,8 +248,7 @@ var hostInfoView = function() {
                 });
 
                 $("#btnCancelTrigger").unbind("click").bind("click",function(){
-                	var hostId = $("#conf_hostid").html();
-                	$("#configure_" + hostId).trigger('click');
+                	$("#configure_" + currentHostId).trigger('click');
                 });
 
                 $("#btnSaveTrigger").unbind("click").bind("click",function() {

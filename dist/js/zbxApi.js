@@ -1,5 +1,39 @@
 var zbxApi = {
-
+		
+	getEvent: {
+		getByTime: function (startTime) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "selectRelatedObject": "extend",
+                "sortfield": ["clock", "eventid"],
+                "sortorder": "ASC",
+                "time_from": startTime
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getById: function (startEventId) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "selectRelatedObject": "extend",
+                "sortfield": ["clock", "eventid"],
+                "sortorder": "ASC",
+                "eventid_from": parseInt(startEventId)+1
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getEvent data : " + data);
+            //console.log(data);
+            return data;
+        }
+	},
+		
     getTrigger: {
         get: function (hostId, triggerId, itemName) {
             var method = "trigger.get";
