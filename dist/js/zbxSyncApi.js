@@ -294,7 +294,6 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log("dashboardEvent : " + JSON.stringify(result));
         return result.result;
     },
 

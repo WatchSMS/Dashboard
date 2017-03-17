@@ -63,18 +63,23 @@ function dashboardHostEvent(hostEvent){
     var hostid = '';
     var hostName = '';
     var hostEventCnt = 0;
+    var hostChart = '';
     var event_clock = 0;
 
     var eventList = '';
+    var start_clock = '';
+    var end_clock = '';
+    var event_count = 0;
 
     var tableDataArr = [];
+    var dataArr = [];
 
     var dashboardHostEventHTML = '';
 
     dashboardHostEventHTML += "<tbody>";
 
     $.each(hostEvent.result, function(k, v){
-        console.log(" " + v.name + " 니가 있어야 할 곳은 여기야 " + v.hostid);
+        console.log(" " + v.name + " 아이우에오 " + v.hostid);
         hostNum += 1;
         hostName = v.name;
         hostid = v.hostid;
@@ -82,11 +87,34 @@ function dashboardHostEvent(hostEvent){
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, v.hostid);
         try {
             event_clock = eventList[0].clock;
-            console.log(" event_clock " + event_clock);
             event_clock = event_clock * 1000;
             console.log(" 1000 event_clock " + event_clock);
-            event_clock = event_clock-(event_clock % DAYTOMILLS);
-            console.log(" DAYTOMILLS event_clock " + event_clock);
+            console.log(" 1000 date : " + new Date(event_clock));
+            var d = new Date();
+            var date = d.getDate();
+            //var day = d.getDay();
+            var startday = date - 1;
+            //var start_clock = new Date(d.getFullYear(), d.getMonth(), startday, 0, 0, 0);
+            //console.log(" start_clock : " + start_clock.getTime());
+
+            for(var i=0; i<24; i++){
+                start_clock = new Date(d.getFullYear(), d.getMonth(), startday, i, 0, 0);
+                start_clock = start_clock.getTime();
+                end_clock = new Date(d.getFullYear(), d.getMonth(), startday, i+1, 0, 0);
+                end_clock = end_clock.getTime();
+                //console.log("start_clock : " + start_clock + " / end_clock : " + end_clock);
+
+                if(event_clock > start_clock && event_clock < end_clock){
+                    event_count += 1;
+                }
+                console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
+
+                dataArr[i]={
+                    clock : start_clock,
+                    count : event_count
+                };
+                console.log(JSON.stringify(dataArr[i]));
+            }
         } catch (e) {
             console.log(e);
         }
@@ -95,18 +123,94 @@ function dashboardHostEvent(hostEvent){
         tableDataObj.hostNum = hostNum;
         tableDataObj.hostName = hostName;
         tableDataObj.hostEventCnt = hostEventCnt;
+        tableDataObj.hostChart = hostChart;
         tableDataArr.push(tableDataObj);
 
         dashboardHostEventHTML += "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='48px' class='line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='165px' class='line-td align_left'>" + hostName + "</td>";
         dashboardHostEventHTML += "<td width='73px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='auto' id='hostChart'></td>";
         dashboardHostEventHTML += "</tr>";
     });
     dashboardHostEventHTML += "</tbody>";
     $("#hostEventList").empty();-
         $("#hostEventList").append(dashboardHostEventHTML);
+
+    $(function () {
+        hostChart = new Highcharts.Chart({
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
+            chart: {
+                backgroundColor: '#424973',
+                //type: 'area'
+                renderTo: 'hostChart'
+            },
+            title: {
+                text: "",
+                style: {
+                    color: '#EDEDED'
+                }
+            },
+            subtitle: {
+                text: ''
+            },
+            legend: {
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
+            },
+            xAxis: {
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        var d2 = new Date(start_clock);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return hours + ":" + minutes;
+
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    }
+                }
+            },
+            tooltip: {
+            },
+            plotOptions: {
+            },
+            series: dataArr
+        });
+    })
 }
 
 function dashboardEventList() {
