@@ -63,7 +63,6 @@ function dashboardHostEvent(hostEvent){
     var hostid = '';
     var hostName = '';
     var hostEventCnt = 0;
-    var hostChart = '';
     var event_clock = 0;
 
     var eventList = '';
@@ -71,15 +70,11 @@ function dashboardHostEvent(hostEvent){
     var end_clock = '';
     var event_count = 1;
 
-    var tableDataArr = [];
+    var cpuDataSet=[];
     var dataArr = [];
-
     var dashboardHostEventHTML = '';
 
     dashboardHostEventHTML += "<tbody>";
-
-    var cpuDataSet=[];
-
 
     $.each(hostEvent.result, function(k, v){
         console.log(" " + v.name + " 아이우에오 " + v.hostid);
@@ -124,13 +119,6 @@ function dashboardHostEvent(hostEvent){
         cpuDataObj.name = "test name";
         cpuDataObj.data = dataArr;
         cpuDataSet.push(cpuDataObj);
-/*
-        var tableDataObj = {};
-        tableDataObj.hostNum = hostNum;
-        tableDataObj.hostName = hostName;
-        tableDataObj.hostEventCnt = hostEventCnt;
-        tableDataObj.hostChart = hostChart;
-        tableDataArr.push(tableDataObj);*/
 
         dashboardHostEventHTML += "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='48px' class='line-td'>" + hostNum + "</td>";
@@ -146,8 +134,6 @@ function dashboardHostEvent(hostEvent){
     $("#hostEventList").append(dashboardHostEventHTML);
     console.log(JSON.stringify(cpuDataSet));
     showBasicLineChart('hostChart1', "test", cpuDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
-
-
 }
 
 function dashboardEventList() {
