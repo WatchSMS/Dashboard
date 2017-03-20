@@ -470,19 +470,19 @@ function dashboardDayEvent(){
                 series: [{
                     name: 'level',
                     data: infoEventArr,
-                    color: '#FC4747'
+                    color: '#E8B1F1'
                 }, {
                     name: 'high',
                     data: highEventArr,
-                    color: '#BDFD94'
+                    color: '#607FFA'
                 }, {
                     name: 'average',
                     data: averEventArr,
-                    color: '#FA60CE'
+                    color: '#94F2F2'
                 }, {
                     name: 'warring',
                     data: warnEventArr,
-                    color: '#F2F234'
+                    color: '#B1BEF1'
                 }],
                 legend: {
                     enabled: false
