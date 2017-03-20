@@ -591,6 +591,20 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         color: '#a2adcc'
                     },
                     formatter: function () {
+                        var d2 = new Date(this.value);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return hours + ":" + minutes + ":" + seconds;
                     }
                 }
             },
