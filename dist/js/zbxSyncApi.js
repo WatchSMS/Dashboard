@@ -262,7 +262,10 @@ var zbxSyncApi = {
                 "select_acknowledges": "extend",
                 "monitored": true,
                 "countOutput": true,
-                "time_from": today_select
+                "time_from": today_select,
+                "filter": {
+                    "value": 1
+                }
             },
             "id": 1,
             "auth": authid
