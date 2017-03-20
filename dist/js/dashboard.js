@@ -25,6 +25,9 @@ function dashboardView(){
     //이벤트 인지 차트
     dashboardEventAckChart();
     
+    //요일별 Top 이벤트
+    dashboardWeekTopEvent();
+    
     $.unblockUI(blockUI_opt_all);
     
     TIMER_ARR.push(setInterval(function(){addEventAckChart();}, 10000));
@@ -411,4 +414,287 @@ function addEventAckChart(){
     	});
     	
     });
+}
+
+function dashboardWeekTopEvent(){
+	
+	var DAYS = {
+			"MONDAY": 0,
+		    "TUESDAY": 1,
+		    "WEDNESDAY": 2,
+		    "THURSDAY": 3,
+		    "FRIDAY": 4,
+		    "SATURDAY": 5,
+		    "SUNDAY": 6,
+		    "NEXTMONDAY": 7
+	};
+	 var d = new Date();
+     var date = d.getDate();
+     var day = d.getDay();
+     var startDay = date - (day+7) + 1;
+     var startDate = new Date(d.getFullYear(), d.getMonth(), startDay, 0, 0, 0);
+     
+     var lastWeekStartTime = startDate.getTime() / 1000;
+     var lastDaysTimeArr = [];
+     
+     var mondayEventArr = [];
+     var tuesdayEventArr = [];
+     var wednesdayEventArr = [];
+     var thursdayEventArr = [];
+     var fridayEventArr = [];
+     var saturdayEventArr = [];
+     var sundayEventArr = [];
+     var alldayEventArr = [];
+     
+     var mondayUniqueTrigger = [];
+     var tuesdayUniqueTrigger = [];
+     var wednesdayUniqueTrigger = [];
+     var thursdayUniqueTrigger = [];
+     var fridayUniqueTrigger = [];
+     var saturdayUniqueTrigger = [];
+     var sundayUniqueTrigger = [];
+     
+     var mondayEventStatArr = [];
+     var tuesdayEventStatArr = [];
+     var wednesdayEventStatArr = [];
+     var thursdayEventStatArr = [];
+     var fridayEventStatArr = [];
+     var saturdayEventStatArr = [];
+     var sundayEventStatArr = [];
+     
+     var daysEventTotCount = [0,0,0,0,0,0,0];
+     var TOP_COUNT = 5;
+     
+     // 지난주 요일별 시작시간 세팅
+     for(var i=0; i < 8; i++){
+    	 lastDaysTimeArr[i] = lastWeekStartTime + (86400 * i);
+     }
+     
+     zbxApi.getEvent.getByTime(lastWeekStartTime).then(function(data) {
+    	 
+    	var eventArr = data.result;
+     	
+     	$.each(eventArr, function(k,v){
+     		
+     		if(v.clock >= lastDaysTimeArr[DAYS.MONDAY] && v.clock < lastDaysTimeArr[DAYS.TUESDAY]){ //월요일
+     			
+//     			console.log("============= 월요일 =================");
+//     			
+//				console.log(v.hosts[0].host);
+//				var d =  new Date(parseInt(v.clock)*1000);
+//            	console.log(d);
+//            	console.log("일 : " + (d.getDate()));
+//            	console.log("시 : " + d.getHours());
+//            	console.log("분  : " + d.getMinutes());
+//            	console.log("초 : " + d.getSeconds());
+//				console.log(v.relatedObject.description);
+//				console.log(v.relatedObject.priority);
+				
+				if(v.value == 0){
+					daysEventTotCount[DAYS.MONDAY] += 1;
+					if(mondayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						mondayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var mondayEventStatObj = new Object();
+		     			mondayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			mondayEventStatObj.count = 1; 
+		     			mondayEventStatObj.host = v.hosts[0].host;
+		     			mondayEventStatObj.description = v.relatedObject.description;
+		     			mondayEventStatArr.push(mondayEventStatObj);
+		     		}else{
+		     			$.each(mondayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.TUESDAY] && v.clock < lastDaysTimeArr[DAYS.WEDNESDAY]){ // 화요일
+     			
+				if(v.value == 0){
+					daysEventTotCount[DAYS.TUESDAY] += 1;
+					if(tuesdayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						tuesdayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var tuesdayEventStatObj = new Object();
+		     			tuesdayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			tuesdayEventStatObj.count = 1; 
+		     			tuesdayEventStatObj.host = v.hosts[0].host;
+		     			tuesdayEventStatObj.description = v.relatedObject.description;
+		     			tuesdayEventStatArr.push(tuesdayEventStatObj);
+		     		}else{
+		     			$.each(tuesdayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.WEDNESDAY] && v.clock < lastDaysTimeArr[DAYS.THURSDAY]){ //수요일
+     			
+				if(v.value == 0){
+					daysEventTotCount[DAYS.WEDNESDAY] += 1;
+					if(wednesdayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						wednesdayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var wednesdayEventStatObj = new Object();
+		     			wednesdayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			wednesdayEventStatObj.count = 1;
+		     			wednesdayEventStatObj.host = v.hosts[0].host;
+		     			wednesdayEventStatObj.description = v.relatedObject.description;
+		     			wednesdayEventStatArr.push(wednesdayEventStatObj);
+		     		}else{
+		     			$.each(wednesdayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.THURSDAY] && v.clock < lastDaysTimeArr[DAYS.FRIDAY]){ //목요일
+     			
+				if(v.value == 0){
+					daysEventTotCount[DAYS.THURSDAY] += 1;
+					if(thursdayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						thursdayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var thurdayEventStatObj = new Object();
+		     			thurdayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			thurdayEventStatObj.count = 1; 
+		     			thurdayEventStatObj.host = v.hosts[0].host;
+		     			thurdayEventStatObj.description = v.relatedObject.description;
+		     			thursdayEventStatArr.push(thurdayEventStatObj);
+		     		}else{
+		     			$.each(thursdayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.FRIDAY] && v.clock < lastDaysTimeArr[DAYS.SATURDAY]){ // 금요일
+				
+				if(v.value == 0){
+					//fridayEventArr.push(v);	
+					daysEventTotCount[DAYS.FRIDAY] += 1;
+					if(fridayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						fridayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var fridayEventStatObj = new Object();
+		     			fridayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			fridayEventStatObj.count = 1; 
+		     			fridayEventStatObj.host = v.hosts[0].host;
+		     			fridayEventStatObj.description = v.relatedObject.description;
+		     			fridayEventStatArr.push(fridayEventStatObj);
+		     		}else{
+		     			$.each(fridayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.SATURDAY] && v.clock < lastDaysTimeArr[DAYS.SUNDAY]){ // 토요일
+     			
+				if(v.value == 0){
+					daysEventTotCount[DAYS.SATURDAY] += 1;
+					if(saturdayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						saturdayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var saturdayEventStatObj = new Object();
+		     			saturdayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			saturdayEventStatObj.count = 1;
+		     			saturdayEventStatObj.host = v.hosts[0].host;
+		     			saturdayEventStatObj.description = v.relatedObject.description;
+		     			saturdayEventStatArr.push(saturdayEventStatObj);
+		     		}else{
+		     			$.each(saturdayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+				
+     		}else if(v.clock >= lastDaysTimeArr[DAYS.SUNDAY] && v.clock < lastDaysTimeArr[DAYS.NEXTMONDAY]){ // 일요일
+     			
+				if(v.value == 0){
+					daysEventTotCount[DAYS.SUNDAY] += 1;
+					if(sundayUniqueTrigger.indexOf(v.relatedObject.triggerid)== -1){
+						sundayUniqueTrigger.push(v.relatedObject.triggerid);
+		     			var sundayEventStatObj = new Object();
+		     			sundayEventStatObj.triggerid = v.relatedObject.triggerid;
+		     			sundayEventStatObj.count = 1;
+		     			sundayEventStatObj.host = v.hosts[0].host;
+		     			sundayEventStatObj.description = v.relatedObject.description;
+		     			sundayEventStatArr.push(sundayEventStatObj);
+		     		}else{
+		     			$.each(sundayEventStatArr, function(k2,v2){
+		     				if( v2.triggerid == v.relatedObject.triggerid ){
+		     					v2.count += 1;
+		     					return false;
+		     				}
+		     			});
+		     		}
+				}
+				
+     		}
+     	});
+     	
+     	alldayEventArr.push(mondayEventStatArr);
+     	alldayEventArr.push(tuesdayEventStatArr);
+     	alldayEventArr.push(wednesdayEventStatArr);
+     	alldayEventArr.push(thursdayEventStatArr);
+     	alldayEventArr.push(fridayEventStatArr);
+     	alldayEventArr.push(saturdayEventStatArr);
+     	alldayEventArr.push(sundayEventStatArr);
+     	
+     	$.each(alldayEventArr, function(k,v){
+     		v.sort(function (a,b){
+     			return a.count > b.count ? -1 : a.count < b.count ? 1 : 0;
+     		});
+     	});
+     	
+     	var tblHTML = "";
+     	for(var k=0; k<alldayEventArr.length; ++k){
+     		
+     		tblHTML += "<td width='14.29%' class='br_b line valignt align_center'>";
+         	tblHTML += "<div class='s1'>" + daysEventTotCount[k] + "</div>";
+         	
+	     	for(var i=0; i<TOP_COUNT; ++i){
+	     		if(typeof alldayEventArr[k][i] == "undefined"){
+	     			break;
+	     		}
+	     		var count = alldayEventArr[k][i].count;
+	     		var percentage = (alldayEventArr[k][i].count / daysEventTotCount[k]) * 100;
+	     		var triggerName = alldayEventArr[k][i].description;
+	     		var host = alldayEventArr[k][i].host;
+	     		
+	         	tblHTML += "<div class='s2 align_center valignt'>";
+	         	tblHTML += "<li class='line p1'>";
+	         	tblHTML += "<div class='o1'>" + percentage.toFixed(1) + "%</div>";
+	         	tblHTML += "<div class='scw br3'><div class='mt2 bg7 br3' style='width:" + percentage.toFixed(1) + "%; height:5px;'></div></div>";
+	         	tblHTML += "</li>";
+	         	tblHTML += "<li class='p2'>" + count + "건</li>";
+	         	tblHTML += "</div>";
+	         	tblHTML += "<div class='s3 align_left'>";
+	         	tblHTML += "<a style='width:100%; height:18px; display:inline-block;' title='"+ triggerName + "(" + host + ")'>";
+	         	tblHTML += "<span class='smd'>" + triggerName + "</span></a>";
+	         	tblHTML += "</div>";
+	     	}
+	     	tblHTML += "</td>";
+     	}
+     	
+     	$("#topDayEvent").empty();
+     	$("#topDayEvent").append(tblHTML);
+
+     });
+	    
 }
