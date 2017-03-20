@@ -22,7 +22,7 @@ $(document).ready(function() {
     });
 
     $("#base_dashboard").load("base_dashboard.html");
-    $("#base_event").load("base_event.html");
+    $("#base_eventList").load("base_eventList.html");
     $("#base_graph").load("base_graph.html");
     $("#base_setting").load("base_setting.html");
     $("#base_cpuinfo").load("base_cpuinfo.html");
@@ -135,13 +135,11 @@ var int = {
             dashboardView();
         });
 
-        $("#menu_histogram").click(function() {
+        $("#menu_eventList").click(function() {
             $("[id^=base]").hide();
-            pivotDisplay();
-            $("#base_event").show();
-            $("#base_histogram").show();
+            $("#base_eventList").show();
         });
-
+/*
         $("#menu_pivottable").click(function() {
             $("[id^=base]").hide();
             pivotDisplay();
@@ -162,6 +160,7 @@ var int = {
             $("#base_event").show();
             $("#base_free").show();
         });
+*/
 
         $("#menu_setting").click(function() {
             $("[id^=base]").hide();
@@ -1013,7 +1012,7 @@ function type(d, i, columns) {
     d.total = t;
     return d;
 }
-
+/*
 var pivotDisplay = function() {
     $.blockUI(blockUI_opt_all);
     var beforeDay = db.get("beforeDay");
@@ -1032,7 +1031,8 @@ var pivotDisplay = function() {
     });
 
 };
-
+*/
+/*
 var pivotMain = function(Latest_events, event_type) {
     var derivers = $.pivotUtilities.derivers;
     var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers);
@@ -1112,7 +1112,7 @@ var pivotMain = function(Latest_events, event_type) {
     $("#base_event").find(".pvtAggregator").css("visibility", "hidden");
 
 };
-
+*/
 var alertDiag = function(data) {
     $("#modal-alert-text").text(data);
     $('#modal-alert').modal('show');

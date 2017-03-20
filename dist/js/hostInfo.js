@@ -17,7 +17,6 @@ var hostInfoView = function() {
             tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
             $("#serverlist").append(tagText);
 
-
             tagText2 += '<li><a class="treeview-menu" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
             tagText2 += '<li><a class="treeview-menu" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
             tagText2 += '<li><a class="treeview-menu" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
