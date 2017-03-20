@@ -138,6 +138,7 @@ var int = {
         $("#menu_eventList").click(function() {
             $("[id^=base]").hide();
             $("#base_eventList").show();
+            eventListView();
         });
 /*
         $("#menu_pivottable").click(function() {
