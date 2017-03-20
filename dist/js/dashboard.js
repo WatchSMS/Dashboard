@@ -254,7 +254,7 @@ function dashboardDayEvent(){
 
     zbxApi.getEvent.getByBeforeTime(lastWeekStartTime).then(function(data) {
         var eventArr = data.result;
-        console.log(" 일주일 전 이벤트 : " );
+        /*console.log(" 일주일 전 이벤트 : " );
         console.log(JSON.stringify(eventArr));
 
         console.log(" MONDAY : " + lastDaysTimeArr[DAYS.MONDAY]);
@@ -264,7 +264,7 @@ function dashboardDayEvent(){
         console.log(" FRIDAY : " + lastDaysTimeArr[DAYS.FRIDAY]);
         console.log(" SATURDAY : " + lastDaysTimeArr[DAYS.SATURDAY]);
         console.log(" SUNDAY : " + lastDaysTimeArr[DAYS.SUNDAY]);
-        console.log(" NEXT MONDAY : " + lastDaysTimeArr[DAYS.NEXTMONDAY]);
+        console.log(" NEXT MONDAY : " + lastDaysTimeArr[DAYS.NEXTMONDAY]);*/
 
         $.each(eventArr, function(k, v) {
             priority = v.relatedObject.priority;
@@ -278,7 +278,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     mon_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             }
             else if(v.clock >= lastDaysTimeArr[DAYS.TUESDAY] && v.clock < lastDaysTimeArr[DAYS.WEDNESDAY]){
@@ -291,7 +291,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     tus_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             } else if(v.clock >= lastDaysTimeArr[DAYS.WEDNESDAY] && v.clock < lastDaysTimeArr[DAYS.THURSDAY]){
                 if(priority == 1){
@@ -303,7 +303,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     wed_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             } else if(v.clock >= lastDaysTimeArr[DAYS.THURSDAY] && v.clock < lastDaysTimeArr[DAYS.FRIDAY]){
                 if(priority == 1){
@@ -315,7 +315,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     thu_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             } else if(v.clock >= lastDaysTimeArr[DAYS.FRIDAY] && v.clock < lastDaysTimeArr[DAYS.SATURDAY]){
                 if(priority == 1){
@@ -327,7 +327,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     fri_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             } else if(v.clock >= lastDaysTimeArr[DAYS.SATURDAY] && v.clock < lastDaysTimeArr[DAYS.SUNDAY]){
                 if(priority == 1){
@@ -339,7 +339,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     sat_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             } else if(v.clock >= lastDaysTimeArr[DAYS.SUNDAY] && v.clock < lastDaysTimeArr[DAYS.NEXTMONDAY]){
                 if(priority == 1){
@@ -351,7 +351,7 @@ function dashboardDayEvent(){
                 } else if(priority == 4){
                     sun_high_event_count += 1;
                 } else {
-                    alert(" priority ");
+                    console.log(" priority ");
                 }
             }
         });
@@ -388,7 +388,7 @@ function dashboardDayEvent(){
         averEventArr.push(sat_aver_event_count);
         averEventArr.push(sun_aver_event_count);
 
-        console.log(" MONDAY    high : " + mon_high_event_count + " warn : " + mon_warn_event_count + " aver : " + mon_aver_event_count + " info : " + mon_info_event_count);
+        /*console.log(" MONDAY    high : " + mon_high_event_count + " warn : " + mon_warn_event_count + " aver : " + mon_aver_event_count + " info : " + mon_info_event_count);
         console.log(" WEDNESDAY high : " + tus_high_event_count + " warn : " + tus_warn_event_count + " aver : " + tus_aver_event_count + " info : " + tus_info_event_count);
         console.log(" MONDAY    high : " + wed_high_event_count + " warn : " + wed_warn_event_count + " aver : " + wed_aver_event_count + " info : " + wed_info_event_count);
         console.log(" THURSDAY  high : " + thu_high_event_count + " warn : " + thu_warn_event_count  + " aver : " + thu_aver_event_count + " info : " + thu_info_event_count);
@@ -400,7 +400,7 @@ function dashboardDayEvent(){
         console.log(JSON.stringify(warnEventArr));
         console.log(JSON.stringify(highEventArr));
         console.log(JSON.stringify(averEventArr));
-
+*/
         $(function() {
             Highcharts.chart('chart_dayEvent', {
                 chart: {
