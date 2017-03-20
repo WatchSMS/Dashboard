@@ -167,11 +167,23 @@ function dashboardEventList() {
         var description = v.description;
 
         eventTable += "<tr>";
-        eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
+        if(severity == "information") {
+            eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
+        } else if(severity == "warning") {
+            eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
+        } else if(severity == "average") {
+            eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
+        } else if(severity == "high") {
+            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+        }
         eventTable += "<td width='60' class='line'>" + status + "</td>";
         eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
         eventTable += "<td width='75' class='line'>" + age + "</td>";
-        eventTable += "<td width='69' class='line'>" + ack + "</td>";
+        if(ack == "Unacked"){
+            eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+        } else if(ack = "Acked"){
+            eventTable += "<td width='69' class='line' style='color:blue'>" + ack + "</td>";
+        }
         eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
         eventTable += "<td width='100' class='line'>" + host + "</td>";
         eventTable += "<td width='auto' class='align_left ponter'>" +
