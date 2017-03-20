@@ -733,5 +733,33 @@ var zbxApi = {
             });
             return data.result[0].clock;
         }
+    },
+
+    /*  대시보드 - 이벤트 목록 */
+    dashboardTrigger: {
+        get: function () {
+            var method = "trigger.get";
+            var params = {
+                //"output": ["description", "priority", "value", "lastchange", "lastChangeSince"],
+                "output": "extend",
+                "monitored": true,
+                "skipDependent": true,
+                "expandDescription": true,
+                "selectGroups": ["name"],
+                "selectHosts": ["host", "maintenance_status"],
+                "sortfield": "lastchange",
+                "maintenance": "true",
+                "withUnacknowledgedEvents": "true",
+                "selectLastEvent": "true"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log(" 123 RESULT : " + data);
+            console.log(JSON.stringify(data));
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
     }
 };

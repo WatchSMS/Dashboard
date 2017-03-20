@@ -142,7 +142,10 @@ function dashboardHostEvent(hostEvent){
 }
 
 function dashboardEventList() {
-    var dashboard_Event = zbxSyncApi.dashboardTrigger();
+    var dashboard_Event = '';
+    zbxApi.dashboardTrigger.get().then(function(data) {
+        dashboard_Event = zbxApi.dashboardTrigger.success(data);
+
     //console.log(dashboard_Event);
     //console.log(JSON.stringify(dashboard_Event));
 
@@ -150,7 +153,7 @@ function dashboardEventList() {
 
     eventTable += '<tbody>';
 
-    $.each(dashboard_Event, function (k, v) {
+    $.each(dashboard_Event.result, function (k, v) {
         var severity = convPriority(v.priority);
         var status = convStatus(v.value);
         var lastchange = convTime(v.lastchange);
@@ -194,6 +197,7 @@ function dashboardEventList() {
     eventTable += "</tbody>";
     $("#dashboardEventList").empty();
     $("#dashboardEventList").append(eventTable);
+    });
 }
 
 function dashboardDayEvent(){

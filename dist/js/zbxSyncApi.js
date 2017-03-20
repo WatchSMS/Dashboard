@@ -111,32 +111,6 @@ var zbxSyncApi = {
         return result.result;
     },
 
-    /*  대시보드 - 이벤트 목록 */
-    dashboardTrigger: function () {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "trigger.get",
-            "params": {
-                //"output": ["description", "priority", "value", "lastchange", "lastChangeSince"],
-                "output": "extend",
-                "monitored": true,
-                "skipDependent": true,
-                "expandDescription": true,
-                "selectGroups": ["name"],
-                "selectHosts": ["host", "maintenance_status"],
-                "sortfield": "lastchange",
-                "maintenance": "true",
-                "withUnacknowledgedEvents": "true",
-                "selectLastEvent": "true"
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        //console.log("dashboardTrigger : " + JSON.stringify(result.result));
-        return result.result;
-    },
-
     getDiskItem: function (hostid, key_) {
         var param = {
             "jsonrpc": "2.0",
