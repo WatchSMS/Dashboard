@@ -14,6 +14,27 @@ var zbxApi = {
             };
             return server.sendAjaxRequest(method, params);
         },
+
+        getByBeforeTime: function (startTime) {
+            var method = "event.get";
+            var params = {
+                "output": [
+                    "eventid", "clock", "value"
+                ],
+                "source": 0,
+                "selectRelatedObject": [
+                    "triggerid", "priority"
+                ],
+                "sortfield": ["clock", "eventid"],
+                "sortorder": "ASC",
+                "time_from": startTime,
+                "filter": {
+                    "value": 1
+                }
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+
         getById: function (startEventId) {
             var method = "event.get";
             var params = {

@@ -160,7 +160,7 @@ function dashboardEventList() {
         var ackTime = '';
         zbxApi.dashboardEvent.get(eventId).then(function(data){
             ackTime = zbxApi.dashboardHostInfo.success(data);
-        })
+        });
         //console.log("ackTime : " + ackTime);
         ackTime = convTime(ackTime);
         var host = v.hosts[0].host;
@@ -185,144 +185,37 @@ function dashboardEventList() {
 }
 
 function dashboardDayEvent(){
-    var DAYTOMILLS = 1000*60*60*24;
-    var date2 = new Date();
-    var date = date2.setDate(date2.getDate(new Date(day_select)) - 7);
-    console.log(" 기존 시간 : " + date);
-    var day_select = date - (date % DAYTOMILLS);
-    var today_select = date - (date % DAYTOMILLS);
-    //console.log(" today_select - 7 : " + new Date(today_select));
-    //console.log(" today_select - 7 : " + today_select);
-    today_select = today_select / 1000;
+    var DAYS = {
+        "MONDAY": 0,
+        "TUESDAY": 1,
+        "WEDNESDAY": 2,
+        "THURSDAY": 3,
+        "FRIDAY": 4,
+        "SATURDAY": 5,
+        "SUNDAY": 6,
+        "NEXTMONDAY": 7
+    };
 
-    var curTime = new Date();
-    curTime = curTime-(curTime % DAYTOMILLS);
-    //console.log("13 curTime : " + new Date(curTime));
-    //console.log("13 curTime : " + curTime);
+    var d = new Date();
+    var date = d.getDate();
+    var day = d.getDay();
+    var startDay = date - (day+7) + 1;
+    var startDate = new Date(d.getFullYear(), d.getMonth(), startDay, 0, 0, 0);
 
-    var event_data = '';
-    var event_id = '';
-    var event_clock = '';
-    var event_triggerId = '';
-    var event_priority = 0;
+    var lastWeekStartTime = startDate.getTime() / 1000;
+    var lastDaysTimeArr = [];
 
-    var event_List = '';
+    // 지난주 요일별 시작시간 세팅
+    for(var i=0; i < 8; i++){
+        lastDaysTimeArr[i] = lastWeekStartTime + (86400 * i);
+    }
 
-    zbxApi.dashboardDayEvent.get(today_select).then(function(data){
-        event_data = zbxApi.dashboardDayEvent.success(data);
+    zbxApi.getEvent.getByBeforeTime(lastWeekStartTime).then(function(data) {
+        var eventArr = data.result;
+        console.log(" 일주일 전 이벤트 : " );
+        console.log(JSON.stringify(eventArr));
 
-        $.each(event_data, function(k, v){
-            event_id = v.eventid;
-            event_clock = v.clock * 1000;
-            try {
-                event_triggerId = v.relatedObject.triggerid;
-                event_priority = v.relatedObject.priority;
-            } catch (e) {
-                console.log(e);
-            }
-            //console.log(" EVENT ID : " + event_id + " / CLOCK : " + event_clock + " / TRIGGER ID : " + event_triggerId + " / PRIORITY : " + event_priority);
-        });
     });
-
-    /*$(function() {
-     Highcharts.chart('chart_dayEvent', {
-     chart: {
-     type: 'column',
-     height: 300,
-     backgroundColor: '#424973',
-     spacingTop: 10,
-     spacingBottom: 0,
-     spacingLeft: 0,
-     spacingRight: 0
-     },
-     title: {
-     text: ''
-     },
-     subtitle: {
-     text: ''
-     },
-     xAxis: {
-     gridLineColor: '#FBFBFB',
-     lineColor: '#FBFBFB',
-     minorGridLineColor: '#505053',
-     tickColor: '#FBFBFB',
-     categories: [
-     '월요일',
-     '화요일',
-     '수요일',
-     '목요일',
-     '금요일',
-     '토요일',
-     '일요일'
-     ],
-     title: {
-     text: ''
-     },
-     style: {
-     color: '#FBFBFB'
-     }
-     },
-     yAxis: {
-     gridLineColor: '#FBFBFB',
-     lineColor: '#FBFBFB',
-     minorGridLineColor: '#505053',
-     tickColor: '#FBFBFB',
-     min: 0,
-     title: {
-     text: ''
-     },
-     style: {
-     color: '#FBFBFB'
-     }
-     },
-     tooltip: {
-     backgroundColor: 'rgba(0, 0, 0, 0.85)',
-     style: {
-     color: '#FBFBFB'
-     }
-     },
-     plotOptions: {
-     column: {
-     pointPadding: 0.2,
-     borderWidth: 0
-     },
-     style: {
-     color: '#FBFBFB'
-     }
-     },
-     series: [{
-     name: 'level',
-     data: level_Event,
-     color: '#FC4747'
-     }, {
-     name: 'High',
-     data: high_Event,
-     color: '#F2F234'
-     }, {
-     name: 'average',
-     data: average_Event,
-     color: '#FA60CE'
-     }, {
-     name: 'warring',
-     data: warring_Event,
-     color: '#F2F234'
-     }],
-     legend: {
-     enabled: false
-     },
-     exporting: {
-     buttons: {
-     contextButton: {
-     enabled: false,
-     symbolStroke: 'transparent',
-     theme: {
-     fill:'#626992'
-     }
-     }
-     }
-     }
-     });
-     });*/
 }
 
 function dashboardEventAckChart() {
