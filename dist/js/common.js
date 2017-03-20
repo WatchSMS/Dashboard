@@ -552,7 +552,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             colors: colorArr,
             chart: {
                 backgroundColor: '#424973',
-                height: 80,
+                height: 70,
                 //type: 'area'
                 renderTo: chartId,
                 zoomType: 'x',
