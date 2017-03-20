@@ -879,7 +879,7 @@ dc.filters = {};
  * @constructor
  */
 dc.filters.RangedFilter = function (low, high) {
-    var range = new Array(low, high);
+    var range = [low, high];
     range.isFiltered = function (value) {
         return value >= this[0] && value < this[1];
     };

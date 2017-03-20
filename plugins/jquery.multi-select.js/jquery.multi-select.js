@@ -182,7 +182,7 @@
             that.$element.find("option[value='"+option.value+"']").length === 0){
           var $option = $('<option value="'+option.value+'">'+option.text+'</option>'),
               index = parseInt((typeof option.index === 'undefined' ? that.$element.children().length : option.index)),
-              $container = option.nested == undefined ? that.$element : $("optgroup[label='"+option.nested+"']")
+              $container = option.nested == undefined ? that.$element : $("optgroup[label='"+option.nested+"']");
 
           $option.insertAt(index, $container);
           that.generateLisFromOption($option.get(0), index, option.nested);
@@ -234,7 +234,7 @@
           e.preventDefault();
           e.stopPropagation();
           that.selectHighlighted($list);
-          return;
+
         }
       });
     },
@@ -329,7 +329,7 @@
       });
 
       this.$container.on('mouseleave', that.elemsSelector, function () {
-        $(this).parents('.ms-container').find(that.elemsSelector).removeClass('ms-hover');;
+          $(this).parents('.ms-container').find(that.elemsSelector).removeClass('ms-hover');
       });
     },
 
@@ -341,7 +341,7 @@
     'destroy' : function(){
       $("#ms-"+this.$element.attr("id")).remove();
       this.$element.off('focus');
-      this.$element.css('position', '').css('left', '')
+      this.$element.css('position', '').css('left', '');
       this.$element.removeData('multiselect');
     },
 

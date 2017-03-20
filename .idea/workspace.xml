@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed90c85f-b668-44d6-9017-a111e6bf13ea" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/zabirepo-param.js" afterPath="$PROJECT_DIR$/dist/js/zabirepo-param.js" />
+    <list default="true" id="ed90c85f-b668-44d6-9017-a111e6bf13ea" name="Default" comment="2017.03.10 디스크 시간 설정 관련 수정">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/base_dashboard.html" afterPath="$PROJECT_DIR$/base_dashboard.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/dashboard.js" afterPath="$PROJECT_DIR$/dist/js/dashboard.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/bootstrap/js/npm.js" afterPath="$PROJECT_DIR$/plugins/bootstrap/js/npm.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/dc.js/dc.js" afterPath="$PROJECT_DIR$/plugins/dc.js/dc.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/jQRangeSlider/demo/sliderDemo.js" afterPath="$PROJECT_DIR$/plugins/jQRangeSlider/demo/sliderDemo.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/jquery.multi-select.js/jquery.multi-select.js" afterPath="$PROJECT_DIR$/plugins/jquery.multi-select.js/jquery.multi-select.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/pathseg/pathseg.js" afterPath="$PROJECT_DIR$/plugins/pathseg/pathseg.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugins/zoomjs/zoom.js" afterPath="$PROJECT_DIR$/plugins/zoomjs/zoom.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,21 +28,185 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="base_processInfo.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base_processInfo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="127" column="55" lean-forward="false" selection-start-line="127" selection-start-column="55" selection-end-line="127" selection-end-column="55" />
+            <state relative-caret-position="1938">
+              <caret line="102" column="47" lean-forward="false" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dist/js/test.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="17" column="10" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="17" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base_dashboard.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/base_dashboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1349">
+              <caret line="71" column="26" lean-forward="true" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
+              <folding>
+                <element signature="n#style#0;n#table#0;n#div#0;n#section#0;n#div#3;n#div#0;n#section#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dist/js/dashboard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="901">
+              <caret line="766" column="1" lean-forward="false" selection-start-line="766" selection-start-column="1" selection-end-line="766" selection-end-column="1" />
+              <folding>
+                <marker date="1489969541458" expanded="true" signature="6328:6374" ph="..." />
+                <marker date="1489969541458" expanded="true" signature="27601:27650" ph="..." />
+                <marker date="1489969541458" expanded="true" signature="27901:27947" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dist/js/common.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="601" column="28" lean-forward="false" selection-start-line="601" selection-start-column="28" selection-end-line="601" selection-end-column="28" />
+              <folding>
+                <marker date="1489741672990" expanded="true" signature="31378:31434" ph="..." />
+                <marker date="1489741672990" expanded="true" signature="32077:32089" ph="..." />
+                <marker date="1489741672990" expanded="true" signature="32255:32264" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>btn</find>
+      <find>btn_ExportChart</find>
+      <find>trigger</find>
+      <find>hostEventList</find>
+      <find>infobox_alertTrigger</find>
+      <find>function</find>
+      <find>dashboardTrigger</find>
+      <find>startTime</find>
+      <find>history</find>
+      <find>tr</find>
+      <find>Histo</find>
+      <find>&gt;</find>
+      <find>time</find>
+      <find>time_from</find>
+      <find>dashbo</find>
+      <find>if</find>
+      <find>dashboardEvent</find>
+      <find>sorty</find>
+      <find>today_select</find>
+      <find>dashboardEventStatus</find>
+      <find>event.get</find>
+      <find>host.get</find>
+      <find>event</find>
+      <find>hostids</find>
+      <find>console.log</find>
+      <find>dashboardDayEvent</find>
+      <find>today_select</find>
+      <find>+1</find>
+      <find>1</find>
+      <find>hostid</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>wrapper_SMS</replace>
+      <replace>content-wrapper2</replace>
+      <replace>treeview-menu2</replace>
+      <replace>pull-right2</replace>
+      <replace>wrapper2</replace>
+      <replace>main-footer2</replace>
+      <replace>sidebar2</replace>
+      <replace>navbar2</replace>
+      <replace>main-sidebar1</replace>
+      <replace>sidebar1</replace>
+      <replace>sidebar1-menu</replace>
+      <replace>header1</replace>
+      <replace>icon01_dash</replace>
+      <replace>icon02_event</replace>
+      <replace>icon03_overview</replace>
+      <replace>wrapper_custom</replace>
+      <replace>navbar_custom</replace>
+      <replace>main-sidebar-custom</replace>
+      <replace>content-custom</replace>
+      <replace>content-header-custom</replace>
+      <replace>content-wrapper-custom</replace>
+      <replace>header-custom</replace>
+      <replace>wrapper-custom</replace>
+      <replace>main-header</replace>
+      <replace>main-header-custom</replace>
+      <replace>navbar-custom</replace>
+      <replace>sidebar-custom</replace>
+      <replace>sidebar-menu-custom</replace>
+      <replace>dashboard-header</replace>
+      <replace>dist</replace>
+    </replaceStrings>
+  </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/base_cpuinfo.html" />
+        <option value="$PROJECT_DIR$/plugins/highcharts/highcharts.js" />
+        <option value="$PROJECT_DIR$/base_disk.html" />
+        <option value="$PROJECT_DIR$/dist/js/serverDisk.js" />
+        <option value="$PROJECT_DIR$/dist/js/serverTraffic.js" />
+        <option value="$PROJECT_DIR$/plugins/adminLTE/AdminLTE.min.css" />
+        <option value="$PROJECT_DIR$/dist/css/fonts.googleapis.css" />
+        <option value="$PROJECT_DIR$/plugins/adminLTE/skin-red.min.css" />
+        <option value="$PROJECT_DIR$/dist/css/index.css" />
+        <option value="$PROJECT_DIR$/custom/app.min.js" />
+        <option value="$USER_HOME$/Desktop/OBICs-Watch_disk-used.html" />
+        <option value="$PROJECT_DIR$/dist/css/mainbox.min.css" />
+        <option value="$PROJECT_DIR$/dist/css/custom.css" />
+        <option value="$PROJECT_DIR$/dist/js/memStatsView.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/dist/css/bootstrap_v1.min.css" />
+        <option value="$PROJECT_DIR$/base_processInfo.html" />
+        <option value="$PROJECT_DIR$/dist/js/serverProcesses.js" />
+        <option value="$PROJECT_DIR$/base_diskInfo.html" />
+        <option value="$PROJECT_DIR$/base_networkInfo.html" />
+        <option value="$PROJECT_DIR$/dist/js/diskStatusView.js" />
+        <option value="$PROJECT_DIR$/dist/js/trafficStatusView.js" />
+        <option value="$PROJECT_DIR$/dist/js/hostDetailInfo.js" />
+        <option value="$PROJECT_DIR$/dist/js/hostInfo.js" />
+        <option value="$PROJECT_DIR$/base_serverInfo.html" />
+        <option value="$PROJECT_DIR$/base_server.html" />
+        <option value="$PROJECT_DIR$/dist/js/serverOverview.js" />
+        <option value="$PROJECT_DIR$/dist/js/zabirepo.js" />
+        <option value="$PROJECT_DIR$/base_dashboard.html" />
+        <option value="$PROJECT_DIR$/dist/js/zbxApi.js" />
+        <option value="$PROJECT_DIR$/dist/js/test.html" />
+        <option value="$PROJECT_DIR$/dist/js/zbxSyncApi.js" />
+        <option value="$PROJECT_DIR$/dist/js/common.js" />
+        <option value="$PROJECT_DIR$/dist/js/dashboard.js" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -43,10 +215,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1592" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -67,24 +239,134 @@
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="zabirepo" />
+              <option name="myItemId" value="Dashboard" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="zabirepo" />
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="js.eslint.eslintPackage" value="" />
+    <property name="SearchEverywhereHistoryKey" value=") {&#9;null&#9;null" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\dev\Dashboard\dist\js" />
+      <recent name="D:\dev\Dashboard\dist\img" />
+      <recent name="D:\dev\Dashboard\dist\css" />
+      <recent name="D:\dev\Dashboard\customPlugins" />
+      <recent name="D:\dev\Dashboard\custom" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\dev\Dashboard\customPlugins" />
+      <recent name="D:\dev\Dashboard\dist\css" />
+      <recent name="D:\dev\Dashboard" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -98,32 +380,421 @@
       <updated>1481677532187</updated>
       <workItem from="1481677535001" duration="1849000" />
       <workItem from="1482369603858" duration="1820000" />
+      <workItem from="1485827358650" duration="7475000" />
+      <workItem from="1485837835248" duration="3715000" />
+      <workItem from="1485842451695" duration="12786000" />
+      <workItem from="1485910194177" duration="420000" />
+      <workItem from="1485910958379" duration="8166000" />
+      <workItem from="1485939697585" duration="579000" />
+      <workItem from="1485998888475" duration="9594000" />
+      <workItem from="1486018484784" duration="10343000" />
+      <workItem from="1486081728008" duration="23429000" />
+      <workItem from="1486341505225" duration="13844000" />
+      <workItem from="1486434756516" duration="8765000" />
+      <workItem from="1486449796083" duration="2144000" />
+      <workItem from="1486457267731" duration="2231000" />
+      <workItem from="1486514252935" duration="24688000" />
+      <workItem from="1486600286356" duration="23413000" />
+      <workItem from="1486685942550" duration="14343000" />
+      <workItem from="1486945681661" duration="18782000" />
+      <workItem from="1487033082714" duration="348000" />
+      <workItem from="1487117801194" duration="10129000" />
+      <workItem from="1487204623364" duration="12621000" />
+      <workItem from="1487549897768" duration="15370000" />
+      <workItem from="1487637473756" duration="11681000" />
+      <workItem from="1487722733014" duration="16031000" />
+      <workItem from="1487809718987" duration="7580000" />
+      <workItem from="1487896193992" duration="365000" />
+      <workItem from="1487897626331" duration="11271000" />
+      <workItem from="1488156089604" duration="3955000" />
+      <workItem from="1488241466205" duration="23186000" />
+      <workItem from="1488415748142" duration="22938000" />
+      <workItem from="1488502702718" duration="7963000" />
+      <workItem from="1488760183860" duration="8486000" />
+      <workItem from="1488848267600" duration="14488000" />
+      <workItem from="1488933567707" duration="171000" />
+      <workItem from="1488934101157" duration="15035000" />
+      <workItem from="1489017168605" duration="23595000" />
+      <workItem from="1489105323122" duration="21044000" />
+      <workItem from="1489137409060" duration="2011000" />
+      <workItem from="1489365935752" duration="15776000" />
+      <workItem from="1489452233810" duration="21784000" />
+      <workItem from="1489536966855" duration="15281000" />
+      <workItem from="1489622909649" duration="12189000" />
+      <workItem from="1489708346601" duration="25791000" />
+      <workItem from="1489969025389" duration="102000" />
+      <workItem from="1489969272392" duration="384000" />
     </task>
+    <task id="LOCAL-00204" summary="2017.03.10 네트워크 수정">
+      <created>1489123189646</created>
+      <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1489123189646</updated>
+    </task>
+    <task id="LOCAL-00205" summary="2017.03.10 디스크, 네트워크 그래프 관련 수정">
+      <created>1489125025574</created>
+      <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1489125025574</updated>
+    </task>
+    <task id="LOCAL-00206" summary="2017.03.10 디스크 시간 설정 관련 수정">
+      <created>1489130562759</created>
+      <option name="number" value="00206" />
+      <option name="presentableId" value="LOCAL-00206" />
+      <option name="project" value="LOCAL" />
+      <updated>1489130562759</updated>
+    </task>
+    <task id="LOCAL-00207" summary="2017.03.10 디스크 시간 설정 관련 수정">
+      <created>1489130595174</created>
+      <option name="number" value="00207" />
+      <option name="presentableId" value="LOCAL-00207" />
+      <option name="project" value="LOCAL" />
+      <updated>1489130595174</updated>
+    </task>
+    <task id="LOCAL-00208" summary="2017.03.10 디스크, 네트워크 시간 설정 관련 수정">
+      <created>1489131120707</created>
+      <option name="number" value="00208" />
+      <option name="presentableId" value="LOCAL-00208" />
+      <option name="project" value="LOCAL" />
+      <updated>1489131120707</updated>
+    </task>
+    <task id="LOCAL-00209" summary="2017.03.10 디스크 시간 설정 관련 수정">
+      <created>1489138249381</created>
+      <option name="number" value="00209" />
+      <option name="presentableId" value="LOCAL-00209" />
+      <option name="project" value="LOCAL" />
+      <updated>1489138249381</updated>
+    </task>
+    <task id="LOCAL-00210" summary="2017.03.13 요약화면">
+      <created>1489379768316</created>
+      <option name="number" value="00210" />
+      <option name="presentableId" value="LOCAL-00210" />
+      <option name="project" value="LOCAL" />
+      <updated>1489379768316</updated>
+    </task>
+    <task id="LOCAL-00211" summary="2017.03.13 요약화면 트래픽 사용량 그래프">
+      <created>1489380184959</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1489380184959</updated>
+    </task>
+    <task id="LOCAL-00212" summary="2017.03.13 그래프 다시 불러오기">
+      <created>1489380674189</created>
+      <option name="number" value="00212" />
+      <option name="presentableId" value="LOCAL-00212" />
+      <option name="project" value="LOCAL" />
+      <updated>1489380674190</updated>
+    </task>
+    <task id="LOCAL-00213" summary="2017.03.13 대시보드 호스트별 장애현황">
+      <created>1489381456177</created>
+      <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1489381456177</updated>
+    </task>
+    <task id="LOCAL-00214" summary="2017.03.13 호스트별 장애 현황">
+      <created>1489382874378</created>
+      <option name="number" value="00214" />
+      <option name="presentableId" value="LOCAL-00214" />
+      <option name="project" value="LOCAL" />
+      <updated>1489382874378</updated>
+    </task>
+    <task id="LOCAL-00215" summary="2017.03.13 대시보드 호스트별 장애 현황">
+      <created>1489383404484</created>
+      <option name="number" value="00215" />
+      <option name="presentableId" value="LOCAL-00215" />
+      <option name="project" value="LOCAL" />
+      <updated>1489383404484</updated>
+    </task>
+    <task id="LOCAL-00216" summary="2017.03.13 호스트별 장애 현황">
+      <created>1489383554400</created>
+      <option name="number" value="00216" />
+      <option name="presentableId" value="LOCAL-00216" />
+      <option name="project" value="LOCAL" />
+      <updated>1489383554400</updated>
+    </task>
+    <task id="LOCAL-00217" summary="2017.03.13 요일별 이벤트 발생 빈도">
+      <created>1489385172004</created>
+      <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1489385172004</updated>
+    </task>
+    <task id="LOCAL-00218" summary="2017.03.13 대시보드 이벤트 현황">
+      <created>1489390991118</created>
+      <option name="number" value="00218" />
+      <option name="presentableId" value="LOCAL-00218" />
+      <option name="project" value="LOCAL" />
+      <updated>1489390991118</updated>
+    </task>
+    <task id="LOCAL-00219" summary="2017.03.13 대시보드 이벤트 현황">
+      <created>1489391478641</created>
+      <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1489391478641</updated>
+    </task>
+    <task id="LOCAL-00220" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489453512392</created>
+      <option name="number" value="00220" />
+      <option name="presentableId" value="LOCAL-00220" />
+      <option name="project" value="LOCAL" />
+      <updated>1489453512393</updated>
+    </task>
+    <task id="LOCAL-00221" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489456023908</created>
+      <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1489456023908</updated>
+    </task>
+    <task id="LOCAL-00222" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489456083465</created>
+      <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1489456083465</updated>
+    </task>
+    <task id="LOCAL-00223" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489456180114</created>
+      <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1489456180114</updated>
+    </task>
+    <task id="LOCAL-00224" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489468182096</created>
+      <option name="number" value="00224" />
+      <option name="presentableId" value="LOCAL-00224" />
+      <option name="project" value="LOCAL" />
+      <updated>1489468182096</updated>
+    </task>
+    <task id="LOCAL-00225" summary="2017.03.14 대시보드 이벤트 현황 전체발생">
+      <created>1489470284344</created>
+      <option name="number" value="00225" />
+      <option name="presentableId" value="LOCAL-00225" />
+      <option name="project" value="LOCAL" />
+      <updated>1489470284344</updated>
+    </task>
+    <task id="LOCAL-00226" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489477333423</created>
+      <option name="number" value="00226" />
+      <option name="presentableId" value="LOCAL-00226" />
+      <option name="project" value="LOCAL" />
+      <updated>1489477333423</updated>
+    </task>
+    <task id="LOCAL-00227" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489478134622</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1489478134622</updated>
+    </task>
+    <task id="LOCAL-00228" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489478207253</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1489478207253</updated>
+    </task>
+    <task id="LOCAL-00229" summary="2017.03.14 대시보드 이벤트 현황">
+      <created>1489481316345</created>
+      <option name="number" value="00229" />
+      <option name="presentableId" value="LOCAL-00229" />
+      <option name="project" value="LOCAL" />
+      <updated>1489481316359</updated>
+    </task>
+    <task id="LOCAL-00230" summary="2017.03.14 이벤트 발생 목록 인지시간">
+      <created>1489481488399</created>
+      <option name="number" value="00230" />
+      <option name="presentableId" value="LOCAL-00230" />
+      <option name="project" value="LOCAL" />
+      <updated>1489481488399</updated>
+    </task>
+    <task id="LOCAL-00231" summary="2017.03.14 대시보드 이벤트 발생 목록 인지시간 항목 수정">
+      <created>1489482152672</created>
+      <option name="number" value="00231" />
+      <option name="presentableId" value="LOCAL-00231" />
+      <option name="project" value="LOCAL" />
+      <updated>1489482152672</updated>
+    </task>
+    <task id="LOCAL-00232" summary="2017.03.14 대시보드 이벤트 발생 목록 인지시간 추가">
+      <created>1489540130676</created>
+      <option name="number" value="00232" />
+      <option name="presentableId" value="LOCAL-00232" />
+      <option name="project" value="LOCAL" />
+      <updated>1489540130677</updated>
+    </task>
+    <task id="LOCAL-00233" summary="2017.03.14 요일별 이벤트 발생 빈도">
+      <created>1489570346692</created>
+      <option name="number" value="00233" />
+      <option name="presentableId" value="LOCAL-00233" />
+      <option name="project" value="LOCAL" />
+      <updated>1489570346692</updated>
+    </task>
+    <task id="LOCAL-00234" summary="2017.03.14 요일별 이벤트 발생 빈도">
+      <created>1489570383027</created>
+      <option name="number" value="00234" />
+      <option name="presentableId" value="LOCAL-00234" />
+      <option name="project" value="LOCAL" />
+      <updated>1489570383027</updated>
+    </task>
+    <task id="LOCAL-00235" summary="2017.03.14 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489570885251</created>
+      <option name="number" value="00235" />
+      <option name="presentableId" value="LOCAL-00235" />
+      <option name="project" value="LOCAL" />
+      <updated>1489570885251</updated>
+    </task>
+    <task id="LOCAL-00236" summary="2017.03.14 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489570963742</created>
+      <option name="number" value="00236" />
+      <option name="presentableId" value="LOCAL-00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1489570963742</updated>
+    </task>
+    <task id="LOCAL-00237" summary="2017.03.14 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489571072858</created>
+      <option name="number" value="00237" />
+      <option name="presentableId" value="LOCAL-00237" />
+      <option name="project" value="LOCAL" />
+      <updated>1489571072858</updated>
+    </task>
+    <task id="LOCAL-00238" summary="2017.03.14 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489571896159</created>
+      <option name="number" value="00238" />
+      <option name="presentableId" value="LOCAL-00238" />
+      <option name="project" value="LOCAL" />
+      <updated>1489571896159</updated>
+    </task>
+    <task id="LOCAL-00239" summary="2017.03.16 대시보드 이벤트 현황 금일 발생 누적 건수">
+      <created>1489623825297</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1489623825298</updated>
+    </task>
+    <task id="LOCAL-00240" summary="2017.03.16 대시보드 동기방식으로 변경">
+      <created>1489637080829</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1489637080829</updated>
+    </task>
+    <task id="LOCAL-00241" summary="2017.03.16 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489641621435</created>
+      <option name="number" value="00241" />
+      <option name="presentableId" value="LOCAL-00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1489641621435</updated>
+    </task>
+    <task id="LOCAL-00242" summary="2017.03.16 대시보드 요일별 이벤트 발생 빈도">
+      <created>1489641680571</created>
+      <option name="number" value="00242" />
+      <option name="presentableId" value="LOCAL-00242" />
+      <option name="project" value="LOCAL" />
+      <updated>1489641680571</updated>
+    </task>
+    <task id="LOCAL-00243" summary="2017.03.16 대시보드 요일별 이벤트 발생 빈도&#10;">
+      <created>1489641893105</created>
+      <option name="number" value="00243" />
+      <option name="presentableId" value="LOCAL-00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1489641893105</updated>
+    </task>
+    <task id="LOCAL-00244" summary="2017.03.17 대시보드 호스트별 장애현황 그래프">
+      <created>1489724392790</created>
+      <option name="number" value="00244" />
+      <option name="presentableId" value="LOCAL-00244" />
+      <option name="project" value="LOCAL" />
+      <updated>1489724392790</updated>
+    </task>
+    <task id="LOCAL-00245" summary="2017.03.17 대시보드 동기 비동기 처리 방식 변경">
+      <created>1489726047707</created>
+      <option name="number" value="00245" />
+      <option name="presentableId" value="LOCAL-00245" />
+      <option name="project" value="LOCAL" />
+      <updated>1489726047707</updated>
+    </task>
+    <task id="LOCAL-00246" summary="2017.03.17 대시보드 호스트별 장애 현황">
+      <created>1489727923346</created>
+      <option name="number" value="00246" />
+      <option name="presentableId" value="LOCAL-00246" />
+      <option name="project" value="LOCAL" />
+      <updated>1489727923347</updated>
+    </task>
+    <task id="LOCAL-00247" summary="2017.03.17 대시보드 호스트별 장애현황">
+      <created>1489729898743</created>
+      <option name="number" value="00247" />
+      <option name="presentableId" value="LOCAL-00247" />
+      <option name="project" value="LOCAL" />
+      <updated>1489729898743</updated>
+    </task>
+    <task id="LOCAL-00248" summary="2017.03.17 대시보드 동기, 비동기 방식 변경">
+      <created>1489730581154</created>
+      <option name="number" value="00248" />
+      <option name="presentableId" value="LOCAL-00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1489730581154</updated>
+    </task>
+    <task id="LOCAL-00249" summary="2017.03.14 대시보드 호스트별 장애현황 그래프">
+      <created>1489735977207</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1489735977207</updated>
+    </task>
+    <task id="LOCAL-00250" summary="2017.03.17 대시보드 호스트별 장애현황 그래프 출력">
+      <created>1489738114851</created>
+      <option name="number" value="00250" />
+      <option name="presentableId" value="LOCAL-00250" />
+      <option name="project" value="LOCAL" />
+      <updated>1489738114852</updated>
+    </task>
+    <task id="LOCAL-00251" summary="2017.03.17 대시보드 호스트별 장애현황 소스코드 정리">
+      <created>1489738231579</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1489738231579</updated>
+    </task>
+    <task id="LOCAL-00252" summary="2017.03.17 대시보드 호스트별 장애현황 그래프 출력">
+      <created>1489741811453</created>
+      <option name="number" value="00252" />
+      <option name="presentableId" value="LOCAL-00252" />
+      <option name="project" value="LOCAL" />
+      <updated>1489741811453</updated>
+    </task>
+    <option name="localTasksCounter" value="253" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3669000" />
+    <option name="totallyTimeSpent" value="521973000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="1592" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15060559" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32841823" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919255" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32608697" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32841823" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,24 +803,416 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="true" />
+    <MESSAGE value="2017.03.13 대시보드 호스트별 장애현황" />
+    <MESSAGE value="2017.03.13 대시보드 호스트별 장애 현황" />
+    <MESSAGE value="2017.03.13 호스트별 장애 현황" />
+    <MESSAGE value="2017.03.13 요일별 이벤트 발생 빈도" />
+    <MESSAGE value="2017.03.13 대시보드 이벤트 현황" />
+    <MESSAGE value="2017.03.14 대시보드 이벤트 현황 전체발생" />
+    <MESSAGE value="2017.03.14 대시보드 이벤트 현황" />
+    <MESSAGE value="2017.03.14 이벤트 발생 목록 인지시간" />
+    <MESSAGE value="2017.03.14 대시보드 이벤트 발생 목록 인지시간 항목 수정" />
+    <MESSAGE value="2017.03.14 대시보드 이벤트 발생 목록 인지시간 추가" />
+    <MESSAGE value="2017.03.14 요일별 이벤트 발생 빈도" />
+    <MESSAGE value="2017.03.14 대시보드 요일별 이벤트 발생 빈도" />
+    <MESSAGE value="2017.03.16 대시보드 이벤트 현황 금일 발생 누적 건수" />
+    <MESSAGE value="2017.03.16 대시보드 동기방식으로 변경" />
+    <MESSAGE value="2017.03.16 대시보드 요일별 이벤트 발생 빈도" />
+    <MESSAGE value="2017.03.16 대시보드 요일별 이벤트 발생 빈도&#10;" />
+    <MESSAGE value="2017.03.17 대시보드 호스트별 장애현황 그래프" />
+    <MESSAGE value="2017.03.17 대시보드 동기 비동기 처리 방식 변경" />
+    <MESSAGE value="2017.03.17 대시보드 호스트별 장애 현황" />
+    <MESSAGE value="2017.03.17 대시보드 호스트별 장애현황" />
+    <MESSAGE value="2017.03.17 대시보드 동기, 비동기 방식 변경" />
+    <MESSAGE value="2017.03.14 대시보드 호스트별 장애현황 그래프" />
+    <MESSAGE value="2017.03.17 대시보드 호스트별 장애현황 소스코드 정리" />
+    <MESSAGE value="2017.03.17 대시보드 호스트별 장애현황 그래프 출력" />
+    <MESSAGE value="2017.03.20 대시보드 merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="2017.03.20 대시보드 merge" />
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="26" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/jquery.mCustomScrollbar.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="0" column="40951" lean-forward="false" selection-start-line="0" selection-start-column="40951" selection-end-line="0" selection-end-column="40951" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/jquery-tooltip.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="30" column="19" lean-forward="false" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/jquery.mCustomScrollbar.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="797">
+          <caret line="0" column="42877" lean-forward="true" selection-start-line="0" selection-start-column="42877" selection-end-line="0" selection-end-column="42877" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/jquery-tooltip.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="30" column="5" lean-forward="true" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/mainbox.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="1375" column="20" lean-forward="false" selection-start-line="1375" selection-start-column="20" selection-end-line="1375" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/app.min.js_" />
+    <entry file="file://$PROJECT_DIR$/customPlugins/bootstrap.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/jquery.mCustomScrollbar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="1263" column="4" lean-forward="false" selection-start-line="1263" selection-start-column="4" selection-end-line="1263" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/fonts.googleapis.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="151" column="1" lean-forward="false" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/bootstrap_v1.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="7410" column="35" lean-forward="false" selection-start-line="7410" selection-start-column="35" selection-end-line="7410" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/4차/OBICs-Watch_login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1334">
+          <caret line="408" column="7" lean-forward="true" selection-start-line="67" selection-start-column="3" selection-end-line="408" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/bootstrap/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="4" column="45774" lean-forward="false" selection-start-line="4" selection-start-column="45774" selection-end-line="4" selection-end-column="45774" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/adminLTE/AdminLTE.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="6" column="41689" lean-forward="false" selection-start-line="6" selection-start-column="41689" selection-end-line="6" selection-end-column="41689" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/custom.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="822" column="1" lean-forward="true" selection-start-line="822" selection-start-column="1" selection-end-line="822" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/OBICs-Watch_disk-used.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="361" column="39" lean-forward="true" selection-start-line="361" selection-start-column="39" selection-end-line="361" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_setting.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="23" column="48" lean-forward="false" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zabirepo-param.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="16" lean-forward="true" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_event.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/디스크_2017.03.08_bak.js" />
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="127" column="55" lean-forward="false" selection-start-line="127" selection-start-column="55" selection-end-line="127" selection-end-column="55" />
+        <state relative-caret-position="2287">
+          <caret line="281" column="61" lean-forward="false" selection-start-line="281" selection-start-column="61" selection-end-line="281" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/cpuStatsView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-76">
+          <caret line="59" column="60" lean-forward="true" selection-start-line="59" selection-start-column="60" selection-end-line="59" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_cpuinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_memoryInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="18" lean-forward="true" selection-start-line="8" selection-start-column="12" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_networkInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/memStatsView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="77" column="22" lean-forward="false" selection-start-line="77" selection-start-column="22" selection-end-line="77" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/img/tit_sub_07.gif">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_disk.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/hostInfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="74" column="78" lean-forward="false" selection-start-line="74" selection-start-column="78" selection-end-line="74" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="211" column="0" lean-forward="false" selection-start-line="211" selection-start-column="0" selection-end-line="211" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_serverInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1538">
+          <caret line="157" column="39" lean-forward="true" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_hostinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-45">
+          <caret line="26" column="21" lean-forward="true" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/bootstrap_v1.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="1780" column="1" lean-forward="false" selection-start-line="1780" selection-start-column="1" selection-end-line="1780" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/mainbox.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="649" column="21" lean-forward="false" selection-start-line="649" selection-start-column="21" selection-end-line="649" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/hostDetailInfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2706">
+          <caret line="228" column="1" lean-forward="true" selection-start-line="104" selection-start-column="8" selection-end-line="228" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/trafficStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="301" column="24" lean-forward="true" selection-start-line="301" selection-start-column="24" selection-end-line="305" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_server.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1349">
+          <caret line="70" column="55" lean-forward="true" selection-start-line="70" selection-start-column="55" selection-end-line="70" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/화면 UI/3차 수정/OBICs-Watch_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17271">
+          <caret line="909" column="0" lean-forward="false" selection-start-line="909" selection-start-column="0" selection-end-line="909" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_diskInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="531">
+          <caret line="82" column="101" lean-forward="true" selection-start-line="82" selection-start-column="101" selection-end-line="82" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/customPlugins/jquery-tooltip.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16644">
+          <caret line="888" column="4" lean-forward="false" selection-start-line="888" selection-start-column="4" selection-end-line="888" selection-end-column="4" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="712">
+          <caret line="351" column="0" lean-forward="false" selection-start-line="351" selection-start-column="0" selection-end-line="351" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zabirepo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7239">
+          <caret line="381" column="18" lean-forward="false" selection-start-line="381" selection-start-column="16" selection-end-line="381" selection-end-column="18" />
+          <folding>
+            <marker date="1489726077313" expanded="true" signature="34445:34478" ph="..." />
+            <marker date="1489726077313" expanded="true" signature="34623:34634" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zbxApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="781">
+          <caret line="713" column="9" lean-forward="false" selection-start-line="713" selection-start-column="9" selection-end-line="713" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="10" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="17" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/serverProcesses.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="248" column="29" lean-forward="false" selection-start-line="248" selection-start-column="29" selection-end-line="248" selection-end-column="29" />
+          <folding>
+            <marker date="1489112037379" expanded="true" signature="1531:1544" ph="..." />
+            <marker date="1489112037379" expanded="true" signature="2263:2282" ph="..." />
+            <marker date="1489112037379" expanded="true" signature="6220:6233" ph="..." />
+            <marker date="1489112037379" expanded="true" signature="7397:7416" ph="..." />
+            <marker date="1489112037379" expanded="true" signature="7583:7602" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_processInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1938">
+          <caret line="102" column="47" lean-forward="false" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zbxSyncApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="296" column="22" lean-forward="false" selection-start-line="296" selection-start-column="22" selection-end-line="296" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="601" column="28" lean-forward="false" selection-start-line="601" selection-start-column="28" selection-end-line="601" selection-end-column="28" />
+          <folding>
+            <marker date="1489741672990" expanded="true" signature="31378:31434" ph="..." />
+            <marker date="1489741672990" expanded="true" signature="32077:32089" ph="..." />
+            <marker date="1489741672990" expanded="true" signature="32255:32264" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/diskStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1062">
+          <caret line="196" column="42" lean-forward="true" selection-start-line="196" selection-start-column="42" selection-end-line="196" selection-end-column="42" />
+          <folding>
+            <marker date="1489138229630" expanded="true" signature="2185:2226" ph="..." />
+            <marker date="1489138229630" expanded="true" signature="10014:10029" ph="..." />
+            <marker date="1489138229630" expanded="true" signature="14981:14996" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/serverOverview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3268">
+          <caret line="61" column="37" lean-forward="true" selection-start-line="61" selection-start-column="37" selection-end-line="61" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="766" column="1" lean-forward="false" selection-start-line="766" selection-start-column="1" selection-end-line="766" selection-end-column="1" />
+          <folding>
+            <marker date="1489969541458" expanded="true" signature="6328:6374" ph="..." />
+            <marker date="1489969541458" expanded="true" signature="27601:27650" ph="..." />
+            <marker date="1489969541458" expanded="true" signature="27901:27947" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1349">
+          <caret line="71" column="26" lean-forward="true" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
+          <folding>
+            <element signature="n#style#0;n#table#0;n#div#0;n#section#0;n#div#3;n#div#0;n#section#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

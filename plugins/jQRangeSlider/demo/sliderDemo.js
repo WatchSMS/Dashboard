@@ -304,7 +304,7 @@
 		},
 
 		_createCode: function(){
-			this.element.append("<hr />")
+			this.element.append("<hr />");
 			this.element.append("<h3>Code</h3>");
 			var pre = $("<pre />").appendTo(this.element),
 				container = $("<code />").appendTo(pre);
