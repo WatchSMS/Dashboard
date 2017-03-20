@@ -322,8 +322,21 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
         var description = v.description;
 
         eventTbl += "<tr role='row'>";
-        eventTbl += "<td width='110' class='line c_b1'>" + severity + "</td>";
-        eventTbl += "<td width='120' class='line'>" + status + "</td>";
+        if(severity == "information") {
+            eventTbl += "<td width='110' class='line' style='color:deepskyblue'>" + severity + "</td>";
+        } else if(severity == "warning") {
+            eventTbl += "<td width='110' class='line' style='color:yellow'>" + severity + "</td>";
+        } else if(severity == "average") {
+            eventTbl += "<td width='110' class='line' style='color:greenyellow'>" + severity + "</td>";
+        } else if(severity == "high") {
+            eventTbl += "<td width='110' class='line' style='color:red'>" + severity + "</td>";
+        }
+
+        if(status == "problem"){
+            eventTbl += "<td width='120' class='line' style='color:red'>" + status + "</td>";
+        } else if(status == "OK"){
+            eventTbl += "<td width='120' class='line' style='color:deepskyblue'>" + status + "</td>";
+        }
         eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
         eventTbl += "<td width='120' class='line'>" + age + "</td>";
         eventTbl += "<td width='120' class='line'>" + ack + "</td>";
