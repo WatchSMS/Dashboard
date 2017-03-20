@@ -205,6 +205,48 @@ function dashboardDayEvent(){
     var lastWeekStartTime = startDate.getTime() / 1000;
     var lastDaysTimeArr = [];
 
+    var infoEventArr = [];
+    var highEventArr = [];
+    var averEventArr = [];
+    var warnEventArr = [];
+
+    var mon_info_event_count = 0;
+    var mon_warn_event_count = 0;
+    var mon_aver_event_count = 0;
+    var mon_high_event_count = 0;
+
+    var tus_info_event_count = 0;
+    var tus_warn_event_count = 0;
+    var tus_aver_event_count = 0;
+    var tus_high_event_count = 0;
+
+    var wed_info_event_count = 0;
+    var wed_warn_event_count = 0;
+    var wed_aver_event_count = 0;
+    var wed_high_event_count = 0;
+
+    var thu_info_event_count = 0;
+    var thu_warn_event_count = 0;
+    var thu_aver_event_count = 0;
+    var thu_high_event_count = 0;
+
+    var fri_info_event_count = 0;
+    var fri_warn_event_count = 0;
+    var fri_aver_event_count = 0;
+    var fri_high_event_count = 0;
+
+    var sat_info_event_count = 0;
+    var sat_warn_event_count = 0;
+    var sat_aver_event_count = 0;
+    var sat_high_event_count = 0;
+
+    var sun_info_event_count = 0;
+    var sun_warn_event_count = 0;
+    var sun_aver_event_count = 0;
+    var sun_high_event_count = 0;
+
+    var priority = '';
+
     // 지난주 요일별 시작시간 세팅
     for(var i=0; i < 8; i++){
         lastDaysTimeArr[i] = lastWeekStartTime + (86400 * i);
@@ -215,6 +257,249 @@ function dashboardDayEvent(){
         console.log(" 일주일 전 이벤트 : " );
         console.log(JSON.stringify(eventArr));
 
+        console.log(" MONDAY : " + lastDaysTimeArr[DAYS.MONDAY]);
+        console.log(" TUESDAY : " + lastDaysTimeArr[DAYS.TUESDAY]);
+        console.log(" WEDNESDAY : " + lastDaysTimeArr[DAYS.WEDNESDAY]);
+        console.log(" THURSDAY : " + lastDaysTimeArr[DAYS.THURSDAY]);
+        console.log(" FRIDAY : " + lastDaysTimeArr[DAYS.FRIDAY]);
+        console.log(" SATURDAY : " + lastDaysTimeArr[DAYS.SATURDAY]);
+        console.log(" SUNDAY : " + lastDaysTimeArr[DAYS.SUNDAY]);
+        console.log(" NEXT MONDAY : " + lastDaysTimeArr[DAYS.NEXTMONDAY]);
+
+        $.each(eventArr, function(k, v) {
+            priority = v.relatedObject.priority;
+            if(v.clock >= lastDaysTimeArr[DAYS.MONDAY] && v.clock < lastDaysTimeArr[DAYS.TUESDAY]){
+                if(priority == 1){
+                    mon_info_event_count += 1;
+                } else if(priority == 2){
+                    mon_warn_event_count += 1;
+                } else if(priority == 3){
+                    mon_aver_event_count += 1;
+                } else if(priority == 4){
+                    mon_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            }
+            else if(v.clock >= lastDaysTimeArr[DAYS.TUESDAY] && v.clock < lastDaysTimeArr[DAYS.WEDNESDAY]){
+                if(priority == 1){
+                    tus_info_event_count += 1;
+                } else if(priority == 2){
+                    tus_warn_event_count += 1;
+                } else if(priority == 3){
+                    tus_aver_event_count += 1;
+                } else if(priority == 4){
+                    tus_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            } else if(v.clock >= lastDaysTimeArr[DAYS.WEDNESDAY] && v.clock < lastDaysTimeArr[DAYS.THURSDAY]){
+                if(priority == 1){
+                    wed_info_event_count += 1;
+                } else if(priority == 2){
+                    wed_warn_event_count += 1;
+                } else if(priority == 3){
+                    wed_aver_event_count += 1;
+                } else if(priority == 4){
+                    wed_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            } else if(v.clock >= lastDaysTimeArr[DAYS.THURSDAY] && v.clock < lastDaysTimeArr[DAYS.FRIDAY]){
+                if(priority == 1){
+                    thu_info_event_count += 1;
+                } else if(priority == 2){
+                    thu_warn_event_count += 1;
+                } else if(priority == 3){
+                    thu_aver_event_count += 1;
+                } else if(priority == 4){
+                    thu_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            } else if(v.clock >= lastDaysTimeArr[DAYS.FRIDAY] && v.clock < lastDaysTimeArr[DAYS.SATURDAY]){
+                if(priority == 1){
+                    fri_info_event_count += 1;
+                } else if(priority == 2){
+                    fri_warn_event_count += 1;
+                } else if(priority == 3){
+                    fri_aver_event_count += 1;
+                } else if(priority == 4){
+                    fri_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            } else if(v.clock >= lastDaysTimeArr[DAYS.SATURDAY] && v.clock < lastDaysTimeArr[DAYS.SUNDAY]){
+                if(priority == 1){
+                    sat_info_event_count += 1;
+                } else if(priority == 2){
+                    sat_warn_event_count += 1;
+                } else if(priority == 3){
+                    sat_aver_event_count += 1;
+                } else if(priority == 4){
+                    sat_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            } else if(v.clock >= lastDaysTimeArr[DAYS.SUNDAY] && v.clock < lastDaysTimeArr[DAYS.NEXTMONDAY]){
+                if(priority == 1){
+                    sun_info_event_count += 1;
+                } else if(priority == 2){
+                    sun_warn_event_count += 1;
+                } else if(priority == 3){
+                    sun_aver_event_count += 1;
+                } else if(priority == 4){
+                    sun_high_event_count += 1;
+                } else {
+                    alert(" priority ");
+                }
+            }
+        });
+
+        infoEventArr.push(mon_info_event_count);
+        infoEventArr.push(tus_info_event_count);
+        infoEventArr.push(wed_info_event_count);
+        infoEventArr.push(thu_info_event_count);
+        infoEventArr.push(fri_info_event_count);
+        infoEventArr.push(sat_info_event_count);
+        infoEventArr.push(sun_info_event_count);
+
+        warnEventArr.push(mon_warn_event_count);
+        warnEventArr.push(tus_warn_event_count);
+        warnEventArr.push(wed_warn_event_count);
+        warnEventArr.push(thu_warn_event_count);
+        warnEventArr.push(fri_warn_event_count);
+        warnEventArr.push(sat_warn_event_count);
+        warnEventArr.push(sun_warn_event_count);
+
+        highEventArr.push(mon_high_event_count);
+        highEventArr.push(tus_high_event_count);
+        highEventArr.push(wed_high_event_count);
+        highEventArr.push(thu_high_event_count);
+        highEventArr.push(fri_high_event_count);
+        highEventArr.push(sat_high_event_count);
+        highEventArr.push(sun_high_event_count);
+
+        averEventArr.push(mon_aver_event_count);
+        averEventArr.push(tus_aver_event_count);
+        averEventArr.push(wed_aver_event_count);
+        averEventArr.push(thu_aver_event_count);
+        averEventArr.push(fri_aver_event_count);
+        averEventArr.push(sat_aver_event_count);
+        averEventArr.push(sun_aver_event_count);
+
+        console.log(" MONDAY    high : " + mon_high_event_count + " warn : " + mon_warn_event_count + " aver : " + mon_aver_event_count + " info : " + mon_info_event_count);
+        console.log(" WEDNESDAY high : " + tus_high_event_count + " warn : " + tus_warn_event_count + " aver : " + tus_aver_event_count + " info : " + tus_info_event_count);
+        console.log(" MONDAY    high : " + wed_high_event_count + " warn : " + wed_warn_event_count + " aver : " + wed_aver_event_count + " info : " + wed_info_event_count);
+        console.log(" THURSDAY  high : " + thu_high_event_count + " warn : " + thu_warn_event_count  + " aver : " + thu_aver_event_count + " info : " + thu_info_event_count);
+        console.log(" FRIDAY    high : " + fri_high_event_count + " warn : " + fri_warn_event_count  + " aver : " + fri_aver_event_count + " info : " + fri_info_event_count);
+        console.log(" SATURDAY  high : " + sat_high_event_count + " warn : " + sat_warn_event_count  + " aver : " + sat_aver_event_count + " info : " + sat_info_event_count);
+        console.log(" SUNDAY    high : " + sun_high_event_count + " warn : " + sun_warn_event_count  + " aver : " + sun_aver_event_count + " info : " + sun_info_event_count);
+
+        console.log(JSON.stringify(infoEventArr));
+        console.log(JSON.stringify(warnEventArr));
+        console.log(JSON.stringify(highEventArr));
+        console.log(JSON.stringify(averEventArr));
+
+        $(function() {
+            Highcharts.chart('chart_dayEvent', {
+                chart: {
+                    type: 'column',
+                    height: 300,
+                    backgroundColor: '#424973',
+                    spacingTop: 10,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    gridLineColor: '#FBFBFB',
+                    lineColor: '#FBFBFB',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#FBFBFB',
+                    categories: [
+                        '월요일',
+                        '화요일',
+                        '수요일',
+                        '목요일',
+                        '금요일',
+                        '토요일',
+                        '일요일'
+                    ],
+                    title: {
+                        text: ''
+                    },
+                    style: {
+                        color: '#FBFBFB'
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#FBFBFB',
+                    lineColor: '#FBFBFB',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#FBFBFB',
+                    min: 0,
+                    title: {
+                        text: ''
+                    },
+                    style: {
+                        color: '#FBFBFB'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#FBFBFB'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    },
+                    style: {
+                        color: '#FBFBFB'
+                    }
+                },
+                series: [{
+                    name: 'level',
+                    data: infoEventArr,
+                    color: '#FC4747'
+                }, {
+                    name: 'high',
+                    data: highEventArr,
+                    color: '#BDFD94'
+                }, {
+                    name: 'average',
+                    data: averEventArr,
+                    color: '#FA60CE'
+                }, {
+                    name: 'warring',
+                    data: warnEventArr,
+                    color: '#F2F234'
+                }],
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            symbolStroke: 'transparent',
+                            theme: {
+                                fill:'#626992'
+                            }
+                        }
+                    }
+                }
+            });
+        });
     });
 }
 
