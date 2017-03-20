@@ -339,7 +339,11 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
         }
         eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
         eventTbl += "<td width='120' class='line'>" + age + "</td>";
-        eventTbl += "<td width='120' class='line'>" + ack + "</td>";
+        if(ack == "Unacked"){
+            eventTbl += "<td width='120' class='line' style='color:red'>" + ack + "</td>";
+        } else if(ack = "Acked"){
+            eventTbl += "<td width='120' class='line' style='color:deepskyblue'>" + ack + "</td>";
+        }
         eventTbl += "<td width='140' class='line'>" + host + "</td>";
         eventTbl += "<td width='auto' class='align_left ponter'>" +
             "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
