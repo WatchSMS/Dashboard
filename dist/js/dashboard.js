@@ -156,7 +156,7 @@ function dashboardHostEvent(hostEvent){
     $.each(hostDataSet, function(k,v){
         var tempArr = [];
         tempArr.push(v);
-        showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#00B700']);
+        showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['deepskyblue']);
     });
 }
 

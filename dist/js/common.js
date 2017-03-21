@@ -554,7 +554,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 },
                 labels: {
                     style: {
-                        color: '#a2adcc'
+                        color: '#EDEDED'
                     },
                     formatter: function () {
                         var d2 = new Date(this.value);
@@ -583,7 +583,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 },
                 labels: {
                     style: {
-                        color: '#a2adcc'
+                        color: '#EDEDED'
                     },
                     formatter: function () {
                     }
