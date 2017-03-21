@@ -39,9 +39,24 @@ function dashboardEventStatus(){
     today_select = today_select-(today_select % DAYTOMILLS);
     today_select = Math.round(today_select / 1000);
 
-    zbxSyncApi.alertTrigger();
-    zbxSyncApi.unAckknowledgeEvent();
-    zbxSyncApi.todayEvent(today_select);
+    var totalEvent = '';
+    var unacknowEvent = '';
+    var todayEvent = '';
+
+    zbxApi.alertTrigger.get().then(function(data) {
+        totalEvent = zbxApi.alertTrigger.success(data);
+        $("#infobox_alertTrigger").text(totalEvent);
+    });
+
+    zbxApi.unAckknowledgeEvent.get().then(function(data) {
+        unacknowEvent = zbxApi.unAckknowledgeEvent.success(data);
+        $("#unAcknowledgedEvents").text(unacknowEvent);
+    });
+
+    zbxApi.todayEvent.get().then(function(data) {
+        todayEvent = zbxApi.todayEvent.success(data);
+        $("#todayEvents").text(todayEvent);
+    });
     console.log("dashboardEventStatus today_select : " + today_select);
 }
 
