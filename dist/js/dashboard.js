@@ -179,7 +179,7 @@ function dashboardEventList() {
         if(ack == "Unacked"){
             eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
         } else if(ack = "Acked"){
-            eventTable += "<td width='69' class='line' style='color:blue'>" + ack + "</td>";
+            eventTable += "<td width='69' class='line'>" + ack + "</td>";
         }
         eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
         eventTable += "<td width='100' class='line'>" + host + "</td>";
