@@ -39,9 +39,9 @@ function dashboardEventStatus(){
     today_select = today_select-(today_select % DAYTOMILLS);
     today_select = Math.round(today_select / 1000);
 
-    zbxSyncApi.alertTrigger();
-    zbxSyncApi.unAckknowledgeEvent();
-    zbxSyncApi.todayEvent(today_select);
+    //zbxSyncApi.alertTrigger();
+    //zbxSyncApi.unAckknowledgeEvent();
+    //zbxSyncApi.todayEvent(today_select);
     console.log("dashboardEventStatus today_select : " + today_select);
 }
 
