@@ -143,8 +143,8 @@ function dashboardHostEvent(hostEvent){
 
 function dashboardEventList() {
     var dashboard_Event = '';
-    zbxApi.dashboardTrigger.get().then(function(data) {
-        dashboard_Event = zbxApi.dashboardTrigger.success(data);
+    zbxApi.dashboardEventList.get().then(function(data) {
+        dashboard_Event = zbxApi.dashboardEventList.success(data);
 
     //console.log(dashboard_Event);
     //console.log(JSON.stringify(dashboard_Event));
@@ -154,20 +154,14 @@ function dashboardEventList() {
     eventTable += '<tbody>';
 
     $.each(dashboard_Event.result, function (k, v) {
-        var severity = convPriority(v.priority);
+        var severity = convPriority(v.relatedObject.priority);
         var status = convStatus(v.value);
-        var lastchange = convTime(v.lastchange);
-        var age = convDeltaTime(v.lastchange);
-        var ack = convAck(v.lastEvent.acknowledged);
-        var eventId = v.lastEvent.eventid;
-        var ackTime = '';
-        zbxApi.dashboardEvent.get(eventId).then(function(data){
-            ackTime = zbxApi.dashboardHostInfo.success(data);
-        });
-        //console.log("ackTime : " + ackTime);
-        ackTime = convTime(ackTime);
+        var lastchange = convTime(v.relatedObject.lastchange);
+        var age = convDeltaTime(v.relatedObject.lastchange);
+        var ack = convAck(v.acknowledged);
+        var ackTime = convTime(v.acknowledges.clock);
         var host = v.hosts[0].host;
-        var description = v.description;
+        var description = v.relatedObject.description;
 
         eventTable += "<tr>";
         if(severity == "information") {
