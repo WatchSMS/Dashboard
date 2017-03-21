@@ -1,7 +1,7 @@
 var zbxApi = {
-		
-	getEvent: {
-		getByTime: function (startTime) {
+
+    getEvent: {
+        getByTime: function (startTime) {
             var method = "event.get";
             var params = {
                 "output": "extend",
@@ -53,8 +53,8 @@ var zbxApi = {
             //console.log(data);
             return data;
         }
-	},
-		
+    },
+
     getTrigger: {
         get: function (hostId, triggerId, itemName) {
             var method = "trigger.get";
@@ -700,12 +700,12 @@ var zbxApi = {
         get: function (today_select) {
             var method = "event.get";
             var params = {
-                    "output": "extend",
-                    "source": 0,
-                    "selectRelatedObject": "extend",
-                    "time_from": today_select,
-                    "sortfield": "clock",
-                    "sortorder": "ASC"
+                "output": "extend",
+                "source": 0,
+                "selectRelatedObject": "extend",
+                "time_from": today_select,
+                "sortfield": "clock",
+                "sortorder": "ASC"
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -721,9 +721,9 @@ var zbxApi = {
         get: function (eventId) {
             var method = "event.get";
             var params = {
-                    "output": "extend",
-                    "selectLastEvent": "true",
-                    "eventids": eventId
+                "output": "extend",
+                "selectLastEvent": "true",
+                "eventids": eventId
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -757,6 +757,28 @@ var zbxApi = {
         success: function (data) {
             console.log(" 123 RESULT : " + data);
             console.log(JSON.stringify(data));
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
+    eventStatusView: {
+        get: function () {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "sortfield": "clock",
+                "sortorder": "ASC",
+                "limit": "100"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
             $.each(data.result, function (k, v) {
             });
             return data;

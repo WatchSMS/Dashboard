@@ -274,6 +274,24 @@ var zbxSyncApi = {
         return result.result;
     },
 
+    /* 이벤트 목록 2017.03.21 */
+    eventStatusHost: function (hostid) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "host.get",
+            "params": {
+                "output": "extend",
+                "selectInterfaces": ["ip", "disk"],
+                "hostids": hostid
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log(" eventStatusHost " + JSON.stringify(result));
+        return result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
