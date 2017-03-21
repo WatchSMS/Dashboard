@@ -146,51 +146,63 @@ function dashboardEventList() {
     zbxApi.dashboardEventList.get().then(function(data) {
         dashboard_Event = zbxApi.dashboardEventList.success(data);
 
-    //console.log(dashboard_Event);
-    //console.log(JSON.stringify(dashboard_Event));
+        //console.log(dashboard_Event);
+        //console.log(JSON.stringify(dashboard_Event));
+        var severity = '';
+        var status = '';
+        var lastchange = '';
+        var age = '';
+        var ack = '';
+        var ackTime = '';
+        var host = '';
+        var description = '';
 
-    var eventTable = '';
+        var eventTable = '';
 
-    eventTable += '<tbody>';
+        eventTable += '<tbody>';
 
-    $.each(dashboard_Event.result, function (k, v) {
-        var severity = convPriority(v.relatedObject.priority);
-        var status = convStatus(v.value);
-        var lastchange = convTime(v.relatedObject.lastchange);
-        var age = convDeltaTime(v.relatedObject.lastchange);
-        var ack = convAck(v.acknowledged);
-        var ackTime = convTime(v.acknowledges.clock);
-        var host = v.hosts[0].host;
-        var description = v.relatedObject.description;
+        $.each(dashboard_Event.result, function (k, v) {
+            severity = convPriority(v.relatedObject.priority);
+            status = convStatus(v.value);
+            lastchange = convTime(v.relatedObject.lastchange);
+            age = convDeltaTime(v.relatedObject.lastchange);
+            ack = convAck(v.acknowledged);
+            if(v.acknowledges[0] == undefined){
+                ackTime = "-";
+            } else {
+                ackTime = convTime(v.acknowledges[0].clock);
+            }
+            host = v.hosts[0].host;
+            description = v.relatedObject.description;
 
-        eventTable += "<tr>";
-        if(severity == "information") {
-            eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
-        } else if(severity == "warning") {
-            eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
-        } else if(severity == "average") {
-            eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
-        } else if(severity == "high") {
-            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
-        }
-        eventTable += "<td width='60' class='line'>" + status + "</td>";
-        eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
-        eventTable += "<td width='75' class='line'>" + age + "</td>";
-        if(ack == "Unacked"){
-            eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-        } else if(ack = "Acked"){
-            eventTable += "<td width='69' class='line'>" + ack + "</td>";
-        }
-        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
-        eventTable += "<td width='100' class='line'>" + host + "</td>";
-        eventTable += "<td width='auto' class='align_left ponter'>" +
-            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-            "<span class='smd'>" + description + "</span></a></td>";
-        eventTable += "</tr>";
-    });
-    eventTable += "</tbody>";
-    $("#dashboardEventList").empty();
-    $("#dashboardEventList").append(eventTable);
+            eventTable += "<tr>";
+            if(severity == "information") {
+                eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
+            } else if(severity == "warning") {
+                eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
+            } else if(severity == "average") {
+                eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
+            } else if(severity == "high") {
+                eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+            }
+            eventTable += "<td width='60' class='line'>" + status + "</td>";
+            eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+            eventTable += "<td width='75' class='line'>" + age + "</td>";
+            if(ack == "Unacked"){
+                eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+            } else if(ack = "Acked"){
+                eventTable += "<td width='69' class='line'>" + ack + "</td>";
+            }
+            eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+            eventTable += "<td width='100' class='line'>" + host + "</td>";
+            eventTable += "<td width='auto' class='align_left ponter'>" +
+                "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+                "<span class='smd'>" + description + "</span></a></td>";
+            eventTable += "</tr>";
+        });
+        eventTable += "</tbody>";
+        $("#dashboardEventList").empty();
+        $("#dashboardEventList").append(eventTable);
     });
 }
 
@@ -265,16 +277,16 @@ function dashboardDayEvent(){
     zbxApi.getEvent.getByBeforeTime(lastWeekStartTime).then(function(data) {
         var eventArr = data.result;
         /*console.log(" 일주일 전 이벤트 : " );
-        console.log(JSON.stringify(eventArr));
+         console.log(JSON.stringify(eventArr));
 
-        console.log(" MONDAY : " + lastDaysTimeArr[DAYS.MONDAY]);
-        console.log(" TUESDAY : " + lastDaysTimeArr[DAYS.TUESDAY]);
-        console.log(" WEDNESDAY : " + lastDaysTimeArr[DAYS.WEDNESDAY]);
-        console.log(" THURSDAY : " + lastDaysTimeArr[DAYS.THURSDAY]);
-        console.log(" FRIDAY : " + lastDaysTimeArr[DAYS.FRIDAY]);
-        console.log(" SATURDAY : " + lastDaysTimeArr[DAYS.SATURDAY]);
-        console.log(" SUNDAY : " + lastDaysTimeArr[DAYS.SUNDAY]);
-        console.log(" NEXT MONDAY : " + lastDaysTimeArr[DAYS.NEXTMONDAY]);*/
+         console.log(" MONDAY : " + lastDaysTimeArr[DAYS.MONDAY]);
+         console.log(" TUESDAY : " + lastDaysTimeArr[DAYS.TUESDAY]);
+         console.log(" WEDNESDAY : " + lastDaysTimeArr[DAYS.WEDNESDAY]);
+         console.log(" THURSDAY : " + lastDaysTimeArr[DAYS.THURSDAY]);
+         console.log(" FRIDAY : " + lastDaysTimeArr[DAYS.FRIDAY]);
+         console.log(" SATURDAY : " + lastDaysTimeArr[DAYS.SATURDAY]);
+         console.log(" SUNDAY : " + lastDaysTimeArr[DAYS.SUNDAY]);
+         console.log(" NEXT MONDAY : " + lastDaysTimeArr[DAYS.NEXTMONDAY]);*/
 
         $.each(eventArr, function(k, v) {
             priority = v.relatedObject.priority;
@@ -399,18 +411,18 @@ function dashboardDayEvent(){
         averEventArr.push(sun_aver_event_count);
 
         /*console.log(" MONDAY    high : " + mon_high_event_count + " warn : " + mon_warn_event_count + " aver : " + mon_aver_event_count + " info : " + mon_info_event_count);
-        console.log(" WEDNESDAY high : " + tus_high_event_count + " warn : " + tus_warn_event_count + " aver : " + tus_aver_event_count + " info : " + tus_info_event_count);
-        console.log(" MONDAY    high : " + wed_high_event_count + " warn : " + wed_warn_event_count + " aver : " + wed_aver_event_count + " info : " + wed_info_event_count);
-        console.log(" THURSDAY  high : " + thu_high_event_count + " warn : " + thu_warn_event_count  + " aver : " + thu_aver_event_count + " info : " + thu_info_event_count);
-        console.log(" FRIDAY    high : " + fri_high_event_count + " warn : " + fri_warn_event_count  + " aver : " + fri_aver_event_count + " info : " + fri_info_event_count);
-        console.log(" SATURDAY  high : " + sat_high_event_count + " warn : " + sat_warn_event_count  + " aver : " + sat_aver_event_count + " info : " + sat_info_event_count);
-        console.log(" SUNDAY    high : " + sun_high_event_count + " warn : " + sun_warn_event_count  + " aver : " + sun_aver_event_count + " info : " + sun_info_event_count);
+         console.log(" WEDNESDAY high : " + tus_high_event_count + " warn : " + tus_warn_event_count + " aver : " + tus_aver_event_count + " info : " + tus_info_event_count);
+         console.log(" MONDAY    high : " + wed_high_event_count + " warn : " + wed_warn_event_count + " aver : " + wed_aver_event_count + " info : " + wed_info_event_count);
+         console.log(" THURSDAY  high : " + thu_high_event_count + " warn : " + thu_warn_event_count  + " aver : " + thu_aver_event_count + " info : " + thu_info_event_count);
+         console.log(" FRIDAY    high : " + fri_high_event_count + " warn : " + fri_warn_event_count  + " aver : " + fri_aver_event_count + " info : " + fri_info_event_count);
+         console.log(" SATURDAY  high : " + sat_high_event_count + " warn : " + sat_warn_event_count  + " aver : " + sat_aver_event_count + " info : " + sat_info_event_count);
+         console.log(" SUNDAY    high : " + sun_high_event_count + " warn : " + sun_warn_event_count  + " aver : " + sun_aver_event_count + " info : " + sun_info_event_count);
 
-        console.log(JSON.stringify(infoEventArr));
-        console.log(JSON.stringify(warnEventArr));
-        console.log(JSON.stringify(highEventArr));
-        console.log(JSON.stringify(averEventArr));
-*/
+         console.log(JSON.stringify(infoEventArr));
+         console.log(JSON.stringify(warnEventArr));
+         console.log(JSON.stringify(highEventArr));
+         console.log(JSON.stringify(averEventArr));
+         */
         $(function() {
             Highcharts.chart('chart_dayEvent', {
                 chart: {

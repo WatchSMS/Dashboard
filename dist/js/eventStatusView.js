@@ -20,6 +20,7 @@ function eventList(data_event){
     var eventAcknowledge = '-';  //인지여부
     var eventIp = '-';           //IP
     var eventHostGroup = '-';    //호스트그룹
+    var eventDescription = '-';  //비고
 
     var hostid = '';
 
@@ -34,12 +35,17 @@ function eventList(data_event){
             eventStatus = convStatus(v.value);
             eventPriority = convPriority(v.relatedObject.priority);
             eventStartTime = convTime(v.relatedObject.lastchange);
-            eventAckTime = convTime(v.acknowledges.clock);
+            if(v.acknowledges[0] == undefined){
+                eventAckTime = "-";
+            } else {
+                eventAckTime = convTime(v.acknowledges[0].clock);
+            }
             eventAge = convDeltaTime(v.relatedObject.lastchange);
             eventAcknowledge = convAck(v.acknowledged);
             hostid = v.hosts[0].hostid;
             eventIp = zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
             eventHostGroup = v.hosts[0].host;
+            eventDescription = v.relatedObject.description;
         } catch (e) {
             console.log(e);
         }
@@ -53,7 +59,8 @@ function eventList(data_event){
         eventListTable += "<td width='80' class='line'>" + eventAcknowledge + "</td>";
         eventListTable += "<td width='125' class='line'>" + eventAckTime + "</td>";
         eventListTable += "<td width='100' class='line'>" + eventIp + "</td>";
-        eventListTable += "<td width='auto' class='line'>" + eventHostGroup + "</td>";
+        eventListTable += "<td width='100' class='line'>" + eventHostGroup + "</td>";
+        eventListTable += "<td width='auto' class='line'>" + eventDescription + "</td>";
         eventListTable += "</tr>";
 
     });
