@@ -773,8 +773,8 @@ var zbxApi = {
                 "selectHosts": "extend",
                 "source": 0,
                 "sortfield": "clock",
-                "sortorder": "ASC",
-                "limit": "100"
+                "sortorder": "DESC",
+                "limit": 200
             };
             return server.sendAjaxRequest(method, params);
         },

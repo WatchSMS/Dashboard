@@ -281,14 +281,14 @@ var zbxSyncApi = {
             "method": "host.get",
             "params": {
                 "output": "extend",
-                "selectInterfaces": ["ip", "disk"],
+                "selectInterfaces": ["ip"],
                 "hostids": hostid
             },
             "id": 1,
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log(" eventStatusHost " + JSON.stringify(result));
+        //console.log(" eventStatusHost " + JSON.stringify(result));
         return result;
     },
 
