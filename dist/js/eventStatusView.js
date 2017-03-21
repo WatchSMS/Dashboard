@@ -51,16 +51,32 @@ function eventList(data_event){
         }
 
         eventListTable += "<tr>";
-        eventListTable += "<td width='80' class='line'>" + eventId + "</td>";
-        eventListTable += "<td width='80' class='line'>" + eventStatus + "</td>";
-        eventListTable += "<td width='80' class='line'>" + eventPriority + "</td>";
-        eventListTable += "<td width='125' class='line'>" + eventStartTime + "</td>";
-        eventListTable += "<td width='120' class='line'>" + eventAge + "</td>";
-        eventListTable += "<td width='80' class='line'>" + eventAcknowledge + "</td>";
-        eventListTable += "<td width='125' class='line'>" + eventAckTime + "</td>";
-        eventListTable += "<td width='100' class='line'>" + eventIp + "</td>";
-        eventListTable += "<td width='100' class='line'>" + eventHostGroup + "</td>";
-        eventListTable += "<td width='auto' class='line'>" + eventDescription + "</td>";
+        eventListTable += "<td width='80'   class='line'>" + eventId + "</td>";
+        if(eventStatus == "problem"){
+            eventListTable += "<td width='80'   class='line' style='color:red;'>" + eventStatus + "</td>";
+        } else {
+            eventListTable += "<td width='80'   class='line'>" + eventStatus + "</td>";
+        }
+        if(eventPriority == "information"){
+            eventListTable += "<td width='80'   class='line' style='color:deepskyblue;'>" + eventPriority + "</td>";
+        } else if(eventPriority == "warning"){
+            eventListTable += "<td width='80'   class='line' style='color:yellow;'>" + eventPriority + "</td>";
+        } else if(eventPriority == "average"){
+            eventListTable += "<td width='80'   class='line' style='color:greenyellow;'>" + eventPriority + "</td>";
+        } else if(eventPriority == "high"){
+            eventListTable += "<td width='80'   class='line' style='color:red;'>" + eventPriority + "</td>";
+        }
+        eventListTable += "<td width='125'  class='line'>" + eventStartTime + "</td>";
+        eventListTable += "<td width='120'  class='line'>" + eventAge + "</td>";
+        if(eventAcknowledge == "Unacked"){
+            eventListTable += "<td width='80'   class='line' style='color:red;'>" + eventAcknowledge + "</td>";
+        } else {
+            eventListTable += "<td width='80'   class='line'>" + eventAcknowledge + "</td>";
+        }
+        eventListTable += "<td width='125'  class='line'>" + eventAckTime + "</td>";
+        eventListTable += "<td width='100'  class='line'>" + eventIp + "</td>";
+        eventListTable += "<td width='100'  class='line'>" + eventHostGroup + "</td>";
+        eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
         eventListTable += "</tr>";
 
     });
