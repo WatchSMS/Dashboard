@@ -1043,3 +1043,149 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
         });
     });
 }
+
+
+function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
+	
+    $(function () {
+        
+    chart1 = new Highcharts.chart(chartId, {
+        	exporting: { 
+        		 buttons: {
+                     contextButton: {
+                         enabled: false,
+                         symbolStroke: '#1e282c',
+                         theme: {
+	                            fill:'#626992'
+	                     }
+                     }
+                 }
+        	},
+            colors: colorArr,
+            chart: {
+            	backgroundColor: 'transparent',
+                type: 'area',
+                zoomType: 'x',
+                events: {
+                    load: function(event) {
+                        $("#"+chartId).unblock(blockUI_opt_el);
+                        console.log("loaded");
+                        console.log(Highcharts.charts.length);
+                    }
+                }
+            },
+            title: {
+                text: "",
+                style: {
+                	color: '#EDEDED'
+                }
+            },
+            subtitle: {
+                text: ''
+            },
+            legend: {
+            	enabled: false,
+            	itemStyle: {
+            		color: '#a2adcc'
+            	}
+            },
+            xAxis: {
+            	
+            	crosshair: true,
+                events: {
+                    setExtremes: syncExtremes
+                },
+                labels: {
+                	style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        var d2 = new Date(this.value);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        return hours + ":" + minutes;
+                    }
+                }
+            },
+            yAxis: {
+            	gridLineWidth: 1,
+            	gridLineColor: 'grey',
+                title: {
+                    text: ''
+                },
+                labels: {
+                	style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        return this.value + unit;
+                    }
+                }
+            },
+            tooltip: {
+            	borderColor: '#51597e',
+            	borderWidth: 1,
+            	backgroundColor: '#3d476b',
+            	useHTML: true,
+            	shared: true,
+//            	pointFormat: '{series.name}: <b>{point.y}</b><br/>',
+                formatter: function () {
+                	
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    if(hours.length==1){
+                        hours = "0" + hours;
+                    }
+                    if(minutes.length==1){
+                        minutes = "0" + minutes;
+                    }
+                    
+                    var valueStr = "";
+                    valueStr += "<li class='p1'><span style='background:#FF8C00; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[0].series.name + ": <b>" + this.points[0].y + "</b></style></li>";
+                    valueStr += "<li class='p1'><span style='background:#ee6866; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[1].series.name + ": <b>" + this.points[1].y + "</b></style></li>";
+                    valueStr += "<li class='p1'><span style='background:#00BFFF; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[2].series.name + ": <b>" + this.points[2].y + "</b></style></li>";
+                    
+                    return "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + hours + ":" + minutes + "</span><br/>" + valueStr;
+
+                }
+            },
+            plotOptions: {
+            	series: {
+                    events: {
+                    	mouseOver: function(e){
+                			GLOBAL_INDEX = this.index;
+                		 },
+                        legendItemClick: function (e) {
+                            var visibility = this.visible ? 'visible' : 'hidden';
+                            console.log("visibility?");
+                            console.log(visibility);
+                        }
+                    }//end events
+                }, //end series
+                area: {
+                	stacking: 'normal',
+                    //lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 1,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                }
+            },
+            series: dataSet
+        });
+    });
+}

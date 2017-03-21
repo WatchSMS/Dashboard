@@ -1,4 +1,10 @@
 function eventListView(){
+	
+    $.blockUI(blockUI_opt_all);
+    offTimer();
+    removeAllChart();
+
+    
     console.log(" IN eventListView ");
 
     var data_event = '';
@@ -8,6 +14,8 @@ function eventListView(){
         console.log("data_event : " + JSON.stringify(data_event));
         eventList(data_event);
     })
+    
+    showEventChartView();
 }
 
 function eventList(data_event){
@@ -85,4 +93,115 @@ function eventList(data_event){
     $("#eventStatusTable").empty();
     $("#eventStatusTable").append(eventListTable);
 
+}
+
+
+function showEventChartView(){
+	
+    $(".info-box-content").block(blockUI_opt_el);
+
+    console.log("cccccccccccccccccccccccc");
+
+	var d = new Date();
+    var nowHours = d.getHours();
+    console.log("시간 : " + nowHours);
+	d.setDate(d.getDate()-1);
+	console.log(d);
+	var startDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), nowHours, 0, 0);
+	console.log("startDate");
+	console.log(startDate);
+	var startTime = startDate.getTime() / 1000;
+	var timeClass = [];
+	var chartDataSet = [];
+	var dataSet = [];
+	
+	var ackDataSet = [];
+	var problemDataSet = [];
+	var okDataSet = [];
+	
+	var eventArrayByTime = [];
+	var keyArr = [];
+	var j=0;
+	for(var i=startTime; i<(new Date().getTime()/1000); i=i+300){ // 5분 단위로 시간 구하기
+		
+		timeClass[j]=i;
+		
+		var obj = new Object();
+		obj.startTime = i;
+		obj.endTime = i+300;
+		obj.ackCount = 0;
+		obj.problemCount = 0;
+		obj.okCount = 0;
+		chartDataSet.push(obj);
+		j++;
+	}
+	for(var i=0; i<timeClass.length; ++i){
+		//console.log(timeClass[i]);
+	}
+	
+	zbxApi.getEvent.getByTime(startTime).then(function(data) { // 24시간 전 ~ 현재 이벤트 추출
+		var eventArr = data.result;
+		$.each(eventArr, function(k,v){
+			
+			var thisEventClock = parseInt(v.clock);
+			$.each(chartDataSet, function(k2,v2){
+				if(v2.startTime <= thisEventClock && v2.endTime > thisEventClock){
+					if(v.acknowledged == "1"){
+						v2.ackCount += 1;
+					}
+					if(v.value == "1"){
+						v2.problemCount += 1;
+					}
+					if(v.value == "0"){
+						v2.okCount += 1;
+					}
+					return false;
+				}
+			});
+
+		});
+		
+		$.each(chartDataSet, function(k,v){
+			console.log(v);
+			
+			var ackArr = [];
+			ackArr[0] = parseInt(v.startTime)*1000;
+			ackArr[1] = v.ackCount;
+			ackDataSet.push(ackArr);
+			
+			var problemArr = [];
+			problemArr[0] = parseInt(v.startTime)*1000;
+			problemArr[1] = v.problemCount;
+			problemDataSet.push(problemArr);
+			
+			var okArr = [];
+			okArr[0] = parseInt(v.startTime)*1000;
+			okArr[1] = v.okCount;
+			okDataSet.push(okArr);
+		});
+		
+		dataObj = new Object();
+	    dataObj.name = '인지';
+	    dataObj.data = ackDataSet;
+	    dataSet.push(dataObj);
+	    
+	    dataObj = new Object();
+	    dataObj.name = '신규';
+	    dataObj.data = problemDataSet;
+	    dataSet.push(dataObj);
+	    
+	    dataObj = new Object();
+	    dataObj.name = '완료';
+	    dataObj.data = okDataSet;
+	    dataSet.push(dataObj);
+	    
+	    console.log("=======================================");
+	    console.log(dataSet);
+	    console.log("=======================================");
+	    
+	    showEventStatChart("chart_eventList", "", dataSet, "", ['#FF8C00', '#ee6866', '#00BFFF', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+	    $.unblockUI(blockUI_opt_all);
+	});
+	
+    
 }

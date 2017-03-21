@@ -94,7 +94,7 @@
 }
 
 
-/* 占쏙옙占쏙옙占쏙옙占� s */
+/* �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝占� s */
 .Pstyle {
 	opacity: 1; display: none; position: relative; width: auto; border: 0px solid #fff; padding: 0px;
 	overflow: hidden; height: 650px;  vertical-align: middle; display: inline-block; margin: 0 auto; margin-top:33px; text-align:center;
@@ -1058,7 +1058,7 @@
 }
 
 
-/* �꽌釉� �긽�깭 */
+/* 占쎄퐣�뇡占� 占쎄맒占쎄묶 */
 .content-only .table1 .c0 {
 	position:relative; top:5px; left:0px;
 }
@@ -1230,6 +1230,43 @@
 .content-right .d4 .s1 .p2 .e1 {
 	height:19px; display:inline-block;
 }
+
+<!-- kkj -->
+.content-right2 {
+	width:100%; display:inline-block;
+}
+
+.d4 {
+	text-align:center; margin:0 0 0 0; background:#424973;  width:100%; height:346px; border:1px solid #51597e; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+}
+.d4 .s1 {
+	margin:0 auto; padding:9px 0 0 0; width:90%; height:30px; text-align:right;
+}
+.d4 .s1 .cp1 {
+	padding:0 12px 0 0; height:19px; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp1 .o1 {
+	background:#FF8C00; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp1 .o2 {
+	background:#ee6866; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp1 .o3 {
+	background:#00BFFF; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp1 .e1 {
+	height:19px; display:inline-block;
+}
+.d4 .s1 .cp2 {
+	padding:0 0 0 0; height:19px; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp2 .o4 {
+	background:#91b3d8; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d4 .s1 .cp2 .e1 {
+	height:19px; display:inline-block;
+}
+
 
 /* 2017.02.24 - s */
 .content-right2 {
