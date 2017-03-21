@@ -16,7 +16,11 @@ function dashboardView(){
     });
 
     //이벤트 목록
-    dashboardEventList();
+    var dashboard_Event = '';
+    zbxApi.dashboardEventList.get().then(function(data) {
+        dashboard_Event = zbxApi.dashboardEventList.success(data);
+        dashboardEventList(dashboard_Event);
+    });
 
     //요일별이벤트발생빈도
     dashboardDayEvent();
@@ -156,71 +160,66 @@ function dashboardHostEvent(hostEvent){
     });
 }
 
-function dashboardEventList() {
-    var dashboard_Event = '';
-    zbxApi.dashboardEventList.get().then(function(data) {
-        dashboard_Event = zbxApi.dashboardEventList.success(data);
+function dashboardEventList(dashboard_Event) {
+    //console.log(dashboard_Event);
+    //console.log(JSON.stringify(dashboard_Event));
+    var severity = '';
+    var status = '';
+    var lastchange = '';
+    var age = '';
+    var ack = '';
+    var ackTime = '';
+    var host = '';
+    var description = '';
 
-        //console.log(dashboard_Event);
-        //console.log(JSON.stringify(dashboard_Event));
-        var severity = '';
-        var status = '';
-        var lastchange = '';
-        var age = '';
-        var ack = '';
-        var ackTime = '';
-        var host = '';
-        var description = '';
+    var eventTable = '';
 
-        var eventTable = '';
+    eventTable += '<tbody>';
 
-        eventTable += '<tbody>';
+    $.each(dashboard_Event.result, function (k, v) {
+        severity = convPriority(v.relatedObject.priority);
+        status = convStatus(v.value);
+        lastchange = convTime(v.relatedObject.lastchange);
+        age = convDeltaTime(v.relatedObject.lastchange);
+        ack = convAck(v.acknowledged);
+        if(v.acknowledges[0] == undefined){
+            ackTime = "-";
+        } else {
+            ackTime = convTime(v.acknowledges[0].clock);
+        }
+        host = v.hosts[0].host;
+        description = v.relatedObject.description;
 
-        $.each(dashboard_Event.result, function (k, v) {
-            severity = convPriority(v.relatedObject.priority);
-            status = convStatus(v.value);
-            lastchange = convTime(v.relatedObject.lastchange);
-            age = convDeltaTime(v.relatedObject.lastchange);
-            ack = convAck(v.acknowledged);
-            if(v.acknowledges[0] == undefined){
-                ackTime = "-";
-            } else {
-                ackTime = convTime(v.acknowledges[0].clock);
-            }
-            host = v.hosts[0].host;
-            description = v.relatedObject.description;
-
-            eventTable += "<tr>";
-            if(severity == "information") {
-                eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
-            } else if(severity == "warning") {
-                eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
-            } else if(severity == "average") {
-                eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
-            } else if(severity == "high") {
-                eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
-            } else {
-                eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
-            }
-            eventTable += "<td width='60' class='line'>" + status + "</td>";
-            eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
-            eventTable += "<td width='75' class='line'>" + age + "</td>";
-            if(ack == "Unacked"){
-                eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-            } else if(ack = "Acked"){
-                eventTable += "<td width='69' class='line'>" + ack + "</td>";
-            }
-            eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
-            eventTable += "<td width='100' class='line'>" + host + "</td>";
-            eventTable += "<td width='auto' class='align_left ponter'>" +
-                "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-                "<span class='smd'>" + description + "</span></a></td>";
-            eventTable += "</tr>";
-        });
-        eventTable += "</tbody>";
-        $("#dashboardEventList").empty();
-        $("#dashboardEventList").append(eventTable);
+        eventTable += "<tr>";
+        if(severity == "information") {
+            eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
+        } else if(severity == "warning") {
+            eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
+        } else if(severity == "average") {
+            eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
+        } else if(severity == "high") {
+            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+        } else {
+            eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
+        }
+        eventTable += "<td width='60' class='line'>" + status + "</td>";
+        eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+        eventTable += "<td width='75' class='line'>" + age + "</td>";
+        if(ack == "Unacked"){
+            eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+        } else if(ack = "Acked"){
+            eventTable += "<td width='69' class='line'>" + ack + "</td>";
+        }
+        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+        eventTable += "<td width='100' class='line'>" + host + "</td>";
+        eventTable += "<td width='auto' class='align_left ponter'>" +
+            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+            "<span class='smd'>" + description + "</span></a></td>";
+        eventTable += "</tr>";
     });
+    eventTable += "</tbody>";
+    $("#dashboardEventList").empty();
+    $("#dashboardEventList").append(eventTable);
 }
 
 function dashboardDayEvent(){
