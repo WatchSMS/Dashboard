@@ -10,6 +10,8 @@ function eventListView(){
     })
 }
 
+var hostIpMap=[];
+
 function eventList(data_event){
     var eventId = '-';           //이벤트ID
     var eventStatus = '-';       //상태
@@ -43,7 +45,14 @@ function eventList(data_event){
             eventAge = convDeltaTime(v.relatedObject.lastchange);
             eventAcknowledge = convAck(v.acknowledged);
             hostid = v.hosts[0].hostid;
-            eventIp = zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
+
+            if(hostIpMap[hostid]==null) {
+
+                hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
+            }
+
+            eventIp = hostIpMap[hostid];
+
             eventHostGroup = v.hosts[0].host;
             eventDescription = v.relatedObject.description;
         } catch (e) {

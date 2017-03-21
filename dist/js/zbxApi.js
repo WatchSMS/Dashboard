@@ -751,7 +751,7 @@ var zbxApi = {
                 "source": 0,
                 "sortfield": "clock",
                 "sortorder": "DESC",
-                "limit": 200
+                "limit": 100
             };
             return server.sendAjaxRequest(method, params);
         },

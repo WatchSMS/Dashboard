@@ -287,6 +287,8 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         };
+
+
         var result = zbxSyncApi.callAjax(param);
         //console.log(" eventStatusHost " + JSON.stringify(result));
         return result;
