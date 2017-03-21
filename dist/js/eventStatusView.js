@@ -65,6 +65,8 @@ function eventList(data_event){
             eventListTable += "<td width='80'   class='line' style='color:greenyellow;'>" + eventPriority + "</td>";
         } else if(eventPriority == "high"){
             eventListTable += "<td width='80'   class='line' style='color:red;'>" + eventPriority + "</td>";
+        } else {
+            eventListTable += "<td width='80'   class='line'>" + eventPriority + "</td>";
         }
         eventListTable += "<td width='125'  class='line'>" + eventStartTime + "</td>";
         eventListTable += "<td width='120'  class='line'>" + eventAge + "</td>";

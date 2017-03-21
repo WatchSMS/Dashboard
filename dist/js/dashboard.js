@@ -184,6 +184,8 @@ function dashboardEventList() {
                 eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
             } else if(severity == "high") {
                 eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+            } else {
+                eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
             }
             eventTable += "<td width='60' class='line'>" + status + "</td>";
             eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
