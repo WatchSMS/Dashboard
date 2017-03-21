@@ -39,9 +39,9 @@ function dashboardEventStatus(){
     today_select = today_select-(today_select % DAYTOMILLS);
     today_select = Math.round(today_select / 1000);
 
-    //zbxSyncApi.alertTrigger();
-    //zbxSyncApi.unAckknowledgeEvent();
-    //zbxSyncApi.todayEvent(today_select);
+    zbxSyncApi.alertTrigger();
+    zbxSyncApi.unAckknowledgeEvent();
+    zbxSyncApi.todayEvent(today_select);
     console.log("dashboardEventStatus today_select : " + today_select);
 }
 
@@ -78,7 +78,7 @@ function dashboardHostEvent(hostEvent){
     dashboardHostEventHTML += "<tbody>";
 
     $.each(hostEvent.result, function(k, v){
-        console.log(" " + v.name + " 아이우에오 " + v.hostid);
+        //console.log(" " + v.name + " 아이우에오 " + v.hostid);
         hostNum += 1;
         hostName = v.name;
         hostid = v.hostid;
@@ -107,11 +107,11 @@ function dashboardHostEvent(hostEvent){
                 if(event_clock > start_clock && event_clock < end_clock){
                     event_count += 1;
                 }
-                console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
+                //console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
 
                 dataArr[i] = [start_clock,event_count];
 
-                console.log(JSON.stringify(dataArr[i]));
+                //console.log(JSON.stringify(dataArr[i]));
             }
         } catch (e) {
             console.log(e);
