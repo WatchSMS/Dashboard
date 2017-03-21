@@ -588,7 +588,8 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     formatter: function () {
                     }
                 },
-                min: 0
+                min: 0,
+                max: 10
             },
             tooltip: {
                 formatter: function () {
