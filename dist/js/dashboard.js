@@ -453,7 +453,7 @@ function dashboardDayEvent(){
             Highcharts.chart('chart_dayEvent', {
                 chart: {
                     type: 'column',
-                    height: 300,
+                    height: 280,
                     backgroundColor: '#424973',
                     spacingTop: 10,
                     spacingBottom: 0,
@@ -466,11 +466,15 @@ function dashboardDayEvent(){
                 subtitle: {
                     text: ''
                 },
+                legend: {
+                    enabled: false,
+                    itemStyle: {
+                        color: '#a2adcc'
+                    }
+                },
                 xAxis: {
-                    gridLineColor: '#FBFBFB',
-                    lineColor: '#FBFBFB',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#FBFBFB',
+                    gridLineWidth: 1,
+                    gridLineColor: 'grey',
                     categories: [
                         '월요일',
                         '화요일',
@@ -484,21 +488,19 @@ function dashboardDayEvent(){
                         text: ''
                     },
                     style: {
-                        color: '#FBFBFB'
+                        color: '#a2adcc'
                     }
                 },
                 yAxis: {
-                    gridLineColor: '#FBFBFB',
-                    lineColor: '#FBFBFB',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#FBFBFB',
+                    gridLineWidth: 1,
+                    gridLineColor: 'grey',
                     min: 0,
                     title: {
                         text: ''
                     },
                     style: {
-                        color: '#FBFBFB'
-                    }
+                        color: '#a2adcc'
+                    },
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.85)',
@@ -532,9 +534,6 @@ function dashboardDayEvent(){
                     data: warnEventArr,
                     color: '#B1BEF1'
                 }],
-                legend: {
-                    enabled: false
-                },
                 exporting: {
                     buttons: {
                         contextButton: {

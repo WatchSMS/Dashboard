@@ -560,17 +560,13 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         var d2 = new Date(this.value);
                         var hours = "" + d2.getHours();
                         var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
                         if(hours.length==1){
                             hours = "0" + hours;
                         }
                         if(minutes.length==1){
                             minutes = "0" + minutes;
                         }
-                        if(seconds.length==1){
-                            seconds = "0" + seconds;
-                        }
-                        return hours + ":" + minutes + ":" + seconds;
+                        return hours + ":" + minutes;
                     }
                 }
             },
@@ -578,6 +574,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 showFirstLabel: true,
                 showLastLabel: true,
                 gridLineWidth: 1,
+                gridLineColor: 'grey',
                 title: {
                     text: ''
                 },
@@ -596,22 +593,13 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
                     var minutes = "" + d2.getMinutes();
-                    var seconds = "" + d2.getSeconds();
-
                     if(hours.length==1){
                         hours = "0" + hours;
                     }
                     if(minutes.length==1){
                         minutes = "0" + minutes;
                     }
-                    if(seconds.length==1){
-                        seconds = "0" + seconds;
-                    }
-                    if(unit == "MB"){
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
-                    }else{
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
-                    }
+                    return "시간 : " + hours + ":" + minutes + ", 값 : " + this.y;
                 }
             },
             plotOptions: {
