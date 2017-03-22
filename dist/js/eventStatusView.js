@@ -48,7 +48,7 @@ function eventList(data_event){
         console.log(" data_event ");
         try {
             eventId = v.eventid;
-            eventStatus = convStatus(v.value);
+            eventStatus = convStatusEvent(v.value);
             eventPriority = convPriority(v.relatedObject.priority);
             eventStartTime = convTime(v.relatedObject.lastchange);
             if(v.acknowledges[0] == undefined){
@@ -57,7 +57,7 @@ function eventList(data_event){
                 eventAckTime = convTime(v.acknowledges[0].clock);
             }
             eventAge = convDeltaTime(v.relatedObject.lastchange);
-            eventAcknowledge = convAck(v.acknowledged);
+            eventAcknowledge = convAckEvent(v.acknowledged);
             hostid = v.hosts[0].hostid;
 
             if(hostIpMap[hostid]==null) {

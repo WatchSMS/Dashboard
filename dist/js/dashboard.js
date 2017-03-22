@@ -188,7 +188,7 @@ function dashboardEventList(dashboard_Event) {
 
     $.each(dashboard_Event.result, function (k, v) {
         severity = convPriority(v.relatedObject.priority);
-        status = convStatus(v.value);
+        status = convStatusEvent(v.value);
         lastchange = convTime(v.relatedObject.lastchange);
         age = convDeltaTime(v.relatedObject.lastchange);
         ack = convAck(v.acknowledged);

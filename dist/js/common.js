@@ -46,6 +46,22 @@ var convPriority = function(priority) {
     }
 };
 
+var convStatusEvent = function(status) {
+    if (status === "0") {
+        return "해소";
+    } else {
+        return "발생";
+    }
+};
+
+var convAckEvent = function(ack) {
+    if (ack === "0") {
+        return "미인지";
+    } else {
+        return "인지";
+    }
+};
+
 var resultToArray = function(data) {
     var array = [];
     $.each(data, function(k, v) {

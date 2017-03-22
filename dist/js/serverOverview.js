@@ -89,7 +89,11 @@ function serverOverView(server_data) {
             value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[/,pfree]").lastvalue;
         } catch (e) {
             console.log(e);
-            value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+            try {
+                value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+            } catch (e) {
+                console.log(e);
+            }
         }
         serverPerDisk = 100 - value;
 
@@ -103,8 +107,12 @@ function serverOverView(server_data) {
             serverRAM = '-';
         } else {
             var splitInfo = infoArr.split(",");
-            serverCPU = splitInfo[0].slice(4);
-            serverRAM = splitInfo[1].slice(5);
+            try {
+                serverCPU = splitInfo[0].slice(4);
+                serverRAM = splitInfo[1].slice(5);
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         var tableDataObj = {};
