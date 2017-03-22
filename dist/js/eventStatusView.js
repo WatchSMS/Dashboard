@@ -5,8 +5,8 @@ function eventListView(){
     removeAllChart();
 
     $("#eventListDiv").scroll(function() {
-        var elem = $("#eventListDiv");
-        if(elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()){
+        var div = $("#eventListDiv");
+        if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()){
             console.log(" END SCROLL ");
         }
     });
