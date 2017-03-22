@@ -1122,34 +1122,47 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
             	backgroundColor: '#3d476b',
             	useHTML: true,
             	shared: true,
-//            	pointFormat: '{series.name}: <b>{point.y}</b><br/>',
                 formatter: function () {
+                	var valueStr = "";
+                	var hours = "";
+                    var minutes = "";
+                    var totalCount = 0;
+                    
+                	$.each(this.points, function(k,v){
+                		if(v.series.visible){
+                			 var d2 = new Date(this.x);
+                             hours = "" + d2.getHours();
+                             minutes = "" + d2.getMinutes();
+                             if(hours.length < 2){
+                                 hours = "0" + hours;
+                             }
+                             if(minutes.length < 2){
+                                 minutes = "0" + minutes;
+                             }
+                             var backgroundColor;
+                             if(v.series.name == "인지"){
+                            	 backgroundColor = "#FF8C00";
+                             }else if(v.series.name == "신규"){
+                            	 backgroundColor = "#ee6866";
+                             }else if(v.series.name == "완료"){
+                            	 backgroundColor = "#00BFFF";
+                             }
+                             totalCount += v.y;
+                             valueStr += "<li class='p1'><span style='background:" + backgroundColor + "; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + v.series.name + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + v.y + "</b></li>";
+                		}
+                	});
+                	valueStr += "<li class='p1'><span style='background:black; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>전체&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + totalCount + "</b></style></li>";
+            		
+                	return "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + hours + ":" + minutes + "</span><br/>" + valueStr;
                 	
-                    var d2 = new Date(this.x);
-                    var hours = "" + d2.getHours();
-                    var minutes = "" + d2.getMinutes();
-                    if(hours.length==1){
-                        hours = "0" + hours;
-                    }
-                    if(minutes.length==1){
-                        minutes = "0" + minutes;
-                    }
-                    
-                    var valueStr = "";
-                    valueStr += "<li class='p1'><span style='background:#FF8C00; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[0].series.name + ": <b>" + this.points[0].y + "</b></style></li>";
-                    valueStr += "<li class='p1'><span style='background:#ee6866; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[1].series.name + ": <b>" + this.points[1].y + "</b></style></li>";
-                    valueStr += "<li class='p1'><span style='background:#00BFFF; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + this.points[2].series.name + ": <b>" + this.points[2].y + "</b></style></li>";
-                    
-                    return "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + hours + ":" + minutes + "</span><br/>" + valueStr;
-
                 }
             },
             plotOptions: {
             	series: {
                     events: {
-                    	mouseOver: function(e){
-                			GLOBAL_INDEX = this.index;
-                		 },
+//                    	mouseOver: function(e){
+//                			GLOBAL_INDEX = this.index;
+//                		 },
                         legendItemClick: function (e) {
                             var visibility = this.visible ? 'visible' : 'hidden';
                             console.log("visibility?");

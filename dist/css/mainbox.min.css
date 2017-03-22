@@ -830,6 +830,64 @@
 	height: 181px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
 }
 
+<!-- kkj -->
+
+.content-only .d99 {
+	margin:0 0 0 0; background:#424973; width:100%; height:150px;
+	border:1px solid #51597e; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+}
+.content-only .d99 #in-scl {
+	padding: 0;	margin: 0;	overflow: hidden;
+}
+
+.content-only .d99 #in-scl .content_in {
+	overflow: auto;	position: relative;	padding: 0px; background: #424973; margin: 0px; width: 100%; max-width: 100%;
+	height: 181px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
+}
+
+
+.content-only .d99 .s1 .cp1 .o1 {
+	background:#FF8C00; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.content-only .d99 .s1 .cp1 .o2 {
+	background:#ee6866; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.content-only .d99 .s1 .cp1 .o3 {
+	background:#00BFFF; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+
+
+.d99 {
+	text-align:center; margin:0 0 0 0; background:#424973;  width:100%; height:150px; border:1px solid #51597e; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+}
+.d99 .s1 {
+	margin:0 auto; padding:9px 0 0 0; width:90%; height:30px; text-align:right;
+}
+.d99 .s1 .cp1 {
+	padding:0 12px 0 0; height:19px; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp1 .o1 {
+	background:#FF8C00; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp1 .o2 {
+	background:#ee6866; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp1 .o3 {
+	background:#00BFFF; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp1 .e1 {
+	height:19px; display:inline-block;
+}
+.d99 .s1 .cp2 {
+	padding:0 0 0 0; height:19px; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp2 .o4 {
+	background:#91b3d8; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;
+}
+.d99 .s1 .cp2 .e1 {
+	height:19px; display:inline-block;
+}
+
 
 
 .content_in.hidden{ display: none; }

@@ -179,8 +179,6 @@ function showEventChartView(){
 		});
 		
 		$.each(chartDataSet, function(k,v){
-			console.log(v);
-			
 			var ackArr = [];
 			ackArr[0] = parseInt(v.startTime)*1000;
 			ackArr[1] = v.ackCount;
@@ -212,11 +210,8 @@ function showEventChartView(){
 	    dataObj.data = okDataSet;
 	    dataSet.push(dataObj);
 	    
-	    console.log("=======================================");
-	    console.log(dataSet);
-	    console.log("=======================================");
-	    
-	    showEventStatChart("chart_eventList", "", dataSet, "", ['#FF8C00', '#ee6866', '#00BFFF', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+	    // 신규 #ee6866
+	    showEventStatChart("chart_eventList", "", dataSet, "", ['#FF8C00', 'red', '#00BFFF', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
 	    $.unblockUI(blockUI_opt_all);
 	});
 	

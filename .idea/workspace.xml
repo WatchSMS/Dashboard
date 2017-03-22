@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed90c85f-b668-44d6-9017-a111e6bf13ea" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/zabirepo-param.js" afterPath="$PROJECT_DIR$/dist/js/zabirepo-param.js" />
+    <list default="true" id="ed90c85f-b668-44d6-9017-a111e6bf13ea" name="Default" comment="2017.03.21 대시보드 이벤트 발생 목록">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/img/recentEventList.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/base_eventList.html" afterPath="$PROJECT_DIR$/base_eventList.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/mainbox.min.css" afterPath="$PROJECT_DIR$/dist/css/mainbox.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/common.js" afterPath="$PROJECT_DIR$/dist/js/common.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/dashboard.js" afterPath="$PROJECT_DIR$/dist/js/dashboard.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/eventStatusView.js" afterPath="$PROJECT_DIR$/dist/js/eventStatusView.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,24 +23,173 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+            <file leaf-file-name="zbxApi.js" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/dist/js/zbxApi.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="420">
+                    <caret line="811" column="35" lean-forward="true" selection-start-line="811" selection-start-column="35" selection-end-line="811" selection-end-column="35" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="zbxSyncApi.js" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/dist/js/zbxSyncApi.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="714">
+                    <caret line="219" column="23" lean-forward="true" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="eventStatusView.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dist/js/eventStatusView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="127" column="55" lean-forward="false" selection-start-line="127" selection-start-column="55" selection-end-line="127" selection-end-column="55" />
+            <state relative-caret-position="493">
+              <caret line="29" column="40" lean-forward="true" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+              <folding>
+                <marker date="1490160762665" expanded="true" signature="2478:2488" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="2744:2762" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="2908:2921" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="3067:3085" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="3228:3238" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="3665:3675" ph="..." />
+                <marker date="1490160762665" expanded="true" signature="4146:4163" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dist/js/dashboard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2709">
+              <caret line="176" column="20" lean-forward="true" selection-start-line="176" selection-start-column="20" selection-end-line="176" selection-end-column="20" />
+              <folding>
+                <marker date="1490160762710" expanded="true" signature="6926:6943" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="7079:7091" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="7227:7244" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="7377:7386" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="7835:7844" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="8222:8268" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="26947:38371" ph="{...}" />
+                <marker date="1490160762710" expanded="true" signature="36766:38366" ph="{...}" />
+                <marker date="1490160762710" expanded="true" signature="36844:38280" ph="{...}" />
+                <marker date="1490160762710" expanded="true" signature="37052:38238" ph="{...}" />
+                <marker date="1490160762710" expanded="true" signature="37116:37162" ph="{...}" />
+                <marker date="1490160762710" expanded="true" signature="37717:37766" ph="..." />
+                <marker date="1490160762710" expanded="true" signature="38017:38063" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dist/js/common.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="602">
+              <caret line="1163" column="54" lean-forward="true" selection-start-line="1163" selection-start-column="54" selection-end-line="1163" selection-end-column="54" />
+              <folding>
+                <marker date="1490160762745" expanded="true" signature="31021:31077" ph="..." />
+                <marker date="1490160762745" expanded="true" signature="31720:31732" ph="..." />
+                <marker date="1490160762745" expanded="true" signature="31898:31907" ph="..." />
+                <marker date="1490160762745" expanded="true" signature="35631:35795" ph="{&quot;borderColor&quot;: '##51597e'...}" />
+                <marker date="1490160762745" expanded="true" signature="38138:38158" ph="{...}" />
+                <marker date="1490160762745" expanded="true" signature="38138:38454" ph="{...}" />
+                <marker date="1490160762745" expanded="true" signature="38138:38484" ph="{...}" />
+                <marker date="1490160762745" expanded="true" signature="38138:39011" ph="{...}" />
+                <marker date="1490160762745" expanded="true" signature="38214:38432" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base_dashboard.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base_dashboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="12" selection-end-line="75" selection-end-column="46" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base_eventList.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base_eventList.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="42" column="27" lean-forward="true" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>dashboardView</find>
+      <find>이벤트드</find>
+      <find>hostEventList</find>
+      <find>js</find>
+      <find>menu_eventList</find>
+      <find>lastchan</find>
+      <find>source</find>
+      <find>try</find>
+      <find>dashboardE</find>
+      <find>start_clock</find>
+      <find>아에이</find>
+      <find>zbxS</find>
+      <find>date</find>
+      <find>beforeTime</find>
+      <find>today_select</find>
+      <find>200</find>
+      <find>dashboardHostEvent</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/dist/js/zabirepo.js" />
+        <option value="$PROJECT_DIR$/dist/js/zbxSyncApi.js" />
+        <option value="$PROJECT_DIR$/dist/js/dashboard.js" />
+        <option value="$PROJECT_DIR$/dist/js/common.js" />
+        <option value="$PROJECT_DIR$/dist/js/zbxApi.js" />
+        <option value="$PROJECT_DIR$/dist/css/mainbox.min.css" />
+        <option value="$PROJECT_DIR$/dist/js/eventStatusView.js" />
+        <option value="$PROJECT_DIR$/base_eventList.html" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -43,10 +198,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1592" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -67,11 +222,43 @@
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="zabirepo" />
+              <option name="myItemId" value="Dashboard" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="zabirepo" />
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -84,7 +271,88 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="js.eslint.eslintPackage" value="" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -98,32 +366,191 @@
       <updated>1481677532187</updated>
       <workItem from="1481677535001" duration="1849000" />
       <workItem from="1482369603858" duration="1820000" />
+      <workItem from="1489995020217" duration="6603000" />
+      <workItem from="1490054856869" duration="42000" />
+      <workItem from="1490055464894" duration="25328000" />
+      <workItem from="1490141157433" duration="8006000" />
     </task>
+    <task id="LOCAL-00001" summary="2017.03.20 대시보드 호스트별 장애현황 그래프 크기 줄이기">
+      <created>1490002890585</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1490002890586</updated>
+    </task>
+    <task id="LOCAL-00002" summary="2017.03.20 이벤트 목록">
+      <created>1490004671687</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1490004671687</updated>
+    </task>
+    <task id="LOCAL-00003" summary="2017.03.20 이벤트 목록">
+      <created>1490004727853</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1490004727853</updated>
+    </task>
+    <task id="LOCAL-00004" summary="2017.03.21 이벤트 목록">
+      <created>1490060945061</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1490060945061</updated>
+    </task>
+    <task id="LOCAL-00005" summary="2017.03.21 이벤트 목록">
+      <created>1490061173224</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1490061173224</updated>
+    </task>
+    <task id="LOCAL-00006" summary="2017.03.21 이벤트 목록">
+      <created>1490063485704</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1490063485704</updated>
+    </task>
+    <task id="LOCAL-00007" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490063767283</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1490063767283</updated>
+    </task>
+    <task id="LOCAL-00008" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490063959341</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1490063959341</updated>
+    </task>
+    <task id="LOCAL-00009" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490071539388</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1490071539388</updated>
+    </task>
+    <task id="LOCAL-00010" summary="2017.03.21 이벤트 목록">
+      <created>1490072643249</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1490072643249</updated>
+    </task>
+    <task id="LOCAL-00011" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490076724861</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1490076724861</updated>
+    </task>
+    <task id="LOCAL-00012" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490078808067</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1490078808067</updated>
+    </task>
+    <task id="LOCAL-00013" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490080477555</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1490080477555</updated>
+    </task>
+    <task id="LOCAL-00014" summary="2017.03.21 이벤트 목록 이벤트 등급 수정">
+      <created>1490083258729</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1490083258729</updated>
+    </task>
+    <task id="LOCAL-00015" summary="2017.03.21 이벤트 목록">
+      <created>1490086135423</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1490086135423</updated>
+    </task>
+    <task id="LOCAL-00016" summary="2017.03.21 대시보드 이벤트 현황 API 변경">
+      <created>1490087392121</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1490087392121</updated>
+    </task>
+    <task id="LOCAL-00017" summary="2017.03.21 대시보드 이벤트 발생 목록 API 변경">
+      <created>1490087819580</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1490087819580</updated>
+    </task>
+    <task id="LOCAL-00018" summary="2017.03.21 대시보드 이벤트 발생 목록">
+      <created>1490089183511</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1490089183511</updated>
+    </task>
+    <task id="LOCAL-00019" summary="2017.03.22 대시보드 이벤트 현황">
+      <created>1490143723669</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1490143723669</updated>
+    </task>
+    <task id="LOCAL-00020" summary="2017.03.22 대시보드 그래프 수정">
+      <created>1490145078601</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1490145078601</updated>
+    </task>
+    <task id="LOCAL-00021" summary="2017.03.22 이벤트 목록">
+      <created>1490146044566</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1490146044566</updated>
+    </task>
+    <task id="LOCAL-00022" summary="2017.03.22 이벤트 목록">
+      <created>1490147832134</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1490147832134</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3669000" />
+    <option name="totallyTimeSpent" value="43648000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="false" />
+    <frame x="1592" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.108478144" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919255" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,12 +559,134 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="2017.03.20 대시보드 호스트별 장애현황 그래프 크기 줄이기" />
+    <MESSAGE value="2017.03.20 이벤트 목록" />
+    <MESSAGE value="2017.03.21 이벤트 목록 이벤트 등급 수정" />
+    <MESSAGE value="2017.03.21 이벤트 목록" />
+    <MESSAGE value="2017.03.21 대시보드 이벤트 현황 API 변경" />
+    <MESSAGE value="2017.03.21 대시보드 이벤트 발생 목록 API 변경" />
+    <MESSAGE value="2017.03.21 대시보드 이벤트 발생 목록" />
+    <MESSAGE value="2017.03.22 대시보드 이벤트 현황" />
+    <MESSAGE value="2017.03.22 대시보드 그래프 수정" />
+    <MESSAGE value="2017.03.22 이벤트 목록" />
+    <MESSAGE value="2017.03.22 이벤트 발생 목록" />
+    <option name="LAST_COMMIT_MESSAGE" value="2017.03.22 이벤트 발생 목록" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/dist/js/eventStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="77" column="85" lean-forward="false" selection-start-line="77" selection-start-column="74" selection-end-line="77" selection-end-column="85" />
+          <folding>
+            <marker date="1490160762665" expanded="true" signature="2478:2488" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2744:2762" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2908:2921" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3067:3085" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3228:3238" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3665:3675" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="4146:4163" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2686">
+          <caret line="158" column="19" lean-forward="false" selection-start-line="158" selection-start-column="19" selection-end-line="158" selection-end-column="19" />
+          <folding>
+            <marker date="1490160762710" expanded="true" signature="6926:6943" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7079:7091" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7227:7244" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7377:7386" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7835:7844" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="8222:8268" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="26947:38371" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="36766:38366" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="36844:38280" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37052:38238" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37116:37162" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37717:37766" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="38017:38063" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="54" lean-forward="false" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_eventList.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9945">
+          <caret line="585" column="39" lean-forward="false" selection-start-line="585" selection-start-column="39" selection-end-line="585" selection-end-column="39" />
+          <folding>
+            <marker date="1490160762745" expanded="true" signature="31021:31077" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="31720:31732" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="31898:31907" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="35631:35795" ph="{&quot;borderColor&quot;: '##51597e'...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38158" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38454" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38484" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:39011" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38214:38432" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/eventStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1490160762665" expanded="true" signature="2478:2488" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2744:2762" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2908:2921" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3067:3085" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3228:3238" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3665:3675" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="4146:4163" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/eventStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1490160762665" expanded="true" signature="2478:2488" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2744:2762" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2908:2921" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3067:3085" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3228:3238" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3665:3675" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="4146:4163" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zbxApi.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -147,11 +696,240 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="127" column="55" lean-forward="false" selection-start-line="127" selection-start-column="55" selection-end-line="127" selection-end-column="55" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/hostDetailInfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <marker date="1489993614449" expanded="true" signature="12535:12552" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="12682:12694" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="12824:12841" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="12968:12977" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="13108:13117" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="13237:13254" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="13524:13533" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="13649:13666" ph="..." />
+            <marker date="1489993614449" expanded="true" signature="13858:13904" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/memStatsView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="9" lean-forward="false" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/hostInfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3192">
+          <caret line="168" column="54" lean-forward="false" selection-start-line="168" selection-start-column="54" selection-end-line="168" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="534">
+          <caret line="295" column="43" lean-forward="false" selection-start-line="295" selection-start-column="43" selection-end-line="295" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/diskStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+          <folding>
+            <marker date="1489138229630" expanded="true" signature="2185:2226" ph="..." />
+            <marker date="1489138229630" expanded="true" signature="10014:10029" ph="..." />
+            <marker date="1489138229630" expanded="true" signature="14981:14996" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_serverInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_hostinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_server.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="709">
+          <caret line="90" column="32" lean-forward="false" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/serverOverview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="53" column="32" lean-forward="false" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="32" />
+          <folding>
+            <marker date="1489381394470" expanded="true" signature="5043:5083" ph="..." />
+            <marker date="1489381394470" expanded="true" signature="5336:5379" ph="..." />
+            <marker date="1489381394470" expanded="true" signature="5633:5674" ph="..." />
+            <marker date="1489381394470" expanded="true" signature="9190:9241" ph="..." />
+            <marker date="1489381394470" expanded="true" signature="9521:9575" ph="..." />
+            <marker date="1489381394470" expanded="true" signature="9856:9908" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zabirepo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="114" column="13" lean-forward="true" selection-start-line="114" selection-start-column="13" selection-end-line="114" selection-end-column="13" />
+          <folding>
+            <marker date="1490076958840" expanded="true" signature="34422:34455" ph="..." />
+            <marker date="1490076958840" expanded="true" signature="34600:34611" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="602">
+          <caret line="1163" column="54" lean-forward="true" selection-start-line="1163" selection-start-column="54" selection-end-line="1163" selection-end-column="54" />
+          <folding>
+            <marker date="1490160762745" expanded="true" signature="31021:31077" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="31720:31732" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="31898:31907" ph="..." />
+            <marker date="1490160762745" expanded="true" signature="35631:35795" ph="{&quot;borderColor&quot;: '##51597e'...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38158" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38454" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:38484" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38138:39011" ph="{...}" />
+            <marker date="1490160762745" expanded="true" signature="38214:38432" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/bootstrap_v1.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="7330" column="1" lean-forward="false" selection-start-line="7330" selection-start-column="1" selection-end-line="7330" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zbxSyncApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="219" column="23" lean-forward="true" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/zbxApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="811" column="35" lean-forward="true" selection-start-line="811" selection-start-column="35" selection-end-line="811" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/mainbox.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="723">
+          <caret line="1432" column="14" lean-forward="false" selection-start-line="1432" selection-start-column="14" selection-end-line="1432" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2709">
+          <caret line="176" column="20" lean-forward="true" selection-start-line="176" selection-start-column="20" selection-end-line="176" selection-end-column="20" />
+          <folding>
+            <marker date="1490160762710" expanded="true" signature="6926:6943" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7079:7091" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7227:7244" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7377:7386" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="7835:7844" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="8222:8268" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="26947:38371" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="36766:38366" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="36844:38280" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37052:38238" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37116:37162" ph="{...}" />
+            <marker date="1490160762710" expanded="true" signature="37717:37766" ph="..." />
+            <marker date="1490160762710" expanded="true" signature="38017:38063" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="12" selection-end-line="75" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_eventList.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="42" column="27" lean-forward="true" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#4;n#div#0;n#section#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/eventStatusView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="40" lean-forward="true" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+          <folding>
+            <marker date="1490160762665" expanded="true" signature="2478:2488" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2744:2762" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="2908:2921" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3067:3085" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3228:3238" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="3665:3675" ph="..." />
+            <marker date="1490160762665" expanded="true" signature="4146:4163" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
