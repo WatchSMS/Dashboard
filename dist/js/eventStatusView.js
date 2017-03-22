@@ -4,6 +4,12 @@ function eventListView(){
     offTimer();
     removeAllChart();
 
+    $("#eventListDiv").scroll(function() {
+        var elem = $("#eventListDiv");
+        if(elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()){
+            console.log(" END SCROLL ");
+        }
+    });
     
     console.log(" IN eventListView ");
 
@@ -13,7 +19,7 @@ function eventListView(){
         console.log("data_event : " + data_event);
         console.log("data_event : " + JSON.stringify(data_event));
         eventList(data_event);
-    })
+    });
     
     showEventChartView();
 }

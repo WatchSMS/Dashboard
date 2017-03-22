@@ -1427,3 +1427,10 @@
 	border-radius:3px;
 }
 /* 2017.02.18 - e */
+
+/* 2017.03.22 - s */
+.scroll {
+	height:400px;
+	overflow-y:scroll;
+}
+/* 2017.03.22 - e */

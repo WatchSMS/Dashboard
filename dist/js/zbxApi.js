@@ -809,8 +809,7 @@ var zbxApi = {
                 "selectHosts": "extend",
                 "source": 0,
                 "sortfield": "clock",
-                "sortorder": "DESC",
-                "limit": 100
+                "sortorder": "DESC"
             };
             return server.sendAjaxRequest(method, params);
         },
