@@ -39,9 +39,18 @@ function dashboardView(){
 function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
+    /*
     var today_select = new Date();
     today_select = today_select-(today_select % DAYTOMILLS);
     today_select = Math.round(today_select / 1000);
+    */
+
+    var d = new Date();
+    var date = d.getDate();
+    var today_select = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
+    console.log(" today_select : " + today_select);
+    today_select = Math.round(today_select / 1000);
+    console.log(" today_select : " + today_select);
 
     var totalEvent = '';
     var unacknowEvent = '';
@@ -57,11 +66,12 @@ function dashboardEventStatus(){
         $("#unAcknowledgedEvents").text(unacknowEvent);
     });
 
-    zbxApi.todayEvent.get().then(function(data) {
+    zbxApi.todayEvent.get(today_select).then(function(data) {
         todayEvent = zbxApi.todayEvent.success(data);
         $("#todayEvents").text(todayEvent);
     });
     console.log("dashboardEventStatus today_select : " + today_select);
+    console.log("dashboardEventStatus today_select : " + new Date(today_select));
 }
 
 function dashboardHostEvent(hostEvent){
