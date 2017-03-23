@@ -563,14 +563,12 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             xAxis: {
                 showFirstLabel: true,
                 showLastLabel: true,
-                gridLineWidth: 1,
-                crosshair: true,
                 events: {
                     setExtremes: syncExtremes
                 },
                 labels: {
                     style: {
-                        color: '#EDEDED'
+                        color: '#a2adcc'
                     },
                     formatter: function () {
                         var d2 = new Date(this.value);
