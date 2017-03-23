@@ -16,8 +16,6 @@ function eventListView(){
     var data_event = '';
     zbxApi.eventStatusView.get().done(function(data, status, jqXHR) {
         data_event = zbxApi.eventStatusView.success(data);
-        console.log("data_event : " + data_event);
-        console.log("data_event : " + JSON.stringify(data_event));
         eventList(data_event);
     });
     
@@ -45,7 +43,6 @@ function eventList(data_event){
     eventListTable += '<tbody>';
 
     $.each(data_event.result, function(k, v) {
-        console.log(" data_event ");
         try {
             eventId = v.eventid;
             eventStatus = convStatusEvent(v.value);
@@ -66,7 +63,7 @@ function eventList(data_event){
 
             eventIp = hostIpMap[hostid];
 
-            eventHostGroup = v.hosts[0].host;
+            eventHostGroup = v.hosts[0].name;
             eventDescription = v.relatedObject.description;
         } catch (e) {
             console.log(e);

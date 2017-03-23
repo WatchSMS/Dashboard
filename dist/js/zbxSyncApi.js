@@ -98,7 +98,7 @@ var zbxSyncApi = {
                 "skipDependent": true,
                 "expandDescription": true,
                 "selectGroups": ["name"],
-                "selectHosts": ["host", "maintenance_status"],
+                "selectHosts": "extend",
                 "sortfield": "description",
                 "only_true": true,
                 "selectLastEvent": "true",

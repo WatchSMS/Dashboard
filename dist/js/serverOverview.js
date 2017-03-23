@@ -95,7 +95,12 @@ function serverOverView(server_data) {
                 console.log(e);
             }
         }
+        console.log("value : " + value);
         serverPerDisk = 100 - value;
+
+        if(value === undefined){
+            serverPerDisk = 0;
+        }
 
         if (serverPerDisk == 100)
             serverPerDisk = 0;

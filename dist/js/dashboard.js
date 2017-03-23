@@ -213,7 +213,7 @@ function dashboardEventList(dashboard_Event) {
         } else {
             ackTime = convTime(v.acknowledges[0].clock);
         }
-        host = v.hosts[0].host;
+        host = v.hosts[0].name;
         description = v.relatedObject.description;
 
         eventTable += "<tr>";

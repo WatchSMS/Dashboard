@@ -318,7 +318,7 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
         var lastchange = convTime(v.lastchange);
         var age = convDeltaTime(v.lastchange);
         var ack = convAckEvent(v.lastEvent.acknowledged);
-        var host = v.hosts[0].host;
+        var host = v.hosts[0].name;
         var description = v.description;
 
         eventTbl += "<tr role='row'>";
