@@ -99,7 +99,7 @@ function eventList(data_event){
         }
         eventListTable += "<td width='125'  class='line'>" + eventAckTime + "</td>";
         eventListTable += "<td width='100'  class='line'>" + eventIp + "</td>";
-        eventListTable += "<td width='100'  class='line' id='hostNm_'" + hostid + ">" + eventHostGroup + "</td>";
+        eventListTable += "<td width='100'  id='hostNm_'" + hostid + " class='line'>" + eventHostGroup + "</td>";
         eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
         eventListTable += "</tr>";
 
