@@ -135,7 +135,7 @@ function serverOverView(server_data) {
 
         serverOverViewHTML += '<tr role="row" class="odd">';
         serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td">' + serverStatus + '</td>';
-        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td">' + serverName + '</td>';
+        serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td" style="cursor:pointer">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
         serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
