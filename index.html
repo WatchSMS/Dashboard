@@ -117,18 +117,31 @@
 			<section class="sidebar" style="height: 100%;">
 				<ul class="sidebar-menu">
 					<li class="header-custom"><span></span></li>
-					<li><a href="#" id="menu_dashboard"><i class="fa fa-dashboard"></i> <span>대시보드</span> </a></li>
-					<li><a href="#" id="menu_eventList"><i class="fa fa-history"></i> <span>이벤트</span></a></li>
-						<!--<i class="fa fa-angle-left pull-right"></i></a>-->
-						<!--<ul class="treeview-menu">
-							<li><a href="#" id="menu_histogram"><i class="fa fa-bar-chart"></i> Histogram</a></li>
-							<li><a href="#" id="menu_pivottable"><i class="fa fa-table"></i> PivotTable</a></li>
-							<li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i> TreeMap</a></li>
-							<li><a href="#" id="menu_free"><i class="fa fa-circle-o"></i> Free</a></li>
-						</ul>-->
+					<li class="icon01">
+						<a href="#" id="menu_dashboard">
+							<i class="menu-dashboard"></i>
+							<img src="dist/img/menu_icon_01.gif">
+						</a>
+					</li>
+					<li class="icon02">
+						<a href="#" id="menu_eventList">
+							<i class="menu_event"></i>
+							<img src="dist/img/menu_icon_02.gif">
+						</a>
+					</li>
+					<!--<i class="fa fa-angle-left pull-right"></i></a>-->
+					<!--<ul class="treeview-menu">
+                        <li><a href="#" id="menu_histogram"><i class="fa fa-bar-chart"></i> Histogram</a></li>
+                        <li><a href="#" id="menu_pivottable"><i class="fa fa-table"></i> PivotTable</a></li>
+                        <li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i> TreeMap</a></li>
+                        <li><a href="#" id="menu_free"><i class="fa fa-circle-o"></i> Free</a></li>
+                    </ul>-->
 
-					<li><a href="#"><i class="fa fa-history"></i> <span>서버상태</span>
-						<i class="fa fa-angle-left pull-right"></i></a>
+					<li class="icon03">
+						<a href="#">
+							<i class=menu-server"></i>
+							<img src="dist/img/menu_icon_03.gif">
+						</a>
 						<ul class="treeview-menu">
 							<li><a href="#" id="menu_overview"><i class="fa fa-bar-chart"></i> 개요</a></li>
 							<li>
@@ -139,7 +152,9 @@
 					</li>
 
 					<li class="treeview">
-						<a href="#"> <i class="fa fa-line-chart"></i> <span>Graphs</span> <i class="fa fa-angle-left pull-right"></i>
+						<a href="#">
+							<i class="menu-graphs">
+								<img src="dist/img/menu_icon_04.gif"></i>
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="#"><i class="fa fa-circle-o"></i>Group to Item<i class="fa fa-angle-left pull-right"></i></a>
@@ -152,8 +167,13 @@
 						</ul>
 					</li>
 
-					<li><a href="#" id="menu_setting"><i class="fa fa-gears"></i>
-						<span>Setting</span></a></li>
+					<li>
+						<a href="#" id="menu_setting">
+							<i class="menu-setting">
+								<img src="dist/img/menu_icon_05.gif">
+							</i>
+						</a>
+					</li>
 				</ul>
 			</section>
 		</aside>
@@ -208,7 +228,7 @@
 			<!-- 네트워크 사용량 -->
 			<div id="base_networkInfo" style="display: none;">
 			</div>
-			
+
 			<!-- 임계치 설정  -->
 			<div id="base_configure"  style="display: none;">
 			</div>
@@ -299,8 +319,8 @@
 	<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
 	<script src="d3.v3.min2.js"></script>
-	<script src="d3.slider2.js"></script>  
-	
+	<script src="d3.slider2.js"></script>
+
 
 	<script>
         $("#inputUser").val("Admin");

@@ -1492,3 +1492,28 @@
 	overflow-y:scroll;
 }
 /* 2017.03.22 - e */
+
+/* 2017.03.23 - s*/
+.menu-dashboard{
+	display:inline-block;
+}
+
+.menu_event{
+	display:inline-block;
+}
+
+.menu_event{
+	display:inline-block;
+}
+
+.menu_server{
+	display:inline-block;
+}
+
+.menu_graphs{
+	display:inline-block;
+}
+
+.menu_setting{
+	display:inline-block;
+}
