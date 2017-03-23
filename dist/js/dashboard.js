@@ -503,8 +503,10 @@ function dashboardDayEvent(){
                     title: {
                         text: ''
                     },
-                    style: {
-                        color: '#a2adcc'
+                    labels: {
+                        style: {
+                            color: '#a2adcc'
+                        }
                     }
                 },
                 yAxis: {
@@ -514,9 +516,11 @@ function dashboardDayEvent(){
                     title: {
                         text: ''
                     },
-                    style: {
-                        color: '#a2adcc'
-                    },
+                    labels: {
+                        style: {
+                            color: '#a2adcc'
+                        }
+                    }
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.85)',
