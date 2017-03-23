@@ -76,6 +76,7 @@ function dashboardEventStatus(){
 
 function dashboardHostEvent(hostEvent){
     //24시간 전 시간 구하기
+   /*
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
     var beforeTime = date.getTime() - DAYTOMILLS;
@@ -89,6 +90,21 @@ function dashboardHostEvent(hostEvent){
     console.log(" date : " + new Date(date));
     console.log(" round beforeTime : " + beforeTime);
     console.log(" round endTime : " + endTime);
+    */
+
+    var DAYTOMILLS = 1000*60*60*24;
+    var date = new Date();
+    console.log(" 호스트 date : " + date);
+    var beforeTime = date.getTime() - DAYTOMILLS;
+    console.log(" 호스트 beforeTime : " + beforeTime);
+    console.log(" 호스트 beforeTime : " + new Date(beforeTime));
+    var endTime = date.getTime();
+    console.log(" 호스트 endTime : " + endTime);
+    console.log(" 호스트 endTime : " + new Date(endTime));
+    beforeTime = Math.round(beforeTime / 1000);
+    endTime = Math.round(endTime / 1000);
+    console.log(" beforeTime : " + beforeTime);
+    console.log(" endTime : " + endTime);
 
     var hostNum = 0;
     var hostid = '';
