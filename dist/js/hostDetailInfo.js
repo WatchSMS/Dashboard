@@ -314,34 +314,34 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
 
     $.each(data_EventList, function(k, v) {
         var severity = convPriority(v.priority);
-        var status = convStatus(v.value);
+        var status = convStatusEvent(v.value);
         var lastchange = convTime(v.lastchange);
         var age = convDeltaTime(v.lastchange);
-        var ack = convAck(v.lastEvent.acknowledged);
+        var ack = convAckEvent(v.lastEvent.acknowledged);
         var host = v.hosts[0].host;
         var description = v.description;
 
         eventTbl += "<tr role='row'>";
         if(severity == "information") {
-            eventTbl += "<td width='110' class='line' style='color:deepskyblue'>" + severity + "</td>";
+            eventTbl += "<td width='110' class='line' style='color:#7499FF'>" + severity + "</td>";
         } else if(severity == "warning") {
-            eventTbl += "<td width='110' class='line' style='color:yellow'>" + severity + "</td>";
+            eventTbl += "<td width='110' class='line' style='color:#FFC859'>" + severity + "</td>";
         } else if(severity == "average") {
-            eventTbl += "<td width='110' class='line' style='color:greenyellow'>" + severity + "</td>";
+            eventTbl += "<td width='110' class='line' style='color:#FFA059'>" + severity + "</td>";
         } else if(severity == "high") {
-            eventTbl += "<td width='110' class='line' style='color:red'>" + severity + "</td>";
+            eventTbl += "<td width='110' class='line' style='color:#E97659'>" + severity + "</td>";
         }
 
-        if(status == "problem"){
-            eventTbl += "<td width='120' class='line' style='color:red'>" + status + "</td>";
-        } else if(status == "OK"){
-            eventTbl += "<td width='120' class='line' style='color:deepskyblue'>" + status + "</td>";
+        if(status == "발생"){
+            eventTbl += "<td width='120' class='line' style='color:#E45959'>" + status + "</td>";
+        } else if(status == "해소"){
+            eventTbl += "<td width='120' class='line' style='color:#97AAB3'>" + status + "</td>";
         }
         eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
         eventTbl += "<td width='120' class='line'>" + age + "</td>";
-        if(ack == "Unacked"){
+        if(ack == "미인지"){
             eventTbl += "<td width='120' class='line' style='color:red'>" + ack + "</td>";
-        } else if(ack = "Acked"){
+        } else if(ack = "인지"){
             eventTbl += "<td width='120' class='line' style='color:deepskyblue'>" + ack + "</td>";
         }
         eventTbl += "<td width='140' class='line'>" + host + "</td>";
