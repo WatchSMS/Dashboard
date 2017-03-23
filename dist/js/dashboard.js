@@ -202,13 +202,13 @@ function dashboardEventList(dashboard_Event) {
 
         eventTable += "<tr>";
         if(severity == "information") {
-            eventTable += "<td width='80' class='line c_b1' style='color:deepskyblue'>" + severity + "</td>";
+            eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
         } else if(severity == "warning") {
-            eventTable += "<td width='80' class='line c_b1' style='color:yellow'>" + severity + "</td>";
+            eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
         } else if(severity == "average") {
-            eventTable += "<td width='80' class='line c_b1' style='color:greenyellow'>" + severity + "</td>";
+            eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
         } else if(severity == "high") {
-            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+            eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
         } else {
             eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
         }
@@ -518,21 +518,21 @@ function dashboardDayEvent(){
                     }
                 },
                 series: [{
-                    name: 'level',
+                    name: 'information',
                     data: infoEventArr,
-                    color: '#E8B1F1'
+                    color: '#7499FF'
                 }, {
                     name: 'high',
                     data: highEventArr,
-                    color: '#607FFA'
+                    color: '#E97659'
                 }, {
                     name: 'average',
                     data: averEventArr,
-                    color: '#94F2F2'
+                    color: '#FFA059'
                 }, {
                     name: 'warring',
                     data: warnEventArr,
-                    color: '#B1BEF1'
+                    color: '#FFC859'
                 }],
                 exporting: {
                     buttons: {
