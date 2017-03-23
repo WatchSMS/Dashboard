@@ -137,13 +137,13 @@ function serverOverView(server_data) {
         serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td">' + serverStatus + '</td>';
         serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td" style="cursor:pointer">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
-        serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
+        serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td" style="cursor:pointer"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerCPU + '%; height:5px;"></div>' +
             '</div><div class="fr mt2 mr5 f11">' + serverPerCPU + '%</div></td>';
-        serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line-td"><div class="scw">' +
+        serverOverViewHTML += '<td id="PerMemory_' + hostid + '" width="131" class="line-td" style="cursor:pointer"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerMemory + '%; height:5px;"></div>' +
             '</div><div class="fr mt2 mr5 f11">' + serverPerMemory + '%</div></td>';
-        serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line-td"><div class="scw">' +
+        serverOverViewHTML += '<td id="PerDisk_' + hostid + '" width="131" class="line-td" style="cursor:pointer"><div class="scw">' +
             '<div class="mt2 bg8 br3" style="width:' + serverPerDisk + '%; height:5px;"></div>' +
             '</div><div class="fr mt2 mr5 f11">' + serverPerDisk + '%</div></td>';
         serverOverViewHTML += '<td width="150" class="line-td">' + serverOS + '</td>';
@@ -162,7 +162,7 @@ function serverOverView(server_data) {
         var item_id = '';
 
         //화면 이동
-        $("#Name_" + hostid).dblclick(function () {
+        $("#Name_" + hostid).click(function () {
             console.log("IN function Name_");
             item_id = this.id;
             console.log(" this.id : " + item_id);
@@ -173,21 +173,21 @@ function serverOverView(server_data) {
             $("#info_" + hostid).click();
         });
 
-        $("#PerCPU_" + hostid).dblclick(function () {
+        $("#PerCPU_" + hostid).click(function () {
             console.log("IN function PerCPU_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#cpu_" + hostid).click();
         });
 
-        $("#PerMemory_" + hostid).dblclick(function () {
+        $("#PerMemory_" + hostid).click(function () {
             console.log("IN function PerMemory_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#memory_" + hostid).click();
         });
 
-        $("#PerDisk_" + hostid).dblclick(function () {
+        $("#PerDisk_" + hostid).click(function () {
             console.log("IN function PerDisk_");
             item_id = this.id;
             hostid = item_id.substring(item_id.indexOf("_") + 1);
