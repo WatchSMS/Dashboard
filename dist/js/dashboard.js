@@ -191,7 +191,7 @@ function dashboardEventList(dashboard_Event) {
         status = convStatusEvent(v.value);
         lastchange = convTime(v.relatedObject.lastchange);
         age = convDeltaTime(v.relatedObject.lastchange);
-        ack = convAck(v.acknowledged);
+        ack = convAckEvent(v.acknowledged);
         if(v.acknowledges[0] == undefined){
             ackTime = "-";
         } else {
@@ -215,9 +215,9 @@ function dashboardEventList(dashboard_Event) {
         eventTable += "<td width='60' class='line'>" + status + "</td>";
         eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
         eventTable += "<td width='75' class='line'>" + age + "</td>";
-        if(ack == "Unacked"){
+        if(ack == "미인지"){
             eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-        } else if(ack = "Acked"){
+        } else if(ack = "인지"){
             eventTable += "<td width='69' class='line'>" + ack + "</td>";
         }
         eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
