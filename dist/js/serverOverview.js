@@ -287,7 +287,11 @@ function serverOverView(server_data) {
                 value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[/,pfree]").lastvalue;
             } catch (e) {
                 console.log(e);
-                value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+                try {
+                    value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+                }catch (e) {
+                    console.log(e);
+                }
             }
             disk = 100 - value;
 
