@@ -54,6 +54,14 @@ var convStatusEvent = function(status) {
     }
 };
 
+var convHostEvent = function(status) {
+    if (status === "0") {
+        return "정상";
+    } else {
+        return "이상";
+    }
+};
+
 var convAckEvent = function(ack) {
     if (ack === "0") {
         return "미인지";
@@ -568,7 +576,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 },
                 labels: {
                     style: {
-                        color: '#a2adcc'
+                        color: '#EDEDED'
                     },
                     formatter: function () {
                         var d2 = new Date(this.value);

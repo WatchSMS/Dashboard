@@ -47,7 +47,7 @@ function serverOverView(server_data) {
         serverName = v.name;
         hostid = v.hostid;
         serverStatus = zbxSyncApi.serverOverView().result[0].status;
-        serverStatus = convStatusEvent(serverStatus);
+        serverStatus = convHostEvent(serverStatus);
         serverIP = v.interfaces[0].ip;
         console.log("호스트 정보 : " + hostid + " / serverName : " + serverName + " / serverStatus : " + serverStatus);
         var osInfo = v.inventory.os;    //serverOS = v.inventory.os;
