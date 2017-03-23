@@ -78,9 +78,13 @@ var hostInfoView = function() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.total[eth0]");
                 }).then(function(data) {
                     serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
-                    showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
-                    showServerMemory(serverMemoryUse, startTime);
-                    showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+                    showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+
+                    //page reloag
+                    $("#reload_serverDetail").click(function() {
+                        console.log(">>>>> reload_serverDetail <<<<<");
+                        $(showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime)).click();
+                    });
                 });
 
                 processView(hostid, startTime);

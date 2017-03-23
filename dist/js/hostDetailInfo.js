@@ -1,3 +1,13 @@
+function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime){
+    showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
+    showServerMemory(serverMemoryUse, startTime);
+    showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+
+    // $("#reload_serverDetail").click(function () {
+    //     console.log("reload_serverDetail");
+    // });
+}
+
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
     var serverCpuSystemArr = [];
     var serverCpuUserArr = [];
