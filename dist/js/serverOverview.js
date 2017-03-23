@@ -165,6 +165,7 @@ function serverOverView(server_data) {
         $("#Name_" + hostid).dblclick(function () {
             console.log("IN function Name_");
             item_id = this.id;
+            console.log(" this.id : " + item_id);
             hostid = item_id.substring(item_id.indexOf("_")+1);
             $("#info_" + hostid).click();
         });

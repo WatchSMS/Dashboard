@@ -1,5 +1,4 @@
 function eventListView(){
-
     $.blockUI(blockUI_opt_all);
     offTimer();
     removeAllChart();
@@ -25,34 +24,35 @@ function eventListView(){
 var hostIpMap=[];
 
 function eventList(data_event){
-    var eventId = '-';           //이벤트ID
-    var eventStatus = '-';       //상태
-    var eventPriority = '-';     //등급
-    var eventStartTime = '-';    //발생시간
-    var eventAckTime = '-';      //인지시간
-    var eventAge = '-';          //지속시간
-    var eventAcknowledge = '-';  //인지여부
-    var eventIp = '-';           //IP
-    var eventHostGroup = '-';    //호스트그룹
-    var eventDescription = '-';  //비고
-
-    var hostid = '';
-    var eventCnt = 0;
-
     var eventListTable = '';
 
-    eventListTable += '<tbody>';
+    eventListTable += '<tbody id="eventListTable">';
+    eventListTable += '</tbody>';
+    $("#eventStatusTable").empty();
+    $("#eventStatusTable").append(eventListTable);
+    var eventCnt = 0;
 
     $.each(data_event.result, function(k, v) {
+        var eventId = '-';           //이벤트ID
+        var eventStatus = '-';       //상태
+        var eventPriority = '-';     //등급
+        var eventStartTime = '-';    //발생시간
+        var eventAckTime = '-';      //인지시간
+        var eventAge = '-';          //지속시간
+        var eventAcknowledge = '-';  //인지여부
+        var eventIp = '-';           //IP
+        var eventHostGroup = '-';    //호스트그룹
+        var eventDescription = '-';  //비고
+
+        var hostid = '';
+
         try {
             eventCnt += 1;
             eventId = v.eventid;
             eventStatus = convStatusEvent(v.value);
             eventPriority = convPriority(v.relatedObject.priority);
             eventStartTime = convTime(v.relatedObject.lastchange);
-            if(v.acknowledges[0] == undefined){
-                eventAckTime = "-";
-            } else {
+            if(v.acknowledges[0] != undefined){
                 eventAckTime = convTime(v.acknowledges[0].clock);
             }
             eventAge = convDeltaTime(v.relatedObject.lastchange);
@@ -70,6 +70,8 @@ function eventList(data_event){
         } catch (e) {
             console.log(e);
         }
+
+        var eventListTable = '';
 
         eventListTable += "<tr role='row'>";
         eventListTable += "<td width='80'   class='line'>" + eventId + "</td>";
@@ -101,28 +103,18 @@ function eventList(data_event){
         eventListTable += "<td width='100'  id='hostNm_" + eventCnt + "_" + hostid + "' class='line'>" + eventHostGroup + "</td>";
         eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
         eventListTable += "</tr>";
-    });
 
-    eventListTable += '</tbody>';
-    $("#eventStatusTable").empty();
-    $("#eventStatusTable").append(eventListTable);
-    console.log( "eventCnt : " + eventCnt);
+        $("#eventListTable").append(eventListTable);
 
-    for(var i=1; i<=eventCnt; i++){
-        console.log(i);
+        var item_id = '';
 
-        $("#hostNm_" + i + "_" + hostid).click(function (){
-            console.log("i는 : " + i);
+        $("#hostNm_" + eventCnt + "_" + hostid).click(function (){
+            console.log("i는 : " + hostid);
+            //item_id = this.id;
+            //console.log(" this.id : " + item_id);
+            $("#info_" + hostid).click();
         })
-    }
-
-    /*for(var i=0; i=eventCnt; i++){
-        console.log("for 문 : " +i);
-
-        $("#hostNm_" + i + "_" + hostid).click(function () {
-            console.log("IN function for");
-        });
-    }*/
+    });
 }
 
 
