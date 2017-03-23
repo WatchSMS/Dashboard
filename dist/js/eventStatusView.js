@@ -81,13 +81,13 @@ function eventList(data_event){
             eventListTable += "<td width='80'   class='line'>" + eventStatus + "</td>";
         }
         if(eventPriority == "information"){
-            eventListTable += "<td width='80'   class='line' style='color:deepskyblue;'>" + eventPriority + "</td>";
+            eventListTable += "<td width='80'   class='line' style='color:#7499FF;'>" + eventPriority + "</td>";
         } else if(eventPriority == "warning"){
-            eventListTable += "<td width='80'   class='line' style='color:yellow;'>" + eventPriority + "</td>";
+            eventListTable += "<td width='80'   class='line' style='color:#FFC859;'>" + eventPriority + "</td>";
         } else if(eventPriority == "average"){
-            eventListTable += "<td width='80'   class='line' style='color:greenyellow;'>" + eventPriority + "</td>";
+            eventListTable += "<td width='80'   class='line' style='color:#FFA059;'>" + eventPriority + "</td>";
         } else if(eventPriority == "high"){
-            eventListTable += "<td width='80'   class='line' style='color:red;'>" + eventPriority + "</td>";
+            eventListTable += "<td width='80'   class='line' style='color:#E97659;'>" + eventPriority + "</td>";
         } else {
             eventListTable += "<td width='80'   class='line'>" + eventPriority + "</td>";
         }
