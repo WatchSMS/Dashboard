@@ -13,17 +13,6 @@ var allServerViewHost = function() {
 
 function serverOverView(server_data) {
     $.blockUI(blockUI_opt_all);
-    var serverStatus = '';
-    var hostid = '';
-    var serverName = '';
-    var serverIP = '';
-    var serverPerCPU = 0;
-    var serverPerMemory = 0;
-    var serverPerDisk = 0;
-    var serverOS = '-';
-    var serverCPU = '-';
-    var serverRAM = '-';
-
     var tableDataObj = {};
     var tableDataArr = [];
 
@@ -44,6 +33,17 @@ function serverOverView(server_data) {
     serverOverViewHTML += '<tbody>';
 
     $.each(server_data.result, function(k, v) {
+        var serverStatus = '';
+        var hostid = '';
+        var serverName = '';
+        var serverIP = '';
+        var serverPerCPU = 0;
+        var serverPerMemory = 0;
+        var serverPerDisk = 0;
+        var serverOS = '-';
+        var serverCPU = '-';
+        var serverRAM = '-';
+
         serverName = v.name;
         hostid = v.hostid;
         serverStatus = zbxSyncApi.serverOverView().result[0].status;
@@ -167,6 +167,9 @@ function serverOverView(server_data) {
             item_id = this.id;
             console.log(" this.id : " + item_id);
             hostid = item_id.substring(item_id.indexOf("_")+1);
+            $("#serverInfo").empty();
+            $("#serverProcessList").empty();
+            $("#serverEventList").empty();
             $("#info_" + hostid).click();
         });
 

@@ -330,6 +330,8 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
             eventTbl += "<td width='110' class='line' style='color:#FFA059'>" + severity + "</td>";
         } else if(severity == "high") {
             eventTbl += "<td width='110' class='line' style='color:#E97659'>" + severity + "</td>";
+        } else {
+            eventTbl += "<td width='110' class='line'>" + severity + "</td>";
         }
 
         if(status == "발생"){

@@ -105,13 +105,13 @@ function eventList(data_event){
         eventListTable += "</tr>";
 
         $("#eventListTable").append(eventListTable);
+        $("#serverInfo").empty();
+        $("#serverProcessList").empty();
+        $("#serverEventList").empty();
 
         var item_id = '';
 
         $("#hostNm_" + eventCnt + "_" + hostid).click(function (){
-            console.log("i는 : " + hostid);
-            //item_id = this.id;
-            //console.log(" this.id : " + item_id);
             $("#info_" + hostid).click();
         })
     });
