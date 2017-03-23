@@ -61,7 +61,6 @@ function eventList(data_event){
             hostid = v.hosts[0].hostid;
 
             if(hostIpMap[hostid]==null) {
-
                 hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
             }
 
@@ -100,7 +99,7 @@ function eventList(data_event){
         }
         eventListTable += "<td width='125'  class='line'>" + eventAckTime + "</td>";
         eventListTable += "<td width='100'  class='line'>" + eventIp + "</td>";
-        eventListTable += "<td width='100'  class='line'>" + eventHostGroup + "</td>";
+        eventListTable += "<td width='100'  class='line' id='hostNm_'" + hostid + ">" + eventHostGroup + "</td>";
         eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
         eventListTable += "</tr>";
 
@@ -110,6 +109,14 @@ function eventList(data_event){
     $("#eventStatusTable").empty();
     $("#eventStatusTable").append(eventListTable);
 
+    $.each(data_event.result, function(k, v) {
+        hostid = v.hosts[0].hostid;
+
+        //화면 이동
+        $("#hostNm_" + hostid).dblclick(function () {
+            console.log("화면 이동");
+        });
+    });
 }
 
 
