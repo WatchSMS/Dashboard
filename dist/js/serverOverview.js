@@ -332,8 +332,10 @@ function serverOverView(server_data) {
         var inputText = $("#searchText").val();
         console.log(" 입력 Text : " + inputText);
         console.log(inputText.toLowerCase());
-        var tbody_rowCount = $("#hostInfoList >tr").length;
-        console.log(" 길이 : " + tbody_rowCount);
+        /*
+            var tbody_rowCount = $("#hostInfoList >tr").length;
+            console.log(" 길이 : " + tbody_rowCount);
+        */
 
         var convText = new RegExp("(\\b" + inputText + "\\b)", "gim");
         var divList = document.getElementById("infoTable").innerHTML;
