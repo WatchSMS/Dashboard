@@ -218,77 +218,77 @@ function chartCall(chartId, title, series, label, enable, colorArr) {
 var chart1, chart2 = null;
 
 function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
-	
+
     $(function () {
 
         chart2 = new Highcharts.Chart({
-        	
-        	exporting: { 
-	       		 buttons: {
-	                    contextButton: {
-	                        enabled: false,
-	                        symbolStroke: 'transparent',
-	                        theme: {
-	                            fill:'#626992'
-	                        }
-	                    }
-	                }
-	       	},
+
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
             colors: colorArr,
             chart: {
-            	backgroundColor: '#424973',
+                backgroundColor: '#424973',
                 //type: 'area'
-            	renderTo: chartId,
+                renderTo: chartId,
                 zoomType: 'x',
                 events: {
-			       	load: function(event) {
-			       		$("#"+chartId).unblock(blockUI_opt_el);
+                    load: function(event) {
+                        $("#"+chartId).unblock(blockUI_opt_el);
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
-		            }
+                    }
                 }
             },
             title: {
                 text: "",
                 style: {
-                	color: '#EDEDED'
+                    color: '#EDEDED'
                 }
             },
             subtitle: {
                 text: ''
             },
             legend: {
-            	enabled: false,
-            	itemStyle: {
-            		color: '#a2adcc'
-            	}
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
             },
             xAxis: {
-            	crosshair: true,
+                crosshair: true,
                 events: {
                     setExtremes: syncExtremes
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
-                    	
-                		var d2 = new Date(this.value);
-                		var hours = "" + d2.getHours();
-                		var minutes = "" + d2.getMinutes();
-                		var seconds = "" + d2.getSeconds();
-                		if(hours.length==1){
-                			hours = "0" + hours;
-                		}
-                		if(minutes.length==1){
-                			minutes = "0" + minutes;
-                		}
-                		if(seconds.length==1){
-                			seconds = "0" + seconds;
-                		}
-                		return hours + ":" + minutes + ":" + seconds;
-                    	
+
+                        var d2 = new Date(this.value);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return hours + ":" + minutes + ":" + seconds;
+
                     }
                 }
             },
@@ -297,16 +297,16 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     text: ''
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
-                	formatter: function () {
-	                	if(unit == "MB"){
-	                		return Math.round(this.value / (1024 * 1024)) + 'MB';
-	                	}else{
-		                    return this.value + unit;
-	                	}
-                	}
+                    formatter: function () {
+                        if(unit == "MB"){
+                            return Math.round(this.value / (1024 * 1024)) + 'MB';
+                        }else{
+                            return this.value + unit;
+                        }
+                    }
                 }
             },
             tooltip: {
@@ -326,38 +326,38 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         seconds = "0" + seconds;
                     }
                     if(unit == "MB"){
-                    	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
                     }else{
-                    	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
                     }
-                    
+
                 }
             },
             plotOptions: {
 
                 series: {
-                	 events: {
-                		 mouseOver: function(e){
-                			GLOBAL_INDEX = this.index;
-                		 }
-                     },
-                	 marker: {
-                         enabled: false
-                     },
-                     lineWidth: 1
+                    events: {
+                        mouseOver: function(e){
+                            GLOBAL_INDEX = this.index;
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 1
                 }
             },
             series: dataSet
         });
-       
+
         Highcharts.Point.prototype.highlight = function (event) {
             //this.onMouseOver(); // Show the hover marker
             this.series.chart.tooltip.refresh(this); // Show the tooltip
             this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
         };
-        
-        		
-        
+
+
+
         Highcharts.Pointer.prototype.reset = function () {
             return undefined;
         };
@@ -366,7 +366,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 
 
 function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
-	
+
     Highcharts.Pointer.prototype.reset = function () {
         return undefined;
     };
@@ -376,24 +376,24 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
         this.series.chart.tooltip.refresh(this); // Show the tooltip
         this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
     };
-    
+
     $(function () {
-        
-    chart1 = new Highcharts.chart(chartId, {
-        	exporting: { 
-        		 buttons: {
-                     contextButton: {
-                         enabled: false,
-                         symbolStroke: '#1e282c',
-                         theme: {
-	                            fill:'#626992'
-	                     }
-                     }
-                 }
-        	},
+
+        chart1 = new Highcharts.chart(chartId, {
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: '#1e282c',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
             colors: colorArr,
             chart: {
-            	backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
                 type: 'area',
                 zoomType: 'x',
                 events: {
@@ -407,25 +407,25 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
             title: {
                 text: "",
                 style: {
-                	color: '#EDEDED'
+                    color: '#EDEDED'
                 }
             },
             subtitle: {
                 text: ''
             },
             legend: {
-            	enabled: false,
-            	itemStyle: {
-            		color: '#a2adcc'
-            	}
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
             },
             xAxis: {
-            	crosshair: true,
+                crosshair: true,
                 events: {
                     setExtremes: syncExtremes
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -451,7 +451,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                     text: ''
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -479,13 +479,13 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                 }
             },
             plotOptions: {
-            	series: {
-            		
+                series: {
+
                     events: {
-                    	mouseOver: function(e){
-                    		
-                			GLOBAL_INDEX = this.index;
-                		 },
+                        mouseOver: function(e){
+
+                            GLOBAL_INDEX = this.index;
+                        },
                         legendItemClick: function (e) {
                             var visibility = this.visible ? 'visible' : 'hidden';
                             console.log("visibility?");
@@ -500,7 +500,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 //                    		if (point) {
 //                                point.highlight(e);
 //                            }
-                           
+
                         }
                     }//end events
                 }, //end series
@@ -524,9 +524,8 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 }
 
 function showLineChart(chartId, dataSet, colorArr){
-        $(function() {
-            var controllingChart;
-            Highcharts.chart(chartId, {
+    $(function() {
+        Highcharts.chart(chartId, {
             exporting: {
                 buttons: {
                     contextButton: {
@@ -570,13 +569,7 @@ function showLineChart(chartId, dataSet, colorArr){
                 showFirstLabel: true,
                 showLastLabel: true,
                 events: {
-                    afterSetExtremes: function() {
-                        if (controllingChart = chartId) {
-                            var xMin = this.chart.xAxis[0].min;
-                            var xMax = this.chart.xAxis[0].max;
-                            chartId.xAxis[0].setExtremes(xMin, xMax, true);
-                        }
-                    }
+                    setExtremes: syncExtremes
                 },
                 labels: {
                     style: {
@@ -642,16 +635,16 @@ function showLineChart(chartId, dataSet, colorArr){
             },
             series: dataSet
         });
-/*
-        Highcharts.Point.prototype.highlight = function (event) {
-            //this.onMouseOver(); // Show the hover marker
-            this.series.chart.tooltip.refresh(this); // Show the tooltip
-            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-        };
+        /*
+         Highcharts.Point.prototype.highlight = function (event) {
+         //this.onMouseOver(); // Show the hover marker
+         this.series.chart.tooltip.refresh(this); // Show the tooltip
+         this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+         };
 
-        Highcharts.Pointer.prototype.reset = function () {
-            return undefined;
-        };*/
+         Highcharts.Pointer.prototype.reset = function () {
+         return undefined;
+         };*/
     });
 }
 
@@ -659,6 +652,16 @@ function syncExtremes(e) {
     var thisChart = this.chart;
     if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
         Highcharts.each(Highcharts.charts, function (chart) {
+            console.log("tttttttttttttttttttttttttteeeeesssstt");
+            console.log(chart);
+            console.log(chart.renderTo.id);
+            console.log(typeof chart.renderTo.id);
+            if(chart.renderTo.id == "chart_dayEvent"){
+                return;
+            }
+            if(chart.renderTo.id == "chart_eventAck"){
+                return;
+            }
             if (chart !== thisChart) {
                 if (chart.xAxis[0].setExtremes) { // It is null while updating
                     chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
@@ -668,23 +671,35 @@ function syncExtremes(e) {
     }
 }
 
+function syncXAxis(e) {
+    var thisAxis = this;
+    var thisChart = e.currentTarget.chart;
+
+    Highcharts.each(Highcharts.charts, function (chart) {
+        if (chart && chart !== thisChart) {
+            var currentAxis = chart.get(thisAxis.options.id);
+            currentAxis.setExtremes(e.min, e.max);
+        }
+    });
+}
+
 var offTimer = function(){
-	$.each(TIMER_ARR, function(k,v){
-		clearInterval(v);
-	});
-	TIMER_ARR = [];
+    $.each(TIMER_ARR, function(k,v){
+        clearInterval(v);
+    });
+    TIMER_ARR = [];
 }
 
 
 
 var removeAllChart = function(){
 
-	for(var i=0; i<Highcharts.charts.length; ++i){
-		if(typeof Highcharts.charts[i] != "undefined"){
-			Highcharts.charts[i].destroy();			
-		}
-	}
-	Highcharts.charts.splice(0);
+    for(var i=0; i<Highcharts.charts.length; ++i){
+        if(typeof Highcharts.charts[i] != "undefined"){
+            Highcharts.charts[i].destroy();
+        }
+    }
+    Highcharts.charts.splice(0);
 }
 
 
@@ -712,7 +727,7 @@ var sortProcess = function(data_topProcess, sortField){
         var procNameArr = [];
         var procName = '';
         for(var i=9; i<topProcColArr.length; i++){
-        	orgName += topProcColArr[i];
+            orgName += topProcColArr[i];
         }
         if(topProcColArr[9].indexOf("/0") != -1){
             procName = topProcColArr[9];
@@ -749,9 +764,9 @@ var sortProcess = function(data_topProcess, sortField){
     // 같은 프로세스 명끼리 cpu값 더함
     procTotalArr.splice(0,1);
     $.each(procTotalArr, function(k1,v1){
-    	var childProcessArr = [];
-    	var childCpuArr = [];
-    	var childMemArr = [];
+        var childProcessArr = [];
+        var childCpuArr = [];
+        var childMemArr = [];
         $.each(dataSet, function(k2,v2){
             if(v1.procName == v2.procName){
                 v1.totalCpuVal += v2.procCpu;
@@ -766,113 +781,113 @@ var sortProcess = function(data_topProcess, sortField){
         v1.childCpu = childCpuArr;
         v1.childMem = childMemArr;
     });
-    
+
     // cpu값을 기준으로 객체배열 내림차순 정렬
     procTotalArr.sort(function (a, b) {
         if(sortField == "CPU"){
-        	return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
+            return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
         }else if(sortField == "MEM"){
-        	return a.totalMemVal > b.totalMemVal ? -1 : a.totalMemVal < b.totalMemVal ? 1 : 0;
+            return a.totalMemVal > b.totalMemVal ? -1 : a.totalMemVal < b.totalMemVal ? 1 : 0;
         }
     });
-    
+
     return procTotalArr;
 }
 
 
 var viewMoreProcess = function(){
-	$('tr#lastrow').off().on('click',function(){
-    	var optionRows = $("tr.optionrow");
-    	if($(this).attr('isopen') == 'false'){
-	    	$.each(optionRows, function(k,v) {
-	    		$(this).css('display','');
-	    		$('tr#lastrow').attr("isopen","true");
-	    		$('tr#lastrow').children().children().html("[ 닫기 ]");
-	    	});
-    	}else{
-    		$.each(optionRows, function(k,v) {
-	    		$(this).css('display','none');
-	    		$('tr#lastrow').attr("isopen","false");
-	    		$('tr#lastrow').children().children().html("[ 더 보기 ]");
-	    	});
-    	}
+    $('tr#lastrow').off().on('click',function(){
+        var optionRows = $("tr.optionrow");
+        if($(this).attr('isopen') == 'false'){
+            $.each(optionRows, function(k,v) {
+                $(this).css('display','');
+                $('tr#lastrow').attr("isopen","true");
+                $('tr#lastrow').children().children().html("[ 닫기 ]");
+            });
+        }else{
+            $.each(optionRows, function(k,v) {
+                $(this).css('display','none');
+                $('tr#lastrow').attr("isopen","false");
+                $('tr#lastrow').children().children().html("[ 더 보기 ]");
+            });
+        }
 
     });
 }
 
 var chartLegendItemClick = function(legendIndex, chartId, self){
 
-	for(var i=0; i<Highcharts.charts.length; ++i){
-		if(Highcharts.charts[i].renderTo.id == chartId){
-			if(Highcharts.charts[i].series[legendIndex].visible){
-				$(self).css("color","#8189c0").css("text-decoration", "none");
-				Highcharts.charts[i].series[legendIndex].hide();				
-			}else{
-				Highcharts.charts[i].series[legendIndex].show();
-				$(self).css("color","#c5d0ec");
-			}
-		}
-	}
+    for(var i=0; i<Highcharts.charts.length; ++i){
+        if(Highcharts.charts[i].renderTo.id == chartId){
+            if(Highcharts.charts[i].series[legendIndex].visible){
+                $(self).css("color","#8189c0").css("text-decoration", "none");
+                Highcharts.charts[i].series[legendIndex].hide();
+            }else{
+                Highcharts.charts[i].series[legendIndex].show();
+                $(self).css("color","#c5d0ec");
+            }
+        }
+    }
 }
 
 var downloadChart = function(){
 
-	$('#selectChartOutOption').lightbox_me({
-		   centered: true, 
-		   closeSelector: ".close",
-		   onLoad: function() { 
-		       $('#selectChartOutOption').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
-		       console.log($(this).val());
-		   },
-		   overlayCSS:{background: 'white', opacity: .8} 
-	});
+    $('#selectChartOutOption').lightbox_me({
+        centered: true,
+        closeSelector: ".close",
+        onLoad: function() {
+            $('#selectChartOutOption').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+            console.log($(this).val());
+        },
+        overlayCSS:{background: 'white', opacity: .8}
+    });
 }
 
 var outChart = function(){
-	
-	var chartId = $('#selectedChartId').text();
-	var selectedType = $(':radio[name="fileType"]:checked').val();
-	var fileType = 'image/png';
-	
-	if(selectedType == "PNG"){
-		fileType = 'image/png';
-	}else if(selectedType == "JPEG"){
-		fileType = 'image/jpeg';
-	}else if(selectedType == "PDF"){
-		fileType = 'application/pdf';
-	}else if(selectedType == "SVG"){
-		fileType = 'image/svg+xml';
-	}
-	
-	for(var i=0; i<Highcharts.charts.length; ++i){
-		if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
-			Highcharts.charts[i].legend.options.enabled=true;
-			Highcharts.charts[i].exportChart({
-		        type: fileType,
-		        filename: 'chart'
-		    });
-			Highcharts.charts[i].legend.options.enabled=false;
-			
-		}
-	}
-	for(var i=0; i<Highcharts.charts.length; ++i){
-		if(typeof Highcharts.charts[i] == "undefined"){
-			Highcharts.charts.splice(i);
-		}
-	}
-	
+
+    var chartId = $('#selectedChartId').text();
+    var selectedType = $(':radio[name="fileType"]:checked').val();
+    var fileType = 'image/png';
+
+    if(selectedType == "PNG"){
+        fileType = 'image/png';
+    }else if(selectedType == "JPEG"){
+        fileType = 'image/jpeg';
+    }else if(selectedType == "PDF"){
+        fileType = 'application/pdf';
+    }else if(selectedType == "SVG"){
+        fileType = 'image/svg+xml';
+    }
+
+    for(var i=0; i<Highcharts.charts.length; ++i){
+        if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
+            Highcharts.charts[i].legend.options.enabled=true;
+            Highcharts.charts[i].exportChart({
+                type: fileType,
+                filename: 'chart'
+            });
+            Highcharts.charts[i].legend.options.enabled=false;
+
+        }
+    }
+    for(var i=0; i<Highcharts.charts.length; ++i){
+        if(typeof Highcharts.charts[i] == "undefined"){
+            Highcharts.charts.splice(i);
+        }
+    }
+
 }
 
 
 function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
-	
+
     $(function () {
-        
-    dash_eventAckChart = new Highcharts.chart(chartId, {
-        	
+
+        dash_eventAckChart = new Highcharts.chart(chartId, {
+
             colors: colorArr,
             chart: {
-            	backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
                 type: 'scatter',
                 zoomType: 'xy'
             },
@@ -882,23 +897,23 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
             subtitle: {
                 text: ''
             },
-            exporting: { 
-	       		 buttons: {
-	                    contextButton: {
-	                        enabled: false
-	                    }
-	                }
-	       	},
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false
+                    }
+                }
+            },
             legend: {
-            	enabled: false
+                enabled: false
             },
             xAxis: {
-            	//min: xAxisMin,
-            	//categories:[1489028400000,1489114800000,1489201200000,1489287600000],
-            	gridLineWidth: 1,
-            	gridLineColor: 'grey',
+                //min: xAxisMin,
+                //categories:[1489028400000,1489114800000,1489201200000,1489287600000],
+                gridLineWidth: 1,
+                gridLineColor: 'grey',
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -914,9 +929,9 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
                     text: ''
                 },
                 gridLineWidth: 1,
-            	gridLineColor: 'grey',
+                gridLineColor: 'grey',
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -924,7 +939,7 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 //                    	console.log(this);
 //                    	console.log(this.value);
 //                    	return Highcharts.dateFormat('%H:%M:%S', this.value);
-                    	
+
 //                    	var d =  new Date(this.value);
 //                    	var month = d.getMonth()+1;
 //                        var date = d.getDate();
@@ -933,50 +948,50 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 //                    	var seconds = d.getSeconds();
 //                    	
 //                    	return month + "/" + date + "  " + hours + ":" + minutes + ":" + seconds;
-                    	
+
 //                    	return this.value;
-                    	console.log("aaaaaaaaaaaaaaaaaaaaaaa");
-                    	console.log(this);
-                    	console.log(this.value);
+                        console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+                        console.log(this);
+                        console.log(this.value);
 
-                    	var d =  new Date(this.value);
-                    	console.log(d);
-                    	console.log("일 : " + (d.getDate()));
-                    	console.log("시 : " + (d.getHours()-9));
-                    	console.log("분  : " + d.getMinutes());
-                    	console.log("초 : " + d.getSeconds());
+                        var d =  new Date(this.value);
+                        console.log(d);
+                        console.log("일 : " + (d.getDate()));
+                        console.log("시 : " + (d.getHours()-9));
+                        console.log("분  : " + d.getMinutes());
+                        console.log("초 : " + d.getSeconds());
 
-                		var duration = "";
-                		
-                		if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
-                			duration += "0";
-                		}
-                		duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
-                		duration += ":";
-                		if( (d.getMinutes()) < 10 ){
-                			duration += "0";
-                		}
-                		duration += d.getMinutes();
-                		duration += ":";
-                		if( (d.getSeconds()) < 10 ){
-                			duration += "0";
-                		}
-                		duration += d.getSeconds();
-                		
-                		return duration;
+                        var duration = "";
+
+                        if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
+                            duration += "0";
+                        }
+                        duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
+                        duration += ":";
+                        if( (d.getMinutes()) < 10 ){
+                            duration += "0";
+                        }
+                        duration += d.getMinutes();
+                        duration += ":";
+                        if( (d.getSeconds()) < 10 ){
+                            duration += "0";
+                        }
+                        duration += d.getSeconds();
+
+                        return duration;
                     }
                 }
             },
             tooltip: {
-            	borderColor: '#51597e',
-            	borderWidth: 1,
-            	backgroundColor: '#3d476b',
-            	useHTML: true,
+                borderColor: '#51597e',
+                borderWidth: 1,
+                backgroundColor: '#3d476b',
+                useHTML: true,
                 formatter: function () {
-                	
+
                     var d2 = new Date(this.x);
                     var month = d2.getMonth()+1;
-                    var date = d2.getDate(); 
+                    var date = d2.getDate();
                     var hours = "" + d2.getHours();
                     var minutes = "" + d2.getMinutes();
                     var seconds = "" + d2.getSeconds();
@@ -989,42 +1004,42 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
                     if(seconds.length==1){
                         seconds = "0" + seconds;
                     }
-                    
+
                     var d =  new Date(this.y);
-            		var duration = "";
-            		if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
-            			duration += "0";
-            		}
-            		duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
-            		duration += ":";
-            		if( (d.getMinutes()) < 10 ){
-            			duration += "0";
-            		}
-            		duration += d.getMinutes();
-            		duration += ":";
-            		if( (d.getSeconds()) < 10 ){
-            			duration += "0";
-            		}
-            		duration += d.getSeconds();         		
-            		
-            		var s = "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'><b>- 서버 :     </b>" + this.point.host + "<br/>";
-            		if(this.point.type == "ack"){
-            			s += "<b>- 인지시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
-            		}else if(this.point.type == "resolve"){
-            			s += "<b>- 해소시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
-            		}
-            		s += "<b>- Duration : </b>" + duration + "<br/>";
-            		s += "<b>- 이벤트명 : </b>" + this.point.description + "<br/>";
-            		if(this.point.priority=="Warning"){
-            			s += "<b>- 이벤트 등급 : </b><span style='color:yellow'>" + this.point.priority + "</span></span>";            			
-            		}else if(this.point.priority=="High"){
-            			s += "<b>- 이벤트 등급 : </b><span style='color:red'>" + this.point.priority + "</span></span>";
-            		}
-                    return s; 
+                    var duration = "";
+                    if( (d.getHours()-9) + ((d.getDate()-1) * 24) < 10 ){
+                        duration += "0";
+                    }
+                    duration += (d.getHours()-9) + ((d.getDate()-1) * 24);
+                    duration += ":";
+                    if( (d.getMinutes()) < 10 ){
+                        duration += "0";
+                    }
+                    duration += d.getMinutes();
+                    duration += ":";
+                    if( (d.getSeconds()) < 10 ){
+                        duration += "0";
+                    }
+                    duration += d.getSeconds();
+
+                    var s = "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'><b>- 서버 :     </b>" + this.point.host + "<br/>";
+                    if(this.point.type == "ack"){
+                        s += "<b>- 인지시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
+                    }else if(this.point.type == "resolve"){
+                        s += "<b>- 해소시간 : </b>" + month + "/" + date + " (" + hours + ":" + minutes + ":" + seconds + ")<br/>";
+                    }
+                    s += "<b>- Duration : </b>" + duration + "<br/>";
+                    s += "<b>- 이벤트명 : </b>" + this.point.description + "<br/>";
+                    if(this.point.priority=="Warning"){
+                        s += "<b>- 이벤트 등급 : </b><span style='color:yellow'>" + this.point.priority + "</span></span>";
+                    }else if(this.point.priority=="High"){
+                        s += "<b>- 이벤트 등급 : </b><span style='color:red'>" + this.point.priority + "</span></span>";
+                    }
+                    return s;
                 }
             },
             plotOptions: {
-            	scatter: {
+                scatter: {
                     marker: {
                         radius: 3,
 //                        lineWidth: 1,
@@ -1058,24 +1073,24 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 
 
 function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
-	
+
     $(function () {
-        
-    chart1 = new Highcharts.chart(chartId, {
-        	exporting: { 
-        		 buttons: {
-                     contextButton: {
-                         enabled: false,
-                         symbolStroke: '#1e282c',
-                         theme: {
-	                            fill:'#626992'
-	                     }
-                     }
-                 }
-        	},
+
+        chart1 = new Highcharts.chart(chartId, {
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: '#1e282c',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
             colors: colorArr,
             chart: {
-            	backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
                 type: 'area',
                 zoomType: 'x',
                 events: {
@@ -1089,26 +1104,26 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
             title: {
                 text: "",
                 style: {
-                	color: '#EDEDED'
+                    color: '#EDEDED'
                 }
             },
             subtitle: {
                 text: ''
             },
             legend: {
-            	enabled: false,
-            	itemStyle: {
-            		color: '#a2adcc'
-            	}
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
             },
             xAxis: {
-            	
-            	crosshair: true,
+
+                crosshair: true,
                 events: {
                     setExtremes: syncExtremes
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -1126,13 +1141,13 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                 }
             },
             yAxis: {
-            	gridLineWidth: 1,
-            	gridLineColor: 'grey',
+                gridLineWidth: 1,
+                gridLineColor: 'grey',
                 title: {
                     text: ''
                 },
                 labels: {
-                	style: {
+                    style: {
                         color: '#a2adcc'
                     },
                     formatter: function () {
@@ -1141,48 +1156,48 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                 }
             },
             tooltip: {
-            	borderColor: '#51597e',
-            	borderWidth: 1,
-            	backgroundColor: '#3d476b',
-            	useHTML: true,
-            	shared: true,
+                borderColor: '#51597e',
+                borderWidth: 1,
+                backgroundColor: '#3d476b',
+                useHTML: true,
+                shared: true,
                 formatter: function () {
-                	var valueStr = "";
-                	var hours = "";
+                    var valueStr = "";
+                    var hours = "";
                     var minutes = "";
                     var totalCount = 0;
-                    
-                	$.each(this.points, function(k,v){
-                		if(v.series.visible){
-                			 var d2 = new Date(this.x);
-                             hours = "" + d2.getHours();
-                             minutes = "" + d2.getMinutes();
-                             if(hours.length < 2){
-                                 hours = "0" + hours;
-                             }
-                             if(minutes.length < 2){
-                                 minutes = "0" + minutes;
-                             }
-                             var backgroundColor;
-                             if(v.series.name == "인지"){
-                            	 backgroundColor = "#FF8C00";
-                             }else if(v.series.name == "신규"){
-                            	 backgroundColor = "#ee6866";
-                             }else if(v.series.name == "완료"){
-                            	 backgroundColor = "#00BFFF";
-                             }
-                             totalCount += v.y;
-                             valueStr += "<li class='p1'><span style='background:" + backgroundColor + "; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + v.series.name + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + v.y + "</b></li>";
-                		}
-                	});
-                	valueStr += "<li class='p1'><span style='background:black; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>전체&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + totalCount + "</b></style></li>";
-            		
-                	return "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + hours + ":" + minutes + "</span><br/>" + valueStr;
-                	
+
+                    $.each(this.points, function(k,v){
+                        if(v.series.visible){
+                            var d2 = new Date(this.x);
+                            hours = "" + d2.getHours();
+                            minutes = "" + d2.getMinutes();
+                            if(hours.length < 2){
+                                hours = "0" + hours;
+                            }
+                            if(minutes.length < 2){
+                                minutes = "0" + minutes;
+                            }
+                            var backgroundColor;
+                            if(v.series.name == "인지"){
+                                backgroundColor = "#FF8C00";
+                            }else if(v.series.name == "신규"){
+                                backgroundColor = "#ee6866";
+                            }else if(v.series.name == "완료"){
+                                backgroundColor = "#00BFFF";
+                            }
+                            totalCount += v.y;
+                            valueStr += "<li class='p1'><span style='background:" + backgroundColor + "; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + v.series.name + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + v.y + "</b></li>";
+                        }
+                    });
+                    valueStr += "<li class='p1'><span style='background:black; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>전체&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + totalCount + "</b></style></li>";
+
+                    return "<span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + hours + ":" + minutes + "</span><br/>" + valueStr;
+
                 }
             },
             plotOptions: {
-            	series: {
+                series: {
                     events: {
 //                    	mouseOver: function(e){
 //                			GLOBAL_INDEX = this.index;
@@ -1195,7 +1210,7 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                     }//end events
                 }, //end series
                 area: {
-                	stacking: 'normal',
+                    stacking: 'normal',
                     //lineColor: '#666666',
                     lineWidth: 1,
                     marker: {
