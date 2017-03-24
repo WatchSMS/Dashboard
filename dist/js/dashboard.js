@@ -113,77 +113,77 @@ function dashboardHostEvent(hostEvent){
     var event_clock = 0;
 
     var eventList = '';
-    var start_clock = '';
-    var end_clock = '';
-    var event_count = 1;
+    var startTime = '';
+    var nowTime = '';
+    var event_count= 0 ;
 
     var hostDataSet=[];
-    var dashboardHostEventHTML = '';
+    var dashboardHostEventTbody = "<tbody id='dashboardHostEventTbody'></tbody>";
 
-    dashboardHostEventHTML += "<tbody>";
+    $("#hostEventList").empty();
+    $("#hostEventList").append(dashboardHostEventTbody);
+
 
     $.each(hostEvent.result, function(k, v){
         //console.log(" " + v.name + " 아이우에오 " + v.hostid);
         hostNum += 1;
         hostName = v.name;
         hostid = v.hostid;
-        hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid);
+        hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid, beforeTime, endTime);
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, v.hostid);
         var dataArr = [];
         try {
             event_clock = eventList[0].clock;
+            if(eventList[0].clock == undefined){
+                event_clock = 0;
+            }
             event_clock = event_clock * 1000;
-            //console.log(" 1000 event_clock " + event_clock);
-            //console.log(" 1000 date : " + new Date(event_clock));
-            var d = new Date();
-            var date = d.getDate();
-            //var day = d.getDay();
-            var startday = date - 1;
-            //var start_clock = new Date(d.getFullYear(), d.getMonth(), startday, 0, 0, 0);
-            //console.log(" start_clock : " + start_clock.getTime());
-
+            startTime = beforeTime * 1000;
+            nowTime = endTime * 1000;
             for(var i=0; i<24; i++){
-                start_clock = new Date(d.getFullYear(), d.getMonth(), startday, i, 0, 0);
-                start_clock = start_clock.getTime();
-                end_clock = new Date(d.getFullYear(), d.getMonth(), startday, i+1, 0, 0);
-                end_clock = end_clock.getTime();
-                //console.log("start_clock : " + start_clock + " / end_clock : " + end_clock);
 
-                if(event_clock > start_clock && event_clock < end_clock){
+                if(event_clock > startTime && event_clock < nowTime){
                     event_count += 1;
                 }
                 //console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
 
-                dataArr[i] = [start_clock,event_count];
+                dataArr[i] = [startTime, event_count];
 
-                //console.log(JSON.stringify(dataArr[i]));
+                //console.log(JSON.stringify(dataArr[i]));*/
+
+                console.log( " 1. event_clock   : " + event_clock);
+                console.log( " 2. startTime     : " + startTime);
+                console.log( " 3. nowTime       : " + nowTime);
+                console.log( " 4. event_count   : " + event_count);
+                console.log(i);
             }
         } catch (e) {
             console.log(e);
         }
 
+        JSON.stringify(dataArr);
         var hostDataObj = new Object();
         hostDataObj.name = "hostEvent";
         hostDataObj.data = dataArr;
         hostDataSet.push(hostDataObj);
 
-        dashboardHostEventHTML += "<tr class='p1'>";
+        var dashboardHostEventHTML = "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='48px' height='70px' class='line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='165px' height='70px' class='line-td align_left'>" + hostName + "</td>";
         dashboardHostEventHTML += "<td width='73px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
         dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
         dashboardHostEventHTML += "</tr>";
+        $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
+
+        showLineChart('hostChart'+hostNum, "hostEvent"+hostNum, hostDataSet, "", ['#a2adcc']);
 
     });
-    dashboardHostEventHTML += "</tbody>";
-
-    $("#hostEventList").empty();
-    $("#hostEventList").append(dashboardHostEventHTML);
-    $.each(hostDataSet, function(k,v){
-        var tempArr = [];
-        tempArr.push(v);
-        showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#a2adcc']);
-    });
+    // $.each(hostDataSet, function(k,v){
+    //     var tempArr = [];
+    //     tempArr.push(v);
+    //     console.log(tempArr);
+    //     showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#a2adcc']);
+    // });
 }
 
 function dashboardEventList(dashboard_Event) {

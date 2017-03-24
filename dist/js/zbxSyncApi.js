@@ -165,9 +165,9 @@ var zbxSyncApi = {
         var result = zbxSyncApi.callAjax(param);
         return result.result[0];
     },
-
-    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
-    alerthostTrigger: function (hostid) {
+/*
+    /!* 대시보드 이벤트 현황 - 호스트별 장애 현황 *!/
+    alerthostTrigger: function (hostid, startTime) {
         var param = {
             "jsonrpc": "2.0",
             "method": "trigger.get",
@@ -177,7 +177,32 @@ var zbxSyncApi = {
                 "skipDependent": true,
                 "countOutput": true,
                 "limit": "10000",
-                "hostids": hostid
+                "hostids": hostid,
+                "filter": {
+                    "time_from": startTime
+                }
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        return result.result;
+    },
+*/
+
+    alerthostTrigger: function (hostid, startTime, endTime) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "event.get",
+            "params": {
+                "output": [
+                    "eventid"
+                ],
+                "source": 0,
+                "time_from": startTime,
+                "time_end": endTime,
+                "hostids": hostid,
+                "countOutput": true
             },
             "id": 1,
             "auth": authid
@@ -209,6 +234,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
+        console.log(" CLOCK : " + JSON.stringify(result));
         return result.result;
     },
 
