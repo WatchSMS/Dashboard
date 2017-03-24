@@ -49,7 +49,7 @@ function dashboardEventStatus(){
     var date = d.getDate();
     var today_select = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
     console.log(" today_select : " + today_select);
-    today_select = Math.round(today_select / 1000);
+    today_select = parseInt(today_select / 1000);
     console.log(" today_select : " + today_select);
 
     var totalEvent = '';
@@ -101,8 +101,8 @@ function dashboardHostEvent(hostEvent){
     var endTime = date.getTime();
     console.log(" 호스트 endTime : " + endTime);
     console.log(" 호스트 endTime : " + new Date(endTime));
-    beforeTime = Math.round(beforeTime / 1000);
-    endTime = Math.round(endTime / 1000);
+    beforeTime = parseInt(beforeTime / 1000);
+    endTime = parseInt(endTime / 1000);
     console.log(" beforeTime : " + beforeTime);
     console.log(" endTime : " + endTime);
 
@@ -143,26 +143,17 @@ function dashboardHostEvent(hostEvent){
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
 
-
-        hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid, beforeTime, endTime);
-        eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, v.hostid);
+        hostEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, endTime);
+        eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
         var dataArr = new Array(24);
         try {
             if(eventList[0] == undefined){
                 return true;
             }
-            // event_clock = eventList[0].clock;
-            //
-            // event_clock = event_clock * 1000;
-            // startTime = beforeTime * 1000;
-            // nowTime = endTime * 1000;
 
             for(var i=0; i<24; i++){
                 var HOUR = 60*60;//시간
                 var NOW = parseInt(new Date().getTime()/1000);
-
-                console.log("qqqqqqqqqqqqqq:"+NOW);
-
                 var event_count= 0 ;
 
                 for(var j=0;j<eventList.length;j++) {
@@ -170,7 +161,6 @@ function dashboardHostEvent(hostEvent){
                         event_count += 1;
                     }
                 }
-
                 dataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
 
                 console.log( " 1. event_clock   : " + event_clock);
@@ -179,21 +169,16 @@ function dashboardHostEvent(hostEvent){
                 console.log( " 4. event_count   : " + event_count);
                 console.log(i);
             }
-
         } catch (e) {
             console.log(e);
         }
 
-        JSON.stringify(dataArr);
         var hostDataObj = new Object();
         hostDataObj.name = "hostEvent";
         hostDataObj.data = dataArr;
         hostDataSet.push(hostDataObj);
 
-
-
         showLineChart('hostChart'+(k+1), "hostEvent"+hostNum, hostDataSet, "", ['#a2adcc']);
-
     });
 }
 

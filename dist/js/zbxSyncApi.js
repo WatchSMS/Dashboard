@@ -195,19 +195,19 @@ var zbxSyncApi = {
             "jsonrpc": "2.0",
             "method": "event.get",
             "params": {
-                "output": [
-                    "eventid"
-                ],
+                "output": "extend",
                 "source": 0,
                 "time_from": startTime,
                 "time_end": endTime,
                 "hostids": hostid,
-                "countOutput": true
+                "countOutput": true,
+                "selectHosts": "extend"
             },
             "id": 1,
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
+        console.log("AAAAA 789 : " + JSON.stringify(result));
         return result.result;
     },
 
@@ -234,7 +234,6 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
-        console.log(" CLOCK : " + JSON.stringify(result));
         return result.result;
     },
 
@@ -251,8 +250,6 @@ var zbxSyncApi = {
             "id": 1,
             "auth": authid
         };
-
-
         var result = zbxSyncApi.callAjax(param);
         //console.log(" eventStatusHost " + JSON.stringify(result));
         return result;

@@ -541,7 +541,6 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             colors: colorArr,
             chart: {
                 backgroundColor: '#424973',
-                height: 70,
                 //type: 'area'
                 renderTo: chartId,
                 zoomType: 'x',
@@ -607,8 +606,7 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     formatter: function () {
                     }
                 },
-                min: 0,
-                max: 10
+                min: 0
             },
             tooltip: {
                 formatter: function () {
