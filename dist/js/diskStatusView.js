@@ -72,7 +72,7 @@ function diskInfoList(hostid, data_topDisk, startTime) {
     $("#chart_diskUse").empty();
     var $table = $("#diskInfoTable");
     $("#diskInfoTable > tbody > tr").eq(0).addClass("selectedDisk");
-    $("#diskInfoTable > tbody > tr").eq(0).css("background", "#62A6EF");
+    $("#diskInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 
     currentDiskName = $(".selectedDisk").attr('id');
 
@@ -144,9 +144,9 @@ function rowClickDiskEvent(table, hostid, startTime) {
             var currentDiskItemId = $(this).attr('id');
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
-            $(this).children().css("background", "#62A6EF");
-            $(this).prevAll().children().removeAttr('style');
-            $(this).nextAll().children().removeAttr('style');
+            $(this).css("border","1px #FF5E00 solid");
+            $(this).prevAll().css("border","");
+            $(this).nextAll().css("border","");
 
             generateDiskResource(hostid, currentDiskItemId, startTime);
         });
@@ -183,7 +183,7 @@ function showDiskIo(diskInode, diskFree, startTime){
                     spacingBottom: 0
                 },
                 title: {
-                    text: '',
+                    text: ''
                 },
                 subtitle: {
                     text: ''
@@ -312,7 +312,7 @@ function showDiskUse(diskUse, startTime){
                     spacingBottom: 0
                 },
                 title: {
-                    text: '',
+                    text: ''
                 },
                 subtitle: {
                     text: ''

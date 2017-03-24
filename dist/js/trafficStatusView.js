@@ -64,7 +64,7 @@ function networkInfoView(hostid, startTime, data_topDisk){
     $("#chart_trafficTotal").empty();
     var $table = $("#networkInfoTable");
     $("#networkInfoTable > tbody > tr").eq(0).addClass("selectedNetwork");
-    $("#networkInfoTable > tbody > tr").eq(0).css("background", "#62A6EF");
+    $("#networkInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 
     currentNetworkName = $(".selectedNetwork").attr('id');
 
@@ -130,9 +130,9 @@ function rowClickNetworkEvent(table, hostid, startTime){
             var currentNetworkItemId = $(this).attr('id');
             $(".selectedNetwork").removeClass("selectedNetwork");
             $(this).addClass("selectedNetwork");
-            $(this).children().css("background", "#62A6EF");
-            $(this).prevAll().children().removeAttr('style');
-            $(this).nextAll().children().removeAttr('style');
+            $(this).css("border","1px #FF5E00 solid");
+            $(this).prevAll().css("border","");
+            $(this).nextAll().css("border","");
 
             generateNetworkResource(hostid, currentNetworkItemId, startTime);
         });
@@ -163,7 +163,7 @@ function showTrafficIo(networkIn, networkOut, startTime){
                     spacingBottom: 0
                 },
                 title: {
-                    text: '',
+                    text: ''
                 },
                 subtitle: {
                     text: ''
@@ -292,7 +292,7 @@ function showTrafficTotal(networkTotal, startTime){
                     spacingBottom: 0
                 },
                 title: {
-                    text: '',
+                    text: ''
                 },
                 subtitle: {
                     text: ''
