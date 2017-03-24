@@ -539,6 +539,7 @@ function showLineChart(chartId, dataSet, colorArr){
             },
             colors: colorArr,
             chart: {
+                animation: false,
                 backgroundColor: '#424973',
                 //type: 'area'
                 zoomType: 'x',
@@ -568,6 +569,8 @@ function showLineChart(chartId, dataSet, colorArr){
             xAxis: {
                 showFirstLabel: true,
                 showLastLabel: true,
+                gridLineWidth: 1,
+                gridLineColor: 'gray',
                 events: {
                     setExtremes: syncExtremes
                 },
@@ -593,7 +596,7 @@ function showLineChart(chartId, dataSet, colorArr){
                 showFirstLabel: true,
                 showLastLabel: true,
                 gridLineWidth: 1,
-                gridLineColor: 'grey',
+                gridLineColor: 'gray',
                 title: {
                     text: ''
                 },

@@ -483,7 +483,7 @@ function dashboardDayEvent(){
                 },
                 xAxis: {
                     gridLineWidth: 1,
-                    gridLineColor: 'grey',
+                    gridLineColor: 'gray',
                     categories: [
                         '월요일',
                         '화요일',
@@ -504,7 +504,7 @@ function dashboardDayEvent(){
                 },
                 yAxis: {
                     gridLineWidth: 1,
-                    gridLineColor: 'grey',
+                    gridLineColor: 'gray',
                     min: 0,
                     title: {
                         text: ''
