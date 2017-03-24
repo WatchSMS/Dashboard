@@ -134,7 +134,7 @@ function serverOverView(server_data) {
         tableDataObj.RAM = serverRAM;
         tableDataArr.push(tableDataObj);
 
-        serverOverViewHTML += '<tr role="row" class="odd" id="serverInfoList">';
+        serverOverViewHTML += '<tr role="row" class="odd">';
         serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td">' + serverStatus + '</td>';
         serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td" style="cursor:pointer">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
@@ -327,15 +327,15 @@ function serverOverView(server_data) {
     //자동 새로고침
     setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);
 
-    $("#searchText").keyup(function() {
+    /*$("#searchText").keyup(function() {
         console.log(" keyup CLICK searchText ");
         var inputText = $("#searchText").val();
         console.log(" 입력 Text : " + inputText);
         console.log(inputText.toLowerCase());
-        /*
+        /!*
             var tbody_rowCount = $("#hostInfoList >tr").length;
             console.log(" 길이 : " + tbody_rowCount);
-        */
+        *!/
 
         var convText = new RegExp("(\\b" + inputText + "\\b)", "gim");
         var divList = document.getElementById("infoTable").innerHTML;
@@ -344,8 +344,14 @@ function serverOverView(server_data) {
         var resultList = convList.replace(convText, "<span>$1</span>");
         document.getElementById("infoTable").innerHTML = resultList;
 
-        /*for(var cnt=0; cnt<tbody_rowCount; cnt++){
-        }*/
+        /!*for(var cnt=0; cnt<tbody_rowCount; cnt++){
+        }*!/
+    });*/
+
+    /* 검색 */
+    $("#searchText").keyup(function() {
+        console.log(" CLICK searchText ");
+        searchHostBtn();
     });
 
     $.unblockUI(blockUI_opt_all);
@@ -353,7 +359,34 @@ function serverOverView(server_data) {
 
 function searchHostBtn(){
     console.log(" CLICK searchHostBtn ");
-    $("#searchText").keyup();
+    //$("#searchText").keyup();
     /*var inputText = $("#searchText").val();
     console.log(" searchHostBtn 입력 Text : " + inputText);*/
+
+    var input;
+    var filter;
+    var table;
+    var tr;
+    var td;
+
+    input = $("#searchText").val();
+    console.log(" input : " + input);
+    filter = input.toLowerCase();
+    console.log(" filter : " + filter);
+    table = document.getElementById("hostInfoList");
+    tr = table.getElementsByTagName("tr");
+    console.log(" tr Cnt : " + tr.length);
+
+    for(var i=0; i<tr.length; i++){
+        td = tr[i].getElementsByTagName("td")[1];
+        if(td){
+            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                console.log(" OK ");
+            } else {
+                tr[i].style.display = "none";
+                console.log(" FAIL ");
+            }
+        }
+    }
 }
