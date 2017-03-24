@@ -652,10 +652,6 @@ function syncExtremes(e) {
     var thisChart = this.chart;
     if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
         Highcharts.each(Highcharts.charts, function (chart) {
-            console.log("tttttttttttttttttttttttttteeeeesssstt");
-            console.log(chart);
-            console.log(chart.renderTo.id);
-            console.log(typeof chart.renderTo.id);
             if(chart.renderTo.id == "chart_dayEvent"){
                 return;
             }
