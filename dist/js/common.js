@@ -48,9 +48,9 @@ var convPriority = function(priority) {
 
 var convStatusEvent = function(status) {
     if (status === "0") {
-        return "해소";
+        return "정상"; //해소
     } else {
-        return "발생";
+        return "이상"; //발생
     }
 };
 
