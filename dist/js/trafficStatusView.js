@@ -90,6 +90,16 @@ function networkInfoView(hostid, startTime, data_topDisk){
             overlayCSS:{background: 'white', opacity: .8}
         });
     });
+
+    // 테이블의 th col 클릭시, 정렬 된 테이블 내용 생성 및 각 행의 클릭이벤트(하이라이트, 차트) 생성
+    $('tr', $table).each(function (column){
+        $(this).click(function(){
+            var currentThObj = $(this);
+            var tmpTrafficName = $(".selectedNetwork").attr('id');
+            $("#"+tmpTrafficName).addClass("selectedNetwork").css("border","1px #FF5E00 solid");
+            rowClickNetworkEvent($table, hostid, startTime);
+        }); // end click
+    }); // end th col
 }
 
 function generateNetworkResource(hostid, currentNetworkName, startTime){
@@ -126,16 +136,18 @@ function clickInputTimeNetwork(){
 
 function rowClickNetworkEvent(table, hostid, startTime){
     $('tr', table).each(function(row) {
-        $(this).click(function() {
-            var currentNetworkItemId = $(this).attr('id');
-            $(".selectedNetwork").removeClass("selectedNetwork");
-            $(this).addClass("selectedNetwork");
-            $(this).css("border","1px #FF5E00 solid");
-            $(this).prevAll().css("border","");
-            $(this).nextAll().css("border","");
+        if(row < ($('tr', table).size()-1)){
+            $(this).click(function() {
+                var currentNetworkItemId = $(this).attr('id');
+                $(".selectedNetwork").removeClass("selectedNetwork");
+                $(this).addClass("selectedNetwork");
+                $(this).css("border","1px #FF5E00 solid");
+                $(this).prevAll().css("border","");
+                $(this).nextAll().css("border","");
 
-            generateNetworkResource(hostid, currentNetworkItemId, startTime);
-        });
+                generateNetworkResource(hostid, currentNetworkItemId, startTime);
+            });
+        }
     });
 }
 
