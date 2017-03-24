@@ -1,115 +1,85 @@
-function callApiForTraffic(hostid, startTime){
-    var data_topDisk = '';
-    zbxApi.getNetworkItem.get(hostid, "net.if.total").then(function(data) {
-        data_topDisk = zbxApi.getNetworkItem.success(data);
-        networkInfoView(hostid, startTime, data_topDisk);
-    })
-}
+function networkUsageView(hostid, startTime){
+    console.log(" IN networkUsageView ");
 
-function networkInfoView(hostid, startTime, data_topDisk){
-    console.log("IN networkInfoView");
-
-    var networkTableHTML = '';
-    var MAX_NETWORKCOUNT = 10;
-    var tableDataObj = {};
+    var NetworkTableHTML = '';
+    var currentNetworkName = null;
+    var tableDataObj = new Object();
     var tableDataArr = [];
+    var lastNetworkData = callApiForNetworkTable(hostid);
+
     var networkItemId = '';
     var networkItemName = '';
-    var networkItemUsed = 0;
-    var networkItemSize = 0;
+    var networkItemUsed = '';
+    var networkItemSize = '';
+    var key = '';
+    console.log("lastNetworkData : " + JSON.stringify(lastNetworkData));
 
-    var currentNetworkName = null;
+    NetworkTableHTML += "<tbody>";
 
-    networkTableHTML += "<tbody>";
-
-    $.each(data_topDisk.result, function(k, v){
+    //좌측 network List
+    $.each(lastNetworkData.result, function(k, v){
         networkItemId = v.itemId;
-        var key = v.key_;
+        key = v.key_;
         networkItemName = key.substring(key.indexOf("[") + 1, key.indexOf("]"));
         try{
             networkItemUsed = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+networkItemName+",pfree]").lastvalue;
             networkItemUsed = Math.floor(networkItemUsed * 100) / 100;
+
+            networkItemSize = zbxSyncApi.getDiskItem(hostid, "net.if.total["+networkItemName+",bytes]").lastvalue;
         } catch(e){
             console.log(e);
         }
-        try {
-            networkItemSize = zbxSyncApi.getDiskItem(hostid, "net.if.total["+networkItemName+",bytes]").lastvalue;
-        }
-        catch(e){
-            console.log(e);
-        }
 
-        tableDataObj = {};
+        tableDataObj = new Object();
         tableDataObj.networkItemId = networkItemId;
         tableDataObj.networkItemName = networkItemName;
         tableDataObj.networkItemUsed = networkItemUsed;
         tableDataObj.networkItemSize = networkItemSize;
         tableDataArr.push(tableDataObj);
 
-        if(k < MAX_NETWORKCOUNT){
-            networkTableHTML += "<tr id='" + networkItemName + "' role='row' class='h51 odd'>";
-            networkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>";
-            networkTableHTML += "<td width='auto' class='align_left p113'>";
-            networkTableHTML += "<div class='mt2 f11'>" + networkItemName + "</div>";
-            networkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + " b/s / RX : " + networkItemSize + " b/z</div>";
-            networkTableHTML += "</tr>";
-        }
+        NetworkTableHTML += "<tr id='" + networkItemName + "' role='row' class='h51 odd'>";
+        NetworkTableHTML += "<td width='90' class='line'><img src='dist/img/card_icon01.png'/></td>";
+        NetworkTableHTML += "<td width='auto' class='align_left p113'>";
+        NetworkTableHTML += "<div class='mt2 f11'>" + networkItemName + "</div>";
+        NetworkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + " b/s / RX : " + networkItemSize + " b/z</div>";
+        NetworkTableHTML += "</tr>";
     });
 
-    networkTableHTML += "</tbody>";
+    NetworkTableHTML += "</tbody>";
 
     $("#networkInfoTable").empty();
-    $("#networkInfoTable").append(networkTableHTML);
+    $("#networkInfoTable").append(NetworkTableHTML);
+
     $("#chart_trafficIo").empty();
     $("#chart_trafficTotal").empty();
+
     var $table = $("#networkInfoTable");
     $("#networkInfoTable > tbody > tr").eq(0).addClass("selectedNetwork");
     $("#networkInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 
     currentNetworkName = $(".selectedNetwork").attr('id');
 
+    console.log(" currentNetworkName : " + currentNetworkName);
+
     generateNetworkResource(hostid, currentNetworkName, startTime);
 
-    rowClickNetworkEvent($table, hostid, startTime);
-
-    $("#btn_network.btn").off().on('click', function () {
-        var startTime_select = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-        var currentDiskName = $(".selectedNetwork").attr('id');
-        generateNetworkResource(hostid, currentDiskName, startTime_select);
-    });
-
-    $("#btn_network.btn_etc").off().on('click', function(){
-        console.log(" 기타 시간 버튼 클릭 ");
-        $('#selectNetworkTimeInput').val("");
-        $('#network_InputTimecontent').lightbox_me({
-            centered: true,
-            closeSelector: ".close",
-            onLoad: function() {
-                $('#network_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
-            },
-            overlayCSS:{background: 'white', opacity: .8}
-        });
-    });
-
-    // 테이블의 th col 클릭시, 정렬 된 테이블 내용 생성 및 각 행의 클릭이벤트(하이라이트, 차트) 생성
-    $('tr', $table).each(function (column){
-        $(this).click(function(){
-            var currentThObj = $(this);
-            var tmpTrafficName = $(".selectedNetwork").attr('id');
-            $("#"+tmpTrafficName).addClass("selectedNetwork").css("border","1px #FF5E00 solid");
-            rowClickNetworkEvent($table, hostid, startTime);
-        }); // end click
-    }); // end th col
 }
 
-function generateNetworkResource(hostid, currentNetworkName, startTime){
+function callApiForNetworkTable(hostid){
+    return zbxSyncApi.getNetworkItem(hostid, "net.if.total");
+}
+
+function generateNetworkResource(hostid, networkName, startTime){
+    var networkItemKeyIn = "net.if.in[" + networkName + "]";
+    var networkItemKeyOut = "net.if.out[" + networkName + "]";
+    var networkItemKeyTotal = "net.if.total[" + networkName + "]";
+
     var networkIn = '';
     var networkOut = '';
     var networkTotal = '';
 
-    var networkItemKeyIn = "net.if.in[" + currentNetworkName + "]";
-    var networkItemKeyOut = "net.if.out[" + currentNetworkName + "]";
-    var networkItemKeyTotal = "net.if.total[" + currentNetworkName + "]";
+    var ioArr = [];
+    var totalArr = [];
 
     zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
         networkIn = zbxApi.serverViewGraph.success(data);
@@ -121,296 +91,74 @@ function generateNetworkResource(hostid, currentNetworkName, startTime){
         return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
     }).then(function(data) {
         networkTotal = zbxApi.serverViewGraph.success(data);
-        showTraffic(networkIn, networkOut, networkTotal, startTime);
+        networkGraph(networkIn, networkOut, networkTotal, startTime);
     });
 }
 
-function clickInputTimeNetwork(){
-    console.log(" IN clickInputTimeNetwork ");
-    var inputTime = $('#network_InputTimecontent').find('input:first').val();
-    var currentNetworkName = $(".selectedNetwork").attr('id');
-    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
-    console.log(" 시간 입력 확인 버튼 클릭 ");
-    generateNetworkResource(currentHostId, currentNetworkName, startTime);
+function networkGraph(networkIn, networkOut, networkTotal, startTime){
+    console.log(" networkGraph ");
+
+    removeAllChart();
+
+    networkGraphIo(networkIn, networkOut, startTime);
+    networkGraphTotal(networkTotal, startTime);
 }
 
-function rowClickNetworkEvent(table, hostid, startTime){
-    $('tr', table).each(function(row) {
-        if(row < ($('tr', table).size()-1)){
-            $(this).click(function() {
-                var currentNetworkItemId = $(this).attr('id');
-                $(".selectedNetwork").removeClass("selectedNetwork");
-                $(this).addClass("selectedNetwork");
-                $(this).css("border","1px #FF5E00 solid");
-                $(this).prevAll().css("border","");
-                $(this).nextAll().css("border","");
+function networkGraphIo(networkIn, networkOut, startTime){
+    var networkInArr = null;
+    var networkOutArr = null;
 
-                generateNetworkResource(hostid, currentNetworkItemId, startTime);
-            });
-        }
-    });
-}
+    var dataSet = [];
+    var dataObj = new Object();
 
-function showTraffic(networkIn, networkOut, networkTotal, startTime){
-    showTrafficIo(networkIn, networkOut, startTime);
-    showTrafficTotal(networkTotal, startTime);
-}
-
-function showTrafficIo(networkIn, networkOut, startTime){
-    var networkInArr = [];
-    var networkOutArr = [];
+    $("#chart_trafficIo").block(blockUI_opt_all_custom);
 
     zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-        networkInArr = zbxApi.getHistory.success(data);
+        networkInArr = zbxApi.getNetworkHistory.success(data);
     }).then(function() {
         return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
-        networkOutArr = zbxApi.getHistory.success(data);
+        networkOutArr = zbxApi.getNetworkHistory.success(data);
+        console.log(" networkGraphIo ");
 
-        $(function() {
-            Highcharts.chart('chart_trafficIo', {
-                chart: {
-                    backgroundColor: '#424973',
-                    zoomType: 'x',
-                    spacingBottom: 0
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    tickInterval : 300000,
-                    gridLineWidth: 1,
-                    showFirstLabel: true,
-                    showLastLabel: true,
-                    labels: {
-                        style:{
-                            color: '#E0E0E3'
-                        },
-                        formatter: function() {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if (hours.length == 1) {
-                                hours = "0" + hours;
-                            }
-                            if (minutes.length == 1) {
-                                minutes = "0" + minutes;
-                            }
-                            if (seconds.length == 1) {
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    title: { text: '' },
-                    labels: {
-                        style:{
-                            color: '#E0E0E3'
-                        },
-                        formatter: function() {
-                            return Math.floor(this.value / 1000) +'Kbps';
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    style: {
-                        color: '#F0F0F0'
-                    },
-                    shared: true,
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
+        dataObj = new Object();
+        dataObj.name = "RECEVIED";
+        dataObj.data = networkInArr;
+        dataSet.push(dataObj);
 
-                        var s = [];
-                        $.each(this.points, function (i, point) {
-                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
-                        });
-                        return s;
-                    }
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        marker: {
-                            enabled: false //false
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Traffic In',
-                    data: networkInArr,
-                    color: '#FC4747'
-                }, {
-                    name: 'Traffic Out',
-                    data: networkOutArr,
-                    color: '#F2F234'
-                }],
-                legend: {
-                    enabled: false
-                },
-                exporting: {
-                    buttons: {
-                        contextButton: {
-                            enabled: false,
-                            symbolStroke: 'transparent',
-                            theme: {
-                                fill:'#626992'
-                            }
-                        }
-                    }
-                }
-            });
-        });
+        dataObj = new Object();
+        dataObj.name = "TRANSMITED";
+        dataObj.data = networkOutArr;
+        dataSet.push(dataObj);
+
+        console.log("dataSet : " + dataSet[0].name);
+        console.log("dataSet : " + dataSet[0].data);
+        console.log("dataSet : " + dataSet[1].name);
+        console.log("dataSet : " + dataSet[1].data);
+
+        showBasicLineChart('chart_trafficIo', '트래픽I/O', dataSet, "%", ['#00B700','#DB9700']);
     })
 }
 
-function showTrafficTotal(networkTotal, startTime){
+function networkGraphTotal(networkTotal, startTime){
     var networkTotalArr = [];
 
+    var dataSet = [];
+    var dataObj = new Object();
+
+    $("#chart_trafficTotal").block(blockUI_opt_all_custom);
+
     zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-        networkTotalArr = zbxApi.getHistory.success(data);
+        networkTotalArr = zbxApi.getNetworkHistory.success(data);
+        console.log(" networkGraphTotal ");
 
-        $(function () {
-            Highcharts.chart('chart_trafficTotal', {
-                chart: {
-                    backgroundColor: '#424973',
-                    zoomType: 'x',
-                    spacingBottom: 0
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    tickInterval: 300000,
-                    gridLineWidth: 1,
-                    showFirstLabel: true,
-                    showLastLabel: true,
-                    labels: {
-                        style: {
-                            color: '#E0E0E3'
-                        },
-                        formatter: function () {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if (hours.length == 1) {
-                                hours = "0" + hours;
-                            }
-                            if (minutes.length == 1) {
-                                minutes = "0" + minutes;
-                            }
-                            if (seconds.length == 1) {
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    title: {text: ''},
-                    labels: {
-                        style: {
-                            color: '#E0E0E3'
-                        },
-                        formatter: function() {
-                            return Math.floor(this.value / 1000) +'Kbps';
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    style: {
-                        color: '#F0F0F0'
-                    },
-                    shared: true,
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
+        dataObj = new Object();
+        dataObj.name = "TOTAL";
+        dataObj.data = networkTotalArr;
+        dataSet.push(dataObj);
 
-                        var s = [];
-                        $.each(this.points, function (i, point) {
-                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
-                        });
-                        return s;
-                    }
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        marker: {
-                            enabled: false //false
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Traffic Total',
-                    data: networkTotalArr,
-                    color: '#FA60CE'
-                }],
-                legend: {
-                    enabled: false
-                },
-                exporting: {
-                    buttons: {
-                        contextButton: {
-                            enabled: false,
-                            symbolStroke: 'transparent',
-                            theme: {
-                                fill: '#626992'
-                            }
-                        }
-                    }
-                }
-            });
-        });
+        console.log("dataSet : " + dataSet[0].name);
+
+        showBasicLineChart('chart_trafficTotal', '트래픽TOTAL', dataSet, "%", ['#00B700']);
     })
 }

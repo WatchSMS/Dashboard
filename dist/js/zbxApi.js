@@ -179,6 +179,22 @@ var zbxApi = {
         }
     },
 
+    checkItem: {
+        get: function (hostId, key_) {
+            var method = "item.get";
+            var params = {
+                "host": hostId,
+                "search": {"key_": key_}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getHistory data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+
     getHistory: {
         get: function (itemId, startTime, type) {
             var method = "history.get";
@@ -194,26 +210,9 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("getHistory data : " + data);
             //console.log(data);
 
             return resultToArray(data.result);
-        }
-    },
-
-    checkItem: {
-        get: function (hostId, key_) {
-            var method = "item.get";
-            var params = {
-                "host": hostId,
-                "search": {"key_": key_}
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("getHistory data : " + data);
-            //console.log(data);
-            return data;
         }
     },
 
@@ -233,6 +232,27 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            return data;
+        }
+    },
+
+    getNetworkHistory: {
+        get: function (itemId, startTime, type) {
+            var method = "history.get";
+            var params = {
+                "output": "extend",
+                "history": type,
+                "sortfield": "clock",
+                "sortorder": "ASC",
+                "itemids": itemId,
+                "time_from": startTime,
+                //"time_till": till_time,
+                "limit" : 2000
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getHistory data : " + JSON.stringify(data));
             return data;
         }
     },
@@ -271,29 +291,6 @@ var zbxApi = {
         success: function (data) {
             console.log("start222");
             console.log("getItem data : " + data);
-
-            $.each(data.result, function (k, v) {
-                console.log(JSON.stringify(v));
-                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
-            });
-            return data;
-        }
-    },
-
-    getNetworkItem: {
-        get: function (hostid, key_) {
-            var method = "item.get";
-            var params = {
-                "output": ["key_", "itemid", "lastclock"],
-                "hostids": hostid,
-                "search": {"key_": key_}
-                //"search": {"key_": "net.if.in["}
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("getNetworkItem");
-            console.log("getItem data : " + JSON.stringify(data));
 
             $.each(data.result, function (k, v) {
                 console.log(JSON.stringify(v));

@@ -211,7 +211,7 @@ var hostInfoView = function() {
                 $("[id^=base]").hide();
                 $("#base_networkInfo").show();
 
-                callApiForTraffic(hostid, startTime);
+                networkUsageView(hostid, startTime);
             });
 
             $("#" + tagId).click(function() {

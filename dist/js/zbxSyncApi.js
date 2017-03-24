@@ -255,6 +255,24 @@ var zbxSyncApi = {
         return result;
     },
 
+    getNetworkItem: function (hostid, key_) {
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "item.get",
+            "params": {
+                "output": ["key_", "itemid", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": key_}
+                //"search": {"key_": "net.if.in["}
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        //console.log(" eventStatusHost " + JSON.stringify(result));
+        return result;
+    },
+
     callAjax: function (param) {
         var result = "";
         $.ajax({
