@@ -138,9 +138,9 @@ function dashboardHostEvent(hostEvent){
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
 
         var dashboardHostEventHTML = "<tr class='p1'>";
-        dashboardHostEventHTML += "<td width='48px' height='70px' class='line-td'>" + hostNum + "</td>";
-        dashboardHostEventHTML += "<td width='165px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='73px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='40px' height='70px' class='line-td'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + hostName + "</td>";
+        dashboardHostEventHTML += "<td width='50px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
         dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
