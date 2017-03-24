@@ -19,15 +19,16 @@ function serverOverView(server_data) {
     var serverOverViewHTML = '';
     serverOverViewHTML += '<thead>';
     serverOverViewHTML += '<tr role="row">';
-    serverOverViewHTML += '<th id="serverStatus" width="45" class="line-th">상태</th>';
-    serverOverViewHTML += '<th id="serverName" width="188" class="sorting line-td" aria-sort="descending">서버명</th>';
-    serverOverViewHTML += '<th id="serverIpAddr" width="122" class="line-td">IP주소</th>';
-    serverOverViewHTML += '<th id="serverPerCpu" width="131" class="line-td">CPU(%)</th>';
-    serverOverViewHTML += '<th id="serverMemory" width="131" class="line-td">메모리(%)</th>';
-    serverOverViewHTML += '<th id="serverDisk" width="131" class="line-td">디스크(%)</th>';
-    serverOverViewHTML += '<th id="serverOS" width="150" class="line-td">운영체제</th>';
-    serverOverViewHTML += '<th id="serverCPU" width="117" class="line-td">CPU</th>';
-    serverOverViewHTML += '<th id="serverRAM" width="97" class="line-td">RAM</th>';
+    serverOverViewHTML += '<td id="serverStatus" width="45" class="line-th">상태</td>';
+    //serverOverViewHTML += '<td id="serverNameTd" width="188" class="sorting line-td" aria-sort="descending">서버명</td>';
+    serverOverViewHTML += '<td id="serverNameTd" width="188" class="line-td">서버명</td>';
+    serverOverViewHTML += '<td id="serverIpAddr" width="122" class="line-td">IP주소</td>';
+    serverOverViewHTML += '<td id="serverPerCpu" width="131" class="line-td">CPU(%)</td>';
+    serverOverViewHTML += '<td id="serverMemory" width="131" class="line-td">메모리(%)</td>';
+    serverOverViewHTML += '<td id="serverDisk" width="131" class="line-td">디스크(%)</td>';
+    serverOverViewHTML += '<td id="serverOS" width="150" class="line-td">운영체제</td>';
+    serverOverViewHTML += '<td id="serverCPU" width="117" class="line-td">CPU</td>';
+    serverOverViewHTML += '<td id="serverRAM" width="97" class="line-td">RAM</td>';
     serverOverViewHTML += '</tr>';
     serverOverViewHTML += '</thead>';
     serverOverViewHTML += '<tbody>';
@@ -194,10 +195,10 @@ function serverOverView(server_data) {
             $("#disk_" + hostid).click();
         });
     });
-
+    /*
     //테이블의 td col 클릭시 정렬된 테이블 내용 생성
     var $table = $("#serverList");
-    $('th', $table).each(function (column) {
+    $("#serverNameTd", $table).each(function (column) {
         $(this).click(function() {
             var sortTable = '';
             var currentThObj = $(this);
@@ -246,6 +247,7 @@ function serverOverView(server_data) {
 
         })//end click function
     }); //end each
+    */
 
     //page reloag
     $("#reload_serverOverview").click(function(){
