@@ -1517,3 +1517,8 @@
 .menu_setting{
 	display:inline-block;
 }
+
+#infoTable span{
+	background-color:#FF9;
+	color:#555;
+}

@@ -31,7 +31,7 @@ function serverOverView(server_data) {
     serverOverViewHTML += '<td id="serverRAM" width="97" class="line-td">RAM</td>';
     serverOverViewHTML += '</tr>';
     serverOverViewHTML += '</thead>';
-    serverOverViewHTML += '<tbody>';
+    serverOverViewHTML += '<tbody id="hostInfoList">';
 
     $.each(server_data.result, function(k, v) {
         var serverStatus = '';
@@ -329,9 +329,21 @@ function serverOverView(server_data) {
 
     $("#searchText").keyup(function() {
         console.log(" keyup CLICK searchText ");
-        var value = $("#searchText").val();
+        var inputText = $("#searchText").val();
+        console.log(" 입력 Text : " + inputText);
+        console.log(inputText.toLowerCase());
+        var tbody_rowCount = $("#hostInfoList >tr").length;
+        console.log(" 길이 : " + tbody_rowCount);
 
-        console.log(" 입력 Text : " + value);
+        var convText = new RegExp("(\\b" + inputText + "\\b)", "gim");
+        var divList = document.getElementById("infoTable").innerHTML;
+        var convList = divList.replace(/(<span>|<\/span>)/igm, "");
+        document.getElementById("infoTable").innerHTML = convList;
+        var resultList = convList.replace(convText, "<span>$1</span>");
+        document.getElementById("infoTable").innerHTML = resultList;
+
+        /*for(var cnt=0; cnt<tbody_rowCount; cnt++){
+        }*/
     });
 
     $.unblockUI(blockUI_opt_all);
@@ -339,6 +351,7 @@ function serverOverView(server_data) {
 
 function searchHostBtn(){
     console.log(" CLICK searchHostBtn ");
-    var value = $("#searchText").val();
-    console.log(" searchHostBtn 입력 Text : " + value);
+    $("#searchText").keyup();
+    /*var inputText = $("#searchText").val();
+    console.log(" searchHostBtn 입력 Text : " + inputText);*/
 }
