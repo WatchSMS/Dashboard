@@ -63,6 +63,27 @@ function networkUsageView(hostid, startTime){
 
     generateNetworkResource(hostid, currentNetworkName, startTime);
 
+    rowClickNetworkEvent($table, hostid, startTime);
+
+    // 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
+    $("#btn_network.btn").off().on('click',function() {
+        var startTime1 = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+        var currentNetworkName = $(".selectedNetwork").attr('id');
+        generateNetworkResource(hostid, currentNetworkName, startTime1);
+    });
+
+    // 시간 수동 입력 버튼 클릭시
+    $("#btn_network.btn_etc").off().on('click',function() {
+        $('#selectNetworkTimeInput').val("");
+        $('#network_InputTimecontent').lightbox_me({
+            centered: true,
+            closeSelector: ".close",
+            onLoad: function() {
+                $('#network_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+            },
+            overlayCSS:{background: 'white', opacity: .8}
+        });
+    });
 }
 
 function callApiForNetworkTable(hostid){
@@ -74,12 +95,9 @@ function generateNetworkResource(hostid, networkName, startTime){
     var networkItemKeyOut = "net.if.out[" + networkName + "]";
     var networkItemKeyTotal = "net.if.total[" + networkName + "]";
 
-    var networkIn = '';
-    var networkOut = '';
-    var networkTotal = '';
-
-    var ioArr = [];
-    var totalArr = [];
+    var networkIn = null;
+    var networkOut = null;
+    var networkTotal = null;
 
     zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
         networkIn = zbxApi.serverViewGraph.success(data);
@@ -91,17 +109,13 @@ function generateNetworkResource(hostid, networkName, startTime){
         return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
     }).then(function(data) {
         networkTotal = zbxApi.serverViewGraph.success(data);
-        networkGraph(networkIn, networkOut, networkTotal, startTime);
+        console.log(" networkGraph ");
+
+        removeAllChart();
+
+        networkGraphIo(networkIn, networkOut, startTime);
+        networkGraphTotal(networkTotal, startTime);
     });
-}
-
-function networkGraph(networkIn, networkOut, networkTotal, startTime){
-    console.log(" networkGraph ");
-
-    removeAllChart();
-
-    networkGraphIo(networkIn, networkOut, startTime);
-    networkGraphTotal(networkTotal, startTime);
 }
 
 function networkGraphIo(networkIn, networkOut, startTime){
@@ -113,10 +127,10 @@ function networkGraphIo(networkIn, networkOut, startTime){
 
     $("#chart_trafficIo").block(blockUI_opt_all_custom);
 
-    zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+    zbxApi.getNetworkHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkInArr = zbxApi.getNetworkHistory.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+        return zbxApi.getNetworkHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         networkOutArr = zbxApi.getNetworkHistory.success(data);
         console.log(" networkGraphIo ");
@@ -137,7 +151,9 @@ function networkGraphIo(networkIn, networkOut, startTime){
         console.log("dataSet : " + dataSet[1].data);
 
         showBasicLineChart('chart_trafficIo', '트래픽I/O', dataSet, "%", ['#00B700','#DB9700']);
-    })
+
+        console.log(" end traffic Io ");
+    });
 }
 
 function networkGraphTotal(networkTotal, startTime){
@@ -148,7 +164,7 @@ function networkGraphTotal(networkTotal, startTime){
 
     $("#chart_trafficTotal").block(blockUI_opt_all_custom);
 
-    zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+    zbxApi.getNetworkHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkTotalArr = zbxApi.getNetworkHistory.success(data);
         console.log(" networkGraphTotal ");
 
@@ -161,4 +177,23 @@ function networkGraphTotal(networkTotal, startTime){
 
         showBasicLineChart('chart_trafficTotal', '트래픽TOTAL', dataSet, "%", ['#00B700']);
     })
+}
+
+function rowClickNetworkEvent(table, hostid, startTime){
+    $('tr', table).each(function (row){
+        if(row < ($('tr', table).size()-1)){
+            $(this).click(function(){
+
+                var currentNetworkName = $(this).attr('id');
+                console.log(" currentNetworkName : " + currentNetworkName);
+                $(".selectedNetwork").removeClass("selectedNetwork");
+                $(this).addClass("selectedProcess");
+                $(this).css("border","1px #FF5E00 solid");
+                $(this).prevAll().css("border","");
+                $(this).nextAll().css("border","");
+
+                generateNetworkResource(hostid, currentNetworkName, startTime);
+            });
+        }
+    });
 }

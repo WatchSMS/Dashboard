@@ -208,10 +208,10 @@ var hostInfoView = function() {
 
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
                 currentHostId = v.hostid;
+                $.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
                 $("#base_networkInfo").show();
-
-                networkUsageView(hostid, startTime);
+                networkUsageView(v.hostid, startTime);
             });
 
             $("#" + tagId).click(function() {

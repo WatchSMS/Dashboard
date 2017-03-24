@@ -238,21 +238,24 @@ var zbxApi = {
 
     getNetworkHistory: {
         get: function (itemId, startTime, type) {
+            console.log(itemId);
+            console.log(startTime);
+            console.log(type);
             var method = "history.get";
             var params = {
                 "output": "extend",
-                "history": type,
                 "sortfield": "clock",
                 "sortorder": "ASC",
                 "itemids": itemId,
                 "time_from": startTime,
+                "history": type,
                 //"time_till": till_time,
                 "limit" : 2000
             };
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("getHistory data : " + JSON.stringify(data));
+            console.log("getNetworkHistory data : " + JSON.stringify(data));
             return data;
         }
     },
