@@ -48,9 +48,9 @@ function dashboardEventStatus(){
     var d = new Date();
     var date = d.getDate();
     var today_select = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
-    console.log(" today_select : " + today_select);
+    //console.log(" today_select : " + today_select);
     today_select = parseInt(today_select / 1000);
-    console.log(" today_select : " + today_select);
+    //console.log(" today_select : " + today_select);
 
     var totalEvent = '';
     var unacknowEvent = '';
@@ -70,8 +70,8 @@ function dashboardEventStatus(){
         todayEvent = zbxApi.todayEvent.success(data);
         $("#todayEvents").text(todayEvent);
     });
-    console.log("dashboardEventStatus today_select : " + today_select);
-    console.log("dashboardEventStatus today_select : " + new Date(today_select));
+    //console.log("dashboardEventStatus today_select : " + today_select);
+    //console.log("dashboardEventStatus today_select : " + new Date(today_select));
 }
 
 function dashboardHostEvent(hostEvent){
@@ -94,17 +94,17 @@ function dashboardHostEvent(hostEvent){
 
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
-    console.log(" 호스트 date : " + date);
+    //console.log(" 호스트 date : " + date);
     var beforeTime = date.getTime() - DAYTOMILLS;
-    console.log(" 호스트 beforeTime : " + beforeTime);
-    console.log(" 호스트 beforeTime : " + new Date(beforeTime));
+    //console.log(" 호스트 beforeTime : " + beforeTime);
+    //console.log(" 호스트 beforeTime : " + new Date(beforeTime));
     var endTime = date.getTime();
-    console.log(" 호스트 endTime : " + endTime);
-    console.log(" 호스트 endTime : " + new Date(endTime));
+    //console.log(" 호스트 endTime : " + endTime);
+    //console.log(" 호스트 endTime : " + new Date(endTime));
     beforeTime = parseInt(beforeTime / 1000);
     endTime = parseInt(endTime / 1000);
-    console.log(" beforeTime : " + beforeTime);
-    console.log(" endTime : " + endTime);
+    //console.log(" beforeTime : " + beforeTime);
+    //console.log(" endTime : " + endTime);
 
     var hostNum = 0;
     var hostid = '';
@@ -163,11 +163,11 @@ function dashboardHostEvent(hostEvent){
                 }
                 dataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
 
-                console.log( " 1. event_clock   : " + event_clock);
-                console.log( " 2. startTime     : " + startTime);
-                console.log( " 3. nowTime       : " + nowTime);
-                console.log( " 4. event_count   : " + event_count);
-                console.log(i);
+                //console.log( " 1. event_clock   : " + event_clock);
+                //console.log( " 2. startTime     : " + startTime);
+                //console.log( " 3. nowTime       : " + nowTime);
+                //console.log( " 4. event_count   : " + event_count);
+                //console.log(i);
             }
         } catch (e) {
             console.log(e);
