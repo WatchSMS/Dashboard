@@ -115,41 +115,63 @@ function dashboardHostEvent(hostEvent){
     var eventList = '';
     var startTime = '';
     var nowTime = '';
-    var event_count= 0 ;
 
-    var hostDataSet=[];
     var dashboardHostEventTbody = "<tbody id='dashboardHostEventTbody'></tbody>";
+    // $.each(hostDataSet, function(k,v){
+    //     var tempArr = [];
+    //     tempArr.push(v);
+    //     console.log(tempArr);
+    //     showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#a2adcc']);
+    // });
 
     $("#hostEventList").empty();
+
     $("#hostEventList").append(dashboardHostEventTbody);
 
-
     $.each(hostEvent.result, function(k, v){
+        var hostDataSet=[];
         //console.log(" " + v.name + " 아이우에오 " + v.hostid);
         hostNum += 1;
         hostName = v.name;
         hostid = v.hostid;
+
+        var dashboardHostEventHTML = "<tr class='p1'>";
+        dashboardHostEventHTML += "<td width='48px' height='70px' class='line-td'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='165px' height='70px' class='line-td align_left'>" + hostName + "</td>";
+        dashboardHostEventHTML += "<td width='73px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
+        dashboardHostEventHTML += "</tr>";
+        $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
+
+
         hostEventCnt = zbxSyncApi.alerthostTrigger(v.hostid, beforeTime, endTime);
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, v.hostid);
-        var dataArr = [];
+        var dataArr = new Array(24);
         try {
-            event_clock = eventList[0].clock;
-            if(eventList[0].clock == undefined){
-                event_clock = 0;
+            if(eventList[0] == undefined){
+                return true;
             }
-            event_clock = event_clock * 1000;
-            startTime = beforeTime * 1000;
-            nowTime = endTime * 1000;
+            // event_clock = eventList[0].clock;
+            //
+            // event_clock = event_clock * 1000;
+            // startTime = beforeTime * 1000;
+            // nowTime = endTime * 1000;
+
             for(var i=0; i<24; i++){
+                var HOUR = 60*60;//시간
+                var NOW = parseInt(new Date().getTime()/1000);
 
-                if(event_clock > startTime && event_clock < nowTime){
-                    event_count += 1;
+                console.log("qqqqqqqqqqqqqq:"+NOW);
+
+                var event_count= 0 ;
+
+                for(var j=0;j<eventList.length;j++) {
+                    if(eventList[j].clock <NOW-(24-i)*HOUR && eventList[j].clock >NOW-(24-i+1)*HOUR ){
+                        event_count += 1;
+                    }
                 }
-                //console.log(" i : " + i + " / RESULT = start_clock : " + start_clock + " / end_clock : " + end_clock + " / event_count : " + event_count);
 
-                dataArr[i] = [startTime, event_count];
-
-                //console.log(JSON.stringify(dataArr[i]));*/
+                dataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
 
                 console.log( " 1. event_clock   : " + event_clock);
                 console.log( " 2. startTime     : " + startTime);
@@ -157,6 +179,7 @@ function dashboardHostEvent(hostEvent){
                 console.log( " 4. event_count   : " + event_count);
                 console.log(i);
             }
+
         } catch (e) {
             console.log(e);
         }
@@ -167,23 +190,11 @@ function dashboardHostEvent(hostEvent){
         hostDataObj.data = dataArr;
         hostDataSet.push(hostDataObj);
 
-        var dashboardHostEventHTML = "<tr class='p1'>";
-        dashboardHostEventHTML += "<td width='48px' height='70px' class='line-td'>" + hostNum + "</td>";
-        dashboardHostEventHTML += "<td width='165px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='73px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
-        dashboardHostEventHTML += "</tr>";
-        $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
 
-        showLineChart('hostChart'+hostNum, "hostEvent"+hostNum, hostDataSet, "", ['#a2adcc']);
+
+        showLineChart('hostChart'+(k+1), "hostEvent"+hostNum, hostDataSet, "", ['#a2adcc']);
 
     });
-    // $.each(hostDataSet, function(k,v){
-    //     var tempArr = [];
-    //     tempArr.push(v);
-    //     console.log(tempArr);
-    //     showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#a2adcc']);
-    // });
 }
 
 function dashboardEventList(dashboard_Event) {
