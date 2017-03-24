@@ -523,10 +523,9 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
     });
 }
 
-function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
-    $(function () {
-        chart2 = new Highcharts.Chart({
-
+function showLineChart(chartId, dataSet, colorArr){
+        $(function() {
+            Highcharts.chart(chartId, {
             exporting: {
                 buttons: {
                     contextButton: {
@@ -542,7 +541,6 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             chart: {
                 backgroundColor: '#424973',
                 //type: 'area'
-                renderTo: chartId,
                 zoomType: 'x',
                 events: {
                     load: function(event) {
@@ -570,9 +568,9 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             xAxis: {
                 showFirstLabel: true,
                 showLastLabel: true,
-                events: {
+                /*events: {
                     setExtremes: syncExtremes
-                },
+                },*/
                 labels: {
                     style: {
                         color: '#EDEDED'

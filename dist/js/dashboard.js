@@ -178,7 +178,7 @@ function dashboardHostEvent(hostEvent){
         hostDataObj.data = dataArr;
         hostDataSet.push(hostDataObj);
 
-        showLineChart('hostChart'+(k+1), "hostEvent"+hostNum, hostDataSet, "", ['#a2adcc']);
+        showLineChart('hostChart'+(k+1), hostDataSet, ['#a2adcc']);
     });
 }
 
@@ -467,10 +467,7 @@ function dashboardDayEvent(){
                     type: 'column',
                     height: 280,
                     backgroundColor: '#424973',
-                    spacingTop: 10,
-                    spacingBottom: 0,
-                    spacingLeft: 0,
-                    spacingRight: 0
+                    spacingTop: 10
                 },
                 title: {
                     text: ''
