@@ -180,7 +180,6 @@ function showDiskIo(diskInode, diskFree, startTime){
                 chart: {
                     backgroundColor: '#424973',
                     zoomType: 'x',
-                    spacingTop: 2,
                     spacingBottom: 0
                 },
                 title: {
@@ -310,7 +309,6 @@ function showDiskUse(diskUse, startTime){
                 chart: {
                     backgroundColor: '#424973',
                     zoomType: 'x',
-                    spacingTop: 2,
                     spacingBottom: 0
                 },
                 title: {

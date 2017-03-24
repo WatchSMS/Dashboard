@@ -160,7 +160,6 @@ function showTrafficIo(networkIn, networkOut, startTime){
                 chart: {
                     backgroundColor: '#424973',
                     zoomType: 'x',
-                    spacingTop: 2,
                     spacingBottom: 0
                 },
                 title: {
@@ -290,7 +289,6 @@ function showTrafficTotal(networkTotal, startTime){
                 chart: {
                     backgroundColor: '#424973',
                     zoomType: 'x',
-                    spacingTop: 2,
                     spacingBottom: 0
                 },
                 title: {
