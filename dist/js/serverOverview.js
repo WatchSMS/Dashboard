@@ -4,6 +4,9 @@ var allServerViewHost = function() {
     $("[id^=base]").hide();
     $("#base_server").show();
 
+    $("#searchText").val("");
+    $("#reload_serverOverview").hide();
+
     var server_data = '';
     zbxApi.allServerViewHost.get().done(function(data, status, jqXHR) {
         server_data = zbxApi.allServerViewHost.success(data);
@@ -260,7 +263,7 @@ function serverOverView(server_data) {
         var ROW_COUNT = tableDataArr.length;
         //alert("ROW_COUNT : " + ROW_COUNT);
 
-        for(var i=0; i<ROW_COUNT; i++){
+        for(var i=0; i<ROW_COUNT; i++) {
             var hostid = tableDataArr[i].hostid;
             try {
                 cpu = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
@@ -271,9 +274,8 @@ function serverOverView(server_data) {
             } catch (e) {
                 console.log(e);
             }
-            console.log("perCPU_"+hostid + " >> " + $("#perCPU_"+hostid).width() +" / " + $("#perCPU_"+hostid).html());
-            $("#perCPU_"+hostid).width(cpu+"%");
-            $("#perCPU_"+hostid).html(cpu+"%");
+            $("#perCPU_" + hostid).width(cpu + "%");
+            $("#perCPU_" + hostid).html(cpu + "%");
 
             try {
                 memory = zbxSyncApi.allServerViewItem(hostid, "vm.memory.size[pused]").lastvalue;
@@ -281,11 +283,10 @@ function serverOverView(server_data) {
             } catch (e) {
                 console.log(e);
             }
-            if(memory == 0)
+            if (memory == 0)
                 memory = 0;
-            console.log("perMemory_"+hostid + " >> " + $("#perMemory_"+hostid).width() +" / " + $("#perMemory_"+hostid).html());
-            $("#perMemory_"+hostid).width(memory+"%");
-            $("#perMemory_"+hostid).html(memory+"%");
+            $("#perMemory_" + hostid).width(memory + "%");
+            $("#perMemory_" + hostid).html(memory + "%");
 
             var value;
             try {
@@ -295,7 +296,7 @@ function serverOverView(server_data) {
                 console.log(e);
                 try {
                     value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
-                }catch (e) {
+                } catch (e) {
                     console.log(e);
                 }
             }
@@ -304,9 +305,8 @@ function serverOverView(server_data) {
             if (disk == 100)
                 disk = 0;
             disk = Math.floor(disk * 100) / 100;
-            console.log("perDisk_"+hostid + " >> " + $("#perDisk_"+hostid).width() +" / " + $("#perDisk_"+hostid).html());
-            $("#perDisk_"+hostid).width(disk+"%");
-            $("#perDisk_"+hostid).html(disk+"%");
+            $("#perDisk_" + hostid).width(disk + "%");
+            $("#perDisk_" + hostid).html(disk + "%");
             console.log("================================");
         }
     });
