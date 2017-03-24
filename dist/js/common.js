@@ -525,6 +525,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 
 function showLineChart(chartId, dataSet, colorArr){
         $(function() {
+            var controllingChart;
             Highcharts.chart(chartId, {
             exporting: {
                 buttons: {
@@ -568,9 +569,15 @@ function showLineChart(chartId, dataSet, colorArr){
             xAxis: {
                 showFirstLabel: true,
                 showLastLabel: true,
-                /*events: {
-                    setExtremes: syncExtremes
-                },*/
+                events: {
+                    afterSetExtremes: function() {
+                        if (controllingChart = chartId) {
+                            var xMin = this.chart.xAxis[0].min;
+                            var xMax = this.chart.xAxis[0].max;
+                            chartId.xAxis[0].setExtremes(xMin, xMax, true);
+                        }
+                    }
+                },
                 labels: {
                     style: {
                         color: '#EDEDED'
@@ -635,7 +642,7 @@ function showLineChart(chartId, dataSet, colorArr){
             },
             series: dataSet
         });
-
+/*
         Highcharts.Point.prototype.highlight = function (event) {
             //this.onMouseOver(); // Show the hover marker
             this.series.chart.tooltip.refresh(this); // Show the tooltip
@@ -644,7 +651,7 @@ function showLineChart(chartId, dataSet, colorArr){
 
         Highcharts.Pointer.prototype.reset = function () {
             return undefined;
-        };
+        };*/
     });
 }
 
@@ -660,7 +667,6 @@ function syncExtremes(e) {
         });
     }
 }
-
 
 var offTimer = function(){
 	$.each(TIMER_ARR, function(k,v){
