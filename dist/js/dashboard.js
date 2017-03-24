@@ -134,6 +134,8 @@ function dashboardHostEvent(hostEvent){
         hostNum += 1;
         hostName = v.name;
         hostid = v.hostid;
+        hostEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, endTime);
+        eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
 
         var dashboardHostEventHTML = "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='48px' height='70px' class='line-td'>" + hostNum + "</td>";
@@ -143,8 +145,6 @@ function dashboardHostEvent(hostEvent){
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
 
-        hostEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, endTime);
-        eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
         var dataArr = new Array(24);
         try {
             if(eventList[0] == undefined){
