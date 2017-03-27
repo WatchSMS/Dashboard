@@ -809,7 +809,31 @@ var zbxApi = {
                 "selectHosts": "extend",
                 "source": 0,
                 "sortfield": "clock",
-                "sortorder": "DESC"
+                "sortorder": "DESC",
+                "limit": 15
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
+    eventStatusViewAppend: {
+        get: function (lastRowIdFrom) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "sortfield": "clock",
+                "sortorder": "DESC",
+                "eventid_till" : lastRowIdFrom,
+                "limit": 15
             };
             return server.sendAjaxRequest(method, params);
         },
