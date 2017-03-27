@@ -67,6 +67,23 @@ var zbxSyncApi = {
         return result.result[0];
     },
 
+    getDisktItem: function (hostid){
+        var param = {
+            "jsonrpc": "2.0",
+            "method": "item.get",
+            "params": {
+                "output": ["key_", "name", "lastvalue", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": "vfs.fs.size", "name": "Total disk space"}
+            },
+            "id": 1,
+            "auth": authid
+        };
+        var result = zbxSyncApi.callAjax(param);
+        console.log(" result : " + JSON.stringify(result.result));
+        return result.result;
+    },
+
     getHistory: function (itemId, startTime) {
         var param = {
             "jsonrpc": "2.0",

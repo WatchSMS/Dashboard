@@ -197,9 +197,9 @@ var hostInfoView = function() {
                 offTimer();
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 currentHostId = v.hostid;
-                $.blockUI(blockUI_opt_all);
+                //$.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
-                $("#base_processInfo").show();
+                $("#base_diskInfo").show();
                 diskUsageView(v.hostid, startTime);
             });
 
