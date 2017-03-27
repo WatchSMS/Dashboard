@@ -199,59 +199,6 @@ function serverOverView(server_data) {
             $("#disk_" + hostid).click();
         });
     });
-    /*
-     //테이블의 td col 클릭시 정렬된 테이블 내용 생성
-     var $table = $("#serverList");
-     $("#serverNameTd", $table).each(function (column) {
-     $(this).click(function() {
-     var sortTable = '';
-     var currentThObj = $(this);
-     var MAX_COUNT = tableDataArr.length;
-
-     if($(this).is('.sorting_desc')){
-     console.log(" >>>>> sorting_desc <<<<<");
-     tableDataArr.sort(function (a, b) {
-     if(column == 1) {
-     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-     }
-     });
-     currentThObj.removeClass("sorting_desc").addClass("sorting_asc");
-     }else{
-     tableDataArr.sort(function (a, b) {
-     console.log(" >>>>> sorting_asc <<<<<");
-     if(column == 1){
-     return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
-     }
-     });
-     currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
-     }//end else
-     $('tbody', $table).empty();
-
-     for(var i=0; i<MAX_COUNT; i++){
-     var hostid = tableDataArr[i].hostid;
-     sortTable += '<tr role="row" class="odd">';
-     sortTable += '<td id = "Status_' + hostid + '" width="45" class="line-td">' + tableDataArr[i].status + '</td>';
-     sortTable += '<td id = "Name_' + hostid + '" width="188" class="sorting_1 line-td">' + tableDataArr[i].name + '</td>';
-     sortTable += '<td id = "IP_' + hostid + '" width="122" class="line-td">' + tableDataArr[i].ip + '</td>';
-     sortTable += '<td id = "PerCPU_' + hostid + '" width="131" class="line-td"><div class="scw">' +
-     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perCPU + '%; height:5px;"></div>' +
-     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perCPU + '%</div></td>';
-     sortTable += '<td id = "PerMemory_' + hostid + '" width="131" class="line-td"><div class="scw">' +
-     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perMemory + '%; height:5px;"></div>' +
-     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perMemory + '%</div></td>';
-     sortTable += '<td id = "PerDisk_' + hostid + '" width="131" class="line-td"><div class="scw">' +
-     '<div class="mt2 bg8 br3" style="width: ' + tableDataArr[i].perDisk + '%; height:5px;"></div>' +
-     '</div><div class="fr mt2 mr5 f11">' + tableDataArr[i].perDisk + '%</div></td>';
-     sortTable += '<td width="150" class="line-td">' + tableDataArr[i].OS + '</td>';
-     sortTable += '<td width="117" class="line-td">' + tableDataArr[i].CPU + '</td>';
-     sortTable += '<td width="97" class="line-td">' + tableDataArr[i].RAM + '</td>';
-     sortTable += '</tr>';
-     }//end for
-     $('tbody', $table).append(sortTable);
-
-     })//end click function
-     }); //end each
-     */
 
     //page reloag
     $("#reload_serverOverview").click(function(){
