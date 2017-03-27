@@ -82,11 +82,8 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         }
     })
 
-
     TIMER_ARR.push(setInterval(function(){
         reloadChartForCPU(hostid);
-        reloadChartForDISK(hostid);
-        reloadChartForMEMORY(hostid);
         reloadChartForNETWORK(hostid);
     }, 10000));
 }
@@ -137,46 +134,27 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         var enable = false;
         chartCall(chartId, title, series, Label.percent, enable);
     });
-
-    /*exporting: {
-     buttons: {
-     contextButton: {
-     enabled: false
-     },
-     exportButton: {
-     text: 'Download',
-     // Use only the download related menu items from the default context button
-     menuItems: Highcharts.getOptions().exporting.buttons.contextButton.menuItems.splice(2)
-     },
-     printButton: {
-     text: 'Print',
-     onclick: function () {
-     this.print();
-     }
-     }
-     }
-     }*/
-    /*$("#exporting").click(function () {
-     console.log("Click exporting Button");
-     Highcharts.getOptions().exporting.buttons.contextButton.menuItems
-     })*/
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
     var serverMemoryUseArr = [];
 
+    var DataSet = [];
+    var DataObj = new Object();
+
     zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverMemoryUseArr = zbxApi.getHistory.success(data);
 
-        var chartId = "memoryAll";
-        var title = '전체메모리';
-        var series = [{
-            name: 'Memory Use',
-            data: serverMemoryUseArr
-        }];
-        var enable = false;
-        chartCall(chartId, title, series, Label.percent, enable);
-    })
+        //차트에 전달할 데이터셋 생성
+        DataObj = new Object();
+        DataObj.name = "전체메모리";
+        DataObj.data = serverMemoryUseArr;
+        DataSet.push(DataObj);
+
+        showBasicLineChart('memoryAll', '전체메모리', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+    });
+
+    TIMER_ARR.push(setInterval(function(){ reloadChartForMEMORY(serverMemoryUse); }, 10000));
 }
 
 function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
@@ -385,18 +363,22 @@ function processView(hostid, startTime) {
 function showServerDisk(serverDiskUseRoot, startTime) {
     var serverDiskUseRootArr = [];
 
+    var DataSet = [];
+    var DataObj = new Object();
+
     zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverDiskUseRootArr = zbxApi.getHistory.success(data);
 
-        var chartId = "diskUse";
-        var title = '디스크 사용량';
-        var series = [{
-            name: 'Disk Use : /',
-            data: serverDiskUseRootArr
-        }];
-        var enable = false;
-        chartCall(chartId, title, series, Label.percent, enable);
-    })
+        //차트에 전달할 데이터셋 생성
+        DataObj = new Object();
+        DataObj.name = "디스크 사용량";
+        DataObj.data = serverDiskUseRootArr;
+        DataSet.push(DataObj);
+
+        showBasicAreaChart('diskUse', '디스크 사용량', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+    });
+
+    TIMER_ARR.push(setInterval(function(){ reloadChartForDISK(serverDiskUseRoot); }, 10000));
 }
 
 function EventListView(hostid) { //서버정보요약 - 이벤트목록
@@ -468,17 +450,40 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
 }
 
 function reloadChartForCPU(hostid){
-    console.log(" reloadChartForCPU : " + hostid);
+    //console.log(" reloadChartForCPU : " + hostid);
 }
 
-function reloadChartForMEMORY(hostid){
-    console.log(" reloadChartForMEMORY : " + hostid);
+function reloadChartForMEMORY(serverMemoryUse){
+    console.log(" reloadChartForMEMORY ");
+    var history_memory = null;
+
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("startTime : " + startTime);
+
+    zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+        history_memory = zbxApi.getHistory.success(data);
+
+        $.each(history_memory, function(k,v) {
+            chart2.series[0].addPoint([v[0], v[1]]);
+        });
+    });
 }
 
 function reloadChartForNETWORK(hostid){
-    console.log(" reloadChartForNETWORK : " + hostid);
 }
 
-function reloadChartForDISK(hostid){
-    console.log(" reloadChartForDISK : " + hostid);
+function reloadChartForDISK(serverDiskUseRoot){
+    console.log(" reloadChartForDISK ");
+    var history_disk = null;
+
+    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("startTime : " + startTime);
+
+    zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+        history_disk = zbxApi.getHistory.success(data);
+
+        $.each(history_disk, function(k,v) {
+            chart1.series[0].addPoint([v[0], v[1]]);
+        });
+    });
 }
