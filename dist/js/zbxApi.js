@@ -833,7 +833,7 @@ var zbxApi = {
                 "source": 0,
                 "sortfield": "clock",
                 "sortorder": "DESC",
-                "limit": 15
+                "limit": 10
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -853,6 +853,30 @@ var zbxApi = {
                 "select_acknowledges": "extend",
                 "selectHosts": "extend",
                 "source": 0,
+                "sortfield": "clock",
+                "sortorder": "DESC",
+                "eventid_till" : lastRowIdFrom,
+                "limit": 15
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
+    hostEventViewAppend: {
+        get: function (lastRowIdFrom, hostid) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "hostids": hostid,
                 "sortfield": "clock",
                 "sortorder": "DESC",
                 "eventid_till" : lastRowIdFrom,

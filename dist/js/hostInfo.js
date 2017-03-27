@@ -78,7 +78,7 @@ var hostInfoView = function() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.total[eth0]");
                 }).then(function(data) {
                     serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
-                    showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+                    showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid);
 
                     //page reloag
                     $("#reload_serverDetail").click(function() {
