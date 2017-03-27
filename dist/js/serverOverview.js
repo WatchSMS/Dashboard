@@ -1,5 +1,5 @@
 /* 전체 서버 상태 2017-01-02 */
-var allServerViewHost = function() {
+function allServerViewHost(hostid) {
     $.blockUI(blockUI_opt_all);
     $("[id^=base]").hide();
     $("#base_server").show();
@@ -12,6 +12,7 @@ var allServerViewHost = function() {
         server_data = zbxApi.allServerViewHost.success(data);
         serverOverView(server_data);
     });
+
 };
 
 function serverOverView(server_data) {
@@ -159,8 +160,6 @@ function serverOverView(server_data) {
     serverOverViewHTML += '</tbody>';
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
-
-    TIMER_ARR.push(setInterval(function(){ reloadServerOverview();}, 10000));
 
     $.each(server_data.result, function(k, v) {
         console.log("IN function");
@@ -313,43 +312,6 @@ function serverOverView(server_data) {
         }
     });
 
-    /*$(function ($) {
-        $('#reload_serverOverview_selecter').change(function () {
-            var selectVal = $(this).val();
-            if (selectVal != 0) {
-                $("#reload_serverOverview").attr({
-                    "disabled": "disabled"
-                });
-            } else {
-                $("#reload_serverOverview").removeAttr("disabled");
-            }
-        });
-    });*/
-
-    /*//자동 새로고침
-    setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);*/
-
-    /*$("#searchText").keyup(function() {
-        console.log(" keyup CLICK searchText ");
-        var inputText = $("#searchText").val();
-        console.log(" 입력 Text : " + inputText);
-        console.log(inputText.toLowerCase());
-        /!*
-            var tbody_rowCount = $("#hostInfoList >tr").length;
-            console.log(" 길이 : " + tbody_rowCount);
-        *!/
-
-        var convText = new RegExp("(\\b" + inputText + "\\b)", "gim");
-        var divList = document.getElementById("infoTable").innerHTML;
-        var convList = divList.replace(/(<span>|<\/span>)/igm, "");
-        document.getElementById("infoTable").innerHTML = convList;
-        var resultList = convList.replace(convText, "<span>$1</span>");
-        document.getElementById("infoTable").innerHTML = resultList;
-
-        /!*for(var cnt=0; cnt<tbody_rowCount; cnt++){
-        }*!/
-    });*/
-
     /* 검색 */
     $("#searchText").keyup(function() {
         console.log(" CLICK searchText ");
@@ -363,7 +325,7 @@ function searchHostBtn(){
     console.log(" CLICK searchHostBtn ");
     //$("#searchText").keyup();
     /*var inputText = $("#searchText").val();
-    console.log(" searchHostBtn 입력 Text : " + inputText);*/
+     console.log(" searchHostBtn 입력 Text : " + inputText);*/
 
     var input;
     var filter;
@@ -391,10 +353,4 @@ function searchHostBtn(){
             }
         }
     }
-}
-
-function reloadServerOverview(){
-
-    console.log("reloadServerOverview");
-    $("#reload_serverOverview").click();
 }

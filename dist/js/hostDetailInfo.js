@@ -81,6 +81,14 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
             });
         }
     })
+
+
+    TIMER_ARR.push(setInterval(function(){
+        reloadChartForCPU(hostid);
+        reloadChartForDISK(hostid);
+        reloadChartForMEMORY(hostid);
+        reloadChartForNETWORK(hostid);
+    }, 10000));
 }
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
@@ -457,4 +465,20 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
         $("#serverEventList").empty();
         $("#serverEventList").append(eventTable);
     });
+}
+
+function reloadChartForCPU(hostid){
+    console.log(" reloadChartForCPU : " + hostid);
+}
+
+function reloadChartForMEMORY(hostid){
+    console.log(" reloadChartForMEMORY : " + hostid);
+}
+
+function reloadChartForNETWORK(hostid){
+    console.log(" reloadChartForNETWORK : " + hostid);
+}
+
+function reloadChartForDISK(hostid){
+    console.log(" reloadChartForDISK : " + hostid);
 }
