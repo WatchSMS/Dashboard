@@ -15,7 +15,7 @@ function dashboardView(){
         dashboardHostEvent(hostEvent);
     });
 
-    //이벤트 목록
+    //이벤트 발생 목록
     var dashboard_Event = '';
     zbxApi.dashboardEventList.get().then(function(data) {
         dashboard_Event = zbxApi.dashboardEventList.success(data);
@@ -189,6 +189,7 @@ function dashboardHostEvent(hostEvent){
 function dashboardEventList(dashboard_Event) {
     //console.log(dashboard_Event);
     //console.log(JSON.stringify(dashboard_Event));
+    var eventId = '';
     var severity = '';
     var status = '';
     var lastchange = '';
@@ -203,6 +204,7 @@ function dashboardEventList(dashboard_Event) {
     eventTable += '<tbody>';
 
     $.each(dashboard_Event.result, function (k, v) {
+        eventId = v.eventid;
         severity = convPriority(v.relatedObject.priority);
         status = convStatusEvent(v.value);
         lastchange = convTime(v.relatedObject.lastchange);
@@ -216,7 +218,7 @@ function dashboardEventList(dashboard_Event) {
         host = v.hosts[0].name;
         description = v.relatedObject.description;
 
-        eventTable += "<tr>";
+        eventTable += "<tr id='" + eventId + "'>";
         if(severity == "information") {
             eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
         } else if(severity == "warning") {

@@ -102,7 +102,7 @@ function eventListView(){
                 })
             });
         }
-    })
+    });
 
     showEventChartView();
 }
