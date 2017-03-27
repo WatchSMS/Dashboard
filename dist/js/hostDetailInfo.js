@@ -124,7 +124,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
                     spacingRight: 0
                 },
                 title: {
-                    text: '',
+                    text: ''
                 },
                 subtitle: {
                     text: ''
@@ -344,9 +344,9 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
             eventTbl += "<td width='110' class='line'>" + severity + "</td>";
         }
 
-        if(status == "발생"){
+        if(status == "이상"){
             eventTbl += "<td width='120' class='line' style='color:#E45959'>" + status + "</td>";
-        } else if(status == "해소"){
+        } else if(status == "정상"){
             eventTbl += "<td width='120' class='line' style='color:#97AAB3'>" + status + "</td>";
         }
         eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";

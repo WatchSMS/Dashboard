@@ -125,6 +125,7 @@ var zbxSyncApi = {
             "auth": authid
         };
         var result = zbxSyncApi.callAjax(param);
+        console.log("RRRRRR : " + JSON.stringify(result));
         return result.result;
     },
 
