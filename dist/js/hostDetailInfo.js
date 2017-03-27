@@ -7,8 +7,8 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     //     console.log("reload_serverDetail");
     // });
 
-    $("#hostEventList").scroll(function() {
-        var div = $("#hostEventList");
+    $("#hostEventDiv").scroll(function() {
+        var div = $("#hostEventDiv");
         if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
             console.log(" END SCROLL ");
         }
