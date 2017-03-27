@@ -76,7 +76,7 @@ function showDiskList(hostid, startTime){
 
     generateDiskResource(hostid, currentDiskName, startTime);
 
-    rowClickEvent($table, hostid, startTime);
+    rowDiskClickEvent($table, hostid, startTime);
 
     // 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
     $("#btn_disk.btn").off().on('click',function() {
@@ -97,11 +97,6 @@ function showDiskList(hostid, startTime){
             overlayCSS:{background: 'white', opacity: .8}
         });
     });
-
-}
-
-function callApiForDiskTable(hostid){
-    return zbxSyncApi.getDisktItem(hostid);
 }
 
 function generateDiskResource(hostid, diskName, startTime){
@@ -132,8 +127,16 @@ function generateDiskResource(hostid, diskName, startTime){
         showDiskInode(diskInode, diskFree, startTime);
         showDiskTotal(diskUse,  startTime);
     });
-
 }
+
+function clickInputTimeDisk(){
+    var inputTime = $('#disk_InputTimecontent').find('input:first').val();
+    var currentDiskName = $(".selectedDisk").attr('id');
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
+
+    generateDiskResource(currentHostId, currentDiskName, startTime);
+}
+
 
 function showDiskInode(diskInode, diskFree, startTime){
     console.log(" IN showDiskInode ");
@@ -187,29 +190,24 @@ function showDiskTotal(diskUse, startTime){
     });
 }
 
-function rowClickEvent(table, hostid, startTime){
-    $('tbody > tr', table).each(function (row){
-        if(row < ($('tbody > tr', table).size()-1)){
-            $(this).click(function(){
-
-                var currentDiskName = $(this).attr('id');
-                console.log(" currentDiskName : " + currentDiskName);
-                $(".selectedDisk").removeClass("selectedDisk");
-                $(this).addClass("selectedDisk");
-                $(this).css("border","1px #FF5E00 solid");
-                $(this).prevAll().css("border","");
-                $(this).nextAll().css("border","");
-
-                generateDiskResource(hostid, currentDiskName, startTime);
-            });
-        }
-    });
+function callApiForDiskTable(hostid){
+    return zbxSyncApi.getDisktItem(hostid);
 }
 
-function clickInputTimeDisk(){
-    var inputTime = $('#disk_InputTimecontent').find('input:first').val();
-    var currentDiskName = $(".selectedDisk").attr('id');
-    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
+function rowDiskClickEvent(table, hostid, startTime){
+    $('tr', table).each(function (row){
+        $(this).click(function(){
 
-    generateDiskResource(currentHostId, currentDiskName, startTime);
+            var currentDiskName = $(this).attr('id');
+            console.log(" currentDiskName : " + currentDiskName);
+            console.log(" hostid : " + hostid);
+            $(".selectedDisk").removeClass("selectedDisk");
+            $(this).addClass("selectedDisk");
+            $(this).css("border","1px #FF5E00 solid");
+            $(this).prevAll().css("border","");
+            $(this).nextAll().css("border","");
+
+            generateNetworkResource(hostid, currentDiskName, startTime);
+        });
+    });
 }
