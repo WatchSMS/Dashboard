@@ -194,18 +194,18 @@ var hostInfoView = function() {
 
             $("#disk_" + hostid).click(function() { //Disk
                 console.log(">>>>> IN clickDiskView <<<<<");
-
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
+                offTimer();
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 currentHostId = v.hostid;
+                $.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
-                $("#base_diskInfo").show();
-
-                callApiForDisk(v.hostid, startTime);
+                $("#base_processInfo").show();
+                diskUsageView(v.hostid, startTime);
             });
 
             $("#traffic_" + hostid).click(function() {
                 console.log(">>>>> IN clickNetworkView <<<<<");
-
+                offTimer();
                 var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
                 currentHostId = v.hostid;
                // $.blockUI(blockUI_opt_all);
