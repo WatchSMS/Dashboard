@@ -6,6 +6,13 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     // $("#reload_serverDetail").click(function () {
     //     console.log("reload_serverDetail");
     // });
+
+    $("#hostEventList").scroll(function() {
+        var div = $("#hostEventList");
+        if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
+            console.log(" END SCROLL ");
+        }
+    })
 }
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
