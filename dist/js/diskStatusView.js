@@ -6,7 +6,7 @@ function diskUsageView(hostid, startTime){
     removeAllChart();
 
     var data_topDisk = callApiForDiskTable(hostid);
-    console.log(" data_topDisk " + JSON.stringify(data_topDisk));
+    //console.log(" data_topDisk " + JSON.stringify(data_topDisk));
 
     var diskItemId = '';
     var name = '';
@@ -45,7 +45,7 @@ function diskUsageView(hostid, startTime){
             console.log(e);
         }
 
-        console.log("HTML : " + diskItemId + " / " + diskItemName + " / " + diskItemUsed + " / " + diskItemSize);
+        //console.log("HTML : " + diskItemId + " / " + diskItemName + " / " + diskItemUsed + " / " + diskItemSize);
 
         tableDataObj = new Object();
         tableDataObj.networkItemId = diskItemId;
@@ -77,7 +77,7 @@ function diskUsageView(hostid, startTime){
     $("#diskInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 
     currentDiskName = $(".selectedDisk").attr('id');
-    console.log("currentDiskName : " + currentDiskName);
+    //console.log("currentDiskName : " + currentDiskName);
 
     generateDiskResource(hostid, currentDiskName, startTime);
 
@@ -103,11 +103,11 @@ function diskUsageView(hostid, startTime){
         });
     });
 
-    TIMER_ARR.push(setInterval(function(){reloadChartForDiskInode(hostid); reloadChartForDiskTotal(hostid);}, 10000));
+    TIMER_ARR.push(setInterval(function(){ reloadChartForDiskTotal(hostid); reloadChartForDiskInode(hostid); }, 10000));
 }
 
 function generateDiskResource(hostid, diskName, startTime){
-    console.log(" IN generateDiskResource currentDiskName  : " + diskName + " startTime  : " + startTime + " hostid  : " + hostid);
+    //console.log(" IN generateDiskResource currentDiskName  : " + diskName + " startTime  : " + startTime + " hostid  : " + hostid);
 
     var diskInode = '';
     var diskFree = '';
@@ -166,39 +166,7 @@ function generateDiskResource(hostid, diskName, startTime){
         totalDataSet.push(totalDataObj);
 
         showBasicLineChart('chart_diskIo', "INODE", ioDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
-        showBasicLineChart('chart_diskUse',"TOTAL", totalDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
-
-        $('#chart_diskIo').off().on('mousemove touchmove touchstart', function (e) {
-            var chart,
-                point,
-                event;
-
-            for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
-                chart = Highcharts.charts[i];
-                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
-
-                if (point) {
-                    point.highlight(e);
-                }
-            }
-        });
-        $('#chart_diskUse').off().on('mousemove touchmove touchstart', function (e) {
-            var chart,
-                point,
-                event;
-
-            for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
-                chart = Highcharts.charts[i];
-                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
-
-                if (point) {
-                    point.highlight(e);
-                }
-            }
-        });
-
+        showBasicAreaChart('chart_diskUse',"TOTAL", totalDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
     })
 }
 
@@ -219,7 +187,7 @@ function rowDiskClickEvent(table, hostid, startTime){
         $(this).click(function(){
 
             var currentDiskName = $(this).attr('id');
-            console.log(" currentDiskName : " + currentDiskName + " hostid : " + hostid);
+            //console.log(" currentDiskName : " + currentDiskName + " hostid : " + hostid);
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
             $(this).css("border","1px #FF5E00 solid");
@@ -232,7 +200,7 @@ function rowDiskClickEvent(table, hostid, startTime){
 }
 
 function reloadChartForDiskInode(hostid){
-    console.log(" reloadChartForDiskInode ");
+    //console.log(" reloadChartForDiskInode ");
 
     var data_In, data_Out = null;
 
@@ -242,14 +210,14 @@ function reloadChartForDiskInode(hostid){
     var diskName = $(".selectedDisk").attr('id');
 
     var item = null;
-    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
-    console.log("startTime : " + startTime);
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    //console.log("startTime : " + startTime);
 
     var diskItemKeyInode = "vfs.fs.inode[" + diskName + ",pfree]";
     var diskItemKeyFree = "vfs.fs.size[" + diskName + ",pfree]";
 
-    console.log("diskItemKeyInode : " + diskItemKeyInode);
-    console.log("diskItemKeyFree : " + diskItemKeyFree);
+    //console.log("diskItemKeyInode : " + diskItemKeyInode);
+    //console.log("diskItemKeyFree : " + diskItemKeyFree);
 
     zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
         data_In = zbxApi.serverViewGraph.success(data);
@@ -263,7 +231,7 @@ function reloadChartForDiskInode(hostid){
     }).then(function(data) {
         history_DiskIn  = zbxApi.getHistory.success(data);
         $.each(history_DiskIn, function(k,v) {
-            chart1.series[0].addPoint([v[0], v[1]]);
+            chart2.series[0].addPoint([v[0], v[1]]);
         });
 
     }).then(function() {
@@ -271,13 +239,13 @@ function reloadChartForDiskInode(hostid){
     }).then(function(data) {
         history_DiskOut  = zbxApi.getHistory.success(data);
         $.each(history_DiskOut, function(k,v) {
-            chart1.series[0].addPoint([v[0], v[1]]);
+            chart2.series[1].addPoint([v[0], v[1]]);
         });
     })
 }
 
 function reloadChartForDiskTotal(hostid){
-    console.log(" reloadChartForDiskTotal ");
+    //console.log(" reloadChartForDiskTotal ");
 
     var data_Total = null;
 
@@ -286,12 +254,12 @@ function reloadChartForDiskTotal(hostid){
     var diskName = $(".selectedDisk").attr('id');
 
     var item = null;
-    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
-    console.log("startTime : " + startTime);
+    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
+    //console.log("startTime : " + startTime);
 
     var diskItemKeyUse = "vfs.fs.size[" + diskName + ",pused]";
 
-    console.log("diskItemKeyUse : " + diskItemKeyUse);
+    //console.log("diskItemKeyUse : " + diskItemKeyUse);
 
     zbxApi.serverViewGraph.get(hostid, diskItemKeyUse).then(function(data) {
         data_Total = zbxApi.serverViewGraph.success(data);
@@ -300,7 +268,7 @@ function reloadChartForDiskTotal(hostid){
     }).then(function(data) {
         history_DiskTotal  = zbxApi.getHistory.success(data);
         $.each(history_DiskTotal, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
+            chart1.series[0].addPoint([v[0], v[1]]);
         });
 
     })
