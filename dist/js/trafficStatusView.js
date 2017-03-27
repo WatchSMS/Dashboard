@@ -179,6 +179,14 @@ function networkGraphTotal(networkTotal, startTime){
     })
 }
 
+function clickInputTimeNetwork(){
+    var inputTime = $('#network_InputTimecontent').find('input:first').val();
+    var currentDiskName = $(".selectedNetwork").attr('id');
+    var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
+
+    generateNetworkResource(currentHostId, currentDiskName, startTime);
+}
+
 function rowClickNetworkEvent(table, hostid, startTime){
     $('tr', table).each(function (row){
         $(this).click(function(){
@@ -186,7 +194,7 @@ function rowClickNetworkEvent(table, hostid, startTime){
             var currentNetworkName = $(this).attr('id');
             console.log(" currentNetworkName : " + currentNetworkName);
             $(".selectedNetwork").removeClass("selectedNetwork");
-            $(this).addClass("selectedProcess");
+            $(this).addClass("selectedNetwork");
             $(this).css("border","1px #FF5E00 solid");
             $(this).prevAll().css("border","");
             $(this).nextAll().css("border","");

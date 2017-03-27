@@ -5,10 +5,6 @@ function diskUsageView(hostid, startTime){
 
     removeAllChart();
 
-    showDiskList(hostid, startTime);
-}
-
-function showDiskList(hostid, startTime){
     var data_topDisk = callApiForDiskTable(hostid);
     console.log(" data_topDisk " + JSON.stringify(data_topDisk));
 
@@ -21,6 +17,9 @@ function showDiskList(hostid, startTime){
 
     var currentDiskName = null;
     var diskTableHTML = '';
+
+    var tableDataObj = new Object();
+    var tableDataArr = [];
 
     diskTableHTML += "<tbody>";
     $.each(data_topDisk, function(k, v){
@@ -47,6 +46,13 @@ function showDiskList(hostid, startTime){
         }
 
         console.log("HTML : " + diskItemId + " / " + diskItemName + " / " + diskItemUsed + " / " + diskItemSize);
+
+        tableDataObj = new Object();
+        tableDataObj.networkItemId = diskItemId;
+        tableDataObj.diskItemName = diskItemName;
+        tableDataObj.diskItemUsed = diskItemUsed;
+        tableDataObj.diskItemSize = diskItemSize;
+        tableDataArr.push(tableDataObj);
 
         diskTableHTML += "<tr id='" + diskItemName + "' role='row' class='h51 odd'>";
         diskTableHTML += "<td width='90' class='line'><img src='dist/img/disk_icon01.png'/></td>";
@@ -109,6 +115,10 @@ function generateDiskResource(hostid, diskName, startTime){
     var diskItemKeyFree = "vfs.fs.size[" + diskName + ",pfree]";
     var diskItemKeyUse = "vfs.fs.size[" + diskName + ",pused]";
 
+    console.log(" serverViewGraph diskItemKeyInode Data 123 : " + JSON.stringify(diskItemKeyInode));
+    console.log(" serverViewGraph diskItemKeyFree Data 123 : " + JSON.stringify(diskItemKeyFree));
+    console.log(" serverViewGraph diskItemKeyUse Data 123 : " + JSON.stringify(diskItemKeyUse));
+
     zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
         diskInode = zbxApi.serverViewGraph.success(data);
     }).then(function() {
@@ -123,6 +133,7 @@ function generateDiskResource(hostid, diskName, startTime){
         console.log(" serverViewGraph diskInode Data : " + JSON.stringify(diskInode));
         console.log(" serverViewGraph diskFree Data : " + JSON.stringify(diskFree));
         console.log(" serverViewGraph diskUse Data : " + JSON.stringify(diskUse));
+
         showDiskInode(diskInode, diskFree, startTime);
         showDiskTotal(diskUse,  startTime);
     });
@@ -198,15 +209,14 @@ function rowDiskClickEvent(table, hostid, startTime){
         $(this).click(function(){
 
             var currentDiskName = $(this).attr('id');
-            console.log(" currentDiskName : " + currentDiskName);
-            console.log(" hostid : " + hostid);
+            console.log(" currentDiskName : " + currentDiskName + " hostid : " + hostid);
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
             $(this).css("border","1px #FF5E00 solid");
             $(this).prevAll().css("border","");
             $(this).nextAll().css("border","");
 
-            generateNetworkResource(hostid, currentDiskName, startTime);
+            generateDiskResource(hostid, currentDiskName, startTime);
         });
     });
 }
