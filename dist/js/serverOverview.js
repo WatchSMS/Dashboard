@@ -160,6 +160,8 @@ function serverOverView(server_data) {
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
 
+    TIMER_ARR.push(setInterval(function(){ reloadServerOverview();}, 10000));
+
     $.each(server_data.result, function(k, v) {
         console.log("IN function");
         hostid = v.hostid;
@@ -311,7 +313,7 @@ function serverOverView(server_data) {
         }
     });
 
-    $(function ($) {
+    /*$(function ($) {
         $('#reload_serverOverview_selecter').change(function () {
             var selectVal = $(this).val();
             if (selectVal != 0) {
@@ -322,10 +324,10 @@ function serverOverView(server_data) {
                 $("#reload_serverOverview").removeAttr("disabled");
             }
         });
-    });
+    });*/
 
-    //자동 새로고침
-    setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);
+    /*//자동 새로고침
+    setInterval('$("#reload_serverOverview").click()', PAGE_RELOAD_TIME);*/
 
     /*$("#searchText").keyup(function() {
         console.log(" keyup CLICK searchText ");
@@ -389,4 +391,10 @@ function searchHostBtn(){
             }
         }
     }
+}
+
+function reloadServerOverview(){
+
+    console.log("reloadServerOverview");
+    $("#reload_serverOverview").click();
 }
