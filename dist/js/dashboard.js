@@ -33,10 +33,14 @@ function dashboardView(){
 
     $.unblockUI(blockUI_opt_all);
 
-    TIMER_ARR.push(setInterval(function(){addEventAckChart();}, 10000));
+    TIMER_ARR.push(setInterval(function(){
+        addEventAckChart();
+        dashboardEventStatus();
+    }, 10000));
 }
 
 function dashboardEventStatus(){
+    console.log(" dashboardEventStatus ");
     var DAYTOMILLS = 1000*60*60*24;
 
     /*
