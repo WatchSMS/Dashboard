@@ -740,6 +740,29 @@ var zbxApi = {
         }
     },
 
+    hostEventList: {
+        get: function (hostid) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "hostids": hostid,
+                "sortfield": "clock",
+                "sortorder": "DESC",
+                "limit": 10
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            return data;
+        }
+    },
+
     /* 대시보드 이벤트 현황 - 전체 발생 */
     alertTrigger: {
         get: function () {

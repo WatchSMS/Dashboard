@@ -104,31 +104,6 @@ var zbxSyncApi = {
         return result.result;
     },
 
-    /* 서버 정보 요약 - 이벤트 Table*/
-    serverViewTrigger: function (hostid) {
-        var param = {
-            "jsonrpc": "2.0",
-            "method": "trigger.get",
-            "params": {
-                "output": ["description", "priority", "value", "lastchange"],
-                "monitored": true,
-                "skipDependent": true,
-                "expandDescription": true,
-                "selectGroups": ["name"],
-                "selectHosts": "extend",
-                "sortfield": "description",
-                "only_true": true,
-                "selectLastEvent": "true",
-                "hostids": hostid
-            },
-            "id": 1,
-            "auth": authid
-        };
-        var result = zbxSyncApi.callAjax(param);
-        console.log("RRRRRR : " + JSON.stringify(result));
-        return result.result;
-    },
-
     getDiskItem: function (hostid, key_) {
         var param = {
             "jsonrpc": "2.0",

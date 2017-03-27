@@ -324,52 +324,69 @@ function showServerDisk(serverDiskUseRoot, startTime) {
 }
 
 function EventListView(hostid) { //서버정보요약 - 이벤트목록
-    var data_EventList = callApiForServerEvent(hostid);
-    var eventTbl = '';
+    var data_EventList = '';
+    zbxApi.hostEventList.get(hostid).then(function(data) {
+        data_EventList = zbxApi.hostEventList.success(data);
 
-    eventTbl += "<tbody>";
+        var eventId = '';
+        var severity = '';
+        var status = '';
+        var lastchange = '';
+        var age = '';
+        var ack = '';
+        var ackTime = '';
+        var host = '';
+        var description = '';
 
-    $.each(data_EventList, function(k, v) {
-        var severity = convPriority(v.priority);
-        var status = convStatusEvent(v.value);
-        var lastchange = convTime(v.lastchange);
-        var age = convDeltaTime(v.lastchange);
-        var ack = convAckEvent(v.lastEvent.acknowledged);
-        var host = v.hosts[0].name;
-        var description = v.description;
+        var eventTable = '';
 
-        eventTbl += "<tr role='row'>";
-        if(severity == "information") {
-            eventTbl += "<td width='110' class='line' style='color:#7499FF'>" + severity + "</td>";
-        } else if(severity == "warning") {
-            eventTbl += "<td width='110' class='line' style='color:#FFC859'>" + severity + "</td>";
-        } else if(severity == "average") {
-            eventTbl += "<td width='110' class='line' style='color:#FFA059'>" + severity + "</td>";
-        } else if(severity == "high") {
-            eventTbl += "<td width='110' class='line' style='color:#E97659'>" + severity + "</td>";
-        } else {
-            eventTbl += "<td width='110' class='line'>" + severity + "</td>";
-        }
+        eventTable += '<tbody>';
 
-        if(status == "이상"){
-            eventTbl += "<td width='120' class='line' style='color:#E45959'>" + status + "</td>";
-        } else if(status == "정상"){
-            eventTbl += "<td width='120' class='line' style='color:#97AAB3'>" + status + "</td>";
-        }
-        eventTbl += "<td width='180' class='line'>" + lastchange + "</td>";
-        eventTbl += "<td width='120' class='line'>" + age + "</td>";
-        if(ack == "미인지"){
-            eventTbl += "<td width='120' class='line' style='color:red'>" + ack + "</td>";
-        } else if(ack = "인지"){
-            eventTbl += "<td width='120' class='line' style='color:deepskyblue'>" + ack + "</td>";
-        }
-        eventTbl += "<td width='140' class='line'>" + host + "</td>";
-        eventTbl += "<td width='auto' class='align_left line' style='cursor: default;'>" +
-            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-            "<span class='smd' style='cursor: default;'>" + description + "</span></a></td>";
-        eventTbl += "</tr>";
+        $.each(data_EventList.result, function (k, v) {
+            eventId = v.eventid;
+            severity = convPriority(v.relatedObject.priority);
+            status = convStatusEvent(v.value);
+            lastchange = convTime(v.relatedObject.lastchange);
+            age = convDeltaTime(v.relatedObject.lastchange);
+            ack = convAckEvent(v.acknowledged);
+            if(v.acknowledges[0] == undefined){
+                ackTime = "-";
+            } else {
+                ackTime = convTime(v.acknowledges[0].clock);
+            }
+            host = v.hosts[0].name;
+            description = v.relatedObject.description;
+
+            eventTable += "<tr id='" + eventId + "'>";
+            if(severity == "information") {
+                eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+            } else if(severity == "warning") {
+                eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+            } else if(severity == "average") {
+                eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+            } else if(severity == "high") {
+                eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+            } else {
+                eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
+            }
+            eventTable += "<td width='60' class='line'>" + status + "</td>";
+            eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+            eventTable += "<td width='75' class='line'>" + age + "</td>";
+            if(ack == "미인지"){
+                eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+            } else if(ack = "인지"){
+                eventTable += "<td width='69' class='line'>" + ack + "</td>";
+            }
+            eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+            eventTable += "<td width='100' class='line'>" + host + "</td>";
+            eventTable += "<td width='auto' class='align_left ponter'>" +
+                "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+                "<span class='smd'>" + description + "</span></a></td>";
+            eventTable += "</tr>";
+        });
+        eventTable += "</tbody>";
+
+        $("#serverEventList").empty();
+        $("#serverEventList").append(eventTable);
     });
-    eventTbl += "</tbody>";
-    $("#serverEventList").empty();
-    $("#serverEventList").append(eventTbl);
 }
