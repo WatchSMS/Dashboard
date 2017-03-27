@@ -305,6 +305,7 @@ var clickBtnInputTime = function(){
 }
 
 function reloadChartForProcess(hostId){
+    console.log("reloadChartForProcess");
 	
     var cpuArr = [];
     var memArr = [];
@@ -326,30 +327,6 @@ function reloadChartForProcess(hostId){
             var cpuSumVal = 0;
             var memSumVal = 0.0;
             var ProcRowArr = hisData.result[i].value.split("\n");
-            
-            $.each(ProcRowArr, function(k,v) { // 각 행별,프로세스 명을 비교하여 cpu, mem 값을 sum.
-                if(ProcRowArr[k].indexOf(selectProcess) != -1){
-
-                    while(ProcRowArr[k].indexOf("  ") != -1){
-                        ProcRowArr[k] = ProcRowArr[k].replace('  ',' ');
-                    }
-                    var ProcColArr = ProcRowArr[k].split(" ");
-                    var tempProcName = null;
-                    var procNameArr = [];
-
-                    if(ProcColArr[6].indexOf("/0") != -1){
-                        tempProcName = ProcColArr[6];
-                    }else{
-                        procNameArr = ProcColArr[6].split("/");
-                        tempProcName = procNameArr[procNameArr.length-1];
-                    }
-                    tempProcName = tempProcName.replace(/\:/g, '');
-                    if(tempProcName == selectProcess){
-                        cpuSumVal += parseFloat(ProcColArr[4]);
-                        memSumVal += parseFloat(ProcColArr[3]);
-                    }
-                }
-            });
             
             cpuArr[i] = new Array();
             cpuArr[i][0]=parseInt(hisData.result[i].clock) * 1000;

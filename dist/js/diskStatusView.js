@@ -102,6 +102,8 @@ function diskUsageView(hostid, startTime){
             overlayCSS:{background: 'white', opacity: .8}
         });
     });
+
+    TIMER_ARR.push(setInterval(function(){reloadChartForDiskInode(hostid); reloadChartForDiskTotal(hostid);}, 10000));
 }
 
 function generateDiskResource(hostid, diskName, startTime){
@@ -109,15 +111,20 @@ function generateDiskResource(hostid, diskName, startTime){
 
     var diskInode = '';
     var diskFree = '';
+    var diskInodeArr = [];
+    var diskFreeArr = [];
+
     var diskUse = '';
+    var diskTotalArr = [];
 
     var diskItemKeyInode = "vfs.fs.inode[" + diskName + ",pfree]";
     var diskItemKeyFree = "vfs.fs.size[" + diskName + ",pfree]";
     var diskItemKeyUse = "vfs.fs.size[" + diskName + ",pused]";
 
-    console.log(" serverViewGraph diskItemKeyInode Data 123 : " + JSON.stringify(diskItemKeyInode));
-    console.log(" serverViewGraph diskItemKeyFree Data 123 : " + JSON.stringify(diskItemKeyFree));
-    console.log(" serverViewGraph diskItemKeyUse Data 123 : " + JSON.stringify(diskItemKeyUse));
+    var ioDataSet  = [];
+    var ioDataObj = new Object();
+    var totalDataSet  = [];
+    var totalDataObj = new Object();
 
     zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
         diskInode = zbxApi.serverViewGraph.success(data);
@@ -129,14 +136,70 @@ function generateDiskResource(hostid, diskName, startTime){
         return zbxApi.serverViewGraph.get(hostid, diskItemKeyUse);
     }).then(function(data) {
         diskUse = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        diskInodeArr  = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        diskFreeArr = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        diskTotalArr  = zbxApi.getHistory.success(data);
 
-        console.log(" serverViewGraph diskInode Data : " + JSON.stringify(diskInode));
-        console.log(" serverViewGraph diskFree Data : " + JSON.stringify(diskFree));
-        console.log(" serverViewGraph diskUse Data : " + JSON.stringify(diskUse));
+        //차트에 전달할 데이터셋 생성
+        ioDataObj = new Object();
+        ioDataObj.name = "INODE";
+        ioDataObj.data = diskInodeArr;
+        ioDataSet.push(ioDataObj);
 
-        showDiskInode(diskInode, diskFree, startTime);
-        showDiskTotal(diskUse,  startTime);
-    });
+        ioDataObj = new Object();
+        ioDataObj.name = "FREE";
+        ioDataObj.data = diskFreeArr;
+        ioDataSet.push(ioDataObj);
+
+        totalDataObj = new Object();
+        totalDataObj.name = "TOTAL";
+        totalDataObj.data = diskTotalArr;
+        totalDataSet.push(totalDataObj);
+
+        showBasicLineChart('chart_diskIo', "INODE", ioDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        showBasicLineChart('chart_diskUse',"TOTAL", totalDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+
+        $('#chart_diskIo').off().on('mousemove touchmove touchstart', function (e) {
+            var chart,
+                point,
+                event;
+
+            for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
+                chart = Highcharts.charts[i];
+                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+
+                if (point) {
+                    point.highlight(e);
+                }
+            }
+        });
+        $('#chart_diskUse').off().on('mousemove touchmove touchstart', function (e) {
+            var chart,
+                point,
+                event;
+
+            for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
+                chart = Highcharts.charts[i];
+                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+
+                if (point) {
+                    point.highlight(e);
+                }
+            }
+        });
+
+    })
 }
 
 function clickInputTimeDisk(){
@@ -145,59 +208,6 @@ function clickInputTimeDisk(){
     var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(inputTime)) / 1000);
 
     generateDiskResource(currentHostId, currentDiskName, startTime);
-}
-
-
-function showDiskInode(diskInode, diskFree, startTime){
-    console.log(" IN showDiskInode ");
-    removeAllChart();
-
-    var diskInodeArr = [];
-    var diskFreeArr = [];
-
-    var dataSet  = [];
-    var dataObj = new Object();
-
-    zbxApi.getHistory.get(diskInode.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
-        diskInodeArr  = zbxApi.getHistory.success(data);
-    }).then(function() {
-        return zbxApi.getHistory.get(diskFree.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
-    }).then(function(data) {
-        diskFreeArr = zbxApi.getHistory.success(data);
-
-        dataObj = new Object();
-        dataObj.name = "INODE";
-        dataObj.data = diskInodeArr;
-        dataSet.push(dataObj);
-
-        dataObj = new Object();
-        dataObj.name = "FREE";
-        dataObj.data = diskFreeArr;
-        dataSet.push(dataObj);
-
-        showBasicLineChart('chart_diskIo', '디스크I/O', dataSet, "%", ['#00B700','#DB9700']);
-    });
-}
-
-function showDiskTotal(diskUse, startTime){
-    console.log(" IN showDiskTotal ");
-    removeAllChart();
-
-    var diskTotlaArr = [];
-
-    var dataSet  = [];
-    var dataObj = new Object();
-
-    zbxApi.getHistory.get(diskUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
-        diskTotlaArr  = zbxApi.getHistory.success(data);
-
-        dataObj = new Object();
-        dataObj.name = "TOTAL";
-        dataObj.data = diskTotlaArr;
-        dataSet.push(dataObj);
-
-        showBasicLineChart('chart_diskUse', '디스크 TOTAL', dataSet, "%", ['#00B700','#DB9700']);
-    });
 }
 
 function callApiForDiskTable(hostid){
@@ -219,4 +229,79 @@ function rowDiskClickEvent(table, hostid, startTime){
             generateDiskResource(hostid, currentDiskName, startTime);
         });
     });
+}
+
+function reloadChartForDiskInode(hostid){
+    console.log(" reloadChartForDiskInode ");
+
+    var data_In, data_Out = null;
+
+    var history_DiskIn = null;
+    var history_DiskOut = null;
+
+    var diskName = $(".selectedDisk").attr('id');
+
+    var item = null;
+    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("startTime : " + startTime);
+
+    var diskItemKeyInode = "vfs.fs.inode[" + diskName + ",pfree]";
+    var diskItemKeyFree = "vfs.fs.size[" + diskName + ",pfree]";
+
+    console.log("diskItemKeyInode : " + diskItemKeyInode);
+    console.log("diskItemKeyFree : " + diskItemKeyFree);
+
+    zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
+        data_In = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
+    }).then(function(data) {
+        data_Out = zbxApi.serverViewGraph.success(data);
+
+    }).then(function() {
+        return zbxApi.getHistory.get(data_In.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        history_DiskIn  = zbxApi.getHistory.success(data);
+        $.each(history_DiskIn, function(k,v) {
+            chart1.series[0].addPoint([v[0], v[1]]);
+        });
+
+    }).then(function() {
+        return zbxApi.getHistory.get(data_Out.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        history_DiskOut  = zbxApi.getHistory.success(data);
+        $.each(history_DiskOut, function(k,v) {
+            chart1.series[0].addPoint([v[0], v[1]]);
+        });
+    })
+}
+
+function reloadChartForDiskTotal(hostid){
+    console.log(" reloadChartForDiskTotal ");
+
+    var data_Total = null;
+
+    var history_DiskTotal = null;
+
+    var diskName = $(".selectedDisk").attr('id');
+
+    var item = null;
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("startTime : " + startTime);
+
+    var diskItemKeyUse = "vfs.fs.size[" + diskName + ",pused]";
+
+    console.log("diskItemKeyUse : " + diskItemKeyUse);
+
+    zbxApi.serverViewGraph.get(hostid, diskItemKeyUse).then(function(data) {
+        data_Total = zbxApi.serverViewGraph.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(data_Total.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        history_DiskTotal  = zbxApi.getHistory.success(data);
+        $.each(history_DiskTotal, function(k,v) {
+            chart2.series[0].addPoint([v[0], v[1]]);
+        });
+
+    })
 }

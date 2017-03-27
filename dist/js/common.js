@@ -334,7 +334,6 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 }
             },
             plotOptions: {
-
                 series: {
                     events: {
                         mouseOver: function(e){
