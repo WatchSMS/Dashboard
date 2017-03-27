@@ -1,5 +1,4 @@
 function diskUsageView(hostid, startTime){
-    alert(hostid);
     $("#chart_diskIo").empty();
     $("#chart_diskUse").empty();
     $("#diskInfoTable").empty();

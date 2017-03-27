@@ -181,19 +181,17 @@ function networkGraphTotal(networkTotal, startTime){
 
 function rowClickNetworkEvent(table, hostid, startTime){
     $('tr', table).each(function (row){
-        if(row < ($('tr', table).size()-1)){
-            $(this).click(function(){
+        $(this).click(function(){
 
-                var currentNetworkName = $(this).attr('id');
-                console.log(" currentNetworkName : " + currentNetworkName);
-                $(".selectedNetwork").removeClass("selectedNetwork");
-                $(this).addClass("selectedProcess");
-                $(this).css("border","1px #FF5E00 solid");
-                $(this).prevAll().css("border","");
-                $(this).nextAll().css("border","");
+            var currentNetworkName = $(this).attr('id');
+            console.log(" currentNetworkName : " + currentNetworkName);
+            $(".selectedNetwork").removeClass("selectedNetwork");
+            $(this).addClass("selectedProcess");
+            $(this).css("border","1px #FF5E00 solid");
+            $(this).prevAll().css("border","");
+            $(this).nextAll().css("border","");
 
-                generateNetworkResource(hostid, currentNetworkName, startTime);
-            });
-        }
+            generateNetworkResource(hostid, currentNetworkName, startTime);
+        });
     });
 }
