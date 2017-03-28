@@ -1105,7 +1105,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
 }
 
 function showLineChart(chartId, dataSet, colorArr){
-    chart3 = $(function() {
+    $(function() {
         Highcharts.chart(chartId, {
             exporting: {
                 buttons: {

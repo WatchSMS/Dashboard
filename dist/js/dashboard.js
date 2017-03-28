@@ -186,10 +186,10 @@ function dashboardHostEvent(hostEvent){
         eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
 
         var dashboardHostEventHTML = "<tr class='p1'>";
-        dashboardHostEventHTML += "<td width='40px' height='70px' class='line-td'>" + hostNum + "</td>";
+        dashboardHostEventHTML += "<td width='40px' height='70px' class='br7_lt line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='50px' id='eventCnt_'" + hostid + "' height='70px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
+        dashboardHostEventHTML += "<td width='50px' id='eventCnt_'" + hostid + " height='70px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='auto' height='70px' class='br7_rt'><div id='hostChart"+hostNum+"' style='width: 500px; height:70px; padding: 0 0 0 0;'></div></td>";
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
 
