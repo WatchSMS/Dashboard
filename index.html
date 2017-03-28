@@ -44,8 +44,36 @@
 	<link href="dist/css/jquery-tooltip.css" rel="stylesheet" type="text/css" />
 	<link href="dist/css/mainbox.min.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="d3.slider2.css" media="screen" />
-</head>
 
+	<script>
+		jQuery(document).ready(function(){
+		    var select = $("select#color");
+		    select.change(function(){
+		        var select_name = $(this).children("option:selected").text();
+		        $(this).siblings("label").text(select_name);
+			})
+		})
+	</script>
+
+	<script type="text/javascript">
+		function go_popup(){
+		    $('#popup').bPopup();
+		};
+		function go_popup2(){
+		    $("#popup2").bPopup();
+		};
+	</script>
+
+	<script type="text/javascript">
+		function leftm_go_tab_01(val, mode){
+		    for(var i=1; i<5; i++){
+		        $("#leftmtab_0"+i).hide();
+			}
+            $("#leftmtab_0"+val).show();
+		}
+	</script>
+</head>
+<!--
 <body class="skin-blue sidebar-mini login-page">
 <div id="top_login">
 	<div class="login-box">
@@ -72,8 +100,97 @@
 			</div>
 		</div>
 	</div>
-	<!-- /.login-box -->
+	&lt;!&ndash; /.login-box &ndash;&gt;
+</div>-->
+
+<body class="wminbase">
+<!--login_box s- -->
+<div class="login_box">
+	<span class="axis"></span>
+	<div class="inbox">
+		<li class="bot"><img src="dist/img/login_logo.gif"/></li>
+		<li class="bom1 br16_t">
+			<span class="d1">Server Managed Service</span>
+			<span class="d2"><img src="dist/img/login_img01.gif"/></span>
+		</li>
+
+		<li class="bom2">
+			<div class="sinbox br9">
+				<div style="width:248px; display:inline-block; float:left; margin-left:6px;">
+					<div class="idpass">
+						<span>
+							<a onclick="javascript:displyOpen();" href="#" alt="관리자안내"></a>
+							<img src="dist/img/login_id.gif" border="0">
+						</span>
+						<span>
+							<input name="UserID" id="inputUser" placeholder="Zabbix User" tabindex="1" onkeyup="" type="text" maxlength="30" value="" style="width: 162px; height:23px;">
+						</span>
+					</div>
+					<div class="idpass">
+						<span>
+							<img src="dist/img/login_password.gif" border="0">
+						</span>
+						<span>
+							<input name="Password" id="inputPasswd" placeholder="Password" tabindex="2" onkeyup="" type="password" maxlength="15" value="" style="width: 162px; height:23px;">
+						</span>
+					</div>
+				</div>
+				<div class="loginbt">
+					<a href="#">
+						<img alt="" id="submit_login" type="submit" src="dist/img/login_bt.gif">
+					</a>
+				</div>
+
+				<div class="memoryid">
+					<span class="d1">
+						<input type="checkbox" id="cb2" class="c0 checkbox_1" for="cb2">
+					</span>
+					<span class="d2">
+						<img alt="" src="dist/img/login_id_memory.gif" border="0">
+					</span>
+				</div>
+			</div>
+
+			<div class="sinbox2">
+					<span class="d1">
+						<a href="#">
+							<img alt="회원가입" onclick="go_popup()" src="dist/img/login_newm.gif" border="0" title="회원가입">
+						</a>
+					</span>
+			</div>
+			<div class="sinbox3">
+				<span class="d1"></span>
+				<span class="g1">신규 고객은 회원 관리자의 승인 이후 서비스 이용이 가능합니다.</span>
+				<span class="d1"></span>
+				<span class="g1">본 사이트는 "Chrome" 브라우저에 최적화 되어 있습니다.</span>
+			</div>
+		</li>
+
+		<li class="bob br16_b">
+			<div class="sinbox br16_b">
+				<img src="dist/img/login_bottom_logo.gif" border="0">
+			</div>
+			<div class="sinbox2">
+				<span class="d1">(06707) 서울 서초구 효령로 176, 070-4168-2900</span>
+				<span class="d1">COPYRIGHT @ 2013 kt ds, ALL RIGHTS RESERVED.</span>
+			</div>
+		</li>
+	</div>
 </div>
+<!--login_box e- -->
+
+<!--login_newm s- -->
+<div class="Pstyle login_box" id="popup">
+	<div class="inbox">
+		<li class="bog1 br16_t">
+			<span class="d0">
+				<img src="dist/img/login_tit02.gif">
+			</span>
+			<span class="d1">약관에 동의하셔야 OBICs-Watch 서비스를 정상적으로<br/>이용하실 수 있습니다.</span>
+		</li>
+	</div>
+</div>
+<!--login_newm e- -->
 
 <div id="top_contents" style="display: none;">
 	<div class="wrapper-custom">
