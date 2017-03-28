@@ -216,6 +216,7 @@ function chartCall(chartId, title, series, label, enable, colorArr) {
 
 
 var chart1, chart2 = null;
+var chart3 = null;
 
 function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 
@@ -1104,7 +1105,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
 }
 
 function showLineChart(chartId, dataSet, colorArr){
-    $(function() {
+    chart3 = $(function() {
         Highcharts.chart(chartId, {
             exporting: {
                 buttons: {

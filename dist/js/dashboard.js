@@ -154,36 +154,12 @@ function dashboardEventStatus(){
 }
 
 function dashboardHostEvent(hostEvent){
-    //24시간 전 시간 구하기
-   /*
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
     var beforeTime = date.getTime() - DAYTOMILLS;
-    console.log(" beforeTime : " + new Date(beforeTime));
-    beforeTime = Math.round(beforeTime / 1000);
     var endTime = date.getTime();
-    console.log(" endTime : " + new Date(endTime));
-    endTime = Math.round(endTime / 1000);
-
-    console.log(" DAYTOMILLS : " + DAYTOMILLS);
-    console.log(" date : " + new Date(date));
-    console.log(" round beforeTime : " + beforeTime);
-    console.log(" round endTime : " + endTime);
-    */
-
-    var DAYTOMILLS = 1000*60*60*24;
-    var date = new Date();
-    //console.log(" 호스트 date : " + date);
-    var beforeTime = date.getTime() - DAYTOMILLS;
-    //console.log(" 호스트 beforeTime : " + beforeTime);
-    //console.log(" 호스트 beforeTime : " + new Date(beforeTime));
-    var endTime = date.getTime();
-    //console.log(" 호스트 endTime : " + endTime);
-    //console.log(" 호스트 endTime : " + new Date(endTime));
     beforeTime = parseInt(beforeTime / 1000);
     endTime = parseInt(endTime / 1000);
-    //console.log(" beforeTime : " + beforeTime);
-    //console.log(" endTime : " + endTime);
 
     var hostNum = 0;
     var hostid = '';
@@ -192,16 +168,8 @@ function dashboardHostEvent(hostEvent){
     var event_clock = 0;
 
     var eventList = '';
-    var startTime = '';
-    var nowTime = '';
 
     var dashboardHostEventTbody = "<tbody id='dashboardHostEventTbody'></tbody>";
-    // $.each(hostDataSet, function(k,v){
-    //     var tempArr = [];
-    //     tempArr.push(v);
-    //     console.log(tempArr);
-    //     showLineChart('hostChart'+(k+1), "hostEvent", tempArr, "", ['#a2adcc']);
-    // });
 
     $("#hostEventList").empty();
 
@@ -241,12 +209,6 @@ function dashboardHostEvent(hostEvent){
                     }
                 }
                 dataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
-
-                //console.log( " 1. event_clock   : " + event_clock);
-                //console.log( " 2. startTime     : " + startTime);
-                //console.log( " 3. nowTime       : " + nowTime);
-                //console.log( " 4. event_count   : " + event_count);
-                //console.log(i);
             }
         } catch (e) {
             console.log(e);
@@ -259,6 +221,8 @@ function dashboardHostEvent(hostEvent){
 
         showLineChart('hostChart'+(k+1), hostDataSet, ['#a2adcc']);
     });
+
+    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent); }, 10000));
 }
 
 function dashboardEventList(dashboard_Event) {
@@ -1048,4 +1012,8 @@ function dashboardWeekTopEvent(){
 
     });
 
+}
+
+function addHostEventList(hostEvent){
+    console.log(" addHostEventList ");
 }
