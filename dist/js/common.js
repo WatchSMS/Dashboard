@@ -607,7 +607,9 @@ function hostDetailChart(chartId, chartTitle, dataSet, unit, colorArr){
                     formatter: function () {
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
-                        }else{
+                        } else if(unit == "kbps"){
+                            return Math.round(this.value / 1000 / 100) + 'MB';
+                        } else{
                             return this.value + unit;
                         }
                     }

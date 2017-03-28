@@ -84,7 +84,6 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
 
     TIMER_ARR.push(setInterval(function(){
         reloadChartForCPU(hostid);
-        reloadChartForNETWORK(hostid);
     }, 10000));
 }
 
@@ -162,6 +161,9 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     var serverTraOutEth0Arr = [];
     var serverTraTotEth0Arr = [];
 
+    var DataSet = [];
+    var DataObj = new Object();
+
     zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         serverTraInEth0Arr = zbxApi.getHistory.success(data);
     }).then(function() {
@@ -173,130 +175,26 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
     }).then(function(data) {
         serverTraTotEth0Arr = zbxApi.getHistory.success(data);
 
-        $(function() {
-            Highcharts.chart('trafficUse', {
-                chart: {
-                    backgroundColor: '#424973',
-                    zoomType: 'x',
-                    height: 200,
-                    spacingTop: 10,
-                    spacingBottom: 0,
-                    spacingLeft: 0,
-                    spacingRight: 0
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    labels: {
-                        style:{
-                            color: '#E0E0E3'
-                        },
-                        formatter: function() {
-                            var d2 = new Date(this.value);
-                            var hours = "" + d2.getHours();
-                            var minutes = "" + d2.getMinutes();
-                            var seconds = "" + d2.getSeconds();
-                            if (hours.length == 1) {
-                                hours = "0" + hours;
-                            }
-                            if (minutes.length == 1) {
-                                minutes = "0" + minutes;
-                            }
-                            if (seconds.length == 1) {
-                                seconds = "0" + seconds;
-                            }
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                    }
-                },
-                yAxis: {
-                    gridLineColor: '#707073',
-                    lineColor: '#707073',
-                    minorGridLineColor: '#505053',
-                    tickColor: '#707073',
-                    labels: {
-                        style:{
-                            color: '#E0E0E3'
-                        },
-                        formatter: function() {
-                            return Math.floor(this.value / 1000) +'Kbps';
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    style: {
-                        color: '#F0F0F0'
-                    },
-                    shared: true,
-                    formatter: function () {
-                        var d2 = new Date(this.x);
-                        var hours = "" + d2.getHours();
-                        var minutes = "" + d2.getMinutes();
-                        var seconds = "" + d2.getSeconds();
-                        if (hours.length == 1) {
-                            hours = "0" + hours;
-                        }
-                        if (minutes.length == 1) {
-                            minutes = "0" + minutes;
-                        }
-                        if (seconds.length == 1) {
-                            seconds = "0" + seconds;
-                        }
+        //차트에 전달할 데이터셋 생성
+        DataObj = new Object();
+        DataObj.name = "트래픽 사용량";
+        DataObj.data = serverTraInEth0Arr;
+        DataSet.push(DataObj);
 
-                        var s = [];
-                        $.each(this.points, function (i, point) {
-                            s += '<br/>' + '<b>' + point.series.name + '</b>' + '<br/>' + hours + ':' + minutes + ':' + seconds + '  ' + (point.y / 1000) + 'kbps';
-                        });
-                        return s;
-                    }
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        marker: {
-                            enabled: false //false
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Traffic In Eth0',
-                    data: serverTraInEth0Arr,
-                    color: '#FC4747'
-                }, {
-                    name: 'Traffic Out Eth0',
-                    data: serverTraOutEth0Arr,
-                    color: '#F2F234'
-                }, {
-                    name: 'Traffic Total Eth0',
-                    data: serverTraTotEth0Arr,
-                    color: '#FA60CE'
-                }],
-                legend: {
-                    enabled: false
-                },
-                exporting: {
-                    buttons: {
-                        contextButton: {
-                            enabled: false,
-                            symbolStroke: 'transparent',
-                            theme: {
-                                fill:'#626992'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    })
+        DataObj = new Object();
+        DataObj.name = "트래픽 사용량";
+        DataObj.data = serverTraOutEth0Arr;
+        DataSet.push(DataObj);
+
+        DataObj = new Object();
+        DataObj.name = "트래픽 사용량";
+        DataObj.data = serverTraTotEth0Arr;
+        DataSet.push(DataObj);
+
+        hostDetailChart('trafficUse', '트래픽 사용량', DataSet, "kbps", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+    });
+
+    TIMER_ARR.push(setInterval(function(){ reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0); }, 10000));
 }
 
 function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
@@ -458,7 +356,7 @@ function reloadChartForMEMORY(serverMemoryUse){
     var history_memory = null;
 
     var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
-    console.log("startTime : " + startTime);
+    console.log("reloadChartForMEMORY startTime : " + startTime);
 
     zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         history_memory = zbxApi.getHistory.success(data);
@@ -469,7 +367,39 @@ function reloadChartForMEMORY(serverMemoryUse){
     });
 }
 
-function reloadChartForNETWORK(hostid){
+function reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0){
+    console.log(" reloadChartForNETWORK ");
+
+    var history_in = null;
+    var history_out = null;
+    var history_total = null;
+
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("reloadChartForNETWORK startTime : " + startTime);
+
+    zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
+        history_in = zbxApi.getHistory.success(data);
+
+        $.each(history_in, function(k,v) {
+            chart2.series[0].addPoint([v[0], v[1]]);
+        });
+    }).then(function() {
+        return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data) {
+        history_out = zbxApi.getHistory.success(data);
+
+        $.each(history_out, function(k,v) {
+            chart2.series[0].addPoint([v[0], v[1]]);
+        });
+    }).then(function() {
+        return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data) {
+        history_total = zbxApi.getHistory.success(data);
+
+        $.each(history_total, function(k,v) {
+            chart2.series[0].addPoint([v[0], v[1]]);
+        });
+    });
 }
 
 function reloadChartForDISK(serverDiskUseRoot){
@@ -477,7 +407,7 @@ function reloadChartForDISK(serverDiskUseRoot){
     var history_disk = null;
 
     var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
-    console.log("startTime : " + startTime);
+    console.log("reloadChartForDISK startTime : " + startTime);
 
     zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         history_disk = zbxApi.getHistory.success(data);
