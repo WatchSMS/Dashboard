@@ -368,6 +368,40 @@ function reloadChartForCPU(serverCpuSystem, serverCpuUser, serverCpuIoWait, serv
     var startTime = Math.round((cpuUse.series[0].xData[(cpuUse.series[0].xData.length)-1]) / 1000) + 1;
     console.log("reloadChartForCPU startTime : " + startTime);
 
+    zbxApi.getHistory.get(serverCpuSystem.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
+        history_system = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(serverCpuUser.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        hist_user = zbxApi.getHistory.success(data);
+        console.log("hist_user : " + JSON.stringify(hist_user));
+        $.each(hist_user.result, function(k, v) {
+            history_user[k] = [];
+            history_user[k][0] = parseInt(v.clock) * 1000;
+            history_user[k][1] = parseFloat(v.value);
+        });
+    }).then(function() {
+        return zbxApi.getHistory.get(serverCpuIoWait.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        history_iowait = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(serverCpuSteal.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
+    }).then(function(data) {
+        history_steal = zbxApi.getHistory.success(data);
+
+        $.each(history_system, function(k,v) {
+            cpuUse.series[0].addPoint([v[0], v[1]]);
+        });
+        $.each(history_user, function(k,v) {
+            cpuUse.series[1].addPoint([v[0], v[1]]);
+        });
+        $.each(history_iowait, function(k,v) {
+            cpuUse.series[2].addPoint([v[0], v[1]]);
+        });
+        $.each(history_steal, function(k,v) {
+            cpuUse.series[3].addPoint([v[0], v[1]]);
+        });
+    });
 }
 
 function reloadChartForMEMORY(serverMemoryUse){

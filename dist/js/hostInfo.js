@@ -43,20 +43,20 @@ var hostInfoView = function() {
                 var serverTraOutEth0 = null;
                 var serverTraTotalEth0 = null;
 
-                zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,system]").then(function(data) {
-                    serverCpuSystem = zbxApi.serverViewGraph.success(data);
+                zbxApi.getItem.get(hostid, "system.cpu.util[,system]").then(function(data) {
+                    serverCpuSystem = zbxApi.getItem.success(data);
                 }).then(function() {
-                    return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,user]");
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,user]");
                 }).then(function(data) {
-                    serverCpuUser = zbxApi.serverViewGraph.success(data);
+                    serverCpuUser = zbxApi.getItem.success(data);
                 }).then(function() {
-                    return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,iowait]");
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,iowait]");
                 }).then(function(data) {
-                    serverCpuIoWait = zbxApi.serverViewGraph.success(data);
+                    serverCpuIoWait = zbxApi.getItem.success(data);
                 }).then(function() {
-                    return zbxApi.serverViewGraph.get(hostid, "system.cpu.util[,steal]");
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,steal]");
                 }).then(function(data) {
-                    serverCpuSteal = zbxApi.serverViewGraph.success(data);
+                    serverCpuSteal = zbxApi.getItem.success(data);
                 }).then(function() {
                     return zbxApi.serverViewGraphName.get(hostid, "Used memory(%)");
                 }).then(function(data) {
