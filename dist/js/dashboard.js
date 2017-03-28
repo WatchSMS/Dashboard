@@ -119,10 +119,10 @@ function dashboardEventStatus(){
     var DAYTOMILLS = 1000*60*60*24;
 
     /*
-    var today_select = new Date();
-    today_select = today_select-(today_select % DAYTOMILLS);
-    today_select = Math.round(today_select / 1000);
-    */
+     var today_select = new Date();
+     today_select = today_select-(today_select % DAYTOMILLS);
+     today_select = Math.round(today_select / 1000);
+     */
 
     var d = new Date();
     var date = d.getDate();
@@ -160,6 +160,7 @@ function dashboardHostEvent(hostEvent){
     var endTime = date.getTime();
     beforeTime = parseInt(beforeTime / 1000);
     endTime = parseInt(endTime / 1000);
+    console.log(" dashboardHostEvent : " + endTime);
 
     var hostNum = 0;
     var hostid = '';
@@ -187,7 +188,7 @@ function dashboardHostEvent(hostEvent){
         var dashboardHostEventHTML = "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='40px' height='70px' class='line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='50px' height='70px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='50px' id='eventCnt_'" + hostid + "' height='70px' class='line-td'>" + hostEventCnt + "</td>";
         dashboardHostEventHTML += "<td width='auto' height='70px' id='hostChart"+hostNum+"'></td>";
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
@@ -222,7 +223,7 @@ function dashboardHostEvent(hostEvent){
         showLineChart('hostChart'+(k+1), hostDataSet, ['#a2adcc']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent); }, 10000));
+    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent, endTime); }, 10000));
 }
 
 function dashboardEventList(dashboard_Event) {
@@ -818,9 +819,9 @@ function dashboardWeekTopEvent(){
         var eventArr = data.result;
 
         $.each(eventArr, function(k,v){
-        	if(v.value == 1){
-	            if(v.clock >= lastDaysTimeArr[DAYS.MONDAY] && v.clock < lastDaysTimeArr[DAYS.TUESDAY]){ //월요일
-	
+            if(v.value == 1){
+                if(v.clock >= lastDaysTimeArr[DAYS.MONDAY] && v.clock < lastDaysTimeArr[DAYS.TUESDAY]){ //월요일
+
                     daysEventTotCount[DAYS.MONDAY] += 1;
                     if(mondayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         mondayUniqueTrigger.push(v.relatedObject.description);
@@ -838,9 +839,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.TUESDAY] && v.clock < lastDaysTimeArr[DAYS.WEDNESDAY]){ // 화요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.TUESDAY] && v.clock < lastDaysTimeArr[DAYS.WEDNESDAY]){ // 화요일
+
                     daysEventTotCount[DAYS.TUESDAY] += 1;
                     if(tuesdayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         tuesdayUniqueTrigger.push(v.relatedObject.description);
@@ -858,9 +859,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.WEDNESDAY] && v.clock < lastDaysTimeArr[DAYS.THURSDAY]){ //수요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.WEDNESDAY] && v.clock < lastDaysTimeArr[DAYS.THURSDAY]){ //수요일
+
                     daysEventTotCount[DAYS.WEDNESDAY] += 1;
                     if(wednesdayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         wednesdayUniqueTrigger.push(v.relatedObject.description);
@@ -878,9 +879,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.THURSDAY] && v.clock < lastDaysTimeArr[DAYS.FRIDAY]){ //목요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.THURSDAY] && v.clock < lastDaysTimeArr[DAYS.FRIDAY]){ //목요일
+
                     daysEventTotCount[DAYS.THURSDAY] += 1;
                     if(thursdayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         thursdayUniqueTrigger.push(v.relatedObject.description);
@@ -898,9 +899,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.FRIDAY] && v.clock < lastDaysTimeArr[DAYS.SATURDAY]){ // 금요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.FRIDAY] && v.clock < lastDaysTimeArr[DAYS.SATURDAY]){ // 금요일
+
                     daysEventTotCount[DAYS.FRIDAY] += 1;
                     if(fridayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         fridayUniqueTrigger.push(v.relatedObject.description);
@@ -918,9 +919,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.SATURDAY] && v.clock < lastDaysTimeArr[DAYS.SUNDAY]){ // 토요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.SATURDAY] && v.clock < lastDaysTimeArr[DAYS.SUNDAY]){ // 토요일
+
                     daysEventTotCount[DAYS.SATURDAY] += 1;
                     if(saturdayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         saturdayUniqueTrigger.push(v.relatedObject.description);
@@ -938,9 +939,9 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	
-	            }else if(v.clock >= lastDaysTimeArr[DAYS.SUNDAY] && v.clock < lastDaysTimeArr[DAYS.NEXTMONDAY]){ // 일요일
-	
+
+                }else if(v.clock >= lastDaysTimeArr[DAYS.SUNDAY] && v.clock < lastDaysTimeArr[DAYS.NEXTMONDAY]){ // 일요일
+
                     daysEventTotCount[DAYS.SUNDAY] += 1;
                     if(sundayUniqueTrigger.indexOf(v.relatedObject.description)== -1){
                         sundayUniqueTrigger.push(v.relatedObject.description);
@@ -958,8 +959,8 @@ function dashboardWeekTopEvent(){
                             }
                         });
                     }
-	            }
-        	}
+                }
+            }
         });
 
         alldayEventArr.push(mondayEventStatArr);
@@ -975,7 +976,7 @@ function dashboardWeekTopEvent(){
                 return a.count > b.count ? -1 : a.count < b.count ? 1 : 0;
             });
         });
-        
+
 
         var tblHTML = "";
         for(var k=0; k<alldayEventArr.length; ++k){
@@ -1014,6 +1015,64 @@ function dashboardWeekTopEvent(){
 
 }
 
-function addHostEventList(hostEvent){
+function addHostEventList(hostEvent, endTime){
     console.log(" addHostEventList ");
+
+    var date = new Date();
+    var addStartTime = endTime;
+    console.log("addHostEventList addStartTime : " + addStartTime);
+    var addEndTime = date.getTime();
+    addEndTime = parseInt(addEndTime / 1000);
+    console.log("addHostEventList addEndTime : " + addEndTime);
+
+    var addEventCnt = 0;
+    var addEventList = '';
+
+    var addDashboardEvent = '';
+
+    var addDataObj = new Object();
+    var addDataSet = [];
+
+    $("#hostEventList").append(addDashboardEvent);
+
+    $.each(hostEvent.result, function(k, v){
+        var hostid = v.hostid;
+        var addEventList = [];
+
+        addEventCnt = zbxSyncApi.alerthostTrigger(hostid, addStartTime, addEndTime);
+        addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, hostid);
+
+        $("#eventCnt_" + hostid).html(addEventCnt);
+        //id='hostChart"+hostNum+"'
+        var addDataArr = new Array();
+        try {
+            if(addEventList[0] == undefined){
+                return true;
+            }
+
+            for(var i=0; i<24; i++){
+                var HOUR = 60*60;//시간
+                var NOW = parseInt(new Date().getTime()/1000);
+                var event_count= 0 ;
+
+                for(var j=0;j<addEventList.length;j++) {
+                    if(addEventList[j].clock <NOW-(24-i)*HOUR && addEventList[j].clock >NOW-(24-i+1)*HOUR ){
+                        event_count += 1;
+                    }
+                }
+                addDataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
+                chart3.series[0].addPoint([v[0], v[1]]);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        /*addDataObj = new Object();
+        addDataObj.name = "hostEvent";
+        addDataObj.data = addDataArr;
+        addDataSet.push(addDataObj);
+
+        showLineChart('hostChart'+(k+1), addDataSet, ['#a2adcc']);*/
+
+    });
 }
