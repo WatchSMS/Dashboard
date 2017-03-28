@@ -151,7 +151,7 @@ function showServerMemory(serverMemoryUse, startTime) {
         DataObj.data = serverMemoryUseArr;
         DataSet.push(DataObj);
 
-        showBasicLineChart('memoryAll', '전체메모리', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        hostDetailChart('memoryAll', '전체메모리', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
     });
 
     TIMER_ARR.push(setInterval(function(){ reloadChartForMEMORY(serverMemoryUse); }, 10000));
@@ -375,7 +375,7 @@ function showServerDisk(serverDiskUseRoot, startTime) {
         DataObj.data = serverDiskUseRootArr;
         DataSet.push(DataObj);
 
-        showBasicAreaChart('diskUse', '디스크 사용량', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        hostDetailChart('diskUse', '디스크 사용량', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
     });
 
     TIMER_ARR.push(setInterval(function(){ reloadChartForDISK(serverDiskUseRoot); }, 10000));
@@ -476,14 +476,14 @@ function reloadChartForDISK(serverDiskUseRoot){
     console.log(" reloadChartForDISK ");
     var history_disk = null;
 
-    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
     console.log("startTime : " + startTime);
 
     zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         history_disk = zbxApi.getHistory.success(data);
 
         $.each(history_disk, function(k,v) {
-            chart1.series[0].addPoint([v[0], v[1]]);
+            chart2.series[0].addPoint([v[0], v[1]]);
         });
     });
 }
