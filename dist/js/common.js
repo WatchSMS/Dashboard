@@ -522,9 +522,300 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
     });
 }
 
-function hostDetailChart(chartId, chartTitle, dataSet, unit, colorArr){
+
+function hostDetailChartMemory(chartId, chartTitle, dataSet, unit, colorArr){
     $(function () {
-        chart2 = new Highcharts.Chart({
+        memoryAll = new Highcharts.Chart({
+
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
+            colors: colorArr,
+            chart: {
+                backgroundColor: '#424973',
+                //type: 'area'
+                renderTo: chartId,
+                zoomType: 'x',
+                height: 200,
+                events: {
+                    load: function(event) {
+                        $("#"+chartId).unblock(blockUI_opt_el);
+                        console.log("loaded");
+                        console.log(Highcharts.charts.length);
+                    }
+                }
+            },
+            title: {
+                text: "",
+                style: {
+                    color: '#EDEDED'
+                }
+            },
+            subtitle: {
+                text: ''
+            },
+            legend: {
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
+            },
+            xAxis: {
+                crosshair: true,
+                events: {
+                    setExtremes: syncExtremes
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+
+                        var d2 = new Date(this.value);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return hours + ":" + minutes + ":" + seconds;
+
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        if(unit == "MB"){
+                            return Math.round(this.value / (1024 * 1024)) + 'MB';
+                        } else if(unit == "kbps"){
+                            return Math.round(this.value / 1000 / 100) + 'MB';
+                        } else{
+                            return this.value + unit;
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+
+                    if(hours.length==1){
+                        hours = "0" + hours;
+                    }
+                    if(minutes.length==1){
+                        minutes = "0" + minutes;
+                    }
+                    if(seconds.length==1){
+                        seconds = "0" + seconds;
+                    }
+                    if(unit == "MB"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else{
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                    }
+
+                }
+            },
+            plotOptions: {
+                series: {
+                    events: {
+                        mouseOver: function(e){
+                            GLOBAL_INDEX = this.index;
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 1
+                }
+            },
+            series: dataSet
+        });
+
+        Highcharts.Point.prototype.highlight = function (event) {
+            //this.onMouseOver(); // Show the hover marker
+            this.series.chart.tooltip.refresh(this); // Show the tooltip
+            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+        };
+
+        Highcharts.Pointer.prototype.reset = function () {
+            return undefined;
+        };
+    });
+}
+
+function hostDetailChartDisk(chartId, chartTitle, dataSet, unit, colorArr){
+    $(function () {
+        diskUse = new Highcharts.Chart({
+
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                        symbolStroke: 'transparent',
+                        theme: {
+                            fill:'#626992'
+                        }
+                    }
+                }
+            },
+            colors: colorArr,
+            chart: {
+                backgroundColor: '#424973',
+                //type: 'area'
+                renderTo: chartId,
+                zoomType: 'x',
+                height: 200,
+                events: {
+                    load: function(event) {
+                        $("#"+chartId).unblock(blockUI_opt_el);
+                        console.log("loaded");
+                        console.log(Highcharts.charts.length);
+                    }
+                }
+            },
+            title: {
+                text: "",
+                style: {
+                    color: '#EDEDED'
+                }
+            },
+            subtitle: {
+                text: ''
+            },
+            legend: {
+                enabled: false,
+                itemStyle: {
+                    color: '#a2adcc'
+                }
+            },
+            xAxis: {
+                crosshair: true,
+                events: {
+                    setExtremes: syncExtremes
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+
+                        var d2 = new Date(this.value);
+                        var hours = "" + d2.getHours();
+                        var minutes = "" + d2.getMinutes();
+                        var seconds = "" + d2.getSeconds();
+                        if(hours.length==1){
+                            hours = "0" + hours;
+                        }
+                        if(minutes.length==1){
+                            minutes = "0" + minutes;
+                        }
+                        if(seconds.length==1){
+                            seconds = "0" + seconds;
+                        }
+                        return hours + ":" + minutes + ":" + seconds;
+
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                labels: {
+                    style: {
+                        color: '#a2adcc'
+                    },
+                    formatter: function () {
+                        if(unit == "MB"){
+                            return Math.round(this.value / (1024 * 1024)) + 'MB';
+                        } else if(unit == "kbps"){
+                            return Math.round(this.value / 1000 / 100) + 'MB';
+                        } else{
+                            return this.value + unit;
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    var d2 = new Date(this.x);
+                    var hours = "" + d2.getHours();
+                    var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+
+                    if(hours.length==1){
+                        hours = "0" + hours;
+                    }
+                    if(minutes.length==1){
+                        minutes = "0" + minutes;
+                    }
+                    if(seconds.length==1){
+                        seconds = "0" + seconds;
+                    }
+                    if(unit == "MB"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else{
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                    }
+
+                }
+            },
+            plotOptions: {
+                series: {
+                    events: {
+                        mouseOver: function(e){
+                            GLOBAL_INDEX = this.index;
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 1
+                }
+            },
+            series: dataSet
+        });
+
+        Highcharts.Point.prototype.highlight = function (event) {
+            //this.onMouseOver(); // Show the hover marker
+            this.series.chart.tooltip.refresh(this); // Show the tooltip
+            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+        };
+
+        Highcharts.Pointer.prototype.reset = function () {
+            return undefined;
+        };
+    });
+}
+
+function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
+    $(function () {
+        trafficUse = new Highcharts.Chart({
 
             exporting: {
                 buttons: {

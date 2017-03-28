@@ -132,6 +132,7 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         }];
         var enable = false;
         chartCall(chartId, title, series, Label.percent, enable);
+        //'#e85c2a', '#e574ff', '#37d5f2', '#ccaa65'
     });
 }
 
@@ -150,7 +151,7 @@ function showServerMemory(serverMemoryUse, startTime) {
         DataObj.data = serverMemoryUseArr;
         DataSet.push(DataObj);
 
-        hostDetailChart('memoryAll', '전체메모리', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        hostDetailChartMemory('memoryAll', '전체메모리', DataSet, "%", ['#bebebe']);
     });
 
     TIMER_ARR.push(setInterval(function(){ reloadChartForMEMORY(serverMemoryUse); }, 10000));
@@ -191,7 +192,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
         DataObj.data = serverTraTotEth0Arr;
         DataSet.push(DataObj);
 
-        hostDetailChart('trafficUse', '트래픽 사용량', DataSet, "kbps", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        hostDetailChartNetwork('trafficUse', '트래픽 사용량', DataSet, "kbps", ['#e85c2a', '#e574ff', '#37d5f2']);
     });
 
     TIMER_ARR.push(setInterval(function(){ reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0); }, 10000));
@@ -273,7 +274,7 @@ function showServerDisk(serverDiskUseRoot, startTime) {
         DataObj.data = serverDiskUseRootArr;
         DataSet.push(DataObj);
 
-        hostDetailChart('diskUse', '디스크 사용량', DataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        hostDetailChartDisk('diskUse', '디스크 사용량', DataSet, "%", ['#fa7796']);
     });
 
     TIMER_ARR.push(setInterval(function(){ reloadChartForDISK(serverDiskUseRoot); }, 10000));
@@ -355,14 +356,14 @@ function reloadChartForMEMORY(serverMemoryUse){
     console.log(" reloadChartForMEMORY ");
     var history_memory = null;
 
-    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    var startTime = Math.round((memoryAll.series[0].xData[(memoryAll.series[0].xData.length)-1]) / 1000) + 1;
     console.log("reloadChartForMEMORY startTime : " + startTime);
 
     zbxApi.getHistory.get(serverMemoryUse.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         history_memory = zbxApi.getHistory.success(data);
 
         $.each(history_memory, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
+            memoryAll.series[0].addPoint([v[0], v[1]]);
         });
     });
 }
@@ -374,30 +375,30 @@ function reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotal
     var history_out = null;
     var history_total = null;
 
-    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    var startTime = Math.round((trafficUse.series[0].xData[(trafficUse.series[0].xData.length)-1]) / 1000) + 1;
     console.log("reloadChartForNETWORK startTime : " + startTime);
 
     zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         history_in = zbxApi.getHistory.success(data);
-
-        $.each(history_in, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
-        });
     }).then(function() {
         return zbxApi.getHistory.get(serverTraOutEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         history_out = zbxApi.getHistory.success(data);
-
-        $.each(history_out, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
-        });
     }).then(function() {
         return zbxApi.getHistory.get(serverTraTotalEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
         history_total = zbxApi.getHistory.success(data);
 
+        $.each(history_in, function(k,v) {
+            trafficUse.series[0].addPoint([v[0], v[1]]);
+        });
+
+        $.each(history_out, function(k,v) {
+            trafficUse.series[0].addPoint([v[0], v[1]]);
+        });
+
         $.each(history_total, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
+            trafficUse.series[0].addPoint([v[0], v[1]]);
         });
     });
 }
@@ -406,14 +407,14 @@ function reloadChartForDISK(serverDiskUseRoot){
     console.log(" reloadChartForDISK ");
     var history_disk = null;
 
-    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
+    var startTime = Math.round((diskUse.series[0].xData[(diskUse.series[0].xData.length)-1]) / 1000) + 1;
     console.log("reloadChartForDISK startTime : " + startTime);
 
     zbxApi.getHistory.get(serverDiskUseRoot.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         history_disk = zbxApi.getHistory.success(data);
 
         $.each(history_disk, function(k,v) {
-            chart2.series[0].addPoint([v[0], v[1]]);
+            diskUse.series[0].addPoint([v[0], v[1]]);
         });
     });
 }
