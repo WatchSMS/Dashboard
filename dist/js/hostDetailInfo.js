@@ -82,9 +82,6 @@ function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         }
     })
 
-    TIMER_ARR.push(setInterval(function(){
-        reloadChartForCPU(hostid);
-    }, 10000));
 }
 
 function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime) {
@@ -95,12 +92,16 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
 
     var history_cpuUser = null;
 
+    var DataSet = [];
+    var DataObj = new Object();
+
     zbxApi.getHistory.get(serverCpuSystem.result[0].itemid, startTime, HISTORY_TYPE.FLOAT).then(function(data) {
         serverCpuSystemArr = zbxApi.getHistory.success(data);
     }).then(function() {
         return zbxApi.getHistory.get(serverCpuUser.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
     }).then(function(data) {
         history_cpuUser = zbxApi.getHistory.success(data);
+        console.log("history_cpuUser : " + JSON.stringify(history_cpuUser));
         $.each(history_cpuUser.result, function(k, v) {
             serverCpuUserArr[k] = [];
             serverCpuUserArr[k][0] = parseInt(v.clock) * 1000;
@@ -115,25 +116,31 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
     }).then(function(data) {
         serverCpuStealArr = zbxApi.getHistory.success(data);
 
-        var chartId = "cpuUse";
-        var title = 'CPU 사용량';
-        var series = [{
-            name: 'CPU System',
-            data: serverCpuSystemArr
-        }, {
-            name: 'CPU User',
-            data: serverCpuUserArr
-        }, {
-            name: 'CPU IoWait',
-            data: serverCpuIoWaitArr
-        }, {
-            name: 'CPU Steal',
-            data: serverCpuStealArr
-        }];
-        var enable = false;
-        chartCall(chartId, title, series, Label.percent, enable);
-        //'#e85c2a', '#e574ff', '#37d5f2', '#ccaa65'
+        //차트에 전달할 데이터셋 생성
+        DataObj = new Object();
+        DataObj.name = "CPU 사용량";
+        DataObj.data = serverCpuSystemArr;
+        DataSet.push(DataObj);
+
+        DataObj = new Object();
+        DataObj.name = "CPU 사용량";
+        DataObj.data = serverCpuUserArr;
+        DataSet.push(DataObj);
+
+        DataObj = new Object();
+        DataObj.name = "CPU 사용량";
+        DataObj.data = serverCpuIoWaitArr;
+        DataSet.push(DataObj);
+
+        DataObj = new Object();
+        DataObj.name = "CPU 사용량";
+        DataObj.data = serverCpuStealArr;
+        DataSet.push(DataObj);
+
+        hostDetailChartCPU('cpuUse', 'CPU 사용량', DataSet, "%", ['#e85c2a', '#e574ff', '#37d5f2', '#ccaa65']);
     });
+
+    TIMER_ARR.push(setInterval(function(){ reloadChartForCPU(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal); }, 10000));
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
@@ -348,8 +355,19 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
     });
 }
 
-function reloadChartForCPU(hostid){
-    //console.log(" reloadChartForCPU : " + hostid);
+function reloadChartForCPU(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal){
+    console.log(" reloadChartForCPU ");
+
+    var history_system = null;
+    var history_user = null;
+    var history_iowait = null;
+    var history_steal = null;
+
+    var hist_user = null;
+
+    var startTime = Math.round((cpuUse.series[0].xData[(cpuUse.series[0].xData.length)-1]) / 1000) + 1;
+    console.log("reloadChartForCPU startTime : " + startTime);
+
 }
 
 function reloadChartForMEMORY(serverMemoryUse){
@@ -394,11 +412,11 @@ function reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotal
         });
 
         $.each(history_out, function(k,v) {
-            trafficUse.series[0].addPoint([v[0], v[1]]);
+            trafficUse.series[1].addPoint([v[0], v[1]]);
         });
 
         $.each(history_total, function(k,v) {
-            trafficUse.series[0].addPoint([v[0], v[1]]);
+            trafficUse.series[2].addPoint([v[0], v[1]]);
         });
     });
 }
