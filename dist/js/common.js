@@ -716,13 +716,16 @@ var callApiForProcessTable = function(hostid){
 
 
 var sortProcess = function(data_topProcess, sortField){
-
+	
+	if(data_topProcess.lastclock == "0"){
+		return;
+	}
     var topProcRowArr = data_topProcess.lastvalue.split("\n"); //각 행들의 집합
     var procUniqueName = [];
     var procNameOrderByCpu = [];
     var dataObj = null;
     var dataSet = [];
-
+    
     //모든 행의 데이터 사이의 구분자를 한칸 띄어쓰기로 변경
     $.each(topProcRowArr, function(k,v) {
         while(topProcRowArr[k].indexOf("  ") != -1){

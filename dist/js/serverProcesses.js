@@ -192,6 +192,9 @@ var generateProcessResource = function(hostid, processName, startTime) {
 
     zbxApi.getItem.get(hostid,itemKey).then(function(data) {
         var item = zbxApi.getItem.success(data);
+        if(item.result.length == 0){
+        	return;
+        }
         itemId = item.result[0].itemid;
 
     }).then(function() {
