@@ -45,26 +45,24 @@
 	<link href="dist/css/mainbox.min.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="d3.slider2.css" media="screen" />
 
-	<script>
+
+	<script type="text/javascript">
         jQuery(document).ready(function(){
             var select = $("select#color");
             select.change(function(){
                 var select_name = $(this).children("option:selected").text();
                 $(this).siblings("label").text(select_name);
             })
-        })
-	</script>
+        });
 
-	<script type="text/javascript">
         function go_popup(){
             $('#popup').bPopup();
         };
+
         function go_popup2(){
             $("#popup2").bPopup();
         };
-	</script>
 
-	<script type="text/javascript">
         function leftm_go_tab_01(val, mode){
             for(var i=1; i<5; i++){
                 $("#leftmtab_0"+i).hide();
