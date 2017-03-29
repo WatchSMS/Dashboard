@@ -662,7 +662,7 @@ function dashboardEventAckChart() {
 }
 
 function addEventAckChart(){
-
+/*
     zbxApi.getEvent.getById(lastAckEventId).then(function(data) {
         console.log("lastAckEventId : " + lastAckEventId);
         console.log("ack Data Adding ..");
@@ -695,6 +695,7 @@ function addEventAckChart(){
             }
         });
     });
+    */
 }
 
 function dashboardWeekTopEvent(){

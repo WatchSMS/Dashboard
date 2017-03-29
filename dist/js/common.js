@@ -222,6 +222,23 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
 		            }
+                },
+                resetZoomButton: {
+                	theme: {
+                		fill: '#323c60', //'#3d476b',
+                		r: 5,
+                		style: {
+                			color: '#c5d0ec'
+                		},
+                		states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                	}
                 }
             },
             title: {
@@ -378,6 +395,23 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                	theme: {
+                		fill: '#323c60', //'#3d476b',
+                		r: 5,
+                		style: {
+                			color: '#c5d0ec'
+                		},
+                		states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                	}
                 }
             },
             title: {
@@ -867,7 +901,24 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
             chart: {
             	backgroundColor: 'transparent',
                 type: 'scatter',
-                zoomType: 'xy'
+                zoomType: 'xy',
+                resetZoomButton: {
+                	theme: {
+                		fill: '#323c60', //'#3d476b',
+                		r: 5,
+                		style: {
+                			color: '#c5d0ec'
+                		},
+                		states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                	}
+                }
             },
             title: {
                 text: ""
@@ -1077,6 +1128,23 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                	theme: {
+                		fill: '#323c60', //'#3d476b',
+                		r: 5,
+                		style: {
+                			color: '#c5d0ec'
+                		},
+                		states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                	}
                 }
             },
             title: {
