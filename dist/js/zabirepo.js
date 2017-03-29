@@ -18,6 +18,7 @@ $(document).ready(function() {
     // }
 
     $("#submit_login").click(function() {
+        $("#login_box").hide();
         int.ready();
     });
 
@@ -140,28 +141,28 @@ var int = {
             $("#base_eventList").show();
             eventListView();
         });
-/*
-        $("#menu_pivottable").click(function() {
-            $("[id^=base]").hide();
-            pivotDisplay();
-            $("#base_event").show();
-            $("#base_pivottable").show();
-        });
+        /*
+         $("#menu_pivottable").click(function() {
+         $("[id^=base]").hide();
+         pivotDisplay();
+         $("#base_event").show();
+         $("#base_pivottable").show();
+         });
 
-        $("#menu_treemap").click(function() {
-            $("[id^=base]").hide();
-            pivotDisplay();
-            $("#base_event").show();
-            $("#base_treemap").show();
-        });
+         $("#menu_treemap").click(function() {
+         $("[id^=base]").hide();
+         pivotDisplay();
+         $("#base_event").show();
+         $("#base_treemap").show();
+         });
 
-        $("#menu_free").click(function() {
-            $("[id^=base]").hide();
-            pivotDisplay();
-            $("#base_event").show();
-            $("#base_free").show();
-        });
-*/
+         $("#menu_free").click(function() {
+         $("[id^=base]").hide();
+         pivotDisplay();
+         $("#base_event").show();
+         $("#base_free").show();
+         });
+         */
 
         $("#menu_setting").click(function() {
             $("[id^=base]").hide();
@@ -462,30 +463,30 @@ var int = {
                 });
             });
         });
-        
+
         // 2017.03.08 - CUSTOM Chart Event 
         $(".btn_ExportChart").off().on('click',function(){
-        	var chartId = $(this).val();
-        	$('#selectChartOutOption').lightbox_me({
-        		   centered: true, 
-        		   closeSelector: ".close",
-        		   onLoad: function() { 
-        		       $('#selectChartOutOption').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
-        		       console.log(chartId);
-        		       $('#selectedChartId').text(chartId);
-        		   },
-        		   overlayCSS:{background: 'white', opacity: .8} 
-        	});
+            var chartId = $(this).val();
+            $('#selectChartOutOption').lightbox_me({
+                centered: true,
+                closeSelector: ".close",
+                onLoad: function() {
+                    $('#selectChartOutOption').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+                    console.log(chartId);
+                    $('#selectedChartId').text(chartId);
+                },
+                overlayCSS:{background: 'white', opacity: .8}
+            });
         });
-        
+
         $(".btn_printChart").off().on('click',function(){
-        	var chartId = $(this).val();
-        	
-        	for(var i=0; i<Highcharts.charts.length; ++i){
-        		if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
-        			Highcharts.charts[i].print();
-        		}
-        	}
+            var chartId = $(this).val();
+
+            for(var i=0; i<Highcharts.charts.length; ++i){
+                if(typeof Highcharts.charts[i] != "undefined" && Highcharts.charts[i].renderTo.id == chartId){
+                    Highcharts.charts[i].print();
+                }
+            }
         });
 
         // 2017.03.13 - CUSTOM Chart Event
@@ -1014,106 +1015,106 @@ function type(d, i, columns) {
     return d;
 }
 /*
-var pivotDisplay = function() {
-    $.blockUI(blockUI_opt_all);
-    var beforeDay = db.get("beforeDay");
+ var pivotDisplay = function() {
+ $.blockUI(blockUI_opt_all);
+ var beforeDay = db.get("beforeDay");
 
-    zbxApi.event.get().done(function(data, statusText, jqXHR) {
-        var Latest_events = zbxApi.event.success(data);
-        pivotMain(Latest_events, "event_histogram");
-        pivotMain(Latest_events, "event_pivot");
-        pivotMain(Latest_events, "event_treemap");
-        pivotMain(Latest_events, "event_free");
-        $.unblockUI(blockUI_opt_all);
-    }).fail(function(jqXHR, statusText, errorThrown) {
-        $.unblockUI(blockUI_opt_all);
-        console.log("pivotDisplay : Network Error");
-        alertDiag("Network Error");
-    });
+ zbxApi.event.get().done(function(data, statusText, jqXHR) {
+ var Latest_events = zbxApi.event.success(data);
+ pivotMain(Latest_events, "event_histogram");
+ pivotMain(Latest_events, "event_pivot");
+ pivotMain(Latest_events, "event_treemap");
+ pivotMain(Latest_events, "event_free");
+ $.unblockUI(blockUI_opt_all);
+ }).fail(function(jqXHR, statusText, errorThrown) {
+ $.unblockUI(blockUI_opt_all);
+ console.log("pivotDisplay : Network Error");
+ alertDiag("Network Error");
+ });
 
-};
-*/
+ };
+ */
 /*
-var pivotMain = function(Latest_events, event_type) {
-    var derivers = $.pivotUtilities.derivers;
-    var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers);
-    var dateFormat = $.pivotUtilities.derivers.dateFormat;
-    var sortAs = $.pivotUtilities.sortAs;
-    var event_conf = {
-        renderers: renderers,
-        menuLimit: 3000,
-        rows: [""],
-        cols: [""],
-        vals: [""],
-        exclusions: {
-            "Status": ["OK"]
-        },
-        aggregatorName: "Count",
-        rendererName: "",
-        derivedAttributes: {
-            "Year": dateFormat("Date", "%y"),
-            "Month": dateFormat("Date", "%m"),
-            "Day": dateFormat("Date", "%d"),
-            "Hour": dateFormat("Date", "%H"),
-            "Minute": dateFormat("Date", "%M"),
-            "Second": dateFormat("Date", "%S"),
-            "Day name": dateFormat("Date", "%w")
-        },
-        utcOutput: false,
-        sorters: function(attr) {
-            if (attr == "Day name") {
-                return sortAs(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
-            }
-            if (attr == "Severity") {
-                return sortAs(["Disaster", "High", "Average", "Warning", "Information", "Not Classfied"]);
-            }
-            if (attr == "Status") {
-                return sortAs(["PROBLEM", "OK"]);
-            }
-        },
-        hiddenAttributes: ["Date"],
-        onRefresh: function(config) {
-            db.set(event_type + "_tmp", config);
-            $("#base_event").find(".pvtVal[data-value='null']").css("background-color", "palegreen");
-        }
-    };
+ var pivotMain = function(Latest_events, event_type) {
+ var derivers = $.pivotUtilities.derivers;
+ var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers);
+ var dateFormat = $.pivotUtilities.derivers.dateFormat;
+ var sortAs = $.pivotUtilities.sortAs;
+ var event_conf = {
+ renderers: renderers,
+ menuLimit: 3000,
+ rows: [""],
+ cols: [""],
+ vals: [""],
+ exclusions: {
+ "Status": ["OK"]
+ },
+ aggregatorName: "Count",
+ rendererName: "",
+ derivedAttributes: {
+ "Year": dateFormat("Date", "%y"),
+ "Month": dateFormat("Date", "%m"),
+ "Day": dateFormat("Date", "%d"),
+ "Hour": dateFormat("Date", "%H"),
+ "Minute": dateFormat("Date", "%M"),
+ "Second": dateFormat("Date", "%S"),
+ "Day name": dateFormat("Date", "%w")
+ },
+ utcOutput: false,
+ sorters: function(attr) {
+ if (attr == "Day name") {
+ return sortAs(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
+ }
+ if (attr == "Severity") {
+ return sortAs(["Disaster", "High", "Average", "Warning", "Information", "Not Classfied"]);
+ }
+ if (attr == "Status") {
+ return sortAs(["PROBLEM", "OK"]);
+ }
+ },
+ hiddenAttributes: ["Date"],
+ onRefresh: function(config) {
+ db.set(event_type + "_tmp", config);
+ $("#base_event").find(".pvtVal[data-value='null']").css("background-color", "palegreen");
+ }
+ };
 
-    var event_obj = db.get(event_type);
-    if (event_obj != null) {
-        event_conf["rows"] = event_obj["rows"];
-        event_conf["cols"] = event_obj["cols"];
-        event_conf["vals"] = event_obj["vals"];
-        event_conf["exclusions"] = event_obj["exclusions"];
-        event_conf["aggregatorName"] = event_obj["aggregatorName"];
-        event_conf["rendererName"] = event_obj["rendererName"];
-        $("#label_" + event_type).removeClass("label-info").addClass("label-warning").text("Filter ON");
-    } else {
+ var event_obj = db.get(event_type);
+ if (event_obj != null) {
+ event_conf["rows"] = event_obj["rows"];
+ event_conf["cols"] = event_obj["cols"];
+ event_conf["vals"] = event_obj["vals"];
+ event_conf["exclusions"] = event_obj["exclusions"];
+ event_conf["aggregatorName"] = event_obj["aggregatorName"];
+ event_conf["rendererName"] = event_obj["rendererName"];
+ $("#label_" + event_type).removeClass("label-info").addClass("label-warning").text("Filter ON");
+ } else {
 
-        if (event_type == "event_histogram") {
-            event_conf["rows"] = ["Severity"];
-            event_conf["cols"] = ["Year", "Month", "Day"];
-            event_conf["rendererName"] = ["Stacked Bar Chart"];
-        } else if (event_type == "event_pivot") {
-            event_conf["rows"] = ["Host", "Description"];
-            event_conf["cols"] = ["Year", "Month", "Day"];
-            event_conf["rendererName"] = ["Heatmap"];
-        } else if (event_type == "event_treemap") {
-            event_conf["rows"] = ["Description"];
-            event_conf["rendererName"] = ["Treemap"];
-        } else {
-            // free
-        }
-        $("#label_" + event_type).removeClass("label-warning").addClass("label-info").text("Filter OFF");
-    }
+ if (event_type == "event_histogram") {
+ event_conf["rows"] = ["Severity"];
+ event_conf["cols"] = ["Year", "Month", "Day"];
+ event_conf["rendererName"] = ["Stacked Bar Chart"];
+ } else if (event_type == "event_pivot") {
+ event_conf["rows"] = ["Host", "Description"];
+ event_conf["cols"] = ["Year", "Month", "Day"];
+ event_conf["rendererName"] = ["Heatmap"];
+ } else if (event_type == "event_treemap") {
+ event_conf["rows"] = ["Description"];
+ event_conf["rendererName"] = ["Treemap"];
+ } else {
+ // free
+ }
+ $("#label_" + event_type).removeClass("label-warning").addClass("label-info").text("Filter OFF");
+ }
 
-    $("#" + event_type).pivotUI(Latest_events, event_conf, {
-        overwrite: "true"
-    });
+ $("#" + event_type).pivotUI(Latest_events, event_conf, {
+ overwrite: "true"
+ });
 
-    $("#base_event").find(".pvtAggregator").css("visibility", "hidden");
+ $("#base_event").find(".pvtAggregator").css("visibility", "hidden");
 
-};
-*/
+ };
+ */
 var alertDiag = function(data) {
     $("#modal-alert-text").text(data);
     $('#modal-alert').modal('show');
