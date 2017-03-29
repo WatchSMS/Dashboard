@@ -1,5 +1,5 @@
 //host 정보 호출
-var hostInfoView = function() {
+function hostInfoView() {
     console.log(">>>>> IN function hostInfoView <<<<<");
     zbxApi.host.get().done(function(data, status, jqXHR) {
         var host_data = zbxApi.host.success(data);
@@ -17,13 +17,13 @@ var hostInfoView = function() {
             tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
             $("#serverlist").append(tagText);
 
-            tagText2 += '<li><a class="treeview-menu" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
-            tagText2 += '<li><a class="treeview-menu" href="#" id="configure_' + v.hostid + '"><i class="fa fa-bar-chart"></i>임계치 설정</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
+            tagText2 += '<li><a class="b3" href="#" id="configure_' + v.hostid + '"><i class="fa fa-bar-chart"></i>임계치 설정</a></li>';
 
             $("#" + tagId + "_performlist").append(tagText2);
 
