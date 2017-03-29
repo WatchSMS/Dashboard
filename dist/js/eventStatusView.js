@@ -10,11 +10,11 @@ function eventListView(){
         eventList(data_event);
     });
 
-    $("#eventListDiv").scroll(function() {
-        var div = $("#eventListDiv");
+    $("#eventList").scroll(function() {
+        var div = $("#eventList");
         if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
             console.log(" END SCROLL ");
-            var lastRowIdFrom = $("#eventListDiv tr:last").attr('id');
+            var lastRowIdFrom = $("#eventList tr:last").attr('id');
             lastRowIdFrom = lastRowIdFrom - 1;
             var appendData = '';
             console.log(" last Row From : " + lastRowIdFrom);
@@ -102,7 +102,7 @@ function eventListView(){
                 })
             });
         }
-    });
+    })
 
     showEventChartView();
 }
