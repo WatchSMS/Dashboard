@@ -1024,7 +1024,7 @@ function addHostEventList(hostEvent){
     var addEndTime = date.getTime();
     addStartTime = parseInt(addStartTime / 1000);
     addEndTime = parseInt(addEndTime / 1000);
-    //console.log(" addStartTime : " + addStartTime + " addEndTime : " + addEndTime);
+    console.log(" addStartTime : " + addStartTime + " addEndTime : " + addEndTime);
 
     var addHostNum = 0;
     var addHostid = '';
