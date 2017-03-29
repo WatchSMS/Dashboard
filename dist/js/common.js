@@ -722,7 +722,12 @@ var sortProcess = function(data_topProcess, sortField){
     });
 
     // 프로세스명 중복 제거 후, 프로세스 별 cpu 합 초기화
-    procUniqueName = $.unique(procNameOrderByCpu);
+    $.each(procNameOrderByCpu, function(k,v){
+    	if(procUniqueName.indexOf(v) == -1){
+    		procUniqueName.push(v);
+    	}
+    });
+    
     var procUniqueObj = null;
     var procTotalArr = [];
     $.each(procUniqueName, function(k,v){
@@ -1152,13 +1157,20 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                                  minutes = "0" + minutes;
                              }
                              var backgroundColor;
-                             if(v.series.name == "인지"){
+                             if(k == 0){
                             	 backgroundColor = "#FF8C00";
-                             }else if(v.series.name == "신규"){
+                             }else if(k == 1){
                             	 backgroundColor = "#ee6866";
-                             }else if(v.series.name == "완료"){
+                             }else if(k == 2){
                             	 backgroundColor = "#00BFFF";
                              }
+//                             if(v.series.name == "인지"){
+//                            	 backgroundColor = "#FF8C00";
+//                             }else if(v.series.name == "신규"){
+//                            	 backgroundColor = "#ee6866";
+//                             }else if(v.series.name == "완료"){
+//                            	 backgroundColor = "#00BFFF";
+//                             }
                              totalCount += v.y;
                              valueStr += "<li class='p1'><span style='background:" + backgroundColor + "; width:9px; height:9px; margin:0 3px 1px 0; vertical-align:middle; display:inline-block;'></span><span style='font-family: Helvetica,Arial,sans-serif; color: #c5d0ec;'>" + v.series.name + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + v.y + "</b></li>";
                 		}

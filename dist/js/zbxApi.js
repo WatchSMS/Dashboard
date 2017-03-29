@@ -194,7 +194,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            console.log("getHistory data : " + data);
+            //console.log("getHistory data : " + data);
             //console.log(data);
 
             return resultToArray(data.result);
@@ -212,7 +212,6 @@ var zbxApi = {
         },
         success: function (data) {
             console.log("getHistory data : " + data);
-            //console.log(data);
             return data;
         }
     },

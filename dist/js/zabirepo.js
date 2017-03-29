@@ -102,6 +102,14 @@ var int = {
             //zbxApi.getHost.success(data);
             //zbxApi.getItem.success(data);
         }).then(function(data) {
+        	$("#content-0, #content-1").mCustomScrollbar({
+        		theme:"light-3",
+        		scrollButtons:{enable:true}
+        	});
+
+        	$("body").mCustomScrollbar({
+        		theme:"minimal"
+        	});		
             hostInfoView(); //host 정보 호출
         });
     },

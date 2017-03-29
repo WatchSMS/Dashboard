@@ -2,9 +2,7 @@ function dashboardView(){
     $.blockUI(blockUI_opt_all);
     offTimer();
     removeAllChart();
-
-    $(".info-box-content").block(blockUI_opt_el);
-
+    
     //이벤트 현황
     dashboardEventStatus();
 

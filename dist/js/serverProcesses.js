@@ -37,15 +37,15 @@ var procUsageView = function(hostid, startTime) {
             }else{
             	ProcessTableHTML += "<tr id='" + v.procName + "' class='h34 optionrow' style='display:none;'>";
             }
-            ProcessTableHTML += "<td width='245' class='text-left align_left line sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
-            ProcessTableHTML += "<td width='200' class='line percent-text sorting_3'>" + procCpuValue + "</td>";
-            ProcessTableHTML += "<td width='200' class='line percent-text pr-none sorting_2'>" + procMemValue + "<span class='smaller'></span></td>";
-            ProcessTableHTML += "<td width='auto' class='br7_rt pr-none text-center'>" + v.procCnt + "</td>";
+            ProcessTableHTML += "<td width='30%' class='align_left line sorting_1'><span class='ellipsis' title='" + v.procName + "'>" + v.procName + "</span></td>";
+            ProcessTableHTML += "<td width='25%' class='line percent-text sorting_3'>" + procCpuValue + "</td>";
+            ProcessTableHTML += "<td width='25%' class='line percent-text pr-none sorting_2'>" + procMemValue + "<span class='smaller'></span></td>";
+            ProcessTableHTML += "<td width='20%' class='br7_rt pr-none text-center'><span class='line'>" + v.procCnt + "</span></td>";
             ProcessTableHTML += "</tr>";
         }
     });
 
-    ProcessTableHTML += "<tr id='lastrow' isopen='false' role='row'><td colspan='4' style='text-align: center;'><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
+    ProcessTableHTML += "<tr id='lastrow' class='h34' width='100%' isopen='false' role='row'><td colspan='4' style='text-align: center;'><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
     ProcessTableHTML += "</tbody>";
     
     $("#detailedProcTime").text(lastClockForProcessTable);
@@ -82,7 +82,7 @@ var procUsageView = function(hostid, startTime) {
  		   onLoad: function() { 
  		       $('#proc_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
  		   },
- 		   overlayCSS:{background: 'white', opacity: .8} 
+ 		   overlayCSS:{background: '#51597E', opacity: .8} 
         });
     });
 
