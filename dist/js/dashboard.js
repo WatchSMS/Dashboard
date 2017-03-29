@@ -188,8 +188,8 @@ function dashboardHostEvent(hostEvent){
         var dashboardHostEventHTML = "<tr class='p1'>";
         dashboardHostEventHTML += "<td width='40px' height='70px' class='br7_lt line-td'>" + hostNum + "</td>";
         dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='50px' id='eventCnt_'" + hostid + " height='70px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' height='70px' class='br7_rt'><div id='hostChart"+hostNum+"' style='width: 500px; height:70px; padding: 0 0 0 0;'></div></td>";
+        dashboardHostEventHTML += "<td width='50px' id='eventCnt_" + hostid + "' height='70px' class='line-td'>" + hostEventCnt + "</td>";
+        dashboardHostEventHTML += "<td width='auto' height='70px' class='br7_rt'><div id='hostChart" + hostNum + "' style='width: 500px; height:70px; padding: 0 0 0 0;'></div></td>";
         dashboardHostEventHTML += "</tr>";
         $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
 
@@ -223,7 +223,7 @@ function dashboardHostEvent(hostEvent){
         showLineChart('hostChart'+(k+1), hostDataSet, ['#a2adcc']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent, endTime); }, 10000));
+    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent); }, 10000));
 }
 
 function dashboardEventList(dashboard_Event) {
@@ -1015,39 +1015,32 @@ function dashboardWeekTopEvent(){
 
 }
 
-function addHostEventList(hostEvent, endTime){
+function addHostEventList(hostEvent){
     console.log(" addHostEventList ");
 
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
-    var beforeTime = date.getTime() - DAYTOMILLS;
-
-    var addStartTime = endTime;
-    console.log("addHostEventList addStartTime : " + addStartTime);
+    var addStartTime = date.getTime() - DAYTOMILLS;
     var addEndTime = date.getTime();
+    addStartTime = parseInt(addStartTime / 1000);
     addEndTime = parseInt(addEndTime / 1000);
-    console.log("addHostEventList addEndTime : " + addEndTime);
+    //console.log(" addStartTime : " + addStartTime + " addEndTime : " + addEndTime);
 
-    var addEventCnt = 0;
+    var addHostNum = 0;
+    var addHostid = '';
+    var addHostCnt = 0;
     var addEventList = '';
 
-    var addDashboardEvent = '';
-
-    var addDataObj = new Object();
-    var addDataSet = [];
-
-    $("#hostEventList").append(addDashboardEvent);
-
     $.each(hostEvent.result, function(k, v){
-        var hostid = v.hostid;
-        var addEventList = [];
+        var addDataSet = [];
+        var addDataObj = new Object();
 
-        addEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, addEndTime);
-        addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, hostid);
+        addHostid = v.hostid;
+        addHostCnt = zbxSyncApi.alerthostTrigger(addHostid, addStartTime, addEndTime);
+        //console.log(" addHostid : " + addHostid + " addHostCnt : " + addHostCnt);
+        addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, addHostid);
 
-        $("#eventCnt_" + hostid).html(addEventCnt);
-        //id='hostChart"+hostNum+"'
-        var addDataArr = new Array();
+        var addDataArr = new Array(24);
         try {
             if(addEventList[0] == undefined){
                 return true;
@@ -1064,18 +1057,17 @@ function addHostEventList(hostEvent, endTime){
                     }
                 }
                 addDataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
-                chart3.series[0].addPoint([v[0], v[1]]);
             }
         } catch (e) {
             console.log(e);
         }
 
-        /*addDataObj = new Object();
+        var addDataObj = new Object();
         addDataObj.name = "hostEvent";
         addDataObj.data = addDataArr;
         addDataSet.push(addDataObj);
 
-        showLineChart('hostChart'+(k+1), addDataSet, ['#a2adcc']);*/
-
+        showLineChart('hostChart'+(k+1), addDataSet, ['#a2adcc']);
+        $("#eventCnt_" + addHostid).html(addHostCnt);
     });
 }
