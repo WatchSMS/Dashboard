@@ -1018,7 +1018,10 @@ function dashboardWeekTopEvent(){
 function addHostEventList(hostEvent, endTime){
     console.log(" addHostEventList ");
 
+    var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
+    var beforeTime = date.getTime() - DAYTOMILLS;
+
     var addStartTime = endTime;
     console.log("addHostEventList addStartTime : " + addStartTime);
     var addEndTime = date.getTime();
@@ -1039,7 +1042,7 @@ function addHostEventList(hostEvent, endTime){
         var hostid = v.hostid;
         var addEventList = [];
 
-        addEventCnt = zbxSyncApi.alerthostTrigger(hostid, addStartTime, addEndTime);
+        addEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, addEndTime);
         addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, hostid);
 
         $("#eventCnt_" + hostid).html(addEventCnt);
