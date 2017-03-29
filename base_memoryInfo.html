@@ -1,18 +1,13 @@
 <section class="content">  
 
-			<div id='memChildProcessContent' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E; width:982px; opacity:1; height:50%;">
+			<div id='memChildProcessContent' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #c1c7ce;width:982px; opacity:1; height:50%;">
 				<strong style="font-size: 18px">상세 프로세스 - </strong><strong id="memDetailProcTitle" style="font-size: 18px"></strong><br><br>
-				<section id="in-scl">
-				<div id="content-1" class="br7 content_in" style="height:80%;">
-					<table id="memChildProcTbl" class="table1" style="width:100%;"></table>
-					<!-- <div id="memChildProcTbl" style="overflow:auto; height:80%;"></div>  -->
-				</div>
-				</section>
+				<div id="memChildProcTbl" style="overflow:auto; height:80%;"></div>
 				<span><a onclick="$('#memChildProcessContent').trigger('close'); return false;" href="#none">확인</a></span> 
 			</div> 
 			
-			<div id='mem_time_content' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E; width:px; opacity:1;">
-				<input type="number" id="mem_timeInput" placeholder="시간" name="" maxlength="10" value="" class="inpTxt t_left" title="" style="width:300px; border:3px solid #51597E; background: #626992;"/>
+			<div id='mem_time_content' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #c1c7ce; opacity:1;">
+				<input type="number" id="mem_timeInput" placeholder="시간" name="" maxlength="10" value="" class="inpTxt t_left" title="" style="width:300px; background: #626992;"/>
 				<span><a onclick="$('#mem_time_content').trigger('close'); javascript:resetMemChartTime();" class="btn">확인</a></span> 
 				<span><a onclick="$('#mem_time_content').trigger('close'); return false;" class="btn">취소</a></span> 
 			</div>

@@ -202,8 +202,7 @@ function reloadChartForMemUsage(hostid){
     var history_MemPused = null;
     var history_SwapMemPused = null;
     
-    var startTime_memPused = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
-    var startTime_swapMemPused = Math.round((chart1.series[1].xData[(chart1.series[1].xData.length)-1]) / 1000) + 1;
+    var startTime = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
     
     zbxApi.getItem.get(hostid,"vm.memory.size[pused]").then(function(data) {
     	data_MemPused = zbxApi.getItem.success(data);
@@ -214,23 +213,21 @@ function reloadChartForMemUsage(hostid){
     }).then(function(data) {
     	data_SwapMemPused = zbxApi.getItem.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(data_MemPused.result[0].itemid, startTime_memPused, HISTORY_TYPE.FLOAT);
+        return zbxApi.getHistory.get(data_MemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
         
     }).then(function(data) {
     	history_MemPused = zbxApi.getHistory.success(data);
     	$.each(history_MemPused, function(k,v) {
     		chart1.series[0].addPoint([v[0], v[1]]);
-    		chart1.series[0].data[0].remove();
         });
     	
     }).then(function() {
-        return zbxApi.getHistory.get(data_SwapMemPused.result[0].itemid, startTime_swapMemPused, HISTORY_TYPE.FLOAT);
+        return zbxApi.getHistory.get(data_SwapMemPused.result[0].itemid, startTime, HISTORY_TYPE.FLOAT);
 
     }).then(function(data) {
     	history_SwapMemPused = zbxApi.getHistory.success(data);
     	$.each(history_SwapMemPused, function(k,v) {
     		chart1.series[1].addPoint([v[0], v[1]]);
-    		chart1.series[1].data[0].remove();
         });
         
         console.log("data adding..");
@@ -247,10 +244,7 @@ function reloadChartForMemTotal(hostid){
     var history_MemCached = null;
     var history_MemUsed = null;
     
-    var startTime_memBuffers = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
-    var startTime_memCached = Math.round((chart2.series[1].xData[(chart2.series[1].xData.length)-1]) / 1000) + 1;
-    var startTime_memUsed = Math.round((chart2.series[2].xData[(chart2.series[2].xData.length)-1]) / 1000) + 1;
-    
+    var startTime = Math.round((chart2.series[0].xData[(chart2.series[0].xData.length)-1]) / 1000) + 1;
     
     zbxApi.getItem.get(hostid,"vm.memory.size[buffers]").then(function(data) {
     	data_MemBuffers = zbxApi.getItem.success(data);
@@ -266,33 +260,30 @@ function reloadChartForMemTotal(hostid){
     }).then(function(data) {
     	data_MemUsed = zbxApi.getItem.success(data);
     }).then(function() {
-        return zbxApi.getHistory.get(data_MemBuffers.result[0].itemid, startTime_memBuffers, HISTORY_TYPE.UNSIGNEDINT);
+        return zbxApi.getHistory.get(data_MemBuffers.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
         
     }).then(function(data) {
     	history_MemBuffers = zbxApi.getHistory.success(data);
     	$.each(history_MemBuffers, function(k,v) {
     		chart2.series[0].addPoint([v[0], v[1]]);
-    		chart2.series[0].data[0].remove();
         });	   	
     	
     }).then(function() {
-        return zbxApi.getHistory.get(data_MemCached.result[0].itemid, startTime_memCached, HISTORY_TYPE.UNSIGNEDINT);
+        return zbxApi.getHistory.get(data_MemCached.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
 
     }).then(function(data) {
     	history_MemCached = zbxApi.getHistory.success(data);
     	$.each(history_MemCached, function(k,v) {
     		chart2.series[1].addPoint([v[0], v[1]]);
-    		chart2.series[1].data[0].remove();
         });	
         
     }).then(function() {
-        return zbxApi.getHistory.get(data_MemUsed.result[0].itemid, startTime_memUsed, HISTORY_TYPE.UNSIGNEDINT);
+        return zbxApi.getHistory.get(data_MemUsed.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
         
     }).then(function(data) {
     	history_MemUsed = zbxApi.getHistory.success(data);
     	$.each(history_MemUsed, function(k,v) {
     		chart2.series[2].addPoint([v[0], v[1]]);
-    		chart2.series[2].data[0].remove();
         });	
     	
     });
@@ -379,7 +370,7 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
 	   			   onLoad: function() { 
 	   			       $('#memChildProcessContent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
 	   			   },
-	   			   overlayCSS:{background: '#474f79', opacity: .8} 
+	   			   overlayCSS:{background: 'white', opacity: .8} 
 	          	});
         	 }
          });
@@ -395,7 +386,7 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
  		   onLoad: function() { 
  		       $('#memChildProcessContent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
  		   },
- 		   overlayCSS:{background: '#474f79', opacity: .8} 
+ 		   overlayCSS:{background: 'white', opacity: .8} 
       });
     });
     
