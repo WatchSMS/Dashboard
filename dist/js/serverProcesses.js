@@ -2,7 +2,6 @@ var procUsageView = function(hostid, startTime) {
 
     $.blockUI(blockUI_opt_all);
     
-    var topProcessLastClock = null;
     var ProcessTableHTML = '';
     var INIT_PROCCOUNT = 17;
     var MAX_PROCCOUNT = 30;
@@ -120,8 +119,7 @@ var procUsageView = function(hostid, startTime) {
                 });
                 currentThObj.removeClass("sorting_asc").addClass("sorting_desc");
             }
-            console.log("MAX_PROCCOUNT : " + MAX_PROCCOUNT);
-            console.log("INIT_PROCCOUNT : " + INIT_PROCCOUNT);
+
             for(var i=0; i<MAX_PROCCOUNT; i++){
             	
             	 if($('tr#lastrow').attr('isopen') == 'false'){
@@ -160,7 +158,6 @@ var procUsageView = function(hostid, startTime) {
     
     
     $("#reload_procTableList").off().on('click', function(){
-    	console.log("click!");
     	var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
         $.blockUI(blockUI_opt_all);
         procUsageView(currentHostId, startTime);
