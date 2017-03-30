@@ -247,6 +247,23 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -402,6 +419,23 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -552,6 +586,23 @@ function hostDetailChartMemory(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -696,6 +747,23 @@ function hostDetailChartCPU(chartId, chartTitle, dataSet, unit, colorArr){
                         $("#"+chartId).unblock(blockUI_opt_el);
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
+                    }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -842,6 +910,23 @@ function hostDetailChartDisk(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -987,6 +1072,23 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
                     }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -1104,9 +1206,9 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
     });
 }
 
-function showLineChart(chartId, dataSet, colorArr){
-    $(function() {
-        Highcharts.chart(chartId, {
+function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
+    $(function () {
+        chart2 = new Highcharts.Chart(chartId, {
             exporting: {
                 buttons: {
                     contextButton: {
@@ -1122,6 +1224,7 @@ function showLineChart(chartId, dataSet, colorArr){
             chart: {
                 animation: false,
                 backgroundColor: '#424973',
+                height: 70,
                 //type: 'area'
                 zoomType: 'x',
                 events: {
@@ -1129,6 +1232,23 @@ function showLineChart(chartId, dataSet, colorArr){
                         $("#"+chartId).unblock(blockUI_opt_el);
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
+                    }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -1188,20 +1308,30 @@ function showLineChart(chartId, dataSet, colorArr){
                     formatter: function () {
                     }
                 },
-                min: 0
+                min: 0,
+                max: 10
             },
             tooltip: {
                 formatter: function () {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
                     var minutes = "" + d2.getMinutes();
+                    var seconds = "" + d2.getSeconds();
+
                     if(hours.length==1){
                         hours = "0" + hours;
                     }
                     if(minutes.length==1){
                         minutes = "0" + minutes;
                     }
-                    return "시간 : " + hours + ":" + minutes + ", 값 : " + this.y;
+                    if(seconds.length==1){
+                        seconds = "0" + seconds;
+                    }
+                    if(unit == "MB"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else{
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                    }
                 }
             },
             plotOptions: {
@@ -1219,16 +1349,16 @@ function showLineChart(chartId, dataSet, colorArr){
             },
             series: dataSet
         });
-        /*
-         Highcharts.Point.prototype.highlight = function (event) {
-         //this.onMouseOver(); // Show the hover marker
-         this.series.chart.tooltip.refresh(this); // Show the tooltip
-         this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-         };
 
-         Highcharts.Pointer.prototype.reset = function () {
-         return undefined;
-         };*/
+        Highcharts.Point.prototype.highlight = function (event) {
+            //this.onMouseOver(); // Show the hover marker
+            this.series.chart.tooltip.refresh(this); // Show the tooltip
+            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+        };
+
+        Highcharts.Pointer.prototype.reset = function () {
+            return undefined;
+        };
     });
 }
 
@@ -1251,26 +1381,12 @@ function syncExtremes(e) {
     }
 }
 
-function syncXAxis(e) {
-    var thisAxis = this;
-    var thisChart = e.currentTarget.chart;
-
-    Highcharts.each(Highcharts.charts, function (chart) {
-        if (chart && chart !== thisChart) {
-            var currentAxis = chart.get(thisAxis.options.id);
-            currentAxis.setExtremes(e.min, e.max);
-        }
-    });
-}
-
 var offTimer = function(){
     $.each(TIMER_ARR, function(k,v){
         clearInterval(v);
     });
     TIMER_ARR = [];
 }
-
-
 
 var removeAllChart = function(){
 
@@ -1290,6 +1406,9 @@ var callApiForProcessTable = function(hostid){
 
 var sortProcess = function(data_topProcess, sortField){
 
+    if(data_topProcess.lastclock == "0"){
+        return;
+    }
     var topProcRowArr = data_topProcess.lastvalue.split("\n"); //각 행들의 집합
     var procUniqueName = [];
     var procNameOrderByCpu = [];
@@ -1329,7 +1448,12 @@ var sortProcess = function(data_topProcess, sortField){
     });
 
     // 프로세스명 중복 제거 후, 프로세스 별 cpu 합 초기화
-    procUniqueName = $.unique(procNameOrderByCpu);
+    $.each(procNameOrderByCpu, function(k,v){
+        if(procUniqueName.indexOf(v) == -1){
+            procUniqueName.push(v);
+        }
+    });
+
     var procUniqueObj = null;
     var procTotalArr = [];
     $.each(procUniqueName, function(k,v){
@@ -1373,7 +1497,6 @@ var sortProcess = function(data_topProcess, sortField){
 
     return procTotalArr;
 }
-
 
 var viewMoreProcess = function(){
     $('tr#lastrow').off().on('click',function(){
@@ -1469,7 +1592,24 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
             chart: {
                 backgroundColor: 'transparent',
                 type: 'scatter',
-                zoomType: 'xy'
+                zoomType: 'xy',
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
+                    }
+                }
             },
             title: {
                 text: ""
@@ -1526,7 +1666,7 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 //                    	var hours = d.getHours();
 //                    	var minutes = d.getMinutes();
 //                    	var seconds = d.getSeconds();
-//                    	
+//
 //                    	return month + "/" + date + "  " + hours + ":" + minutes + ":" + seconds;
 
 //                    	return this.value;
@@ -1678,6 +1818,23 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                         $("#"+chartId).unblock(blockUI_opt_el);
                         console.log("loaded");
                         console.log(Highcharts.charts.length);
+                    }
+                },
+                resetZoomButton: {
+                    theme: {
+                        fill: '#323c60', //'#3d476b',
+                        r: 5,
+                        style: {
+                            color: '#c5d0ec'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#1e282c',
+                                style: {
+                                    color: '#c5d0ec'
+                                }
+                            }
+                        }
                     }
                 }
             },

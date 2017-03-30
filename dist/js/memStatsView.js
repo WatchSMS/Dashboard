@@ -304,38 +304,40 @@ var showMemProcessTable = function(finalProcArr, topProcessLastTime){
     var processGaugeValue;
     var memProcessTbl = '';
     var MAX_PROCCOUNT = 24;
+    if(typeof finalProcArr == "undefined"){
+        memProcessTbl += "수집된 데이터가 없습니다.";
+    }else{
+        memProcessTbl += "<tbody>";
 
-    memProcessTbl += "<tbody>";
+        $.each(finalProcArr, function(k,v) {
+            if(k<MAX_PROCCOUNT){
+                var procName = v.procName;
+                var processPercentValue = v.totalMemVal.toFixed(1);
 
-    $.each(finalProcArr, function(k,v) {
-        if(k<MAX_PROCCOUNT){
-            var procName = v.procName;
-            var processPercentValue = v.totalMemVal.toFixed(1);
+                if(k==0){
+                    maxRefValue = processPercentValue;
+                    processGaugeValue = 100;
+                }else{
+                    processGaugeValue = (processPercentValue * 100) / maxRefValue;
+                }
 
-            if(k==0){
-                maxRefValue = processPercentValue;
-                processGaugeValue = 100;
-            }else{
-                processGaugeValue = (processPercentValue * 100) / maxRefValue;
+                if(k< (MAX_PROCCOUNT-10)){
+                    memProcessTbl += "<tr class='h35'>";
+                }else{
+                    memProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
+                }
+                memProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
+                memProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName +" " + processPercentValue + "%</div>";
+                memProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
+                memProcessTbl += "</td>";
+                memProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
+                memProcessTbl += "<td style='display:none' title='" + v.childMem + "'></td>";
+                memProcessTbl += "</tr>";
             }
-
-            if(k< (MAX_PROCCOUNT-10)){
-                memProcessTbl += "<tr class='h35'>";
-            }else{
-                memProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
-            }
-            memProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
-            memProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName +" " + processPercentValue + "%</div>";
-            memProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
-            memProcessTbl += "</td>";
-            memProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
-            memProcessTbl += "<td style='display:none' title='" + v.childMem + "'></td>";
-            memProcessTbl += "</tr>";
-        }
-    });
-    memProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
-    memProcessTbl += "</tbody>";
-
+        });
+        memProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
+        memProcessTbl += "</tbody>";
+    }
 
     $("#memProcessTime").children().eq(0).text(topProcessLastTime);
     $("#memProcess").empty();

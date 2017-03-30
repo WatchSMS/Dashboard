@@ -179,22 +179,6 @@ var zbxApi = {
         }
     },
 
-    checkItem: {
-        get: function (hostId, key_) {
-            var method = "item.get";
-            var params = {
-                "host": hostId,
-                "search": {"key_": key_}
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("getHistory data : " + data);
-            //console.log(data);
-            return data;
-        }
-    },
-
     getHistory: {
         get: function (itemId, startTime, type) {
             var method = "history.get";
@@ -210,6 +194,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            //console.log("getHistory data : " + data);
             //console.log(data);
 
             return resultToArray(data.result);
@@ -232,6 +217,22 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
+            return data;
+        }
+    },
+
+    checkItem: {
+        get: function (hostId, key_) {
+            var method = "item.get";
+            var params = {
+                "host": hostId,
+                "search": {"key_": key_}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getHistory data : " + data);
+            //console.log(data);
             return data;
         }
     },
@@ -318,6 +319,29 @@ var zbxApi = {
             $.each(data.result, function (k, v) {
                 console.log("host JSON > " + JSON.stringify(v));
                 console.log("host > " + v.hostid + ", " + v.host + ", " + v.interfaces[0].ip);
+            });
+            return data;
+        }
+    },
+
+    getNetworkItem: {
+        get: function (hostid, key_) {
+            var method = "item.get";
+            var params = {
+                "output": ["key_", "itemid", "lastclock"],
+                "hostids": hostid,
+                "search": {"key_": key_}
+                //"search": {"key_": "net.if.in["}
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            console.log("getNetworkItem");
+            console.log("getItem data : " + JSON.stringify(data));
+
+            $.each(data.result, function (k, v) {
+                console.log(JSON.stringify(v));
+                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
             });
             return data;
         }

@@ -219,38 +219,41 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
     var processGaugeValue;
     var cpuProcessTbl = '';
     var MAX_PROCCOUNT = 24;
-    cpuProcessTbl += "<tbody>";
+    if(typeof finalProcArr == "undefined"){
+        cpuProcessTbl += "수집된 데이터가 없습니다.";
+    }else {
+        cpuProcessTbl += "<tbody>";
 
-    $.each(finalProcArr, function(k,v) {
-        if(k<MAX_PROCCOUNT){
-            var procName = v.procName;
-            var processPercentValue = v.totalCpuVal.toFixed(1);
+        $.each(finalProcArr, function (k, v) {
+            if (k < MAX_PROCCOUNT) {
+                var procName = v.procName;
+                var processPercentValue = v.totalCpuVal.toFixed(1);
 
-            if(k==0){
-                maxRefValue = processPercentValue;
-                processGaugeValue = 100;
-            }else{
-                processGaugeValue = (processPercentValue * 100) / maxRefValue;
+                if (k == 0) {
+                    maxRefValue = processPercentValue;
+                    processGaugeValue = 100;
+                } else {
+                    processGaugeValue = (processPercentValue * 100) / maxRefValue;
+                }
+
+                if (k < (MAX_PROCCOUNT - 10)) {
+                    cpuProcessTbl += "<tr class='h35'>";
+                } else {
+                    cpuProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
+                }
+                cpuProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
+                cpuProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName + " " + processPercentValue + "%</div>";
+                cpuProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
+                cpuProcessTbl += "</td>";
+                cpuProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
+                cpuProcessTbl += "<td style='display:none' title='" + v.childCpu + "'></td>";
+                cpuProcessTbl += "</tr>";
             }
+        });
+        cpuProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
+        cpuProcessTbl += "</tbody>";
 
-            if(k< (MAX_PROCCOUNT-10)){
-                cpuProcessTbl += "<tr class='h35'>";
-            }else{
-                cpuProcessTbl += "<tr class='h35 optionrow' style='display:none;'>";
-            }
-            cpuProcessTbl += "<td width='170' class='align_left pl10 pr10'>";
-            cpuProcessTbl += "<div class='fl mt2 mr5 f11' title='" + procName + "'>" + procName +" " + processPercentValue + "%</div>";
-            cpuProcessTbl += "<div class='scw br3'><div class='mt2 bg8 br3' style='width: " + processGaugeValue + "%; height:5px;'></div></div>";
-            cpuProcessTbl += "</td>";
-            cpuProcessTbl += "<td style='display:none' title='" + v.childName + "'></td>";
-            cpuProcessTbl += "<td style='display:none' title='" + v.childCpu + "'></td>";
-            cpuProcessTbl += "</tr>";
-        }
-    });
-    cpuProcessTbl += "<tr id='lastrow' isopen='false' class='h35'><td><span class='ellipsis'>[ 더 보기 ]</span></td></tr>";
-    cpuProcessTbl += "</tbody>";
-
-
+    }
     $("#cpuProcessTime").children().eq(0).text(topProcessLastTime);
     $("#cpuProcess").empty();
     $("#cpuProcess").append(cpuProcessTbl);

@@ -108,10 +108,7 @@ function dashboardView(){
         }
     });
 
-    TIMER_ARR.push(setInterval(function(){
-        addEventAckChart();
-        dashboardEventStatus();
-    }, 10000));
+    TIMER_ARR.push(setInterval(function(){ addEventAckChart(); dashboardEventStatus(); }, 10000));
 }
 
 function dashboardEventStatus(){
@@ -177,6 +174,7 @@ function dashboardHostEvent(hostEvent){
     $("#hostEventList").append(dashboardHostEventTbody);
 
     $.each(hostEvent.result, function(k, v){
+        var hostDataObj = new Object();
         var hostDataSet=[];
         //console.log(" " + v.name + " 아이우에오 " + v.hostid);
         hostNum += 1;
@@ -220,7 +218,7 @@ function dashboardHostEvent(hostEvent){
         hostDataObj.data = dataArr;
         hostDataSet.push(hostDataObj);
 
-        showLineChart('hostChart'+(k+1), hostDataSet, ['#a2adcc']);
+        showLineChart('hostChart'+(k+1), "hostEvent", hostDataSet, "", ['#a2adcc']);
     });
 
     TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent); }, 10000));
@@ -731,40 +729,38 @@ function dashboardEventAckChart() {
     });
 }
 
+
 function addEventAckChart(){
-
-    zbxApi.getEvent.getById(lastAckEventId).then(function(data) {
-        console.log("lastAckEventId : " + lastAckEventId);
-        console.log("ack Data Adding ..");
-        console.log(data);
-        eventArr = data.result;
-        $.each(eventArr, function(k,v){
-            if(v.acknowledged == "1"){
-                //dash_eventAckChart.series[0].addPoint([v[0], v[1]]);
-
-                var eventAckTime =  new Date(parseInt(v.acknowledges[0].clock) * 1000);
-                var eventCreateTime =  new Date(parseInt(v.clock) * 1000);
-
-                var ackObj = new Object();
-                ackObj.x = parseInt(v.acknowledges[0].clock) * 1000;
-                ackObj.y = eventAckTime-eventCreateTime;
-                ackObj.host = v.hosts[0].host;
-                ackObj.description = v.relatedObject.description;
-                ackObj.type = "ack";
-
-                if(v.relatedObject.priority == 2){
-                    ackObj.priority = "Warning";
-                }else if(v.relatedObject.priority == 4){
-                    ackObj.priority = "High";
-                }
-                lastAckEventId = v.eventid;
-                console.log("lastAckEventId : " + lastAckEventId);
-                //ackArr.push(ackObj);
-                dash_eventAckChart.series[0].addPoint(ackObj);
-
-            }
-        });
-    });
+    /*
+     zbxApi.getEvent.getById(lastAckEventId).then(function(data) {
+     console.log("lastAckEventId : " + lastAckEventId);
+     console.log("ack Data Adding ..");
+     console.log(data);
+     eventArr = data.result;
+     $.each(eventArr, function(k,v){
+     if(v.acknowledged == "1"){
+     //dash_eventAckChart.series[0].addPoint([v[0], v[1]]);
+     var eventAckTime =  new Date(parseInt(v.acknowledges[0].clock) * 1000);
+     var eventCreateTime =  new Date(parseInt(v.clock) * 1000);
+     var ackObj = new Object();
+     ackObj.x = parseInt(v.acknowledges[0].clock) * 1000;
+     ackObj.y = eventAckTime-eventCreateTime;
+     ackObj.host = v.hosts[0].host;
+     ackObj.description = v.relatedObject.description;
+     ackObj.type = "ack";
+     if(v.relatedObject.priority == 2){
+     ackObj.priority = "Warning";
+     }else if(v.relatedObject.priority == 4){
+     ackObj.priority = "High";
+     }
+     lastAckEventId = v.eventid;
+     console.log("lastAckEventId : " + lastAckEventId);
+     //ackArr.push(ackObj);
+     dash_eventAckChart.series[0].addPoint(ackObj);
+     }
+     });
+     });
+     */
 }
 
 function dashboardWeekTopEvent(){
@@ -1067,7 +1063,7 @@ function addHostEventList(hostEvent){
         addDataObj.data = addDataArr;
         addDataSet.push(addDataObj);
 
-        showLineChart('hostChart'+(k+1), addDataSet, ['#a2adcc']);
+        showLineChart('hostChart'+(k+1), "hostEvent", addDataSet, "", ['#a2adcc']);
         $("#eventCnt_" + addHostid).html(addHostCnt);
     });
 }
