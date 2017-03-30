@@ -11,16 +11,7 @@
         <div class="d1">
             <img src="dist/img/tit_sbl11.gif">
             <div class="pull-right">
-                <div>
-                    <div class="ranges">
-                        <button type="button" id="btn_disk" class="btn btn_etc" style="background-color: #424973" data-range="custom">기타</button>
-                        <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="24">24시간</button>
-                        <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="12">12시간</button>
-                        <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="6">6시간</button>
-                        <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="3">3시간</button>
-                        <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="1">1시간</button>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -38,7 +29,7 @@
             </table>
 
             <div class="h645 br7_b" style="width:100%">
-                <section id="in-scl" class="h616">
+                <section id="in-scl" class="h650">
                     <div id="content-1" class="br7 content_in">
                         <table class="table1" style="width:100%;" id="diskInfoTable">
                         </table>
@@ -49,6 +40,25 @@
     </div>
 
     <div class="content-right2 pt50">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="range-selector">
+                    <div>
+                        <div class="ranges">
+                            <button type="button" id="btn_disk" class="btn btn_etc" style="background-color: #424973" data-range="custom">기타</button>
+                            <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="24">24시간</button>
+                            <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="12">12시간</button>
+                            <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="6">6시간</button>
+                            <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="3">3시간</button>
+                            <button type="button" id="btn_disk" class="btn" style="background-color: #424973" data-range="hr" value="1">1시간</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
         <section class="sec-inbox br7">
             <table class="table_tool">
                 <thead>
@@ -79,7 +89,8 @@
                 </thead>
             </table>
 
-            <div class="graph_sub1 h310">
+            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : %)</div>
+            <div class="graph_sub1 h247">
                 <div id="chart_diskIo" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
             </div>
         </section>
@@ -116,7 +127,8 @@
                 </thead>
             </table>
 
-            <div class="graph_sub1 h310">
+            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : %)</div>
+            <div class="graph_sub1 h247">
                 <div id="chart_diskUse" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
             </div>
 

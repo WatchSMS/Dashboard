@@ -241,6 +241,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 //type: 'area'
                 renderTo: chartId,
                 zoomType: 'x',
+                height: 247,
                 events: {
                     load: function(event) {
                         $("#"+chartId).unblock(blockUI_opt_el);
@@ -413,6 +414,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                 backgroundColor: 'transparent',
                 type: 'area',
                 zoomType: 'x',
+                height: 247,
                 events: {
                     load: function(event) {
                         $("#"+chartId).unblock(blockUI_opt_el);
