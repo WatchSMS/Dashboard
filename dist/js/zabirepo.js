@@ -108,6 +108,11 @@ var int = {
                 scrollButtons:{enable:true}
             });
 
+            $("#event_content-0").mCustomScrollbar({
+                theme:"light-3",
+                scrollButtons:{enable:true}
+            });
+
             $("body").mCustomScrollbar({
                 theme:"minimal"
             });
