@@ -1,4 +1,22 @@
 <section class="content">
+
+	<div id='ackDetailForm' style="background:#323c60; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E;width:40%; opacity:1; height:50%;">
+		<strong style="font-size: 18px">이벤트 인지 확인</strong><strong id="detailProcessTitle" style="font-size: 18px"></strong><br><br>
+		<section id="in-scl">
+			<div id="content-1" class="br7 content_in" style="height:80%; background:#323c60; vertical-align:baseline;">
+				메세지<textarea id="ackMsg" rows="7" style="width: 524px; background:#3d476b;" maxlength="255" autofocus="autofocus"></textarea>
+				<table id="childProcTbl" class="table1" style="width:100%;">
+					<tr>
+						<td>메세지</td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+		</section>
+		<span><a onclick="$('#ackDetailForm').trigger('close');" href="#none">인지</a></span>
+		<span><a onclick="$('#ackDetailForm').trigger('close'); return false;" href="#none">취소</a></span>
+	</div>
+
 	<div class="content-header">
 		<div class="d1">
 			<img src="dist/img/tit_bbl01.gif">
@@ -112,9 +130,8 @@
                             </td>
                         </tr>
 
-                        </tbody>-->
-					</table>
-				</div>
+                    </tbody>-->
+				</table>
 			</div>
 		</section>
 	</div>
@@ -152,6 +169,11 @@
 		<div class="d4">
 
 			<div class="s1">
+				<li class="p1">
+					<span class="o1"></span>
+					<span class="e1">
+						<a onclick="chartLegendItemClick(0,'chart_dayEvent', this);" href="#none">information</a></span>
+				</li>
 				<li class="p1">
 					<span class="o2"></span>
 					<span class="e1">

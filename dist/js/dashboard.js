@@ -272,9 +272,9 @@ function dashboardEventList(dashboard_Event) {
         eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
         eventTable += "<td width='75' class='line'>" + age + "</td>";
         if(ack == "미인지"){
-            eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+            eventTable += "<td width='69' class='line' style='color:red'><a onclick='eventAckDetailView();' href='#none'>" + ack + "</a></td>";
         } else if(ack = "인지"){
-            eventTable += "<td width='69' class='line'>" + ack + "</td>";
+            eventTable += "<td width='69' class='line'><a onclick='eventAckDetailView();' href='#none'>" + ack + "</a></td>";
         }
         eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
         eventTable += "<td width='100' class='line'>" + host + "</td>";
@@ -286,6 +286,22 @@ function dashboardEventList(dashboard_Event) {
     eventTable += "</tbody>";
     $("#dashboardEventList").empty();
     $("#dashboardEventList").append(eventTable);
+}
+
+function eventAckDetailView(){
+	
+	console.log("ahahahahahahah chakchak");
+
+	$('#ackDetailForm').lightbox_me({
+        centered: true,
+        closeSelector: ".close",
+        onLoad: function() {
+            $('#ackDetailForm').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+        },
+        overlayCSS:{background: '#474f79', opacity: .8}
+    });
+    
+	
 }
 
 function dashboardDayEvent(){

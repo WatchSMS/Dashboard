@@ -171,7 +171,12 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
 
     var DataSet = [];
     var DataObj = new Object();
-
+    
+    console.log("/************************************************");
+    console.log(serverTraInEth0.result[0].itemid);
+    console.log(startTime);
+    console.log(HISTORY_TYPE.UNSIGNEDINT);
+    console.log("/************************************************");
     zbxApi.getHistory.get(serverTraInEth0.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         serverTraInEth0Arr = zbxApi.getHistory.success(data);
     }).then(function() {
