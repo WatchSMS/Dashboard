@@ -94,7 +94,7 @@ function generateNetworkResource(hostid, networkName, startTime){
     var networkItemKeyIn = "net.if.in[" + networkName + "]";
     var networkItemKeyOut = "net.if.out[" + networkName + "]";
     var networkItemKeyTotal = "net.if.total[" + networkName + "]";
-
+    
     var networkIn = null;
     var networkOut = null;
     var networkTotal = null;
@@ -110,7 +110,7 @@ function generateNetworkResource(hostid, networkName, startTime){
     }).then(function(data) {
         networkTotal = zbxApi.serverViewGraph.success(data);
         console.log(" networkGraph ");
-
+        
         removeAllChart();
 
         networkGraphIo(networkIn, networkOut, startTime);
@@ -166,14 +166,18 @@ function networkGraphTotal(networkTotal, startTime){
 
     zbxApi.getNetworkHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
         networkTotalArr = zbxApi.getNetworkHistory.success(data);
-        console.log(" networkGraphTotal ");
 
         dataObj = new Object();
         dataObj.name = "TOTAL";
-        dataObj.data = networkTotalArr;
+        var dataArr = [];
+        $.each(networkTotalArr.result, function(k,v){
+        	var tmpValArr = [];
+        	tmpValArr[0] = parseInt(v.clock) * 1000;
+        	tmpValArr[1] = parseInt(v.value);
+        	dataArr.push(tmpValArr);
+        });
+        dataObj.data = dataArr;
         dataSet.push(dataObj);
-
-        console.log("dataSet : " + dataSet[0].name);
 
         showBasicLineChart('chart_trafficTotal', '트래픽TOTAL', dataSet, "%", ['#00B700']);
     })

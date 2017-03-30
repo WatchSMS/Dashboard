@@ -1,10 +1,28 @@
 <section class="content">
+	
+	<div id='ackDetailForm' style="background:#323c60; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E;width:40%; opacity:1; height:50%;">
+		<strong style="font-size: 18px">이벤트 인지 확인</strong><strong id="detailProcessTitle" style="font-size: 18px"></strong><br><br>
+		<section id="in-scl">
+			<div id="content-1" class="br7 content_in" style="height:80%; background:#323c60; vertical-align:baseline;">
+				메세지<textarea id="ackMsg" rows="7" style="width: 524px; background:#3d476b;" maxlength="255" autofocus="autofocus"></textarea>
+				<table id="childProcTbl" class="table1" style="width:100%;">
+					<tr>
+						<td>메세지</td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+		</section>
+		<span><a onclick="$('#ackDetailForm').trigger('close');" href="#none">인지</a></span>
+		<span><a onclick="$('#ackDetailForm').trigger('close'); return false;" href="#none">취소</a></span>
+	</div>
+	
 	<div class="content-header">
 		<div class="d1">
 			<img src="dist/img/tit_bbl01.gif">
 		</div>
 
-		<!--이벤트 현황 s-->
+		<!--�씠踰ㅽ듃 �쁽�솴 s-->
 		<div class="d2 br7">
 			<table class="table1">
 				<thead>
@@ -32,9 +50,9 @@
 				</tbody>
 			</table>
 		</div>
-		<!--이벤트 현황 e-->
+		<!--�씠踰ㅽ듃 �쁽�솴 e-->
 
-		<!--호스트별 장애현황 s-->
+		<!--�샇�뒪�듃蹂� �옣�븷�쁽�솴 s-->
 		<div class="d3">
 			<img src="dist/img/tit_sbl01.gif">
 		</div>
@@ -59,9 +77,9 @@
 							<td width="165px" class="line align_left">Zabbix Server</td>
 							<td width="73px" class="line">32</td>
 							<td width="auto">
-								&lt;!&ndash; 그래프 영역 호스트별 장애 현황 &ndash;&gt;
+								&lt;!&ndash; 洹몃옒�봽 �쁺�뿭 �샇�뒪�듃蹂� �옣�븷 �쁽�솴 &ndash;&gt;
 								<img src="dist/img/host_sample1.png" style="width:100%; height:59px">
-								&lt;!&ndash;// 그래프 영역 호스트별 장애 현황 &ndash;&gt;
+								&lt;!&ndash;// 洹몃옒�봽 �쁺�뿭 �샇�뒪�듃蹂� �옣�븷 �쁽�솴 &ndash;&gt;
 							</td>
 						</tr>
 						</tbody>-->
@@ -69,9 +87,9 @@
 				</div>
 			</section>
 		</div>
-		<!--호스트별 장애현황 e-->
+		<!--�샇�뒪�듃蹂� �옣�븷�쁽�솴 e-->
 
-		<!--이벤트 발생목록 s-->
+		<!--�씠踰ㅽ듃 諛쒖깮紐⑸줉 s-->
 		<div class="d5">
 			<img src="dist/img/tit_sbl02.gif">
 		</div>
@@ -103,9 +121,9 @@
                         <td width="69" class="line">Acked</td>
                         <td width="110" class="line">ERP-WAS</td>
                         <td  width="auto" class="align_left ponter">
-                            <a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통">
+                            <a style="width:100%; height:18px; display:inline-block;" title="IERP-WAS�쓽 Zabbix agen�뿉 3遺꾧컙 吏��냽 �뿉�윭 諛쒖깮 湲닿툒 �삤瑜� 怨듭� 泥섎━ ���쓳 �꽌�슱 媛뺣턿 吏��궗 �씤洹� �옣鍮� 怨듯넻">
                         <span class="smd">
-                        IERP-WAS의 Zabbix agen에 3분간 지속 에러 발생 긴급 오류 공지 처리 대응 서울 강북 지사 인근 장비 공통1
+                        IERP-WAS�쓽 Zabbix agen�뿉 3遺꾧컙 吏��냽 �뿉�윭 諛쒖깮 湲닿툒 �삤瑜� 怨듭� 泥섎━ ���쓳 �꽌�슱 媛뺣턿 吏��궗 �씤洹� �옣鍮� 怨듯넻1
                            </span>
                             </a>
                         </td>
@@ -116,10 +134,10 @@
 			</div>
 		</section>
 	</div>
-	<!--이벤트 발생목록 e-->
+	<!--이벤트 발생목록  e-->
 
 	<div class="content-right">
-		<!--이벤트 인지처리 s-->
+		<!--이벤트 인지처리  s-->
 		<div class="d1"><img src="dist/img/tit_sbl04.gif"></div>
 		<div class="d2">
 
@@ -137,13 +155,13 @@
 			<div style="margin:0 auto; padding:0; width:90%; height:215px; text-align:center;">
 				<div id="chart_eventAck" style="width:100%; height: 211px; margin: 0 auto"></div>
 				<!-- 그래프 영역 인지 처리 -->
-				<!--<img src="dist/img/event_ign_sample.gif" style="width:100%; height:211px">&lt;!&ndash; 임시 이미지 &ndash;&gt;-->
+				<!--<img src="dist/img/event_ign_sample.gif" style="width:100%; height:211px">&lt;!&ndash; �엫�떆 �씠誘몄� &ndash;&gt;-->
 				<!--// 그래프 영역 인지 처리 -->
 			</div>
 
 
 		</div>
-		<!--이벤트 인지처리 e-->
+		<!--이벤트 인지처리  e-->
 
 		<!--요일별 이벤트 발생 빈도 s-->
 		<div class="d3"><img src="dist/img/tit_sbl05.gif"></div>
@@ -228,7 +246,6 @@
 			<div class="info-box">
 									<span class="info-box-icon bg-red"><i
 											class="fa fa-exclamation-triangle"></i></span>
-
 				<div class="info-box-content">
 					<span class="info-box-text">이벤트 수</span><span
 						class="info-box-number" id="infobox_alertTrigger">&#45;&#45;</span>
@@ -242,7 +259,6 @@
 			<div class="info-box">
 									<span class="info-box-icon bg-yellow"><i
 											class="fa fa-exclamation-circle"></i></span>
-
 				<div class="info-box-content">
 					<span class="info-box-text">처리 전 이벤트</span><span
 						class="info-box-number" id="unAcknowledgedEvents">&#45;&#45;</span>
@@ -252,10 +268,8 @@
 			&lt;!&ndash; /.info-box &ndash;&gt;
 		</div>
 		&lt;!&ndash; /.col &ndash;&gt;
-
 		&lt;!&ndash; fix for small devices only &ndash;&gt;
 		&lt;!&ndash; <div class="clearfix visible-sm-block"></div> &ndash;&gt;
-
 		<div
 				class="col-xs-3 col-sm-2 col-md-2 col-lg-1 form-group pull-right"
 				style="float: left;">
@@ -274,26 +288,21 @@
 				<text id="countDownTimer"></text>
 			</button>
 		</div>
-
 		<div class="col-xs-1 pull-right"></div>
 		<div class="pull-right" style="clear: left;">
 			<b>Last Update: </b>
 			<text id="lastUpdateDashboard"></text>
 		</div>
-
 	</div>
 	&lt;!&ndash; /.row &ndash;&gt;
-
 	<div class="box box-info">
 		<div class="box-header with-border">
 			<h3 class="box-title">이벤트 발생 현황</h3>
-
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool"
 						data-widget="collapse">
 					<i class="fa fa-minus"></i>
 				</button>
-
 			</div>
 		</div>
 		&lt;!&ndash; /.box-header &ndash;&gt;
@@ -309,28 +318,22 @@
 						<p>호스트그룹</p>
 					</div>
 				</div>
-
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					<div id="chart_host">
 						<p>호스트</p>
 					</div>
 				</div>
 			</div>
-
 		</div>
 		&lt;!&ndash; /.box-body &ndash;&gt;
-
 	</div>
 	&lt;!&ndash; /.box &ndash;&gt;
-
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
 			 style="display: none;">
 			<div class="box box-info">
-
 				<div class="box-header with-border">
 					<h3 class="box-title">Problem Events History</h3>
-
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"
 								data-widget="collapse">
@@ -347,12 +350,10 @@
 			&lt;!&ndash; /.box &ndash;&gt;
 		</div>
 	</div>
-
 	&lt;!&ndash; TABLE: LATEST ORDERS &ndash;&gt;
 	<div class="box box-info">
 		<div class="box-header with-border">
 			<h3 class="box-title">이벤트 목록</h3>
-
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool"
 						data-widget="collapse">

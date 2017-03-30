@@ -96,7 +96,9 @@ function showCpuUsage(hostid, startTime){
         dataObj.name = 'CPU Steal';
         dataObj.data = history_CpuSteal;
         dataSet.push(dataObj);
-
+        
+        console.log("***********************************");
+        console.log(dataSet);
         showBasicAreaChart('chart_cpuUsage', 'CPU 사용량', dataSet, "%", ['#e85c2a', '#e574ff', '#37d5f2', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
 
         $('#chart_cpuUsage').off().on('mousemove touchmove touchstart', function (e) {

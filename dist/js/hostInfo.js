@@ -206,7 +206,7 @@ function hostInfoView() {
             $("#traffic_" + hostid).click(function() {
                 console.log(">>>>> IN clickNetworkView <<<<<");
                 offTimer();
-                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR / 1000));
+                var startTime = Math.round((new Date().getTime() - LONGTIME_ONEHOUR) / 1000);
                 currentHostId = v.hostid;
                // $.blockUI(blockUI_opt_all);
                 $("[id^=base]").hide();
