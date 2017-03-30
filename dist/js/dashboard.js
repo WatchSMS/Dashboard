@@ -575,14 +575,10 @@ function dashboardDayEvent(){
                     }
                 },
                 series: [{
-                    name: 'information',
-                    data: infoEventArr,
-                    color: '#7499FF'
-                }, {
                     name: 'high',
                     data: highEventArr,
                     color: '#E97659'
-                }, {
+                },{
                     name: 'average',
                     data: averEventArr,
                     color: '#FFA059'
@@ -590,6 +586,10 @@ function dashboardDayEvent(){
                     name: 'warring',
                     data: warnEventArr,
                     color: '#FFC859'
+                },{
+                    name: 'information',
+                    data: infoEventArr,
+                    color: '#7499FF'
                 }],
                 exporting: {
                     buttons: {
