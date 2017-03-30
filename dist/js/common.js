@@ -322,7 +322,9 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     formatter: function () {
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
-                        }else{
+                        } else if(unit == "kbps"){
+                            return Math.round(this.value / 1000 / 1000) + 'kbp';
+                        } else{
                             return this.value + unit;
                         }
                     }
@@ -346,6 +348,8 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                     if(unit == "MB"){
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else if(unit == "kbps"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1000 * 1000)) + 'MB';
                     }else{
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
                     }
@@ -1149,7 +1153,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 100) + 'MB';
+                            return Math.round(this.value / 1000 / 1000) + 'kbp';
                         } else{
                             return this.value + unit;
                         }
@@ -1174,6 +1178,8 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                     if(unit == "MB"){
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                    }else if(unit == "kbps"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.floor(this.y / 1000) + 'Mbps';
                     }else{
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
                     }

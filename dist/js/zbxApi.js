@@ -237,7 +237,7 @@ var zbxApi = {
         }
     },
 
-    getNetworkHistory: {
+   /* getNetworkHistory: {
         get: function (itemId, startTime, type) {
             console.log(itemId);
             console.log(startTime);
@@ -259,7 +259,7 @@ var zbxApi = {
             console.log("getNetworkHistory data : " + JSON.stringify(data));
             return data;
         }
-    },
+    },*/
 
     getItem: {
         get: function (hostId, key_) {
