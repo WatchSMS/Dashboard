@@ -58,7 +58,6 @@ function networkUsageView(hostid, startTime){
     $("#networkInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 
     currentNetworkName = $(".selectedNetwork").attr('id');
-
     console.log(" currentNetworkName : " + currentNetworkName);
 
     generateNetworkResource(hostid, currentNetworkName, startTime);
@@ -91,13 +90,25 @@ function callApiForNetworkTable(hostid){
 }
 
 function generateNetworkResource(hostid, networkName, startTime){
-    var networkItemKeyIn = "net.if.in[" + networkName + "]";
-    var networkItemKeyOut = "net.if.out[" + networkName + "]";
-    var networkItemKeyTotal = "net.if.total[" + networkName + "]";
-    
     var networkIn = null;
     var networkOut = null;
     var networkTotal = null;
+
+    var networkInArr = [];
+    var networkOutArr = [];
+    var networkTotalArr = [];
+
+    var dataSet = [];
+    var dataObj = new Object();
+
+    var networkItemKeyIn = "net.if.in[" + networkName + "]";
+    var networkItemKeyOut = "net.if.out[" + networkName + "]";
+    var networkItemKeyTotal = "net.if.total[" + networkName + "]";
+    alert("hostid : " + hostid);
+    alert("networkItemKeyIn : " + networkItemKeyIn);
+
+    $("#chart_trafficIo").block(blockUI_opt_all_custom);
+    $("#chart_trafficTotal").block(blockUI_opt_all_custom);
 
     zbxApi.serverViewGraph.get(hostid, networkItemKeyIn).then(function(data) {
         networkIn = zbxApi.serverViewGraph.success(data);
@@ -109,78 +120,37 @@ function generateNetworkResource(hostid, networkName, startTime){
         return zbxApi.serverViewGraph.get(hostid, networkItemKeyTotal);
     }).then(function(data) {
         networkTotal = zbxApi.serverViewGraph.success(data);
-        console.log(" networkGraph ");
-        
-        removeAllChart();
-
-        networkGraphIo(networkIn, networkOut, startTime);
-        networkGraphTotal(networkTotal, startTime);
-    });
-}
-
-function networkGraphIo(networkIn, networkOut, startTime){
-    var networkInArr = null;
-    var networkOutArr = null;
-
-    var dataSet = [];
-    var dataObj = new Object();
-
-    $("#chart_trafficIo").block(blockUI_opt_all_custom);
-
-    zbxApi.getNetworkHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-        networkInArr = zbxApi.getNetworkHistory.success(data);
     }).then(function() {
-        return zbxApi.getNetworkHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+        return zbxApi.getHistory.get(networkIn.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data){
+        networkInArr = zbxApi.getHistory.success(data);
+    }).then(function() {
+        return zbxApi.getHistory.get(networkOut.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
     }).then(function(data) {
-        networkOutArr = zbxApi.getNetworkHistory.success(data);
-        console.log(" networkGraphIo ");
+        networkOutArr = zbxApi.getHistory.success(data);
+    }).then(function(){
+        return zbxApi.getHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT);
+    }).then(function(data){
+        networkTotalArr = zbxApi.getHistory.success(data);
 
         dataObj = new Object();
-        dataObj.name = "RECEVIED";
+        dataObj.name = "트래픽 사용량";
         dataObj.data = networkInArr;
         dataSet.push(dataObj);
 
         dataObj = new Object();
-        dataObj.name = "TRANSMITED";
+        dataObj.name = "트래픽 사용량";
         dataObj.data = networkOutArr;
         dataSet.push(dataObj);
 
-        console.log("dataSet : " + dataSet[0].name);
-        console.log("dataSet : " + dataSet[0].data);
-        console.log("dataSet : " + dataSet[1].name);
-        console.log("dataSet : " + dataSet[1].data);
-
-        showBasicLineChart('chart_trafficIo', '트래픽I/O', dataSet, "%", ['#00B700','#DB9700']);
-
-        console.log(" end traffic Io ");
-    });
-}
-
-function networkGraphTotal(networkTotal, startTime){
-    var networkTotalArr = [];
-
-    var dataSet = [];
-    var dataObj = new Object();
-
-    $("#chart_trafficTotal").block(blockUI_opt_all_custom);
-
-    zbxApi.getNetworkHistory.get(networkTotal.result[0].itemid, startTime, HISTORY_TYPE.UNSIGNEDINT).then(function(data) {
-        networkTotalArr = zbxApi.getNetworkHistory.success(data);
-
         dataObj = new Object();
-        dataObj.name = "TOTAL";
-        var dataArr = [];
-        $.each(networkTotalArr.result, function(k,v){
-        	var tmpValArr = [];
-        	tmpValArr[0] = parseInt(v.clock) * 1000;
-        	tmpValArr[1] = parseInt(v.value);
-        	dataArr.push(tmpValArr);
-        });
-        dataObj.data = dataArr;
+        dataObj.name = "트래픽 사용량";
+        dataObj.data = networkTotalArr;
         dataSet.push(dataObj);
 
-        showBasicLineChart('chart_trafficTotal', '트래픽TOTAL', dataSet, "%", ['#00B700']);
-    })
+        showBasicLineChart('chart_trafficIo', "트래픽 사용량", dataSet, "kbps", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        showBasicAreaChart('chart_trafficTotal', "트래픽 사용량", dataSet, "kbps", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+    });
 }
 
 function clickInputTimeNetwork(){

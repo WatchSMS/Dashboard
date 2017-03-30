@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ed90c85f-b668-44d6-9017-a111e6bf13ea" name="Default" comment="2017.03.30 3차 스프린트">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/base_dashboard.html" afterPath="$PROJECT_DIR$/base_dashboard.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/cpuStatsView.js" afterPath="$PROJECT_DIR$/dist/js/cpuStatsView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/dashboard.js" afterPath="$PROJECT_DIR$/dist/js/dashboard.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/hostDetailInfo.js" afterPath="$PROJECT_DIR$/dist/js/hostDetailInfo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/hostInfo.js" afterPath="$PROJECT_DIR$/dist/js/hostInfo.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/trafficStatusView.js" afterPath="$PROJECT_DIR$/dist/js/trafficStatusView.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -360,11 +355,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trafficStatusView.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="trafficStatusView.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dist/js/trafficStatusView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="905">
-              <caret line="178" column="1" lean-forward="false" selection-start-line="178" selection-start-column="1" selection-end-line="178" selection-end-column="1" />
+            <state relative-caret-position="208">
+              <caret line="137" column="36" lean-forward="false" selection-start-line="137" selection-start-column="36" selection-end-line="137" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="562">
+              <caret line="1209" column="10" lean-forward="false" selection-start-line="1209" selection-start-column="10" selection-end-line="1209" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -522,6 +527,7 @@
         <option value="$PROJECT_DIR$/dist/js/common.js" />
         <option value="$PROJECT_DIR$/dist/js/hostInfo.js" />
         <option value="$PROJECT_DIR$/dist/js/trafficStatusView.js" />
+        <option value="$PROJECT_DIR$/../.idea/workspace.xml" />
       </list>
     </option>
   </component>
@@ -731,13 +737,6 @@
       <workItem from="1490777935662" duration="2502000" />
       <workItem from="1490780790614" duration="2864000" />
       <workItem from="1490832009569" duration="8936000" />
-    </task>
-    <task id="LOCAL-00035" summary="2017.03.24 3차 스프린트 수정">
-      <created>1490359180011</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1490359180011</updated>
     </task>
     <task id="LOCAL-00036" summary="2017.03.24 3차 스프린트 수정">
       <created>1490360496178</created>
@@ -1075,11 +1074,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490855199829</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="2017.03.30 3차 스프린트">
+      <created>1490859690116</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1490859690116</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="156466000" />
+    <option name="totallyTimeSpent" value="156612000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1592" y="-8" width="1936" height="1096" extended-state="6" />
@@ -1139,14 +1145,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1168">
-          <caret line="1220" column="10" lean-forward="false" selection-start-line="1220" selection-start-column="10" selection-end-line="1220" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/customPlugins/jquery.mCustomScrollbar.concat.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -2040,8 +2038,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/js/trafficStatusView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="905">
-          <caret line="178" column="1" lean-forward="false" selection-start-line="178" selection-start-column="1" selection-end-line="178" selection-end-column="1" />
+        <state relative-caret-position="208">
+          <caret line="137" column="36" lean-forward="false" selection-start-line="137" selection-start-column="36" selection-end-line="137" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -2050,6 +2048,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="254">
           <caret line="240" column="24" lean-forward="false" selection-start-line="240" selection-start-column="24" selection-end-line="240" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="1209" column="10" lean-forward="false" selection-start-line="1209" selection-start-column="10" selection-end-line="1209" selection-end-column="10" />
           <folding />
         </state>
       </provider>
