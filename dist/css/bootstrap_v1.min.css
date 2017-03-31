@@ -7487,3 +7487,15 @@ div#select_box select#color {
 .wminbase{
 	min-width: 100% !important;
 }
+
+.mh24{
+	min-height: 24px !important;
+}
+
+.t3{
+	top: 3px !important;
+}
+
+.bgl01{
+	background-position: 298px -183px !important;
+}
