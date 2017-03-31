@@ -1522,3 +1522,45 @@
 	background-color:#FF9;
 	color:#555;
 }
+/* 2017.03.23 - e*/
+
+/* login Page - s */
+.search_inbg {
+	border:0px;
+	background: url('../img/search_bg.gif') no-repeat 1px top;
+	padding: 2px 0 0 4px;
+	margin:0;
+}
+.search_inside_inbg {
+	border:0px;
+	background: url('../img/search_inside_bg.png') no-repeat 1px top;
+	padding: 2px 0 0 4px;
+	margin:0;
+}
+.password_bg {
+	border:0px;
+	background: #6a719c url('../img/login_pass_bg.png') no-repeat 1px top;
+	padding: 2px 0 0 4px;
+	margin:0;
+}
+.normal_bg {
+	border:0px;
+	background: #6a719c;
+	padding: 2px 0 0 4px;
+	margin:0;
+}
+
+.input_focus{
+	border:0px;
+	background:#5e6590;
+	text-indent:-3px 0 0 0;
+	color: #c5c4c6;
+	height:22px;
+	line-height:15px;
+	padding: 1px 0 2px 4px;
+	margin:0;
+	text-align:left;
+	vertical-align:middle;
+	border-radius:3px;
+}
+/* login Page - e */

@@ -47,28 +47,31 @@
 
 
 	<script type="text/javascript">
-        /*jQuery(document).ready(function(){
-            var select = $("select#color");
-            select.change(function(){
-                var select_name = $(this).children("option:selected").text();
-                $(this).siblings("label").text(select_name);
-            })
-        });*/
+		/*jQuery(document).ready(function(){
+		 var select = $("select#color");
+		 select.change(function(){
+		 var select_name = $(this).children("option:selected").text();
+		 $(this).siblings("label").text(select_name);
+		 })
+		 });*/
+		/*
 
-        function go_popup(){
-            $('#popup').bPopup();
-        };
+		 function go_popup(){
+		 $('#popup').bPopup();
+		 };
 
-        function go_popup2(){
-            $("#popup2").bPopup();
-        };
+		 function go_popup2(){
+		 $("#popup2").bPopup();
+		 };
 
-        function leftm_go_tab_01(val, mode){
-            for(var i=1; i<5; i++){
-                $("#leftmtab_0"+i).hide();
-            }
-            $("#leftmtab_0"+val).show();
-        }
+		 function leftm_go_tab_01(val, mode){
+		 for(var i=1; i<5; i++){
+		 $("#leftmtab_0"+i).hide();
+		 }
+		 $("#leftmtab_0"+val).show();
+		 }
+
+		 */
 	</script>
 </head>
 <!--
@@ -108,7 +111,9 @@
 	<div class="login_box">
 		<span class="axis"></span>
 		<div class="inbox">
-			<li class="bot"><img src="dist/img/login_logo.gif"/></li>
+			<li class="bot">
+				<img src="dist/img/login_logo.gif">
+			</li>
 			<li class="bom1 br16_t">
 				<span class="d1">Server Managed Service</span>
 				<span class="d2"><img src="dist/img/login_img01.gif"/></span>
@@ -119,7 +124,7 @@
 					<div style="width:248px; display:inline-block; float:left; margin-left:6px;">
 						<div class="idpass">
 						<span>
-							<a onclick="javascript:displyOpen();" href="#" alt="관리자안내"></a>
+							<a onclick="displyOpen();" href="#" alt="관리자안내"></a>
 							<img src="dist/img/login_id.gif" border="0">
 						</span>
 							<span>
@@ -135,6 +140,7 @@
 						</span>
 						</div>
 					</div>
+
 					<div class="loginbt">
 						<a href="#">
 							<img alt="" id="submit_login" type="submit" src="dist/img/login_bt.gif">
@@ -142,20 +148,15 @@
 					</div>
 
 					<div class="memoryid">
-					<span class="d1">
-						<input type="checkbox" id="cb2">
-						<label class="c0 checkbox_1" for="cb2"></label>
-					</span>
-						<span class="d2">
-						<img alt="" src="dist/img/login_id_memory.gif" border="0">
-					</span>
+						<span class="d1"> <input type="checkbox" id="cb2" style="display: none"> <label class="c0 checkbox_1" for="cb2"></label> </span>
+						<span class="d2"> <img alt="" src="dist/img/login_id_memory.gif" border="0"> </span>
 					</div>
 				</div>
 
 				<div class="sinbox2">
 					<span class="d1">
 						<a href="#">
-							<img alt="회원가입" onclick="go_popup()" src="dist/img/login_newm.gif" border="0" title="회원가입">
+							<img alt="회원가입" id="go_popup" src="dist/img/login_newm.gif" border="0" title="회원가입">
 						</a>
 					</span>
 				</div>
@@ -181,568 +182,546 @@
 	<!--login_box e- -->
 
 	<!--login_newm s- -->
-	<div>
-		<div class="Pstyle login_box" id="popup" style="display: none;">
-			<div class="inbox">
-				<li class="bog1 br16_t">
+	<div class="Pstyle login_box" id="popup" style="display: none;">
+		<div class="inbox">
+			<li class="bog1 br16_t">
 			<span class="d0">
 				<img src="dist/img/login_tit02.gif">
 			</span>
-					<span class="d1">약관에 동의하셔야 OBICs-Watch 서비스를 정상적으로<br/>이용하실 수 있습니다.</span>
-				</li>
+				<span class="d1">약관에 동의하셔야 OBICs-Watch 서비스를 정상적으로<br/>이용하실 수 있습니다.</span>
+			</li>
 
-				<li class="bog2">
-					<div class="d1">
-				<span class="p1">[필수]&nbsp;&nbsp;OBICs-Watch 이용 약관
-					<input type="checkbox" id="cb0">
-					<label class="c0 checkbox_1" for="cb0"></label>
+			<li class="bog2">
+				<div class="d1">
+					<span class="p1">[필수]&nbsp;&nbsp;OBICs-Watch 이용 약관</span>
+					<span class="p2"> <input type="checkbox" id="cb0" style="display: none"> <label class="c0 checkbox_1" for="cb0"></label>
 				</span>
-					</div>
+				</div>
 
-					<div class="d2">
-						<div class="ag1">
-							<p class="tt1"> 이용표준약관 </p>
-							<p class="tt2">[제 1장 총칙]</p>
-							<p class="tt3">
-								공정거래위원회<br/>
-								표준약관 [ 제 10023호 ] 인터넷사이버몰이용 표준약관
-							</p>
-							<br/>
+				<div class="d2">
+					<div class="ag1">
+						<p class="tt1"> 이용표준약관 </p>
+						<p class="tt2">[제 1장 총칙]</p>
+						<p class="tt3">
+							공정거래위원회<br/>
+							표준약관 [ 제 10023호 ] 인터넷사이버몰이용 표준약관
+						</p>
+						<br/>
 
-							<p class="tt2">제1조 (목적)</p>
-							<p class="tt4">
-								이 약관은 SAMSUNG 그룹 (전자상거래 사업자 , 이하 ‘SAMSUNG’이라 한다 )이 운영하는 www.OBICs_Watch (변경예정) (이하 “ 몰 ” 이라 한다
-								)에서 제공하는 기업간 전자상거래 서비스
-								(이하 “ 서비스 ” 라 한다 )를 이용함에 있어 사이버 몰과 이용자의 권리 의무 및 책임사항을 규정함을 목적으로 합니다.
-								※「 PC 통신 , 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다 」
-							</p>
+						<p class="tt2">제1조 (목적)</p>
+						<p class="tt4">
+							이 약관은 SAMSUNG 그룹 (전자상거래 사업자 , 이하 ‘SAMSUNG’이라 한다 )이 운영하는 www.OBICs_Watch (변경예정) (이하 “ 몰 ” 이라 한다
+							)에서 제공하는 기업간 전자상거래 서비스
+							(이하 “ 서비스 ” 라 한다 )를 이용함에 있어 사이버 몰과 이용자의 권리 의무 및 책임사항을 규정함을 목적으로 합니다.
+							※「 PC 통신 , 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다 」
+						</p>
 
-							<p class="tt2">제2조 (정의) </p>
-							<p class="tt4">
-								①“ 몰 ” 이란 SAMSUNG가 재화 또는 용역 (이하 “ 재화등 ” 이라 함 )을 이용자에게 제공하기 위하여 컴퓨터등 정보통신설비를 이용하여
-								재화등을 거래할 수 있도록 설정한 가상의 영업장을 말하며,
-								아울러 사이버몰을 운영하는 사업자의 의미로도 사용합니다. <br>
-								②“ 이용자 ” 란 “ 몰 ” 에 접속하여 이 약관에 따라 “ 몰 ” 이 제공하는 서비스를 받는 회원을 말합니다. <br>
-								③‘ 회원 ’ 이라 함은 “ 몰 ” 에 개인정보를 제공하여 회원등록을 한 자로서 , “ 몰 ” 의 정보를 지속적으로 제공받으며 , “ 몰 ” 이
-								제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
-							</p>
-
-
-							<p class="tt2">제3조 (약관등의 명시와 설명 및 개정) </p>
-							<p class="tt4">
-								①“ 몰 ” 이란 SAMSUNG가 재화 또는 용역 (이하 “ 재화등 ” 이라 함 )을 이용자에게 제공하기 위하여 컴퓨터등 정보통신설비를 이용하여
-								재화등을 거래할 수 있도록 설정한 가상의 영업장을 말하며,
-								아울러 사이버몰을 운영하는 사업자의 의미로도 사용합니다. <br>
-								②“ 이용자 ” 란 “ 몰 ” 에 접속하여 이 약관에 따라 “ 몰 ” 이 제공하는 서비스를 받는 회원을 말합니다. <br>
-								③‘ 회원 ’ 이라 함은 “ 몰 ” 에 개인정보를 제공하여 회원등록을 한 자로서 , “ 몰 ” 의 정보를 지속적으로 제공받으며 , “ 몰 ” 이
-								제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
-							</p>
-						</div>
-					</div>
-
-					<div class="d1">
-				<span class="p1">[필수]&nbsp;&nbsp;개인정보 수집 / 이용 동의
-					<input type="checkbox" id="cb1">
-					<label class="c0 checkbox_1" for="cb1"></label>
-				</span>
-
-						<div class="d2">
-							<div class="ag1">
-								<p class="tt1">[개인정보 수집 및 이용목적]</p>
-								<p class="tt2">[제 1장 총칙]</p>
-								<p class="tt3">
-									회사가 수집한 개인정보는 다음의 목적을 위해 활용합니다. 고객님께서 제공한 모든 정보는 하기 목적에 필요한 용도 이외로는 사용되지
-									않으며, 이용 목적이 변경될 시에는 사전 동의를 구할 것입니다.
-								</p>
-								<br/>
-
-								<p class="tt3">
-									1. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산, 구매 및 요금 결제, 물품배송 또는 청구지 등 발송, 금융거래 본인
-									인증 및 금융 서비스
-								</p>
-
-								<p class="tt3">
-									2. 회원제 서비스 이용에 따른 본인확인, 개인식별, 불량회원의 부정 이용 방지와 비인가 사용 방지, 가입 의사 확인, 불만처리 등
-									민원처리, 고지사항 전달
-								</p>
-
-								<p class="tt3">
-									3. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산, 구매 및 요금 결제, 물품배송 또는 청구지 등 발송, 금융거래 본인
-									인증 및 금융 서비스
-								</p>
-
-							</div>
-						</div>
-						<div class="d1">
-					<span class="p1">위의 약관에 모두 동의합니다
-						<input type="checkbox" id="cb10">
-						<label class="c0 checkbox_1" for="cb10"></label>
-					</span>
-						</div>
-					</div>
-				</li>
-
-				<li class="bog3 br16_b">
-					<div class="sinbox b-close2" onclick="go_popup2()">
-						<button class="button_1"><label>다음단계</label></button>
-					</div>
-					<div class="sinbox2 b-close2">
-						<button class="button_1"><label>취소</label></button>
-					</div>
-				</li>
-			</div>
-		</div>
-		<!--login_newm e- -->
-
-		<!-- 정보입력 시작 -->
-		<div class="Pstyle login_box h520" id="popup2" style="display: none;">
-			<div class="inbox h520">
-				<li class="bog1 br16_t">
-					<span class="d0"><img src="dist/img/login_tit03.gif"/></span>
-					<span class="d1">아래 정보를 입력하여주세요<br/>입력하신 정보는 본 서비스 외 사용되지 않습니다</span>
-				</li>
-				<li class="bog2 h370">
-					<!-- 탭01 시작-->
-					<div id="leftmtab_01">
-						<ul class="tabbox">
-							<a href="javascript:leftm_go_tab_01(1, 'click')"><li id="" class="directa01">일반정보</li></a>
-							<a href="javascript:leftm_go_tab_01(2, 'click')"><li id="" class="directa02">추가정보</li></a>
-						</ul>
-						<ul class="int">정보입력</ul>
-
-						<ul class="pno">
-							<div class="in01 tli01">
-								<span class="i1">아이디</span>
-								<span class="i2">
-				 <input type="text" class="normal_bg"  name="UserID" value="" style="ime-mode:inactive; width:240px; height:23px" maxlength="40"
-						size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-								<span class="sinbox" ><button class="button_2 mt5"><label>중복검사</label></button></span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">이름</span>
-								<span class="i2">
-				   <input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">비밀번호</span>
-								<span class="i2">
-				   <input type="text" class="password_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='password_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">비밀번호 재확인</span>
-								<span class="i2">
-				   <input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">휴대폰 번호</span>
-								<span class="i2">
-				   <input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">이메일</span>
-								<span class="i2">
-				   <input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-						</ul>
-					</div>
-					<!--// 탭01 끝-->
-
-					<!-- 탭02 시작-->
-					<div id="leftmtab_02" style="display: none;">
-						<ul class="tabbox">
-							<a href="javascript:leftm_go_tab_01(1, 'click')"><li id="" class="directb01">일반정보</li></a>
-							<a href="javascript:leftm_go_tab_01(2, 'click')"><li id="" class="directb02">추가정보</li></a>
-						</ul>
-						<ul class="int">정보입력</ul>
-
-						<ul class="pno">
-
-							<div class="in01 tli01">
-								<span class="i1">테마</span>
-								<span class="i2">
-	                <div id="select_box" class="w326 h24 bgl01">
-	                  <label class="t3">유형</label>
-	                   <select name="선택" id="color" class="h24 mh24" >
-	                      <option selected="selected">선택1</option>
-	                      <option>선택선택선택선택선택1</option>
-	                      <option>선택2</option>
-	                      <option>선택3</option>
-	                      <option>선택4</option>
-                        </select>
-                     </div>
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">연락방법</span>
-								<span class="i2">
-	                <div id="select_box" class="w326 h24 bgl01">
-	                  <label class="t3">종류</label>
-	                   <select name="선택" id="color" class="h24 mh24" >
-	                      <option selected="selected">선택1</option>
-	                      <option>선택선택선택선택선택1</option>
-	                      <option>선택2</option>
-	                      <option>선택3</option>
-	                      <option>선택4</option>
-                        </select>
-                     </div>
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">수신처</span>
-								<span class="i2">
-				   <input type="text" class="normal_bg"  name="UserID" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40"
-						  size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0)
-{this.className='normal_bg';}else {this.className='input_focus';}">
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">연락허용시간대</span>
-								<span class="i2">
-	                <div id="select_box" class="w326 h24 bgl01">
-	                  <label class="t3">시간대</label>
-	                   <select name="선택" id="color" class="h24 mh24" >
-	                      <option selected="selected">선택1</option>
-	                      <option>선택선택선택선택선택1</option>
-	                      <option>선택2</option>
-	                      <option>선택3</option>
-	                      <option>선택4</option>
-                        </select>
-                     </div>
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">심각도 선택</span>
-								<span class="i2">
-	                <div id="select_box" class="w326 h24 bgl01">
-	                  <label class="t3">분류</label>
-	                   <select name="선택" id="color" class="h24 mh24">
-	                      <option selected="selected">선택1</option>
-	                      <option>선택1</option>
-	                      <option>선택2</option>
-	                      <option>선택3</option>
-	                      <option>선택4</option>
-                        </select>
-                     </div>
-				 </span>
-							</div>
-
-							<div class="in01">
-								<span class="i1">활성</span>
-								<span class="i3">
-				   <input type="checkbox" id="cb7"><label class="c0 mb0 checkbox_1" for="cb7"></label>
-				 </span>
-							</div>
-						</ul>
-					</div>
-
-					<!--// 탭02 끝-->
-
-					<br>
-				</li>
-
-				<li class="bog3 br16_b">
-					<div class="sinbox">
-						<button class="button_1"><label>가입하기</label></button>
-					</div>
-					<div class="sinbox2 b-close2">
-						<button class="button_1"><label>취소</label></button>
-					</div>
-				</li>
-			</div>
-		</div>
-	</div>
-</div>
-<!--// 정보입력  입력 끝 -->
-<!-- 로그인, 회원가입 s -->
+						<p class="tt2">제2조 (정의) </p>
+						<p class="tt4">
+							①“ 몰 ” 이란 SAMSUNG가 재화 또는 용역 (이하 “ 재화등 ” 이라 함 )을 이용자에게 제공하기 위하여 컴퓨터등 정보통신설비를 이용하여
+							재화등을 거래할 수 있도록 설정한 가상의 영업장을 말하며,
+							아울러 사이버몰을 운영하는 사업자의 의미로도 사용합니다. <br>
+							②“ 이용자 ” 란 “ 몰 ” 에 접속하여 이 약관에 따라 “ 몰 ” 이 제공하는 서비스를 받는 회원을 말합니다. <br>
+							③‘ 회원 ’ 이라 함은 “ 몰 ” 에 개인정보를 제공하여 회원등록을 한 자로서 , “ 몰 ” 의 정보를 지속적으로 제공받으며 , “ 몰 ” 이
+							제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
+						</p>
 
 
-<div id="top_contents" style="display: none;">
-	<div class="wrapper-custom">
-		<!-- header -->
-		<header class="dashboard-header">
-			<a href=""><div class="logo"></div></a>
-			<nav class="navbar" role="navigation">
-				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
-				<!--회원정보, 로그아웃-->
-				<div class="mbox" onmouseover="info01.style.display=''" onmouseout="info01.style.display='none'">
-					<div>
-						<ul>
-							<li><img src="dist/img/member_icon.png"/></li>
-						</ul>
-					</div>
-
-					<div class="mem">
-						<ul>
-							<li>홍길동님<img src="dist/img/memb_aricon.gif"/></li>
-						</ul>
-						<div id="info01" class="minfo" style="display:none;" onmouseover="info01.style.display=''">
-							<a href="#"><div class="pp1">회원정보수정</div></a>
-							<a href="#"><div class="pp2">로그아웃</div></a>
-						</div>
+						<p class="tt2">제3조 (약관등의 명시와 설명 및 개정) </p>
+						<p class="tt4">
+							①“ 몰 ” 이란 SAMSUNG가 재화 또는 용역 (이하 “ 재화등 ” 이라 함 )을 이용자에게 제공하기 위하여 컴퓨터등 정보통신설비를 이용하여
+							재화등을 거래할 수 있도록 설정한 가상의 영업장을 말하며,
+							아울러 사이버몰을 운영하는 사업자의 의미로도 사용합니다. <br>
+							②“ 이용자 ” 란 “ 몰 ” 에 접속하여 이 약관에 따라 “ 몰 ” 이 제공하는 서비스를 받는 회원을 말합니다. <br>
+							③‘ 회원 ’ 이라 함은 “ 몰 ” 에 개인정보를 제공하여 회원등록을 한 자로서 , “ 몰 ” 의 정보를 지속적으로 제공받으며 , “ 몰 ” 이
+							제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
+						</p>
 					</div>
 				</div>
 
-				<div class="search">
-					<ul>
-						<li class="s1">
-							<input type="text" class="search_inbg" name="UserID" value="" style="ime-mode:inactive;" maxlength="40" size="12" onkeyup="enterlogin(this);" onfocus="this.className='input_focus'" onblur="if (this.value.length==0) {this.className='search_inbg';} else {this.className='input_focus';}">
+				<div class="d1">
+					<span class="p1">[필수]&nbsp;&nbsp;개인정보 수집 / 이용 동의</span>
+					<span class="p2"> <input type="checkbox" id="cb1" style="display: none"> <label class="c0 checkbox_1" for="cb1"></label> </span>
+				</div>
+
+				<div class="d2">
+					<div class="ag1">
+						<p class="tt1">[개인정보 수집 및 이용목적]</p>
+						<p class="tt2">[제 1장 총칙]</p>
+						<p class="tt3">
+							회사가 수집한 개인정보는 다음의 목적을 위해 활용합니다. 고객님께서 제공한 모든 정보는 하기 목적에 필요한 용도 이외로는 사용되지
+							않으며, 이용 목적이 변경될 시에는 사전 동의를 구할 것입니다.
+						</p>
+						<br/>
+
+						<p class="tt3">
+							1. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산, 구매 및 요금 결제, 물품배송 또는 청구지 등 발송, 금융거래 본인
+							인증 및 금융 서비스
+						</p>
+
+						<p class="tt3">
+							2. 회원제 서비스 이용에 따른 본인확인, 개인식별, 불량회원의 부정 이용 방지와 비인가 사용 방지, 가입 의사 확인, 불만처리 등
+							민원처리, 고지사항 전달
+						</p>
+
+						<p class="tt3">
+							3. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산, 구매 및 요금 결제, 물품배송 또는 청구지 등 발송, 금융거래 본인
+							인증 및 금융 서비스
+						</p>
+
+					</div>
+				</div>
+				<div class="d1">
+					<span class="p1">위의 약관에 모두 동의합니다</span>
+					<span class="p2"> <input type="checkbox" id="cb10" style="display: none"> <label class="c0 checkbox_1" for="cb10"></label> </span>
+				</div>
+			</li>
+
+			<li class="bog3 br16_b">
+				<div class="sinbox b-close2" id="go_popup2">
+					<button class="button_1"><label>다음단계</label></button>
+				</div>
+				<div class="sinbox2 b-close2">
+					<button class="button_1"><label>취소</label></button>
+				</div>
+			</li>
+		</div>
+	</div>
+	<!--login_newm e- -->
+
+	<!-- 정보입력 시작 -->
+	<div class="Pstyle login_box h520" id="popup2" style="display: none;">
+		<div class="inbox h520">
+			<li class="bog1 br16_t">
+				<span class="d0"><img src="dist/img/login_tit03.gif"/></span>
+				<span class="d1">아래 정보를 입력하여주세요<br/>입력하신 정보는 본 서비스 외 사용되지 않습니다</span>
+			</li>
+
+			<li class="bog2 h370">
+				<!-- 탭01 시작-->
+				<div id="leftmtab_01">
+					<ul class="tabbox">
+						<a onclick="leftm_go_tab_01(1, 'click')"><li class="directa01">일반정보</li></a>
+						<a onclick="leftm_go_tab_01(2, 'click')"><li class="directa02">추가정보</li></a>
+					</ul>
+					<ul class="int">정보입력</ul>
+
+					<ul class="pno">
+						<div class="in01 tli01">
+							<span class="i1">아이디</span>
+							<span class="i2">
+				 				<input type="text" class="normal_bg"  name="UserID" value="" style="ime-mode:inactive; width:240px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+				 			</span>
+							<span class="sinbox" ><button class="button_2 mt5"><label>중복검사</label></button></span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">이름</span>
+							<span class="i2">
+				   				<input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">비밀번호</span>
+							<span class="i2">
+				   				<input type="text" class="password_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='password_bg';}else {this.className='input_focus';}">
+				 			</span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">비밀번호 재확인</span>
+							<span class="i2">
+				   				<input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+				 			</span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">휴대폰 번호</span>
+							<span class="i2">
+				   				<input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+				 			</span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">이메일</span>
+							<span class="i2">
+				   				<input type="text" class="normal_bg"  name="" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+				 			</span>
+						</div>
+					</ul>
+				</div>
+				<!--// 탭01 끝-->
+
+				<!-- 탭02 시작-->
+				<div id="leftmtab_02" style="display: none;">
+					<ul class="tabbox">
+						<a onclick="leftm_go_tab_01(1, 'click')"><li class="directb01">일반정보</li></a>
+						<a onclick="leftm_go_tab_01(2, 'click')"><li class="directb02">추가정보</li></a>
+					</ul>
+					<ul class="int">정보입력</ul>
+
+					<ul class="pno">
+						<div class="in01 tli01">
+							<span class="i1">테마</span>
+
+							<span class="i2">
+								<div id="select_box" class="w326 h24 bgl01">
+								  <label class="t3">유형</label>
+								   <select name="선택" id="color" class="h24 mh24" >
+									  <option selected="selected">선택1</option>
+									  <option>선택선택선택선택선택1</option>
+									  <option>선택2</option>
+									  <option>선택3</option>
+									  <option>선택4</option>
+									</select>
+								 </div>
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">연락방법</span>
+							<span class="i2">
+								<div id="select_box" class="w326 h24 bgl01">
+								  <label class="t3">종류</label>
+								   <select name="선택" id="color" class="h24 mh24" >
+									  <option selected="selected">선택1</option>
+									  <option>선택선택선택선택선택1</option>
+									  <option>선택2</option>
+									  <option>선택3</option>
+									  <option>선택4</option>
+									</select>
+								 </div>
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">수신처</span>
+							<span class="i2">
+								<input type="text" class="normal_bg"  name="UserID" value="" style="ime-mode:inactive; width:324px; height:23px" maxlength="40" size="40" onKeyUp="javascript:enterlogin(this);" onFocus="this.className='input_focus'" onBlur="if (this.value.length==0) {this.className='normal_bg';}else {this.className='input_focus';}">
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">연락허용시간대</span>
+							<span class="i2">
+								<div id="select_box" class="w326 h24 bgl01">
+								  <label class="t3">시간대</label>
+								   <select name="선택" id="color" class="h24 mh24" >
+									  <option selected="selected">선택1</option>
+									  <option>선택선택선택선택선택1</option>
+									  <option>선택2</option>
+									  <option>선택3</option>
+									  <option>선택4</option>
+									</select>
+								 </div>
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">심각도 선택</span>
+							<span class="i2">
+								<div id="select_box" class="w326 h24 bgl01">
+								  <label class="t3">분류</label>
+								   <select name="선택" id="color" class="h24 mh24">
+									  <option selected="selected">선택1</option>
+									  <option>선택1</option>
+									  <option>선택2</option>
+									  <option>선택3</option>
+									  <option>선택4</option>
+									</select>
+								 </div>
+							 </span>
+						</div>
+
+						<div class="in01">
+							<span class="i1">활성</span>
+							<span class="i3">
+							 </span>
+						</div>
+					</ul>
+				</div>
+
+				<!--// 탭02 끝-->
+
+				<br>
+			</li>
+
+			<li class="bog3 br16_b">
+				<div class="sinbox">
+					<button class="button_1"><label>가입하기</label></button>
+				</div>
+				<div class="sinbox2 b-close2">
+					<button class="button_1"><label>취소</label></button>
+				</div>
+			</li>
+		</div>
+	</div>
+	<!--// 정보입력  입력 끝 -->
+	<!-- 로그인, 회원가입 s -->
+
+
+	<div id="top_contents" style="display: none;">
+		<div class="wrapper-custom">
+			<!-- header -->
+			<header class="dashboard-header">
+				<a href=""><div class="logo"></div></a>
+				<nav class="navbar" role="navigation">
+					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
+					<!--회원정보, 로그아웃-->
+					<div class="mbox" onmouseover="info01.style.display=''" onmouseout="info01.style.display='none'">
+						<div>
+							<ul>
+								<li><img src="dist/img/member_icon.png"/></li>
+							</ul>
+						</div>
+
+						<div class="mem">
+							<ul>
+								<li>홍길동님<img src="dist/img/memb_aricon.gif"/></li>
+							</ul>
+							<div id="info01" class="minfo" style="display:none;" onmouseover="info01.style.display=''">
+								<a href="#"><div class="pp1">회원정보수정</div></a>
+								<a href="#"><div class="pp2">로그아웃</div></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="search">
+						<ul>
+							<li class="s1">
+								<input type="text" class="search_inbg" name="UserID" value="" style="ime-mode:inactive;" maxlength="40" size="12" onkeyup="enterlogin(this);" onfocus="this.className='input_focus'" onblur="if (this.value.length==0) {this.className='search_inbg';} else {this.className='input_focus';}">
+							</li>
+							<li class="s2">
+								<a href="#">
+									<img src="dist/img/search_bt.gif">
+								</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+			<!-- end header -->
+
+			<!-- sidebar -->
+			<aside class="main-sidebar-custom">
+				<section class="sidebar" style="height: 100%;">
+					<ul class="sidebar-menu-custom">
+						<li class="header-custom"><span></span></li>
+						<li class="icon01">
+							<a href="#" id="menu_dashboard">
+								<i class="menu-dashboard">
+									<img src="dist/img/menu_icon_01.gif">
+								</i>
+							</a>
 						</li>
-						<li class="s2">
+						<li class="icon02">
+							<a href="#" id="menu_eventList">
+								<i class="menu_event">
+									<img src="dist/img/menu_icon_02.gif">
+								</i>
+							</a>
+						</li>
+						<!--<i class="fa fa-angle-left pull-right"></i></a>-->
+						<!--<ul class="treeview-menu">
+                            <li><a href="#" id="menu_histogram"><i class="fa fa-bar-chart"></i> Histogram</a></li>
+                            <li><a href="#" id="menu_pivottable"><i class="fa fa-table"></i> PivotTable</a></li>
+                            <li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i> TreeMap</a></li>
+                            <li><a href="#" id="menu_free"><i class="fa fa-circle-o"></i> Free</a></li>
+                        </ul>-->
+
+						<li class="icon03">
 							<a href="#">
-								<img src="dist/img/search_bt.gif">
+								<i class=menu-server">
+									<img src="dist/img/menu_icon_03.gif">
+								</i>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="#" id="menu_overview"><i class="fa fa-bar-chart"></i> 개요</a></li>
+								<li>
+									<a href="#" id="menu_serverlist"><i class="fa fa-table"></i> 서버 목록</a>
+									<ul class="treeview-menu" id="serverlist"></ul>
+								</li>
+							</ul>
+						</li>
+
+						<li class="treeview">
+							<a href="#">
+								<i class="menu-graphs">
+									<img src="dist/img/menu_icon_04.gif">
+								</i>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="#"><i class="fa fa-circle-o"></i>Group to Item<i class="fa fa-angle-left pull-right"></i></a>
+									<ul class="treeview-menu" id="menu_group_top"></ul>
+								</li>
+								<li><a href="#"><i class="fa fa-circle-o"></i> Item to Group <i class="fa fa-angle-left pull-right"></i></a>
+
+									<ul class="treeview-menu" id="menu_item_top"></ul>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#" id="menu_setting">
+								<i class="menu-setting">
+									<img src="dist/img/menu_icon_05.gif">
+								</i>
 							</a>
 						</li>
 					</ul>
+				</section>
+			</aside>
+			<!-- end sidebar -->
+
+			<!-- content -->
+			<div class="content-wrapper">
+				<!-- for dashboard -->
+				<div id="base_dashboard">
 				</div>
-			</nav>
-		</header>
-		<!-- end header -->
+				<!-- end dashboard -->
 
-		<!-- sidebar -->
-		<aside class="main-sidebar-custom">
-			<section class="sidebar" style="height: 100%;">
-				<ul class="sidebar-menu-custom">
-					<li class="header-custom"><span></span></li>
-					<li class="icon01">
-						<a href="#" id="menu_dashboard">
-							<i class="menu-dashboard">
-								<img src="dist/img/menu_icon_01.gif">
-							</i>
-						</a>
-					</li>
-					<li class="icon02">
-						<a href="#" id="menu_eventList">
-							<i class="menu_event">
-								<img src="dist/img/menu_icon_02.gif">
-							</i>
-						</a>
-					</li>
-					<!--<i class="fa fa-angle-left pull-right"></i></a>-->
-					<!--<ul class="treeview-menu">
-                        <li><a href="#" id="menu_histogram"><i class="fa fa-bar-chart"></i> Histogram</a></li>
-                        <li><a href="#" id="menu_pivottable"><i class="fa fa-table"></i> PivotTable</a></li>
-                        <li><a href="#" id="menu_treemap"><i class="fa fa-tree"></i> TreeMap</a></li>
-                        <li><a href="#" id="menu_free"><i class="fa fa-circle-o"></i> Free</a></li>
-                    </ul>-->
+				<!-- for event -->
+				<div id="base_event" style="display: none;">
+				</div>
+				<!-- end event -->
 
-					<li class="icon03">
-						<a href="#">
-							<i class=menu-server">
-								<img src="dist/img/menu_icon_03.gif">
-							</i>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="#" id="menu_overview"><i class="fa fa-bar-chart"></i> 개요</a></li>
-							<li>
-								<a href="#" id="menu_serverlist"><i class="fa fa-table"></i> 서버 목록</a>
-								<ul class="treeview-menu" id="serverlist"></ul>
-							</li>
-						</ul>
-					</li>
+				<!-- for report  -->
+				<div id="base_graph" style="display: none;">
+				</div>
+				<!-- end graph -->
 
-					<li class="treeview">
-						<a href="#">
-							<i class="menu-graphs">
-								<img src="dist/img/menu_icon_04.gif">
-							</i>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa fa-circle-o"></i>Group to Item<i class="fa fa-angle-left pull-right"></i></a>
-								<ul class="treeview-menu" id="menu_group_top"></ul>
-							</li>
-							<li><a href="#"><i class="fa fa-circle-o"></i> Item to Group <i class="fa fa-angle-left pull-right"></i></a>
+				<!-- for setting -->
+				<div id="base_setting" style="display: none;">
 
-								<ul class="treeview-menu" id="menu_item_top"></ul>
-							</li>
-						</ul>
-					</li>
+				</div>
+				<!-- end setting -->
 
-					<li>
-						<a href="#" id="menu_setting">
-							<i class="menu-setting">
-								<img src="dist/img/menu_icon_05.gif">
-							</i>
-						</a>
-					</li>
-				</ul>
-			</section>
-		</aside>
-		<!-- end sidebar -->
+				<div id="base_cpuinfo" style="display: none;">
+				</div>
 
-		<!-- content -->
-		<div class="content-wrapper">
-			<!-- for dashboard -->
-			<div id="base_dashboard">
-			</div>
-			<!-- end dashboard -->
+				<!-- 전체 서버 상태 2017-01-02 -->
+				<div id="base_server" style="display: none;">
+				</div>
 
-			<!-- for event -->
-			<div id="base_event" style="display: none;">
-			</div>
-			<!-- end event -->
+				<!-- 서버 정보 요약 2017-01-11 -->
+				<div id="base_serverInfo" style="display: none;">
+				</div>
 
-			<!-- for report  -->
-			<div id="base_graph" style="display: none;">
-			</div>
-			<!-- end graph -->
+				<!-- 메모리 통계 2017-01-18 -->
+				<div id="base_memoryInfo" style="display: none;">
+				</div>
 
-			<!-- for setting -->
-			<div id="base_setting" style="display: none;">
+				<!-- 프로세스 사용량 2017-01-24 -->
+				<div id="base_processInfo" style="display: none;">
+				</div>
+
+				<!-- 디스크 사용량 -->
+				<div id="base_diskInfo" style="display: none;">
+				</div>
+
+				<!-- 네트워크 사용량 -->
+				<div id="base_networkInfo" style="display: none;">
+				</div>
+
+				<!-- 임계치 설정  -->
+				<div id="base_configure"  style="display: none;">
+				</div>
+
+				<!-- 이벤트 리스트  -->
+				<div id="base_eventList"  style="display: none;">
+				</div>
 
 			</div>
-			<!-- end setting -->
+			<!-- end content -->
 
-			<div id="base_cpuinfo" style="display: none;">
-			</div>
-
-			<!-- 전체 서버 상태 2017-01-02 -->
-			<div id="base_server" style="display: none;">
-			</div>
-
-			<!-- 서버 정보 요약 2017-01-11 -->
-			<div id="base_serverInfo" style="display: none;">
-			</div>
-
-			<!-- 메모리 통계 2017-01-18 -->
-			<div id="base_memoryInfo" style="display: none;">
-			</div>
-
-			<!-- 프로세스 사용량 2017-01-24 -->
-			<div id="base_processInfo" style="display: none;">
-			</div>
-
-			<!-- 디스크 사용량 -->
-			<div id="base_diskInfo" style="display: none;">
-			</div>
-
-			<!-- 네트워크 사용량 -->
-			<div id="base_networkInfo" style="display: none;">
-			</div>
-
-			<!-- 임계치 설정  -->
-			<div id="base_configure"  style="display: none;">
-			</div>
-
-			<!-- 이벤트 리스트  -->
-			<div id="base_eventList"  style="display: none;">
-			</div>
-
-		</div>
-		<!-- end content -->
-
-		<!-- footer -->
-		<!--<footer class="main-footer">
-            <div id="zabirepoVersion" class="pull-right hidden-xs"></div>
-            <strong> ZabiRepo ©2016 usiusi360, last update : #lastupdate</strong>
-        </footer>-->
-		<footer class="main-footer">
-			<div class="d1">
-				<ul class="s1">
-					<div class="p1"><img src="dist/img/logo_bottom.png"/></div>
-					<span class="p2">
+			<!-- footer -->
+			<!--<footer class="main-footer">
+                <div id="zabirepoVersion" class="pull-right hidden-xs"></div>
+                <strong> ZabiRepo ©2016 usiusi360, last update : #lastupdate</strong>
+            </footer>-->
+			<footer class="main-footer">
+				<div class="d1">
+					<ul class="s1">
+						<div class="p1"><img src="dist/img/logo_bottom.png"/></div>
+						<span class="p2">
 							<li>(06707) 서울 서초구 효령로 176, 070-4168-2900</li>
 							<li>COPYRIGHT @ 2013 kt ds, ALL RIGHTS RESERVED.</li>
 						</span>
-				</ul>
-			</div>
-			<div class="d2 c_b6 pull-right hidden-xs">본 사이트는 <strong>"Chrome"</strong> 브라우저에 최적화 되어 있습니다.</div>
-		</footer>
-		<!-- end wrapper -->
+					</ul>
+				</div>
+				<div class="d2 c_b6 pull-right hidden-xs">본 사이트는 <strong>"Chrome"</strong> 브라우저에 최적화 되어 있습니다.</div>
+			</footer>
+			<!-- end wrapper -->
+		</div>
 	</div>
-</div>
+
+	<!-- JS -->
+	<!-- jquery -->
+	<script src="plugins/jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+	<script src="plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="plugins/jQueryPlugin/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+	<script src="plugins/jQueryPlugin/js.cookie.js" type="text/javascript"></script>
+	<script src="plugins/jquery-csv.js/jquery.csv.min.js" type="text/javascript"></script>
+	<script src="plugins/pathseg/pathseg.js" type="text/javascript"></script>
+	<!-- bootstrap -->
+	<script src="plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<!-- bootstrap-multiselect -->
+	<script src="plugins/bootstrap-multiselect/bootstrap-multiselect.js" type="text/javascript"></script>
+	<!-- adminLTE -->
+	<script src="plugins/adminLTE/app.min.js" type="text/javascript"></script>
+	<!-- d3.js-->
+	<script src="plugins/d3.js/d3.min.js" type="text/javascript"></script>
+	<!-- c3.js -->
+	<script src="plugins/c3.js/c3.min.js" type="text/javascript"></script>
+	<!-- pivot.js -->
+	<script src="plugins/pivot.js/pivot.js" type="text/javascript"></script>
+	<script src="plugins/pivot.js/c3_renderers.js" type="text/javascript"></script>
+	<script src="plugins/pivot.js/d3_renderers.js" type="text/javascript"></script>
+	<!-- zoom.js -->
+	<script src="plugins/zoomjs/zoom.js" type="text/javascript"></script>
+	<!-- multi-select.js -->
+	<script src="plugins/jquery.multi-select.js/jquery.multi-select.js" type="text/javascript"></script>
+	<!-- jquery.blockUI.js -->
+	<script src="plugins/jquery.blockUI/jquery.blockUI.js" type="text/javascript"></script>
+	<!-- dc.js -->
+	<script src="plugins/crossfilter/crossfilter.min.js" type="text/javascript"></script>
+	<script src="plugins/dc.js/dc.js" type="text/javascript"></script>
+	<!-- jQRangeSlider-min.js -->
+	<script src="plugins/jQRangeSlider/jQRangeSlider-min.js"></script>
+	<!-- jqzabbix.js -->
+	<script src="plugins/jqzabbix.js/jqzabbix.js" type="text/javascript"></script>
+	<!-- main -->
+	<script src="dist/js/dashboard.js" type="text/javascript"></script>
+	<script src="dist/js/common.js" type="text/javascript"></script>
+	<script src="dist/js/zbxApi.js" type="text/javascript"></script>
+	<script src="dist/js/zbxSyncApi.js" type="text/javascript"></script>
+	<script src="dist/js/zabirepo-param.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/plugins/lightbox/jquery.lightbox_me.js"></script>
+	<script src="dist/js/zabirepo.js" type="text/javascript"></script>
+	<script src="dist/js/serverOverview.js" type="text/javascript"></script>
+	<script src="dist/js/hostInfo.js" type="text/javascript"></script>
+	<script src="dist/js/hostDetailInfo.js" type="text/javascript"></script>
+	<script src="dist/js/serverProcesses.js" type="text/javascript"></script>
+	<script src="dist/js/cpuStatsView.js" type="text/javascript"></script>
+	<script src="dist/js/memStatsView.js" type="text/javascript"></script>
+	<script src="dist/js/diskStatusView.js" type="text/javascript"></script>
+	<script src="dist/js/trafficStatusView.js" type="text/javascript"></script>
+	<script src="dist/js/triggerSettingView.js" type="text/javascript"></script>
+	<script src="dist/js/eventStatusView.js" type="text/javascript"></script>
+
+	<script src="plugins/highcharts/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="dist/js/jquery.bpopup.min.js"></script>
+
+	<script src="d3.v3.min2.js"></script>
+	<script src="d3.slider2.js"></script>
+
+
+	<script>
+        $("#inputUser").val("Admin");
+        $("#inputPasswd").val("P@ssw0rd");
+	</script>
 </body>
-
-<!-- JS -->
-<!-- jquery -->
-<script src="plugins/jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-<script src="plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="plugins/jQueryPlugin/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
-<script src="plugins/jQueryPlugin/js.cookie.js" type="text/javascript"></script>
-<script src="plugins/jquery-csv.js/jquery.csv.min.js" type="text/javascript"></script>
-<script src="plugins/pathseg/pathseg.js" type="text/javascript"></script>
-<!-- bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<!-- bootstrap-multiselect -->
-<script src="plugins/bootstrap-multiselect/bootstrap-multiselect.js" type="text/javascript"></script>
-<!-- adminLTE -->
-<script src="plugins/adminLTE/app.min.js" type="text/javascript"></script>
-<!-- d3.js-->
-<script src="plugins/d3.js/d3.min.js" type="text/javascript"></script>
-<!-- c3.js -->
-<script src="plugins/c3.js/c3.min.js" type="text/javascript"></script>
-<!-- pivot.js -->
-<script src="plugins/pivot.js/pivot.js" type="text/javascript"></script>
-<script src="plugins/pivot.js/c3_renderers.js" type="text/javascript"></script>
-<script src="plugins/pivot.js/d3_renderers.js" type="text/javascript"></script>
-<!-- zoom.js -->
-<script src="plugins/zoomjs/zoom.js" type="text/javascript"></script>
-<!-- multi-select.js -->
-<script src="plugins/jquery.multi-select.js/jquery.multi-select.js" type="text/javascript"></script>
-<!-- jquery.blockUI.js -->
-<script src="plugins/jquery.blockUI/jquery.blockUI.js" type="text/javascript"></script>
-<!-- dc.js -->
-<script src="plugins/crossfilter/crossfilter.min.js" type="text/javascript"></script>
-<script src="plugins/dc.js/dc.js" type="text/javascript"></script>
-<!-- jQRangeSlider-min.js -->
-<script src="plugins/jQRangeSlider/jQRangeSlider-min.js"></script>
-<!-- jqzabbix.js -->
-<script src="plugins/jqzabbix.js/jqzabbix.js" type="text/javascript"></script>
-<!-- main -->
-<script src="dist/js/dashboard.js" type="text/javascript"></script>
-<script src="dist/js/common.js" type="text/javascript"></script>
-<script src="dist/js/zbxApi.js" type="text/javascript"></script>
-<script src="dist/js/zbxSyncApi.js" type="text/javascript"></script>
-<script src="dist/js/zabirepo-param.js" type="text/javascript"></script>
-<script type="text/javascript" src="/plugins/lightbox/jquery.lightbox_me.js"></script>
-<script src="dist/js/zabirepo.js" type="text/javascript"></script>
-<script src="dist/js/serverOverview.js" type="text/javascript"></script>
-<script src="dist/js/hostInfo.js" type="text/javascript"></script>
-<script src="dist/js/hostDetailInfo.js" type="text/javascript"></script>
-<script src="dist/js/serverProcesses.js" type="text/javascript"></script>
-<script src="dist/js/cpuStatsView.js" type="text/javascript"></script>
-<script src="dist/js/memStatsView.js" type="text/javascript"></script>
-<script src="dist/js/diskStatusView.js" type="text/javascript"></script>
-<script src="dist/js/trafficStatusView.js" type="text/javascript"></script>
-<script src="dist/js/triggerSettingView.js" type="text/javascript"></script>
-<script src="dist/js/eventStatusView.js" type="text/javascript"></script>
-
-<script src="plugins/highcharts/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="dist/js/jquery.bpopup.min.js"></script>
-
-<script src="d3.v3.min2.js"></script>
-<script src="d3.slider2.js"></script>
-
-
-<script>
-    $("#inputUser").val("Admin");
-    $("#inputPasswd").val("P@ssw0rd");
-</script>
 </html>

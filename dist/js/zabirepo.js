@@ -4,6 +4,12 @@ $(document).ready(function() {
         return;
     }
 
+    var select = $("select#color");
+    select.change(function(){
+        var select_name = $(this).children("option:selected").text();
+        $(this).siblings("label").text(select_name);
+    })
+
     $("#zabirepoVersion").text(zabirepo.VERSION);
 
     // TODO 保存されたセッションIDでログインする
@@ -20,6 +26,14 @@ $(document).ready(function() {
     $("#submit_login").click(function() {
         $("#login_box").hide();
         int.ready();
+    });
+
+    $("#go_popup").click(function() {
+        $('#popup').bPopup();
+    });
+
+    $("#go_popup2").click(function() {
+        $("#popup2").bPopup();
     });
 
     $("#base_dashboard").load("base_dashboard.html");
@@ -1377,4 +1391,11 @@ var addDcTableColor = function() {
                 break;
         }
     });
+};
+
+var leftm_go_tab_01 = function(val, mode){
+    for(var i=1; i<5; i++){
+        $("#leftmtab_0"+i).hide();
+    }
+    $("#leftmtab_0"+val).show();
 };
