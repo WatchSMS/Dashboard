@@ -28,14 +28,6 @@ $(document).ready(function() {
         int.ready();
     });
 
-    $("#go_popup").click(function() {
-        $('#popup').bPopup();
-    });
-
-    $("#go_popup2").click(function() {
-        $("#popup2").bPopup();
-    });
-
     $("#base_dashboard").load("base_dashboard.html");
     $("#base_eventList").load("base_eventList.html");
     $("#base_graph").load("base_graph.html");
