@@ -1051,7 +1051,7 @@ function dashEventListAppend(){
                 host = v.hosts[0].name;
                 description = v.relatedObject.description;
 
-                eventTable += "<tr id='" + eventId + "'>";
+                eventTable += "<tr role='row' id='" + eventId + "'>";
                 if(severity == "information") {
                     eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
                 } else if(severity == "warning") {
