@@ -10,100 +10,6 @@ function eventListView(){
         eventList(data_event);
     });
 
-    $("#eventList").scroll(function() {
-        var div = $("#eventList");
-        if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
-            console.log(" END SCROLL ");
-            var lastRowIdFrom = $("#eventList tr:last").attr('id');
-            lastRowIdFrom = lastRowIdFrom - 1;
-            var appendData = '';
-            console.log(" last Row From : " + lastRowIdFrom);
-            //eventStatusViewAppend
-
-            zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
-                appendData = zbxApi.eventStatusView.success(data);
-                console.log(JSON.stringify(appendData));
-                var eventCnt = 0;
-
-                $.each(appendData.result, function(k, v) {
-                    console.log(" eventStatusViewAppend ");
-                    var eventId = '-';           //이벤트ID
-                    var eventStatus = '-';       //상태
-                    var eventPriority = '-';     //등급
-                    var eventStartTime = '-';    //발생시간
-                    var eventAckTime = '-';      //인지시간
-                    var eventAge = '-';          //지속시간
-                    var eventAcknowledge = '-';  //인지여부
-                    var eventIp = '-';           //IP
-                    var eventHostGroup = '-';    //호스트그룹
-                    var eventDescription = '-';  //비고
-
-                    var hostid = '';
-
-                    try {
-                        eventCnt += 1;
-                        eventId = v.eventid;
-                        eventStatus = convStatusEvent(v.value);
-                        eventPriority = convPriority(v.relatedObject.priority);
-                        eventStartTime = convTime(v.relatedObject.lastchange);
-                        if(v.acknowledges[0] != undefined){
-                            eventAckTime = convTime(v.acknowledges[0].clock);
-                        }
-                        eventAge = convDeltaTime(v.relatedObject.lastchange);
-                        eventAcknowledge = convAckEvent(v.acknowledged);
-                        hostid = v.hosts[0].hostid;
-                        if(hostIpMap[hostid]==null) {
-                            hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
-                        }
-                        eventIp = hostIpMap[hostid];
-                        eventHostGroup = v.hosts[0].name;
-                        eventDescription = v.relatedObject.description;
-                    } catch (e) {
-                        console.log(e);
-                    }
-
-                    var eventAppendTable = '';
-                    eventAppendTable += "<tr role='row' id='" + eventId + "'>";
-                    eventAppendTable += "<td width='80'   class='line'>" + eventId + "</td>";
-                    if(eventStatus == "problem"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:red;'>" + eventStatus + "</td>";
-                    } else {
-                        eventAppendTable += "<td width='80'   class='line'>" + eventStatus + "</td>";
-                    }
-                    if(eventPriority == "information"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:#7499FF;'>" + eventPriority + "</td>";
-                    } else if(eventPriority == "warning"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:#FFC859;'>" + eventPriority + "</td>";
-                    } else if(eventPriority == "average"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:#FFA059;'>" + eventPriority + "</td>";
-                    } else if(eventPriority == "high"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:#E97659;'>" + eventPriority + "</td>";
-                    } else {
-                        eventAppendTable += "<td width='80'   class='line'>" + eventPriority + "</td>";
-                    }
-                    eventAppendTable += "<td width='125'  class='line'>" + eventStartTime + "</td>";
-                    eventAppendTable += "<td width='120'  class='line'>" + eventAge + "</td>";
-                    if(eventAcknowledge == "Unacked"){
-                        eventAppendTable += "<td width='80'   class='line' style='color:red;'>" + eventAcknowledge + "</td>";
-                    } else {
-                        eventAppendTable += "<td width='80'   class='line'>" + eventAcknowledge + "</td>";
-                    }
-                    eventAppendTable += "<td width='125'  class='line'>" + eventAckTime + "</td>";
-                    eventAppendTable += "<td width='100'  class='line'>" + eventIp + "</td>";
-                    eventAppendTable += "<td width='100'  id='hostNm_" + eventCnt + "_" + hostid + "' class='line'>" + eventHostGroup + "</td>";
-                    eventAppendTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
-                    eventAppendTable += "</tr>";
-
-                    $("#eventListTable").append(eventAppendTable);
-
-                    $("#hostNm_" + eventCnt + "_" + hostid).click(function (){
-                        $("#info_" + hostid).click();
-                    })
-                })
-            });
-        }
-    })
-
     showEventChartView();
 
     TIMER_ARR.push(setInterval(function(){appendEventChart()}, 10000));
@@ -440,4 +346,98 @@ function appendEventChart(){
 
         }); //end apicall
     }//end if
+}
+
+function eventListAppend(){
+    console.log(" IN eventListAppend ");
+    var div = $("#eventList");
+    if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
+        console.log(" END SCROLL ");
+        var lastRowIdFrom = $("#eventList tr:last").attr('id');
+        lastRowIdFrom = lastRowIdFrom - 1;
+        var appendData = '';
+        console.log(" last Row From : " + lastRowIdFrom);
+        //eventStatusViewAppend
+
+        zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
+            appendData = zbxApi.eventStatusView.success(data);
+            var eventCnt = 0;
+
+            $.each(appendData.result, function(k, v) {
+                console.log(" eventStatusViewAppend ");
+                var eventId = '-';           //이벤트ID
+                var eventStatus = '-';       //상태
+                var eventPriority = '-';     //등급
+                var eventStartTime = '-';    //발생시간
+                var eventAckTime = '-';      //인지시간
+                var eventAge = '-';          //지속시간
+                var eventAcknowledge = '-';  //인지여부
+                var eventIp = '-';           //IP
+                var eventHostGroup = '-';    //호스트그룹
+                var eventDescription = '-';  //비고
+
+                var hostid = '';
+
+                try {
+                    eventCnt += 1;
+                    eventId = v.eventid;
+                    eventStatus = convStatusEvent(v.value);
+                    eventPriority = convPriority(v.relatedObject.priority);
+                    eventStartTime = convTime(v.relatedObject.lastchange);
+                    if(v.acknowledges[0] != undefined){
+                        eventAckTime = convTime(v.acknowledges[0].clock);
+                    }
+                    eventAge = convDeltaTime(v.relatedObject.lastchange);
+                    eventAcknowledge = convAckEvent(v.acknowledged);
+                    hostid = v.hosts[0].hostid;
+                    if(hostIpMap[hostid]==null) {
+                        hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
+                    }
+                    eventIp = hostIpMap[hostid];
+                    eventHostGroup = v.hosts[0].name;
+                    eventDescription = v.relatedObject.description;
+                } catch (e) {
+                    console.log(e);
+                }
+
+                var eventAppendTable = '';
+                eventAppendTable += "<tr role='row' id='" + eventId + "'>";
+                eventAppendTable += "<td width='80'   class='line'>" + eventId + "</td>";
+                if(eventStatus == "problem"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:red;'>" + eventStatus + "</td>";
+                } else {
+                    eventAppendTable += "<td width='80'   class='line'>" + eventStatus + "</td>";
+                }
+                if(eventPriority == "information"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:#7499FF;'>" + eventPriority + "</td>";
+                } else if(eventPriority == "warning"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:#FFC859;'>" + eventPriority + "</td>";
+                } else if(eventPriority == "average"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:#FFA059;'>" + eventPriority + "</td>";
+                } else if(eventPriority == "high"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:#E97659;'>" + eventPriority + "</td>";
+                } else {
+                    eventAppendTable += "<td width='80'   class='line'>" + eventPriority + "</td>";
+                }
+                eventAppendTable += "<td width='125'  class='line'>" + eventStartTime + "</td>";
+                eventAppendTable += "<td width='120'  class='line'>" + eventAge + "</td>";
+                if(eventAcknowledge == "Unacked"){
+                    eventAppendTable += "<td width='80'   class='line' style='color:red;'>" + eventAcknowledge + "</td>";
+                } else {
+                    eventAppendTable += "<td width='80'   class='line'>" + eventAcknowledge + "</td>";
+                }
+                eventAppendTable += "<td width='125'  class='line'>" + eventAckTime + "</td>";
+                eventAppendTable += "<td width='100'  class='line'>" + eventIp + "</td>";
+                eventAppendTable += "<td width='100'  id='hostNm_" + eventCnt + "_" + hostid + "' class='line'>" + eventHostGroup + "</td>";
+                eventAppendTable += "<td width='auto' class='line'  style='text-align: left;'>" + eventDescription + "</td>";
+                eventAppendTable += "</tr>";
+
+                $("#eventListTable").append(eventAppendTable);
+
+                $("#hostNm_" + eventCnt + "_" + hostid).click(function (){
+                    $("#info_" + hostid).click();
+                })
+            })
+        });
+    }
 }

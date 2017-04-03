@@ -116,7 +116,13 @@ var int = {
 
             $("#event_content-0").mCustomScrollbar({
                 theme:"light-3",
-                scrollButtons:{enable:true}
+                scrollButtons:{enable:true},
+                callbacks: {
+                    onTotalScroll: function(){
+                        console.log(" onTotalScroll ");
+                        eventListAppend();
+                    }
+                }
             });
 
             $("body").mCustomScrollbar({
