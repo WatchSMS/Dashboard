@@ -125,6 +125,17 @@ var int = {
                 }
             });
 
+            $("#dash-event-content-0").mCustomScrollbar({
+                theme:"light-3",
+                scrollButtons:{enable:true},
+                callbacks: {
+                    onTotalScroll: function(){
+                        console.log(" onTotalScroll ");
+                        dashEventListAppend();
+                    }
+                }
+            });
+
             $("body").mCustomScrollbar({
                 theme:"minimal"
             });

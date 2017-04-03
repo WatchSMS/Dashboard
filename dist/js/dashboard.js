@@ -33,82 +33,7 @@ function dashboardView(){
 
     $.unblockUI(blockUI_opt_all);
 
-    $("#eventListDiv").scroll(function() {
-        var div = $("#eventListDiv");
-        if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
-            console.log(" END SCROLL ");
-            var lastRowIdFrom = $("#eventListDiv tr:last").attr('id');
-            lastRowIdFrom = lastRowIdFrom - 1;
-            var appendData = '';
-            console.log(" last Row From : " + lastRowIdFrom);
-
-            zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
-                appendData = zbxApi.eventStatusViewAppend.success(data);
-                console.log(JSON.stringify(appendData));
-
-                var eventId = '';
-                var severity = '';
-                var status = '';
-                var lastchange = '';
-                var age = '';
-                var ack = '';
-                var ackTime = '';
-                var host = '';
-                var description = '';
-
-                var eventTable = '';
-
-                eventTable += '<tbody>';
-
-                $.each(appendData.result, function (k, v) {
-                    eventId = v.eventid;
-                    severity = convPriority(v.relatedObject.priority);
-                    status = convStatusEvent(v.value);
-                    lastchange = convTime(v.relatedObject.lastchange);
-                    age = convDeltaTime(v.relatedObject.lastchange);
-                    ack = convAckEvent(v.acknowledged);
-                    if(v.acknowledges[0] == undefined){
-                        ackTime = "-";
-                    } else {
-                        ackTime = convTime(v.acknowledges[0].clock);
-                    }
-                    host = v.hosts[0].name;
-                    description = v.relatedObject.description;
-
-                    eventTable += "<tr id='" + eventId + "'>";
-                    if(severity == "information") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
-                    } else if(severity == "warning") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
-                    } else if(severity == "average") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
-                    } else if(severity == "high") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
-                    } else {
-                        eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
-                    }
-                    eventTable += "<td width='60' class='line'>" + status + "</td>";
-                    eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
-                    eventTable += "<td width='75' class='line'>" + age + "</td>";
-                    if(ack == "미인지"){
-                        eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-                    } else if(ack = "인지"){
-                        eventTable += "<td width='69' class='line'>" + ack + "</td>";
-                    }
-                    eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
-                    eventTable += "<td width='100' class='line'>" + host + "</td>";
-                    eventTable += "<td width='auto' class='align_left ponter'>" +
-                        "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-                        "<span class='smd'>" + description + "</span></a></td>";
-                    eventTable += "</tr>";
-                });
-                eventTable += "</tbody>";
-                $("#dashboardEventList").append(eventTable);
-            });
-        }
-    });
-
-    TIMER_ARR.push(setInterval(function(){ addEventAckChart(); dashboardEventStatus(); }, 10000));
+TIMER_ARR.push(setInterval(function(){ addEventAckChart(); dashboardEventStatus(); }, 10000));
 }
 
 function dashboardEventStatus(){
@@ -1082,4 +1007,79 @@ function addHostEventList(hostEvent){
         showLineChart('hostChart'+(k+1), "hostEvent", addDataSet, "", ['#a2adcc']);
         $("#eventCnt_" + addHostid).html(addHostCnt);
     });
+}
+
+function dashEventListAppend(){
+    console.log(" dashEventListAppend ");
+    var div = $("#eventListDiv");
+    if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
+        console.log(" END SCROLL ");
+        var lastRowIdFrom = $("#eventListDiv tr:last").attr('id');
+        lastRowIdFrom = lastRowIdFrom - 1;
+        var appendData = '';
+        console.log(" last Row From : " + lastRowIdFrom);
+
+        zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
+            appendData = zbxApi.eventStatusViewAppend.success(data);
+
+            var eventId = '';
+            var severity = '';
+            var status = '';
+            var lastchange = '';
+            var age = '';
+            var ack = '';
+            var ackTime = '';
+            var host = '';
+            var description = '';
+
+            var eventTable = '';
+
+            eventTable += '<tbody>';
+
+            $.each(appendData.result, function (k, v) {
+                eventId = v.eventid;
+                severity = convPriority(v.relatedObject.priority);
+                status = convStatusEvent(v.value);
+                lastchange = convTime(v.relatedObject.lastchange);
+                age = convDeltaTime(v.relatedObject.lastchange);
+                ack = convAckEvent(v.acknowledged);
+                if(v.acknowledges[0] == undefined){
+                    ackTime = "-";
+                } else {
+                    ackTime = convTime(v.acknowledges[0].clock);
+                }
+                host = v.hosts[0].name;
+                description = v.relatedObject.description;
+
+                eventTable += "<tr id='" + eventId + "'>";
+                if(severity == "information") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+                } else if(severity == "warning") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+                } else if(severity == "average") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+                } else if(severity == "high") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+                } else {
+                    eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
+                }
+                eventTable += "<td width='60' class='line'>" + status + "</td>";
+                eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+                eventTable += "<td width='75' class='line'>" + age + "</td>";
+                if(ack == "미인지"){
+                    eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+                } else if(ack = "인지"){
+                    eventTable += "<td width='69' class='line'>" + ack + "</td>";
+                }
+                eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+                eventTable += "<td width='100' class='line'>" + host + "</td>";
+                eventTable += "<td width='auto' class='align_left ponter'>" +
+                    "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+                    "<span class='smd'>" + description + "</span></a></td>";
+                eventTable += "</tr>";
+            });
+            eventTable += "</tbody>";
+            $("#dashboardEventList").append(eventTable);
+        });
+    }
 }
