@@ -1071,7 +1071,7 @@ function dashEventListAppend(){
                 eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
                 eventTable += "<td width='100' class='line'>" + host + "</td>";
                 eventTable += "<td width='auto' class='align_left ponter'>" +
-                    "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+                    "<a style='width:100%; height:25px; display:inline-block;' title='" + description + "'>" +
                     "<span class='smd'>" + description + "</span></a></td>";
                 eventTable += "</tr>";
 
