@@ -1032,10 +1032,6 @@ function dashEventListAppend(){
             var host = '';
             var description = '';
 
-            var eventTable = '';
-
-            eventTable += '<tbody>';
-
             $.each(appendData.result, function (k, v) {
                 eventId = v.eventid;
                 severity = convPriority(v.relatedObject.priority);
@@ -1051,6 +1047,7 @@ function dashEventListAppend(){
                 host = v.hosts[0].name;
                 description = v.relatedObject.description;
 
+                var eventTable = '';
                 eventTable += "<tr role='row' id='" + eventId + "'>";
                 if(severity == "information") {
                     eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
@@ -1077,9 +1074,9 @@ function dashEventListAppend(){
                     "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
                     "<span class='smd'>" + description + "</span></a></td>";
                 eventTable += "</tr>";
+
+                $("#dashboardEventList").append(eventTable);
             });
-            eventTable += "</tbody>";
-            $("#dashboardEventList").append(eventTable);
         });
     }
 }
