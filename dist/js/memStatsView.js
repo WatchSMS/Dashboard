@@ -44,7 +44,7 @@ function showMemUsage(hostid, startTime){
 
     $("#chart_memUsage").block(blockUI_opt_all_custom);
 
-    zbxApi.getItem.get(hostid,"vm.memory.size[pused]").then(function(data) {
+    zbxApi.getItem.get(hostid,"vm.memory.size[100-pavailable]").then(function(data) {
         data_MemPused = zbxApi.getItem.success(data);
 
     }).then(function() {
@@ -75,7 +75,7 @@ function showMemUsage(hostid, startTime){
         dataObj.data = history_SwapMemPused;
         dataSet.push(dataObj);
 
-        showBasicAreaChart('chart_memUsage', '메모리 사용률', dataSet, "%", ['#E3C4FF', '#8F8AFF']);
+        showBasicAreaChart('chart_memUsage', '메모리 사용률', dataSet, "%", ['#fa7796', '#8F8AFF', '#E3C4FF']);
 
         $('#chart_memUsage').off().on('mousemove touchmove touchstart', function (e) {
             var chart,
@@ -85,7 +85,11 @@ function showMemUsage(hostid, startTime){
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
 
                 if (point) {
                     point.highlight(e);
@@ -170,7 +174,12 @@ function showMemTotal(hostid, startTime){
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
 
                 if (point) {
                     point.highlight(e);
@@ -205,7 +214,7 @@ function reloadChartForMemUsage(hostid){
     var startTime_memPused = Math.round((chart1.series[0].xData[(chart1.series[0].xData.length)-1]) / 1000) + 1;
     var startTime_swapMemPused = Math.round((chart1.series[1].xData[(chart1.series[1].xData.length)-1]) / 1000) + 1;
 
-    zbxApi.getItem.get(hostid,"vm.memory.size[pused]").then(function(data) {
+    zbxApi.getItem.get(hostid,"vm.memory.size[100-pavailable]").then(function(data) {
         data_MemPused = zbxApi.getItem.success(data);
 
     }).then(function() {

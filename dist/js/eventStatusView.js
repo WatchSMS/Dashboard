@@ -17,7 +17,172 @@ function eventListView(){
 
 var hostIpMap=[];
 
-function eventList(data_event){
+
+
+function eventList(data){
+    var eventListTable = '';
+
+    eventListTable += '<tbody id="eventListTable">';
+    eventListTable += '</tbody>';
+    $("#eventStatusTable").empty();
+    $("#eventStatusTable").append(eventListTable);
+    
+    var triggerIdArr = [];
+    var hostIdArr = [];
+	var uniqueTriggerIdArr = [];
+	var uniqueHostIdArr = [];
+	var eventMergeArr = [];
+	
+	// 모든 트리거 아이디를 배열에 담는다.
+	$.each(data.result, function (k, v) {
+		triggerIdArr.push(v.relatedObject.triggerid);
+	});
+	
+//	// 모든 호스트아이디를 배열에 담는다.
+//	$.each(data.result, function (k, v) {
+//		hostIdArr.push(v.relatedObject.hostid);
+//	});
+	
+	// 트리거 아이디 배열의 중복 제거
+	$.each(triggerIdArr, function(k1,v1){
+        if(uniqueTriggerIdArr.indexOf(v1) == -1){
+        	uniqueTriggerIdArr.push(v1);
+        }
+    });
+	
+//	// 호스트 아이디 배열의 중복 제거
+//	$.each(hostIdArr, function(k1,v1){
+//        if(uniqueHostIdArr.indexOf(v1) == -1){
+//        	uniqueHostIdArr.push(v1);
+//        }
+//    });
+	
+//	
+//	 if(hostIpMap[hostid]==null) {
+//         hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
+//     }
+	 
+	 
+	// 트리거 아이디 별 이벤트 분리
+	var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
+	
+	$.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
+		eventArrByTriggerId[k] = new Array();
+		$.each(data.result, function (k1, v1) { //이벤트 배열
+			if(v == v1.relatedObject.triggerid){
+				
+				dataObj = new Object();
+				dataObj.triggerId = v1.relatedObject.triggerid;
+				dataObj.objectId = v1.objectid;
+				dataObj.eventId = v1.eventid;
+				dataObj.severity = convPriority(v1.relatedObject.priority);
+				dataObj.status = convStatusEvent(v1.value);
+				dataObj.ack = convAckEvent(v1.acknowledged);
+				
+				var tmpHostId = v1.hosts[0].hostid;
+				dataObj.hostid = tmpHostId;
+				
+				if(hostIpMap[tmpHostId] == null) {
+			        hostIpMap[tmpHostId]=zbxSyncApi.eventStatusHost(tmpHostId).result[0].interfaces[0].ip;
+			    }
+				dataObj.ip = hostIpMap[tmpHostId];
+				if(v1.acknowledges[0] == undefined){
+					dataObj.ackTime = "-";
+				} else {
+					dataObj.ackTime = convTime(v1.acknowledges[0].clock);
+		        }
+				dataObj.host = v1.hosts[0].name;
+				dataObj.description = v1.relatedObject.description;
+				dataObj.clock = v1.clock;
+				dataObj.duration = 0;
+				
+				eventArrByTriggerId[k].push(dataObj);
+			}
+		});
+	});
+//	console.log(eventArrByTriggerId);
+	
+	// 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
+	$.each(eventArrByTriggerId, function(k,v){
+		var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
+		console.log("previousClock : " + previousClock);
+		
+		$.each(v, function(k1, v1){
+			v1.duration= convertTime(previousClock - parseInt(v1.clock));
+			previousClock = parseInt(v1.clock);
+			eventMergeArr.push(v1);
+			
+		});
+	});
+	//console.log(eventMergeArr);
+	
+	// Merge된 이벤트 배열 clock 순으로 정렬
+	eventMergeArr.sort(function (a, b) {
+           return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+    });
+	//console.log(eventMergeArr);
+	
+	var eventListTable = '';
+	var fromView = "eventView";
+    
+	$.each(eventMergeArr, function (k, v) {
+    	var objectId = v.objectId;
+        var eventId = v.eventId;
+        var severity = v.severity;
+        var status = v.status;
+        var clock = convTime(v.clock);
+        var duration = v.duration;
+        var ack = v.ack;
+        var ackTime = v.ackTime;
+        var host = v.host;
+        var description = v.description;
+        var hostid = v.hostid;
+        var ip = v.ip;
+
+        eventListTable += "<tr role='row' id='" + eventId + "'>";
+        eventListTable += "<td width='80'   class='line'>" + eventId + "</td>";
+        if(status == "정상"){
+            eventListTable += "<td width='80'   class='line' style='color:green;'>" + status + "</td>";
+        } else {
+            eventListTable += "<td width='80'   class='line' style='color:red;'>" + status + "</td>";
+        }
+        if(severity == "information"){
+            eventListTable += "<td width='80'   class='line' style='color:#7499FF;'>" + severity + "</td>";
+        } else if(severity == "warning"){
+            eventListTable += "<td width='80'   class='line' style='color:#FFC859;'>" + severity + "</td>";
+        } else if(severity == "average"){
+            eventListTable += "<td width='80'   class='line' style='color:#FFA059;'>" + severity + "</td>";
+        } else if(severity == "high"){
+            eventListTable += "<td width='80'   class='line' style='color:#E97659;'>" + severity + "</td>";
+        } else {
+            eventListTable += "<td width='80'   class='line'>" + severity + "</td>";
+        }
+        eventListTable += "<td width='125'  class='line'>" + clock + "</td>";
+        eventListTable += "<td width='120'  class='line'>" + duration + "</td>";
+        if(ack == "미인지"){
+            eventListTable += "<td width='80'   class='line'><a class='eventListPage' style='color:#c45959' onclick='eventAckDetailView(" + eventId + ", " + objectId + ", this);' href='#none'>" + ack + "</a></td>";
+        } else {
+            eventListTable += "<td width='80' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+        }
+        eventListTable += "<td width='125'  class='line'>" + ackTime + "</td>";
+        eventListTable += "<td width='100'  class='line'>" + ip + "</td>";
+        eventListTable += "<td width='100'  class='line'><a href='#none' onclick='moveHostPage("+ hostid + ");'>" + host + "</a></td>";
+        eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + description + "</td>";
+        eventListTable += "</tr>";
+        
+    });
+    $("#eventListTable").append(eventListTable);
+    $("#serverInfo").empty();
+    $("#serverProcessList").empty();
+    $("#serverEventList").empty();
+
+}
+
+function moveHostPage(hostid){
+	$("#info_" + hostid).click();
+}
+
+function eventList_org(data_event){
     var eventListTable = '';
 
     eventListTable += '<tbody id="eventListTable">';
@@ -115,7 +280,6 @@ function showEventChartView(){
 
     $(".info-box-content").block(blockUI_opt_el);
 
-    console.log("cccccccccccccccccccccccc");
 
     var d = new Date();
     var nowHours = d.getHours();
@@ -141,8 +305,7 @@ function showEventChartView(){
         chartDataSet.push(obj);
         j++;
     }
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaachakchak ahahahah chak chak ahahahah ahahahah chakchakchak");
-    console.log(chartDataSet);
+    
     zbxApi.getEvent.getByTime(startTime).then(function(data) { // 24시간 전 ~ 현재 이벤트 추출
         var eventArr = data.result;
 
@@ -210,7 +373,7 @@ function showEventChartView(){
         dataSet.push(dataObj);
 
         // 신규 #ee6866
-        showEventStatChart("chart_eventList", "", dataSet, "", ['#FF8C00', 'red', '#00BFFF', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
+        showEventStatChart("chart_eventList", "", dataSet, "", ['#FF8C00', '#ee6866', '#00BFFF', '#ccaa65', '#E3C4FF', '#8F8AFF', '#00B700','#DB9700']);
 
         /////
 
@@ -358,12 +521,143 @@ function eventListAppend(){
         var appendData = '';
         console.log(" last Row From : " + lastRowIdFrom);
         //eventStatusViewAppend
+        
+        var triggerIdArr = [];
+        var hostIdArr = [];
+    	var uniqueTriggerIdArr = [];
+    	var uniqueHostIdArr = [];
+    	var eventMergeArr = [];
+    	
 
-        zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
-            appendData = zbxApi.eventStatusView.success(data);
-            var eventCnt = 0;
+        zbxApi.eventStatusViewAppend.get(lastRowIdFrom).then(function (data) {
+            
+        	// 모든 트리거 아이디를 배열에 담는다.
+        	$.each(data.result, function (k, v) {
+        		triggerIdArr.push(v.relatedObject.triggerid);
+        	});
+        	
+        	// 트리거 아이디 배열의 중복 제거
+        	$.each(triggerIdArr, function(k1,v1){
+                if(uniqueTriggerIdArr.indexOf(v1) == -1){
+                	uniqueTriggerIdArr.push(v1);
+                }
+        	 });
+        	
+        	// 트리거 아이디 별 이벤트 분리
+        	var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
+        	
+        	$.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
+        		eventArrByTriggerId[k] = new Array();
+        		$.each(data.result, function (k1, v1) { //이벤트 배열
+        			if(v == v1.relatedObject.triggerid){
+        				
+        				dataObj = new Object();
+        				dataObj.triggerId = v1.relatedObject.triggerid;
+        				dataObj.objectId = v1.objectid;
+        				dataObj.eventId = v1.eventid;
+        				dataObj.severity = convPriority(v1.relatedObject.priority);
+        				dataObj.status = convStatusEvent(v1.value);
+        				dataObj.ack = convAckEvent(v1.acknowledged);
+        				
+        				var tmpHostId = v1.hosts[0].hostid;
+        				dataObj.hostid = tmpHostId;
+        				
+        				if(hostIpMap[tmpHostId] == null) {
+        			        hostIpMap[tmpHostId]=zbxSyncApi.eventStatusHost(tmpHostId).result[0].interfaces[0].ip;
+        			    }
+        				dataObj.ip = hostIpMap[tmpHostId];
+        				if(v1.acknowledges[0] == undefined){
+        					dataObj.ackTime = "-";
+        				} else {
+        					dataObj.ackTime = convTime(v1.acknowledges[0].clock);
+        		        }
+        				dataObj.host = v1.hosts[0].name;
+        				dataObj.description = v1.relatedObject.description;
+        				dataObj.clock = v1.clock;
+        				dataObj.duration = 0;
+        				
+        				eventArrByTriggerId[k].push(dataObj);
+        			}
+        		});
+        	});
+        	
+        	// 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
+        	$.each(eventArrByTriggerId, function(k,v){
+        		var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
+        		console.log("previousClock : " + previousClock);
+        		
+        		$.each(v, function(k1, v1){
+        			v1.duration= convertTime(previousClock - parseInt(v1.clock));
+        			previousClock = parseInt(v1.clock);
+        			eventMergeArr.push(v1);
+        			
+        		});
+        	});
+        	//console.log(eventMergeArr);
+        	
+        	// Merge된 이벤트 배열 clock 순으로 정렬
+        	eventMergeArr.sort(function (a, b) {
+                   return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+            });
+        	//console.log(eventMergeArr);
+        	
 
-            $.each(appendData.result, function(k, v) {
+    		var eventAppendTable = '';
+    		
+        	$.each(eventMergeArr, function (k, v) {
+        		var objectId = v.objectId;
+        		var eventId = v.eventId;
+        		var severity = v.severity;
+        		var status = v.status;
+        		var clock = convTime(v.clock);
+        		var duration = v.duration;
+        		var ack = v.ack;
+        		var ackTime = v.ackTime;
+        		var host = v.host;
+        		var description = v.description;
+        		var hostid = v.hostid;
+        		var ip = v.ip;
+        		
+        		
+        		eventAppendTable += "<tr role='row' id='" + eventId + "'>";
+        		eventAppendTable += "<td width='80'   class='line'>" + eventId + "</td>";
+        		if(status == "정상"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:green;'>" + status + "</td>";
+        		} else {
+        			eventAppendTable += "<td width='80'   class='line' style='color:red;'>" + status + "</td>";
+        		}
+        		if(severity == "information"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:#7499FF;'>" + severity + "</td>";
+        		} else if(severity == "warning"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:#FFC859;'>" + severity + "</td>";
+        		} else if(severity == "average"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:#FFA059;'>" + severity + "</td>";
+        		} else if(severity == "high"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:#E97659;'>" + severity + "</td>";
+        		} else {
+        			eventAppendTable += "<td width='80'   class='line'>" + severity + "</td>";
+        		}
+        		eventAppendTable += "<td width='125'  class='line'>" + clock + "</td>";
+        		eventAppendTable += "<td width='120'  class='line'>" + duration + "</td>";
+        		if(ack == "미인지"){
+        			eventAppendTable += "<td width='80'   class='line' style='color:red;'><a class='eventListPage' style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
+        		} else {
+        			eventAppendTable += "<td width='80' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+        		}
+        		eventAppendTable += "<td width='125'  class='line'>" + ackTime + "</td>";
+        		eventAppendTable += "<td width='100'  class='line'>" + ip + "</td>";
+        		eventAppendTable += "<td width='100'  class='line'><a href='#none' onclick='moveHostPage("+ hostid + ");'>" + host + "</a></td>";
+        		eventAppendTable += "<td width='auto' class='line'  style='text-align: left;'>" + description + "</td>";
+        		eventAppendTable += "</tr>";
+        		
+        		
+        	});
+        	
+        	$("#eventListTable").append(eventAppendTable);
+        	
+        	/*
+            $.each(data.result, function(k, v) {
+            	
                 console.log(" eventStatusViewAppend ");
                 var eventId = '-';           //이벤트ID
                 var eventStatus = '-';       //상태
@@ -438,6 +732,7 @@ function eventListAppend(){
                     $("#info_" + hostid).click();
                 })
             })
+            */
         });
     }
 }

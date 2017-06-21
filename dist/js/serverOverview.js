@@ -1,6 +1,8 @@
 /* 전체 서버 상태 2017-01-02 */
 function allServerViewHost(hostid) {
     $.blockUI(blockUI_opt_all);
+    
+    
     $("[id^=base]").hide();
     $("#base_server").show();
 
@@ -10,10 +12,60 @@ function allServerViewHost(hostid) {
     var server_data = '';
     zbxApi.allServerViewHost.get().done(function(data, status, jqXHR) {
         server_data = zbxApi.allServerViewHost.success(data);
+        console.log("-----------------------");
+        console.log(server_data);
         serverOverView(server_data);
     });
 
-};
+}
+
+function serverOverView2() {
+	
+	var hostSet = [];
+	var dataSet = [];
+    var dataObj = new Object();
+    
+	zbxApi.allServerViewHost.get().then(function(data) {
+       
+        hostSet = data;
+
+    }).then(function() {
+    	
+    	$.each(hostSet.result, function(k,v){
+        	
+
+            dataObj = new Object();
+            dataObj.host = v.host;
+            dataObj.hostId = v.hostid;
+            dataObj.status = v.status;
+            dataObj.ip = v.interfaces[0].ip;
+            dataObj.os = v.inventory.os;
+            dataObj.hardware = v.inventory.hardware;
+        	
+        	zbxApi.getItem.get(dataObj.hostId, "system.cpu.util[100-idle]").then(function(cpuData) {
+        		console.log("cpuData");
+        		console.log(cpuData);
+        		dataObj.cpu = cpuData.result[0].lastvalue;
+        		return zbxApi.getItem.get(dataObj.hostId,"vm.memory.size[100-pavailable]");
+        	}).then(function(memData) {
+        		dataObj.mem = memData.result[0].lastvalue;
+        		return zbxApi.getItem.get(dataObj.hostId,"vfs.fs.size[/,pused]");
+                //return zbxApi.getItem.get(dataObj.hostId,"system.cpu.load[percpu,avg5]");
+
+            }).then(function(diskData) {
+            	dataObj.disk = diskData.result[0].lastvalue;
+            	dataSet.push(dataObj);
+                //data_loadavg5 = zbxApi.getItem.success(data);
+            });
+        });
+        //return zbxApi.getItem.get(hostid,"system.cpu.load[percpu,avg5]");
+
+    }).then(function() {
+       // return zbxApi.getItem.get(hostid,"system.cpu.load[percpu,avg15]");
+    	console.log("job finish");
+    	
+    })
+}
 
 function serverOverView(server_data) {
     $.blockUI(blockUI_opt_all);
@@ -49,7 +101,7 @@ function serverOverView(server_data) {
         var serverCPU = '-';
         var serverRAM = '-';
 
-        serverName = v.name;
+        serverName = v.host;
         hostid = v.hostid;
         serverStatus = zbxSyncApi.serverOverView().result[0].status;
         serverStatus = convHostEvent(serverStatus);
@@ -72,7 +124,7 @@ function serverOverView(server_data) {
         }
 
         try {
-            serverPerCPU = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
+            serverPerCPU = zbxSyncApi.getItem(hostid, "system.cpu.util[100-idle]").lastvalue;
             serverPerCPU = Math.floor(serverPerCPU * 100) / 100;
 
             if (serverPerCPU == 100)
@@ -82,33 +134,24 @@ function serverOverView(server_data) {
         }
 
         try {
-            serverPerMemory = zbxSyncApi.allServerViewItem(hostid, "vm.memory.size[pused]").lastvalue;
+            serverPerMemory = zbxSyncApi.getItem(hostid, "vm.memory.size[100-pavailable]").lastvalue;
             serverPerMemory = Math.floor(serverPerMemory * 100) / 100;
         } catch (e) {
             console.log(e);
         }
 
-        var value;
         try {
             // TODO pfree to pused.
-            value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[/,pfree]").lastvalue;
+        	serverPerDisk = zbxSyncApi.getItem(hostid, "vfs.fs.size[/,pused]").lastvalue;
         } catch (e) {
             console.log(e);
             try {
-                value = zbxSyncApi.allServerViewItem(hostid, "vfs.fs.size[C:,pfree]").lastvalue;
+            	serverPerDisk = zbxSyncApi.getItem(hostid, "vfs.fs.size[C:,pused]").lastvalue;
             } catch (e) {
                 console.log(e);
             }
         }
-        console.log("value : " + value);
-        serverPerDisk = 100 - value;
 
-        if(value === undefined){
-            serverPerDisk = 0;
-        }
-
-        if (serverPerDisk == 100)
-            serverPerDisk = 0;
         serverPerDisk = Math.floor(serverPerDisk * 100) / 100;
 
         var infoArr = v.inventory.hardware;     //serverCPU + serverRAM = v.inventory.hardware
@@ -139,7 +182,11 @@ function serverOverView(server_data) {
         tableDataArr.push(tableDataObj);
 
         serverOverViewHTML += '<tr role="row" class="odd">';
-        serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td">' + serverStatus + '</td>';
+        if(serverStatus == "정상"){
+        	serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td" style="color:green;">' + serverStatus + '</td>';        	
+        }else{
+        	serverOverViewHTML += '<td id="Status_' + hostid + '" width="45" class="line-td" style="color:red;">' + serverStatus + '</td>';    
+        }
         serverOverViewHTML += '<td id="Name_' + hostid + '" width="188" class="line-td" style="cursor:pointer">' + serverName + '</td>';
         serverOverViewHTML += '<td id="IP_' + hostid + '" width="122" class="line-td">' + serverIP + '</td>';
         serverOverViewHTML += '<td id="PerCPU_' + hostid + '" width="131" class="line-td" style="cursor:pointer"><div class="scw">' +

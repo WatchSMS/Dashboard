@@ -12,8 +12,17 @@ var procUsageView = function(hostid, startTime) {
     var lastClockLongType = parseInt(lastProcessData.lastclock) * 1000;
     var date = new Date(lastClockLongType);
     var lastClockForProcessTable = date.getFullYear() + "-" + (parseInt(date.getMonth())+1) + "-" + date.getDate()  + " " + date.getHours() + ":" + date.getMinutes();
-    var sortProcessForTable = sortProcess(lastProcessData, "CPU");
-
+    var sortProcessForTable = sortProcess(lastProcessData, "PROCESS");
+    var thHTML = "";
+    thHTML += "<thead>";
+    thHTML += "<tr>";
+    thHTML += "<td width='30%' class='line percent-text sorting'>이름</td>";
+    thHTML += "<td width='25%' class='line sorting'>CPU</td>";
+    thHTML += "<td width='25%' class='line pr-none sorting'>메모리</td>";
+    thHTML += "<td width='20%' class='br7_rt pr-none sorting'><span class='line'>개수</span></td>";
+    thHTML += "</tr>";
+    thHTML += "</thead>";
+    $("#processUsageTable1").empty().append(thHTML);
     ProcessTableHTML += "<tbody>";
 
     //ps 데이터의  마지막  값을 테이블에 삽입
@@ -55,7 +64,8 @@ var procUsageView = function(hostid, startTime) {
     var $table1 = $("#processUsageTable1");
     var $table = $("#detailedCpuProc");
     $("#detailedCpuProc > tbody > tr").eq(0).addClass("selectedProcess");
-    $("#detailedCpuProc > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
+    //$("#detailedCpuProc > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
+    $("#detailedCpuProc > tbody > tr").eq(0).css("background","#7708e1");
 
     currentProcessName = $(".selectedProcess").attr('id');
 
@@ -135,10 +145,10 @@ var procUsageView = function(hostid, startTime) {
                         procTableRow += "<tr id='" + tableDataArr[i].procName + "' class='h34 optionrow'>";
                     }
                 }
-                procTableRow += "<td width='245' class='text-left align_left line sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
-                procTableRow += "<td width='200' class='line percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
-                procTableRow += "<td width='200' class='line percent-text pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'></span></td>";
-                procTableRow += "<td width='auto' class='br7_rt pr-none text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
+                procTableRow += "<td width='30%' class='text-left align_left line sorting_1'><span class='ellipsis' title='" + tableDataArr[i].procName + "'>" + tableDataArr[i].procName + "</span></td>";
+                procTableRow += "<td width='25%' class='line percent-text sorting_3'>" + tableDataArr[i].cpuValue + "</td>";
+                procTableRow += "<td width='25%' class='line percent-text pr-none sorting_2'>" + tableDataArr[i].memValue + "<span class='smaller'></span></td>";
+                procTableRow += "<td width='20%' class='br7_rt pr-none text-center pr-none'>" + tableDataArr[i].procCnt + "</td>";
                 procTableRow += "</tr>";
             }
             if($('tr#lastrow').attr('isopen') == 'false'){
@@ -149,7 +159,9 @@ var procUsageView = function(hostid, startTime) {
 
             $('tbody', $table).empty();
             $('tbody', $table).append(procTableRow);
-            $("#"+tmpProcessName).addClass("selectedProcess").css("border","1px #FF5E00 solid");
+            //$("#"+tmpProcessName).addClass("selectedProcess").css("border","1px #FF5E00 solid");
+
+            $("#"+tmpProcessName).addClass("selectedProcess").css("background","#7708e1");
             rowClickEvent($table, hostid, startTime);
             viewMoreProcess();
 
@@ -270,7 +282,12 @@ var generateProcessResource = function(hostid, processName, startTime) {
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+                
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
 
                 if (point) {
                     point.highlight(e);
@@ -285,7 +302,12 @@ var generateProcessResource = function(hostid, processName, startTime) {
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+                
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
 
                 if (point) {
                     point.highlight(e);
@@ -372,14 +394,17 @@ function reloadChartForProcess(hostId){
 var rowClickEvent = function(table, hostid, startTime){
     $('tr', table).each(function (row){
         if(row < ($('tr', table).size()-1)){
-            $(this).click(function(){
-
+            //$(this).click(function(){
+        	$(this).off().on('click',function() {
                 var currentProcessName = $(this).attr('id');
                 $(".selectedProcess").removeClass("selectedProcess");
                 $(this).addClass("selectedProcess");
-                $(this).css("border","1px #FF5E00 solid");
-                $(this).prevAll().css("border","");
-                $(this).nextAll().css("border","");
+                //$(this).css("border","1px #FF5E00 solid");
+//                $(this).prevAll().css("border","");
+//                $(this).nextAll().css("border","");
+                $(this).css("background","#7708e1");
+                $(this).prevAll().css("background","");
+                $(this).nextAll().css("background","");
 
                 generateProcessResource(hostid, currentProcessName, startTime);
             });

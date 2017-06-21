@@ -94,7 +94,7 @@
 }
 
 
-/* �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝占� s */
+/* 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻�뜝占� s */
 .Pstyle {
 	opacity: 1; display: none; position: relative; width: auto; border: 0px solid #fff; padding: 0px;
 	overflow: hidden; height: 650px;  vertical-align: middle; display: inline-block; margin: 0 auto; margin-top:33px; text-align:center;
@@ -600,6 +600,203 @@
 	transition:right 0.1s ease-in-out; top: 0px; width: 221px; right: -230px; -webkit-transition: right 0.1s ease-in-out; -o-transition: right 0.1s ease-in-out;
 }
 /* e menu */
+
+
+/* 201706 */
+
+.main-sidebar {
+	overflow:hidden; transition:transform 0.1s ease-in-out, width 0.1s ease-in-out; left: 0px; top: 0px; width: 221px; padding-top: 56px; position: absolute; z-index: 0; -webkit-transition: -webkit-transform 0.1s ease-in-out, width 0.1s ease-in-out; -o-transition: -o-transform 0.1s ease-in-out, width 0.1s ease-in-out; -moz-transition: -moz-transform 0.1s ease-in-out, width 0.1s ease-in-out;
+}
+
+.baseb .sidebar-menu .icon01 > a {
+	background: url('dist/img/menu_icon_01.gif') no-repeat; color: rgb(255, 255, 255); border-left-width: 0px; border-left-style: solid; height:42px;
+}
+.baseb .sidebar-menu .icon01:hover > a {
+	background: url('dist/img/menu_icon_01_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color: rgb(228, 4, 4);
+}
+.baseb .sidebar-menu .icon01.active > a {
+	background: url('dist/img/menu_icon_01_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+
+.baseb .sidebar-menu .icon02 > a {
+	background: url('dist/img/menu_icon_02.gif') no-repeat; color: rgb(255, 255, 255); border-left-width: 0px; border-left-style: solid; height:42px;
+}
+.baseb .sidebar-menu .icon02:hover > a {
+	background: url('dist/img/menu_icon_02_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color: rgb(228, 4, 4);
+}
+.baseb .sidebar-menu .icon02.active > a {
+	background: url('dist/img/menu_icon_02_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+
+.baseb .sidebar-menu .icon03 > a {
+	background: url('dist/img/menu_icon_03.gif') no-repeat; color: rgb(255, 255, 255); border-left-width: 0px; border-left-style: solid; height:42px;
+}
+.baseb .sidebar-menu .icon03:hover > a {
+	background: url('dist/img/menu_icon_03_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color: rgb(228, 4, 4);
+}
+.baseb .sidebar-menu .icon03.active > a {
+	background: url('dist/img/menu_icon_03_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+.sidebar-menu-custom .icon03.active > a {
+	background: url('dist/img/menu_icon_03_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+
+
+.baseb .sidebar-menu .icon04 > a {
+	background: url('../img/menu_icon_04.gif') no-repeat; color: rgb(255, 255, 255); border-left-width: 0px; border-left-style: solid; height:42px;
+}
+.baseb .sidebar-menu .icon04:hover > a {
+	background: url('../img/menu_icon_04_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color: rgb(228, 4, 4);
+}
+.baseb .sidebar-menu .icon04.active > a {
+	background: url('../img/menu_icon_04_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+
+.baseb .sidebar-menu .icon05 > a {
+	background: url('../img/menu_icon_05.gif') no-repeat; color: rgb(255, 255, 255); border-left-width: 0px; border-left-style: solid; height:42px;
+}
+.baseb .sidebar-menu .icon05:hover > a {
+	background: url('../img/menu_icon_05_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color: rgb(228, 4, 4);
+}
+.baseb .sidebar-menu .icon05.active > a {
+	background: url('../img/menu_icon_05_ov.gif') no-repeat; color: rgb(255, 255, 255); border-left-color:#7609e0;
+}
+
+.baseb .sidebar-menu > li > .treeview-menu {
+	background: #374167; margin: 0px 1px;  border-bottom: 1px solid #454d6e;
+}
+
+.sidebar a {
+	color: rgb(184, 199, 206);
+}
+.sidebar .b1:hover {
+	text-decoration: none;
+	background: url('dist/img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 31px 11px; top: 0px; left: 2px; background-color: #7708e1;
+}
+.sidebar .b2:hover {
+	text-decoration: none;
+	background: url('dist/img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 32px -12px; top: 0px; left: -7px; background-color: #7708e1;
+}
+.baseb .sidebar .b3:hover {
+	text-decoration: none;
+	background: url('dist/img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 29px -35px; top: 0px; left: 0px; background-color: #7708e1;
+}
+.baseb-custom .sidebar .b3:hover {
+	text-decoration: none;
+	background: url('../img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 29px -35px; top: 0px; left: 0px; background-color: #7708e1;
+}
+
+.treeview-menu > li > a {
+	text-decoration: none;
+	color: #a2a8b6;
+}
+.treeview-menu > li.active > a {
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+}
+.treeview-menu > li > a:hover {
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+}
+.control-sidebar-bg {
+	transition:right 0.1s ease-in-out; top: 0px; width: 221px; right: -230px; -webkit-transition: right 0.1s ease-in-out; -o-transition: right 0.1s ease-in-out;
+}
+.control-sidebar {
+	transition:right 0.1s ease-in-out; top: 0px; width: 221px; right: -230px; -webkit-transition: right 0.1s ease-in-out; -o-transition: right 0.1s ease-in-out;
+}
+
+.sidebar {
+	padding-bottom: 10px;
+}
+.sidebar-menu {
+	list-style: none; margin: 0px; padding: 0px; height:100%;
+}
+.sidebar-menu > li {
+	margin: 0px; padding: 0px; position: relative;
+}
+.sidebar-menu > li > a {
+	padding: 12px 5px 12px 15px; display: block;
+}
+.sidebar-menu > li > a > .fa {
+	width: 20px;
+}
+.sidebar-menu > li > a > .glyphicon {
+	width: 20px;
+}
+.sidebar-menu > li > a > .ion {
+	width: 20px;
+}
+.sidebar-menu > li .label {
+	margin-top: 3px; margin-right: 5px;
+}
+.sidebar-menu > li .badge {
+	margin-top: 3px; margin-right: 5px;
+}
+.sidebar-menu li.header {
+	padding: 4px 0 0 0; font-size: 12px;
+	background: #323c60; border-bottom:1px solid #454d6e; color: rgb(75, 100, 111); height:52px; text-align:center;
+}
+.sidebar-menu li.header span {
+	background:url('../img/category_tag.gif') no-repeat center; text-align:center; width:221px; height:41px; display:inline-block;
+}
+.sidebar-menu li > a > .fa-angle-left {
+	padding: 0px; width: auto; height: auto; margin-top: 3px; margin-right: 10px;
+}
+.sidebar-menu li.active > a > .fa-angle-left {
+	transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg);
+}
+.sidebar-menu li.active > .treeview-menu {
+	display: block;
+}
+.sidebar-menu .treeview-menu {
+	list-style: none; margin: 0px; padding: 0px 0px 0px 0px; display: none;
+}
+.sidebar-menu .treeview-menu .treeview-menu {
+	padding-left: 20px;
+}
+.sidebar-menu .treeview-menu > li {
+	margin: 0px;
+}
+.sidebar-menu .treeview-menu > li a {
+	padding: 5px 5px 5px 45px; font-size: 14px; display: block;
+}
+.sidebar-menu .treeview-menu > li .b1 {
+	font-size: 14px; display: block;
+	background: url('../img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 31px 11px; top: 0px; left: 2px;
+}
+.sidebar-menu .treeview-menu > li .b2 {
+	font-size: 13px; display: block;
+	background: url('../img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 32px -12px; top: 0px; left: -7px;
+}
+.sidebar-menu .treeview-menu > li .b3 {
+	font-size: 13px; display: block;
+	background: url('../img/icon_bg_img.gif') no-repeat; display: block; background-size: 20px 175px;
+	background-position: 33px -35px; top: 0px; left: 0px; padding:3px 0 3px 41px;
+}
+
+.sidebar-menu .treeview-menu > li > a > .fa {
+	width: 20px;
+}
+.sidebar-menu .treeview-menu > li > a > .glyphicon {
+	width: 20px;
+}
+.sidebar-menu .treeview-menu > li > a > .ion {
+	width: 20px;
+}
+.sidebar-menu .treeview-menu > li > a > .fa-angle-left {
+	width: auto;
+}
+.sidebar-menu .treeview-menu > li > a > .fa-angle-down {
+	width: auto;
+}
+
+
 
 
 
@@ -1116,7 +1313,7 @@
 }
 
 
-/* 占쎄퐣�뇡占� 占쎄맒占쎄묶 */
+/* �뜝�럡�맋占쎈눀�뜝占� �뜝�럡留믣뜝�럡臾� */
 .content-only .table1 .c0 {
 	position:relative; top:5px; left:0px;
 }

@@ -32,7 +32,10 @@ function diskUsageView(hostid, startTime){
 
         try{
             diskValue = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pfree]").lastvalue;
-            diskItemSize = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",used]").lastvalue;
+            if(diskValue==0){
+            	return true;
+            }
+            diskItemSize = zbxSyncApi.getDiskItem(hostid, "vfs.fs.size["+diskItemName+",pused]").lastvalue;
             diskItemSize = Math.round(diskItemSize / 1024 / 1024 / 1024);
 
             diskItemUsed = 100-diskValue;
@@ -74,7 +77,9 @@ function diskUsageView(hostid, startTime){
 
     var $table = $("#diskInfoTable");
     $("#diskInfoTable > tbody > tr").eq(0).addClass("selectedDisk");
-    $("#diskInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
+    //$("#diskInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
+    
+    $("#diskInfoTable > tbody > tr").eq(0).css("background","#7708e1");
 
     currentDiskName = $(".selectedDisk").attr('id');
     //console.log("currentDiskName : " + currentDiskName);
@@ -128,6 +133,8 @@ function generateDiskResource(hostid, diskName, startTime){
 
     zbxApi.serverViewGraph.get(hostid, diskItemKeyInode).then(function(data) {
         diskInode = zbxApi.serverViewGraph.success(data);
+        console.log("diskInode");
+        console.log(diskInode);
     }).then(function() {
         return zbxApi.serverViewGraph.get(hostid, diskItemKeyFree);
     }).then(function(data) {
@@ -165,8 +172,8 @@ function generateDiskResource(hostid, diskName, startTime){
         totalDataObj.data = diskTotalArr;
         totalDataSet.push(totalDataObj);
 
-        showBasicLineChart('chart_diskIo', "INODE", ioDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
-        showBasicAreaChart('chart_diskUse',"TOTAL", totalDataSet, "%", ['#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        showBasicLineChart('chart_diskIo', "INODE", ioDataSet, "%", ['#e85c2a', '#ccaa65', '#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
+        showBasicAreaChart('chart_diskUse',"TOTAL", totalDataSet, "%", ['#fa7796', '#00B700','#DB9700', '#E3C4FF', '#8F8AFF']);
     })
 }
 
@@ -185,14 +192,18 @@ function callApiForDiskTable(hostid){
 function rowDiskClickEvent(table, hostid, startTime){
     $('tr', table).each(function (row){
         $(this).click(function(){
-
+        	removeAllChart();
             var currentDiskName = $(this).attr('id');
             //console.log(" currentDiskName : " + currentDiskName + " hostid : " + hostid);
             $(".selectedDisk").removeClass("selectedDisk");
             $(this).addClass("selectedDisk");
-            $(this).css("border","1px #FF5E00 solid");
-            $(this).prevAll().css("border","");
-            $(this).nextAll().css("border","");
+//            $(this).css("border","1px #FF5E00 solid");
+//            $(this).prevAll().css("border","");
+//            $(this).nextAll().css("border","");
+            $(this).css("background","#7708e1");
+            $(this).prevAll().css("background","");
+            $(this).nextAll().css("background","");
+            
 
             generateDiskResource(hostid, currentDiskName, startTime);
         });

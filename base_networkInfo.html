@@ -1,11 +1,11 @@
 <section class="content">
 
-    <div id='network_InputTimecontent' style="background:#424973; display: none; float:left; margin-left:20px; padding:15px 15px 15px 15px; border:3px solid #c1c7ce; opacity:1;">
-        <strong style="font-size: 18px">시간 입력 </strong><br><br>
-        <input type="number" id="selectNetworkTimeInput" placeholder="시간" name="" maxlength="2" value="" class="inpTxt t_left" title="" style="width:300px; background: #626992;"/>
-        <span><a onclick="$('#network_InputTimecontent').trigger('close'); clickInputTimeNetwork();" href="#none">확인</a></span>
-        <span><a onclick="$('#network_InputTimecontent').trigger('close'); return false;" href="#none">취소</a></span>
-    </div>
+	<div id='network_InputTimecontent' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E; opacity:1;">
+		<strong style="font-size: 18px">시간 입력 </strong><br><br>
+		<input type="number" id="selectNetworkTimeInput" placeholder="시간" name="" maxlength="10" value="" class="inpTxt t_left" title="" style="width:300px; border:3px solid #51597E; background: #626992;"/>
+		<span><a onclick="$('#network_InputTimecontent').trigger('close'); clickInputTimeNetwork();" href="#none">확인</a></span>
+		<span><a onclick="$('#network_InputTimecontent').trigger('close'); return false;" href="#none">취소</a></span>
+	</div>
 
     <div class="content-header2">
         <div class="d1">
@@ -65,9 +65,9 @@
                             <img src="dist/img/tit_sub_17.gif">
 
                             <li class="p1"><span class="o1 bg14"></span><span class="e1">
-                                <a onclick="chartLegendItemClick(0,'chart_trafficIo', this);" href="#none">RECEVIED</a></span></li>
+                                <a onclick="chartLegendItemClick(0,'chart_trafficIo', this);" href="#none">In</a></span></li>
                             <li class="p1"><span class="o1 bg17"></span><span class="e1">
-                                <a onclick="chartLegendItemClick(0,'chart_trafficIo', this);" href="#none">TRANSMITED</a></span></li>
+                                <a onclick="chartLegendItemClick(1,'chart_trafficIo', this);" href="#none">Out</a></span></li>
 
                             <!-- button select input -->
                             <!--<div class="mr8 fr align_right">
@@ -86,9 +86,9 @@
                 </thead>
             </table>
 
-            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : Mpbs)</div>
+            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : Kpbs)</div>
             <div class="graph_sub1 h247">
-                <div id="chart_trafficIo" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                <div id="chart_trafficIo" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
             </div>
         </section>
         <!-- 하단 마진 -->
@@ -103,7 +103,7 @@
                         <div class="s1 f1">
                             <img src="dist/img/tit_sub_18.gif">
 
-                            <li class="p1"> <span class="o1 bg18"></span> <span class="e1">
+                            <li class="p1"><span class="o1 bg18"></span> <span class="e1">
                                 <a onclick="chartLegendItemClick(0,'chart_trafficTotal', this);" href="#none">TOTAL</a></span></li>
                             <!--<li class="p1"> <span class="o1 bg22"></span> <span class="e1">
                                 <a onclick="chartLegendItemClick(0,'chart_trafficTotal', this);" href="#none">DISK USED 2</a></span></li>-->
@@ -125,10 +125,10 @@
                 </thead>
             </table>
 
-            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : Mpbs)</div>
+            <div class="graph_sub1 pt5 pr2 h26 c_b5 align_right">(단위 : Kpbs)</div>
 
             <div class="graph_sub1 h247">
-                <div id="chart_trafficTotal" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                <div id="chart_trafficTotal" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
             </div>
 
         </section>

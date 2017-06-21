@@ -3,32 +3,30 @@ function dashboardView(){
     offTimer();
     removeAllChart();
 
-    $(".info-box-content").block(blockUI_opt_el);
+//    $(".info-box-content").block(blockUI_opt_el);
 
     //이벤트 현황
+    console.log("dashboardEventStatus");
     dashboardEventStatus();
 
     //호스트별 장애현황
-    var hostEvent = '';
-    zbxApi.dashboardHostInfo.get().then(function(data){
-        hostEvent = zbxApi.dashboardHostInfo.success(data);
-        dashboardHostEvent(hostEvent);
-    });
-
+    console.log("dashboardHostEvent");
+    dashboardHostEvent();
+   
     //이벤트 발생 목록
-    var dashboard_Event = '';
-    zbxApi.dashboardEventList.get().then(function(data) {
-        dashboard_Event = zbxApi.dashboardEventList.success(data);
-        dashboardEventList(dashboard_Event);
-    });
+    console.log("dashboardEventList");
+    dashboardEventList();
 
-    //요일별이벤트발생빈도
+    //요일별이벤트발생빈도dashboardEventList
+    console.log("dashboardDayEvent");
     dashboardDayEvent();
 
     //이벤트 인지 차트
+    console.log("dashboardEventAckChart");
     dashboardEventAckChart();
 
     //요일별 Top 이벤트
+    console.log("dashboardWeekTopEvent");
     dashboardWeekTopEvent();
 
     $.unblockUI(blockUI_opt_all);
@@ -49,20 +47,27 @@ function dashboardEventStatus(){
     var d = new Date();
     var date = d.getDate();
     var today_select = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
+    var beforeWeekTime = new Date(d.getFullYear(), d.getMonth(), d.getDate()-7, 0, 0, 0);
     //console.log(" today_select : " + today_select);
     today_select = parseInt(today_select / 1000);
-    //console.log(" today_select : " + today_select);
+    beforeWeekTime = parseInt(beforeWeekTime / 1000);
 
     var totalEvent = '';
     var unacknowEvent = '';
     var todayEvent = '';
 
+    /*
     zbxApi.alertTrigger.get().then(function(data) {
         totalEvent = zbxApi.alertTrigger.success(data);
         $("#infobox_alertTrigger").text(totalEvent);
     });
+    */
+    zbxApi.todayEvent.get(beforeWeekTime).then(function(data) {
+        var weekEvent = zbxApi.todayEvent.success(data);
+        $("#infobox_alertTrigger").text(weekEvent);
+    });
 
-    zbxApi.unAckknowledgeEvent.get().then(function(data) {
+    zbxApi.unAckknowledgeEvent.get(today_select).then(function(data) {
         unacknowEvent = zbxApi.unAckknowledgeEvent.success(data);
         $("#unAcknowledgedEvents").text(unacknowEvent);
     });
@@ -75,83 +80,235 @@ function dashboardEventStatus(){
     //console.log("dashboardEventStatus today_select : " + new Date(today_select));
 }
 
-function dashboardHostEvent(hostEvent){
+
+function dashboardHostEvent(){
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
     var beforeTime = date.getTime() - DAYTOMILLS;
     var endTime = date.getTime();
     beforeTime = parseInt(beforeTime / 1000);
     endTime = parseInt(endTime / 1000);
-    console.log(" dashboardHostEvent : " + endTime);
+    var hostList = [];
+   
+    zbxApi.dashboardHostInfo.get().then(function(data){ //호스트 정보 get
 
-    var hostNum = 0;
-    var hostid = '';
-    var hostName = '';
-    var hostEventCnt = 0;
-    var event_clock = 0;
-
-    var eventList = '';
-
-    var dashboardHostEventTbody = "<tbody id='dashboardHostEventTbody'></tbody>";
-
-    $("#hostEventList").empty();
-
-    $("#hostEventList").append(dashboardHostEventTbody);
-
-    $.each(hostEvent.result, function(k, v){
-        var hostDataObj = new Object();
-        var hostDataSet=[];
-        //console.log(" " + v.name + " 아이우에오 " + v.hostid);
-        hostNum += 1;
-        hostName = v.name;
-        hostid = v.hostid;
-        hostEventCnt = zbxSyncApi.alerthostTrigger(hostid, beforeTime, endTime);
-        eventList = zbxSyncApi.dashboardHostEvent(beforeTime, endTime, hostid);
-
-        var dashboardHostEventHTML = "<tr class='p1'>";
-        dashboardHostEventHTML += "<td width='40px' height='70px' class='br7_lt line-td'>" + hostNum + "</td>";
-        dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + hostName + "</td>";
-        dashboardHostEventHTML += "<td width='50px' id='eventCnt_" + hostid + "' height='70px' class='line-td'>" + hostEventCnt + "</td>";
-        dashboardHostEventHTML += "<td width='auto' height='70px' class='br7_rt'><div id='hostChart" + hostNum + "' style='width: 500px; height:70px; padding: 0 0 0 0;'></div></td>";
-        dashboardHostEventHTML += "</tr>";
-        $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
-
-        var dataArr = new Array(24);
-        try {
-            if(eventList[0] == undefined){
-                return true;
-            }
-
-            for(var i=0; i<24; i++){
-                var HOUR = 60*60;//시간
-                var NOW = parseInt(new Date().getTime()/1000);
-                var event_count= 0 ;
-
-                for(var j=0;j<eventList.length;j++) {
-                    if(eventList[j].clock <NOW-(24-i)*HOUR && eventList[j].clock >NOW-(24-i+1)*HOUR ){
-                        event_count += 1;
+    	$.each(data.result, function(k,v){
+    		
+    		var dataObj = new Object();
+    		dataObj.hostId = v.hostid;
+    		dataObj.hostName = v.host;
+    		dataObj.evtCount = 0;
+    		dataObj.clock = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    		dataObj.value = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    		
+    		
+    		hostList.push(dataObj);
+    	});
+    }).then(function(){
+    	
+    	return zbxApi.dashboardHostEvent.hostGet(beforeTime, endTime);
+    }).then(function(data1) {
+    	
+        var nowTime = Math.round(new Date().getTime()/1000);
+        var shortTimeOneHour = LONGTIME_ONEHOUR/1000;
+        var dashboardHostEventHTML = '';
+        $("#dashboardHostEventTbody").empty();
+        
+        $.each(data1.result, function(k,v){	
+        	$.each(hostList, function(k1, v1){
+        		if(v1.hostId == v.hosts[0].hostid){
+        			v1.evtCount += 1;
+        			
+        			for(var i=0; i<24; i++){
+        				var startTime = 24-i;
+        				var endTime = startTime-1;
+        				v1.clock[i] = (nowTime-(endTime*shortTimeOneHour));
+                    	if((nowTime-(startTime*shortTimeOneHour) < parseInt(v.clock)) && (nowTime-(endTime*shortTimeOneHour) >= parseInt(v.clock))){
+                    		v1.value[i] += 1;
+                    	}
                     }
-                }
-                dataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-        var hostDataObj = new Object();
-        hostDataObj.name = "hostEvent";
-        hostDataObj.data = dataArr;
-        hostDataSet.push(hostDataObj);
-
-        showLineChart('hostChart'+(k+1), "hostEvent", hostDataSet, "", ['#a2adcc']);
+        		}
+        	});
+        });
+        
+        $.each(hostList, function(k,v){
+        	
+        	dashboardHostEventHTML += "<tr class='p1'>";
+            dashboardHostEventHTML += "<td width='40px' height='70px' class='br7_lt line-td'>" + (k+1) + "</td>";
+            dashboardHostEventHTML += "<td width='160px' height='70px' class='line-td align_left'>" + v.hostName + "</td>";
+            dashboardHostEventHTML += "<td width='50px' id='eventCnt_" + v.hostId + "' height='70px' class='line-td'>" + v.evtCount + "</td>";
+            dashboardHostEventHTML += "<td width='auto' height='70px' class='br7_rt'><div id='hostChart" + v.hostId + "' style='width: 90%; height:70px; padding: 0 0 0 0;'></div></td>";
+            dashboardHostEventHTML += "</tr>";
+            
+        });
+        
+        $("#dashboardHostEventTbody").append(dashboardHostEventHTML);
+        var array = new Array(24);
+        
+        $.each(hostList, function(k,v){
+        	
+        	var hostDataObj = new Object();
+  	        var hostDataSet = [];
+  	        
+        	for(var i=0; i<24; i++){
+        		array[i] = new Array(2);
+        		array[i][0] = v.clock[i] * 1000;
+        		array[i][1] = v.value[i];
+        	}
+	     
+	        hostDataObj.name = "hostEvent";
+	        hostDataObj.data = array;
+	        hostDataSet.push(hostDataObj);
+	        
+	        var chartLineColor;
+	        
+	        if(k%3 == 0){
+	        	chartLineColor = ['#ccaa65'];
+	        }else if(k%3 == 1){
+	        	chartLineColor = ['#88e64a'];
+	        }else if(k%3 == 2){
+	        	chartLineColor = ['#fa7796'];
+	        }
+	        showLineChart('hostChart'+v.hostId, "hostEvent", hostDataSet, "", chartLineColor);
+        });
+        
     });
-
-    TIMER_ARR.push(setInterval(function(){ addHostEventList(hostEvent); }, 10000));
 }
 
-function dashboardEventList(dashboard_Event) {
-    //console.log(dashboard_Event);
-    //console.log(JSON.stringify(dashboard_Event));
+function dashboardEventList() {
+	
+    /* 
+     * 1. 모든 이벤트 호출
+     * 2. 트리거 아이디 별로 이벤트 분리 후, 이벤트 간 시간차이(지속시간 duration) 계산
+     * 3. 분리된 이벤트 merge
+     * 4. merge 된 이벤트를 clock 순으로 정렬 후 화면 표시
+     */  
+	
+    zbxApi.dashboardEventList.get().then(function(data) {
+    	
+    	var triggerIdArr = [];
+    	var uniqueTriggerIdArr = [];
+    	var eventMergeArr = [];
+    	
+    	// 모든 트리거 아이디를 배열에 담는다.
+    	$.each(data.result, function (k, v) {
+    		triggerIdArr.push(v.relatedObject.triggerid);
+    	});
+    	
+    	// 트리거 아이디 배열의 중복 제거
+		$.each(triggerIdArr, function(k1,v1){
+	        if(uniqueTriggerIdArr.indexOf(v1) == -1){
+	        	uniqueTriggerIdArr.push(v1);
+	        }
+	    });
+		
+		// 트리거 아이디 별 이벤트 분리
+		var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
+		
+		$.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
+			eventArrByTriggerId[k] = new Array();
+			$.each(data.result, function (k1, v1) { //이벤트 배열
+				if(v == v1.relatedObject.triggerid){
+					
+					dataObj = new Object();
+					dataObj.triggerId = v1.relatedObject.triggerid;
+					dataObj.objectId = v1.objectid;
+					dataObj.eventId = v1.eventid;
+					dataObj.severity = convPriority(v1.relatedObject.priority);
+					dataObj.status = convStatusEvent(v1.value);
+					dataObj.ack = convAckEvent(v1.acknowledged);
+					if(v1.acknowledges[0] == undefined){
+						dataObj.ackTime = "-";
+					} else {
+						dataObj.ackTime = convTime(v1.acknowledges[0].clock);
+			        }
+					dataObj.host = v1.hosts[0].name;
+					dataObj.description = v1.relatedObject.description;
+					dataObj.clock = v1.clock;
+					dataObj.duration = 0;
+					
+					eventArrByTriggerId[k].push(dataObj);
+				}
+			});
+		});
+		//console.log(eventArrByTriggerId);
+		
+		// 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
+		$.each(eventArrByTriggerId, function(k,v){
+			var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
+			console.log("previousClock : " + previousClock);
+			
+			$.each(v, function(k1, v1){
+				v1.duration= convertTime(previousClock - parseInt(v1.clock));
+				previousClock = parseInt(v1.clock);
+				eventMergeArr.push(v1);
+				
+			});
+		});
+		//console.log(eventMergeArr);
+		
+		// Merge된 이벤트 배열 clock 순으로 정렬
+		eventMergeArr.sort(function (a, b) {
+	           return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+	    });
+		//console.log(eventMergeArr);
+		
+		var eventTable = '';
+
+	    eventTable += '<tbody>';
+	    
+		$.each(eventMergeArr, function (k, v) {
+	    	var objectId = v.objectId;
+	        var eventId = v.eventId;
+	        var severity = v.severity;
+	        var status = v.status;
+	        var clock = convTime(v.clock);
+	        var duration = v.duration;
+	        var ack = v.ack;
+	        var ackTime = v.ackTime;
+	        var host = v.host;
+	        var description = v.description;
+	
+	        eventTable += "<tr id='" + eventId + "'>";
+	        if(severity == "information") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+	        } else if(severity == "warning") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+	        } else if(severity == "average") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+	        } else if(severity == "high") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+	        } else {
+	            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+	        }
+	        if(status == "정상"){
+	        	eventTable += "<td width='60' class='line' style='color:green'>" + status + "</td>";
+	        }else{
+	        	eventTable += "<td width='60' class='line' style='color:red'>" + status + "</td>";	        	
+	        }
+	        eventTable += "<td width='75' class='line'>" + clock + "</td>";
+	        eventTable += "<td width='75' class='line'>" + duration + "</td>";
+	        if(ack == "미인지"){
+	            eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
+	        } else if(ack == "인지"){
+	            eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+	        }
+	        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+	        eventTable += "<td width='100' class='line'>" + host + "</td>";
+	        eventTable += "<td width='auto' class='align_left ponter'>" +
+	            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+	            "<span class='smd'>" + description + "</span></a></td>";
+	        eventTable += "</tr>";
+	    });
+	    eventTable += "</tbody>";
+	    $("#dashboardEventList").empty();
+	    $("#dashboardEventList").append(eventTable);
+		
+    });
+	
+}
+
+function dashboardEventList_org() {
     var eventId = '';
     var severity = '';
     var status = '';
@@ -161,62 +318,91 @@ function dashboardEventList(dashboard_Event) {
     var ackTime = '';
     var host = '';
     var description = '';
+    var objectId = '';
+    var clock = '';
 
     var eventTable = '';
 
     eventTable += '<tbody>';
-
-    $.each(dashboard_Event.result, function (k, v) {
-        eventId = v.eventid;
-        severity = convPriority(v.relatedObject.priority);
-        status = convStatusEvent(v.value);
-        lastchange = convTime(v.relatedObject.lastchange);
-        age = convDeltaTime(v.relatedObject.lastchange);
-        ack = convAckEvent(v.acknowledged);
-        if(v.acknowledges[0] == undefined){
-            ackTime = "-";
-        } else {
-            ackTime = convTime(v.acknowledges[0].clock);
-        }
-        host = v.hosts[0].name;
-        description = v.relatedObject.description;
-
-        eventTable += "<tr id='" + eventId + "'>";
-        if(severity == "information") {
-            eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
-        } else if(severity == "warning") {
-            eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
-        } else if(severity == "average") {
-            eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
-        } else if(severity == "high") {
-            eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
-        } else {
-            eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
-        }
-        eventTable += "<td width='60' class='line'>" + status + "</td>";
-        eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
-        eventTable += "<td width='75' class='line'>" + age + "</td>";
-        if(ack == "미인지"){
-            eventTable += "<td width='69' class='line' style='color:red'><a onclick='eventAckDetailView();' href='#none'>" + ack + "</a></td>";
-        } else if(ack = "인지"){
-            eventTable += "<td width='69' class='line'><a onclick='eventAckDetailView();' href='#none'>" + ack + "</a></td>";
-        }
-        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
-        eventTable += "<td width='100' class='line'>" + host + "</td>";
-        eventTable += "<td width='auto' class='align_left ponter'>" +
-            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-            "<span class='smd'>" + description + "</span></a></td>";
-        eventTable += "</tr>";
-    });
-    eventTable += "</tbody>";
-    $("#dashboardEventList").empty();
-    $("#dashboardEventList").append(eventTable);
+    
+    zbxApi.dashboardEventList.get().then(function(data) {
+        
+	    $.each(data.result, function (k, v) {
+	    	objectId = v.objectid;
+	        eventId = v.eventid;
+	        severity = convPriority(v.relatedObject.priority);
+	        status = convStatusEvent(v.value);
+	        clock = convTime(v.clock);
+	        //lastchange = convTime(v.relatedObject.lastchange);
+	        age = convDeltaTime(v.relatedObject.lastchange);
+	        ack = convAckEvent(v.acknowledged);
+	        if(v.acknowledges[0] == undefined){
+	            ackTime = "-";
+	        } else {
+	            ackTime = convTime(v.acknowledges[0].clock);
+	        }
+	        host = v.hosts[0].name;
+	        description = v.relatedObject.description;
+	
+	        eventTable += "<tr id='" + eventId + "'>";
+	        if(severity == "information") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+	        } else if(severity == "warning") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+	        } else if(severity == "average") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+	        } else if(severity == "high") {
+	            eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+	        } else {
+	            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+	        }
+	        if(status == "정상"){
+	        	eventTable += "<td width='60' class='line' style='color:green'>" + status + "</td>";
+	        }else{
+	        	eventTable += "<td width='60' class='line' style='color:red'>" + status + "</td>";	        	
+	        }
+	        eventTable += "<td width='75' class='line'>" + clock + "</td>";
+	        eventTable += "<td width='75' class='line'>" + age + "</td>";
+	        if(ack == "미인지"){
+	            eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
+	        } else if(ack == "인지"){
+	            eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+	        }
+	        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+	        eventTable += "<td width='100' class='line'>" + host + "</td>";
+	        eventTable += "<td width='auto' class='align_left ponter'>" +
+	            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+	            "<span class='smd'>" + description + "</span></a></td>";
+	        eventTable += "</tr>";
+	    });
+	    eventTable += "</tbody>";
+	    $("#dashboardEventList").empty();
+	    $("#dashboardEventList").append(eventTable);
+	});
 }
 
-function eventAckDetailView(){
+function eventAckDetailView(eventId, objectId, thisTag){
 	
-	console.log("ahahahahahahah chakchak");
-
+	var fromPage = $(thisTag).attr("class");
+	
+	$("#ackHistory").empty();
+	$("#ackMsg").val('');
+	$("#ackTagId").val(thisTag);
+	$("#fromView").val(fromPage);
+	
+	zbxApi.Acknowledge.get(eventId,objectId).then(function(data){
+		var eventdata = zbxApi.Acknowledge.success(data);
+		$.each(eventdata.result, function (k, v) {
+		
+			$.each(v.acknowledges, function (k1, v1) {
+				var $tr = $("<tr><td>" + convTime(v1.clock) +"</td><td>" + v1.alias + "</td><td>" + v1.message + "</td></tr>");
+				$("#ackHistory").append($tr);
+			});
+		});
+    });
+	
+	
+	$("#ackEventId").val(eventId);
 	$('#ackDetailForm').lightbox_me({
         centered: true,
         closeSelector: ".close",
@@ -224,6 +410,81 @@ function eventAckDetailView(){
             $('#ackDetailForm').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
         },
         overlayCSS:{background: '#474f79', opacity: .8}
+    });
+    
+	
+}
+
+function addAck(){
+	
+	var message = $('#ackMsg')[0].value;
+	var user = $("#inputUser")[0].value;
+	var eventId = $("#ackEventId")[0].value;
+	
+	
+//	console.log("zzzzzzz");
+//	console.log($("#ackTagId")[0].value);
+//	$($("#ackTagId")[0].value).css("color","#529238");
+	
+	zbxApi.Acknowledge.update(eventId, message).then(function(data){
+			
+		var ackTag = $("#ackTagId")[0].value;
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth()+1;
+		var dates = date.getDate();
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		if(hour < 10){
+			hour = "0" + hour;
+		}
+		if(minute < 10){
+			minute = "0" + minute;
+		}
+		if(second < 10){
+			second = "0" + second;
+		}
+		
+		
+		$(ackTag).css("color","#529238");
+		$(ackTag).text("인지");
+		$(ackTag).parent().next().text(year + "/" + month + "/" + dates + " " + hour + ":" + minute + ":" + second);
+		
+		/*
+		 * 
+		var fromPage = $("#fromView")[0].value;
+		
+		if(fromPage == "eventListPage"){
+			//eventListView();
+			var ackTag = $("#ackTagId")[0].value;
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth()+1;
+			var dates = date.getDate();
+			var hour = date.getHours();
+			var minute = date.getMinutes();
+			var second = date.getSeconds();
+			if(hour < 10){
+				hour = "0" + hour;
+			}
+			if(minute < 10){
+				minute = "0" + minute;
+			}
+			if(second < 10){
+				second = "0" + second;
+			}
+			
+			
+			$(ackTag).css("color","#529238");
+			$(ackTag).text("인지");
+			$(ackTag).parent().next().text(year + "/" + month + "/" + dates + " " + hour + ":" + minute + ":" + second);
+		}else{
+			dashboardEventList();
+			dashboardEventStatus();
+		}
+		*/
+		
     });
     
 	
@@ -450,9 +711,13 @@ function dashboardDayEvent(){
             Highcharts.chart('chart_dayEvent', {
                 chart: {
                     type: 'column',
+                    renderTo: 'chart_dayEvent',
                     height: 280,
                     backgroundColor: '#424973',
                     spacingTop: 10
+                },
+                credits:{
+                	enabled: false
                 },
                 title: {
                     text: ''
@@ -561,9 +826,16 @@ function dashboardEventAckChart() {
 
     zbxApi.getEvent.getByTime(startTime).then(function(data) {
         eventArr = data.result;
-
+        console.log("1212121212");
+        console.log(eventArr);
 
         $.each(eventArr, function(k,v){
+        	if(v.hosts.length == 0){
+        		console.log("ppp");
+        		console.log(v);
+        		return true;
+        	}
+        	
             if(v.value == 0){ //상태가 OK인 event 에서
 
                 var triggerId = v.relatedObject.triggerid;
@@ -574,19 +846,29 @@ function dashboardEventAckChart() {
 
                         var okEventTime = new Date(parseInt(v.clock) * 1000);
                         var problemEventTime = new Date(parseInt(eventArr[k-i].clock) * 1000);
-
                         var resolveObj = new Object();
                         resolveObj.x = parseInt(v.clock) * 1000;
                         resolveObj.y = okEventTime - problemEventTime;
                         resolveObj.host = v.hosts[0].host;
                         resolveObj.description = v.relatedObject.description;
                         resolveObj.type = "resolve";
-
+                      
                         if(v.relatedObject.priority == 2){
                             resolveObj.priority = "Warning";
                         }else if(v.relatedObject.priority == 4){
                             resolveObj.priority = "High";
+                        }else if(v.relatedObject.priority == 0){
+                        	resolveObj.priority = "Not classfied";
+                        }else if(v.relatedObject.priority == 1){
+                        	resolveObj.priority = "Information";
+                        }else if(v.relatedObject.priority == 3){
+                        	resolveObj.priority = "Average";
                         }
+                        else if(v.relatedObject.priority == 5){
+                        	resolveObj.priority = "Disaster";
+                        }
+                        
+                        
                         resolveEventArr.push(resolveObj);
                         break;
                     }
@@ -616,8 +898,8 @@ function dashboardEventAckChart() {
 //        		}
             }
 
-            if(v.acknowledged == "1"){
-
+            if(v.acknowledged == "1" && v.acknowledges.length != 0 ){
+            	
                 var eventAckTime =  new Date(parseInt(v.acknowledges[0].clock) * 1000);
                 var eventCreateTime =  new Date(parseInt(v.clock) * 1000);
 
@@ -756,6 +1038,10 @@ function dashboardWeekTopEvent(){
         var eventArr = data.result;
 
         $.each(eventArr, function(k,v){
+        	if(v.hosts.length == 0){
+        		return;
+        	}
+        	
             if(v.value == 1){
                 if(v.clock >= lastDaysTimeArr[DAYS.MONDAY] && v.clock < lastDaysTimeArr[DAYS.TUESDAY]){ //월요일
 
@@ -953,7 +1239,6 @@ function dashboardWeekTopEvent(){
 }
 
 function addHostEventList(hostEvent){
-    console.log(" addHostEventList ");
 
     var DAYTOMILLS = 1000*60*60*24;
     var date = new Date();
@@ -971,41 +1256,79 @@ function addHostEventList(hostEvent){
     $.each(hostEvent.result, function(k, v){
         var addDataSet = [];
         var addDataObj = new Object();
+        
+        zbxApi.alerthostTrigger.hostGet(v.hostid, addStartTime, addEndTime).then(function(data){
+        	addHostid = v.hostid;
+        	addHostCnt = data.result;
+        	
+        	zbxApi.dashboardHostEvent.hostGet(addStartTime, addEndTime, addHostid).then(function(data){
+        		addEventList = data.result;
+        		
+        		 var addDataArr = new Array(24);
+        	        try {
+        	            if(addEventList[0] == undefined){
+        	                return true;
+        	            }
 
-        addHostid = v.hostid;
-        addHostCnt = zbxSyncApi.alerthostTrigger(addHostid, addStartTime, addEndTime);
+        	            for(var i=0; i<24; i++){
+        	                var HOUR = 60*60;//시간
+        	                var NOW = parseInt(new Date().getTime()/1000);
+        	                var event_count= 0 ;
+
+        	                for(var j=0;j<addEventList.length;j++) {
+        	                    if(addEventList[j].clock <NOW-(24-i)*HOUR && addEventList[j].clock >NOW-(24-i+1)*HOUR ){
+        	                        event_count += 1;
+        	                    }
+        	                }
+        	                addDataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
+        	            }
+        	        } catch (e) {
+        	            console.log(e);
+        	        }
+
+        	        var addDataObj = new Object();
+        	        addDataObj.name = "hostEvent";
+        	        addDataObj.data = addDataArr;
+        	        addDataSet.push(addDataObj);
+        	        
+        	        showLineChart('hostChart'+(k+1), "hostEvent", addDataSet, "", ['#fa7796']);
+        	        
+        	        $("#eventCnt_" + addHostid).html(addHostCnt);
+        	});
+        });
         //console.log(" addHostid : " + addHostid + " addHostCnt : " + addHostCnt);
-        addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, addHostid);
+//        addEventList = zbxSyncApi.dashboardHostEvent(addStartTime, addEndTime, addHostid);
+//        addEventList = zbxApi.dashboardHostEvent.hostGet(addStartTime, addEndTime, addHostid);
 
-        var addDataArr = new Array(24);
-        try {
-            if(addEventList[0] == undefined){
-                return true;
-            }
+//        var addDataArr = new Array(24);
+//        try {
+//            if(addEventList[0] == undefined){
+//                return true;
+//            }
+//
+//            for(var i=0; i<24; i++){
+//                var HOUR = 60*60;//시간
+//                var NOW = parseInt(new Date().getTime()/1000);
+//                var event_count= 0 ;
+//
+//                for(var j=0;j<addEventList.length;j++) {
+//                    if(addEventList[j].clock <NOW-(24-i)*HOUR && addEventList[j].clock >NOW-(24-i+1)*HOUR ){
+//                        event_count += 1;
+//                    }
+//                }
+//                addDataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
+//            }
+//        } catch (e) {
+//            console.log(e);
+//        }
+//
+//        var addDataObj = new Object();
+//        addDataObj.name = "hostEvent";
+//        addDataObj.data = addDataArr;
+//        addDataSet.push(addDataObj);
 
-            for(var i=0; i<24; i++){
-                var HOUR = 60*60;//시간
-                var NOW = parseInt(new Date().getTime()/1000);
-                var event_count= 0 ;
-
-                for(var j=0;j<addEventList.length;j++) {
-                    if(addEventList[j].clock <NOW-(24-i)*HOUR && addEventList[j].clock >NOW-(24-i+1)*HOUR ){
-                        event_count += 1;
-                    }
-                }
-                addDataArr[i] = [(NOW-(i+1)*HOUR)*1000, event_count];
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-        var addDataObj = new Object();
-        addDataObj.name = "hostEvent";
-        addDataObj.data = addDataArr;
-        addDataSet.push(addDataObj);
-
-        showLineChart('hostChart'+(k+1), "hostEvent", addDataSet, "", ['#a2adcc']);
-        $("#eventCnt_" + addHostid).html(addHostCnt);
+//        showLineChart('hostChart'+(k+1), "hostEvent", addDataSet, "", ['#a2adcc']);
+//        $("#eventCnt_" + addHostid).html(addHostCnt);
     });
 }
 
@@ -1020,7 +1343,125 @@ function dashEventListAppend(){
         console.log(" last Row From : " + lastRowIdFrom);
 
         zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
-            appendData = zbxApi.eventStatusViewAppend.success(data);
+            
+        	var triggerIdArr = [];
+        	var uniqueTriggerIdArr = [];
+        	var eventMergeArr = [];
+        	
+        	// 모든 트리거 아이디를 배열에 담는다.
+        	$.each(data.result, function (k, v) {
+        		triggerIdArr.push(v.relatedObject.triggerid);
+        	});
+        	
+        	// 트리거 아이디 배열의 중복 제거
+    		$.each(triggerIdArr, function(k1,v1){
+    	        if(uniqueTriggerIdArr.indexOf(v1) == -1){
+    	        	uniqueTriggerIdArr.push(v1);
+    	        }
+    	    });
+    		
+    		// 트리거 아이디 별 이벤트 분리
+    		var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
+    		
+    		$.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
+    			eventArrByTriggerId[k] = new Array();
+    			$.each(data.result, function (k1, v1) { //이벤트 배열
+    				if(v == v1.relatedObject.triggerid){
+    					
+    					dataObj = new Object();
+    					dataObj.triggerId = v1.relatedObject.triggerid;
+    					dataObj.objectId = v1.objectid;
+    					dataObj.eventId = v1.eventid;
+    					dataObj.severity = convPriority(v1.relatedObject.priority);
+    					dataObj.status = convStatusEvent(v1.value);
+    					dataObj.ack = convAckEvent(v1.acknowledged);
+    					if(v1.acknowledges[0] == undefined){
+    						dataObj.ackTime = "-";
+    					} else {
+    						dataObj.ackTime = convTime(v1.acknowledges[0].clock);
+    			        }
+    					dataObj.host = v1.hosts[0].name;;
+    					dataObj.description = v1.relatedObject.description;
+    					dataObj.clock = v1.clock;
+    					dataObj.duration = 0;
+    					
+    					eventArrByTriggerId[k].push(dataObj);
+    				}
+    			});
+    		});
+    		//console.log(eventArrByTriggerId);
+    		
+    		// 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
+    		$.each(eventArrByTriggerId, function(k,v){
+    			var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
+    			console.log("previousClock : " + previousClock);
+    			
+    			$.each(v, function(k1, v1){
+    				v1.duration= convertTime(previousClock - parseInt(v1.clock));
+    				previousClock = parseInt(v1.clock);
+    				eventMergeArr.push(v1);
+    				
+    			});
+    		});
+    		//console.log(eventMergeArr);
+    		
+    		// Merge된 이벤트 배열 clock 순으로 정렬
+    		eventMergeArr.sort(function (a, b) {
+    	           return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+    	    });
+    		//console.log(eventMergeArr);
+    		
+    		var eventTable = '';
+            //eventTable += "<tr role='row' id='" + eventMergeArr[0].eventId + "'>";
+    	    
+    		$.each(eventMergeArr, function (k, v) {
+    	    	var objectId = v.objectId;
+    	        var eventId = v.eventId;
+    	        var severity = v.severity;
+    	        var status = v.status;
+    	        var clock = convTime(v.clock);
+    	        var duration = v.duration;
+    	        var ack = v.ack;
+    	        var ackTime = v.ackTime;
+    	        var host = v.host;
+    	        var description = v.description;
+    	
+    	        eventTable += "<tr role='row' id='" + eventId + "'>";
+    	        if(severity == "information") {
+    	            eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+    	        } else if(severity == "warning") {
+    	            eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+    	        } else if(severity == "average") {
+    	            eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+    	        } else if(severity == "high") {
+    	            eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+    	        } else {
+    	            eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+    	        }
+    	        if(status == "정상"){
+    	        	eventTable += "<td width='60' class='line' style='color:#00AA00'>" + status + "</td>";
+    	        }else{
+    	        	eventTable += "<td width='60' class='line' style='color:#DC0000'>" + status + "</td>";	        	
+    	        }
+    	        eventTable += "<td width='75' class='line'>" + clock + "</td>";
+    	        eventTable += "<td width='75' class='line'>" + duration + "</td>";
+    	        if(ack == "미인지"){
+    	            eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
+    	        } else if(ack == "인지"){
+    	            eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+    	        }
+    	        eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+    	        eventTable += "<td width='100' class='line'>" + host + "</td>";
+    	        eventTable += "<td width='auto' class='align_left ponter'>" +
+    	            "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+    	            "<span class='smd'>" + description + "</span></a></td>";
+    	        eventTable += "</tr>";
+    	    });
+    		
+    	    $("#dashboardEventList").append(eventTable);
+    	    
+        	/*
+        	appendData = zbxApi.eventStatusViewAppend.success(data);
 
             var eventId = '';
             var severity = '';
@@ -1031,12 +1472,16 @@ function dashEventListAppend(){
             var ackTime = '';
             var host = '';
             var description = '';
+            var objectId = '';
+            var clock = '';
 
             $.each(appendData.result, function (k, v) {
+            	objectId = v.objectid;
                 eventId = v.eventid;
                 severity = convPriority(v.relatedObject.priority);
                 status = convStatusEvent(v.value);
                 lastchange = convTime(v.relatedObject.lastchange);
+                clock = convTime(v.clock);
                 age = convDeltaTime(v.relatedObject.lastchange);
                 ack = convAckEvent(v.acknowledged);
                 if(v.acknowledges[0] == undefined){
@@ -1060,13 +1505,97 @@ function dashEventListAppend(){
                 } else {
                     eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
                 }
-                eventTable += "<td width='60' class='line'>" + status + "</td>";
-                eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+                if(status == "정상"){
+    	        	eventTable += "<td width='60' class='line' style='color:green'>" + status + "</td>";
+    	        }else{
+    	        	eventTable += "<td width='60' class='line' style='color:red'>" + status + "</td>";	        	
+    	        }
+                eventTable += "<td width='75' class='line'>" + clock + "</td>";
                 eventTable += "<td width='75' class='line'>" + age + "</td>";
                 if(ack == "미인지"){
-                    eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-                } else if(ack = "인지"){
-                    eventTable += "<td width='69' class='line'>" + ack + "</td>";
+                    eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+                } else if(ack == "인지"){
+                	eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+                }
+                eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+                eventTable += "<td width='100' class='line'>" + host + "</td>";
+                eventTable += "<td width='auto' class='align_left ponter'>" +
+                    "<a style='width:100%; height:25px; display:inline-block;' title='" + description + "'>" +
+                    "<span class='smd'>" + description + "</span></a></td>";
+                eventTable += "</tr>";
+
+                $("#dashboardEventList").append(eventTable);
+                */
+            });
+    }
+}
+
+function dashEventListAppend_org(){
+    console.log(" dashEventListAppend ");
+    var div = $("#eventListDiv");
+    if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
+        console.log(" END SCROLL ");
+        var lastRowIdFrom = $("#eventListDiv tr:last").attr('id');
+        lastRowIdFrom = lastRowIdFrom - 1;
+        var appendData = '';
+        console.log(" last Row From : " + lastRowIdFrom);
+
+        zbxApi.eventStatusViewAppend.get(lastRowIdFrom).done(function (data, status, jqXHR) {
+            appendData = zbxApi.eventStatusViewAppend.success(data);
+
+            var eventId = '';
+            var severity = '';
+            var status = '';
+            var lastchange = '';
+            var age = '';
+            var ack = '';
+            var ackTime = '';
+            var host = '';
+            var description = '';
+            var objectId = '';
+            var clock = '';
+
+            $.each(appendData.result, function (k, v) {
+            	objectId = v.objectid;
+                eventId = v.eventid;
+                severity = convPriority(v.relatedObject.priority);
+                status = convStatusEvent(v.value);
+                lastchange = convTime(v.relatedObject.lastchange);
+                clock = convTime(v.clock);
+                age = convDeltaTime(v.relatedObject.lastchange);
+                ack = convAckEvent(v.acknowledged);
+                if(v.acknowledges[0] == undefined){
+                    ackTime = "-";
+                } else {
+                    ackTime = convTime(v.acknowledges[0].clock);
+                }
+                host = v.hosts[0].name;
+                description = v.relatedObject.description;
+
+                var eventTable = '';
+                eventTable += "<tr role='row' id='" + eventId + "'>";
+                if(severity == "information") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+                } else if(severity == "warning") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+                } else if(severity == "average") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+                } else if(severity == "high") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+                } else {
+                    eventTable += "<td width='80' class='line c_b1' style='color:red'>" + severity + "</td>";
+                }
+                if(status == "정상"){
+    	        	eventTable += "<td width='60' class='line' style='color:green'>" + status + "</td>";
+    	        }else{
+    	        	eventTable += "<td width='60' class='line' style='color:red'>" + status + "</td>";	        	
+    	        }
+                eventTable += "<td width='75' class='line'>" + clock + "</td>";
+                eventTable += "<td width='75' class='line'>" + age + "</td>";
+                if(ack == "미인지"){
+                    eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+                } else if(ack == "인지"){
+                	eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
                 }
                 eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
                 eventTable += "<td width='100' class='line'>" + host + "</td>";

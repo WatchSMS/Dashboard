@@ -12,18 +12,18 @@ function hostInfoView() {
             tagText = '';
             tagText2 = '';
             tagId = "host_" + v.hostid;
-            tagText = '<li><a href="#" id="' + tagId + '"><i class="fa fa-bar-chart"></i>';
+            tagText = '<li><a class="b2" href="#" id="' + tagId + '">';
             tagText += v.host;
             tagText += '</a><ul class="treeview-menu" id="' + tagId + '_performlist"></ul></li>';
             $("#serverlist").append(tagText);
 
-            tagText2 += '<li><a class="b3" href="#" id="info_' + v.hostid + '"><i class="fa fa-bar-chart"></i>요약</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="cpu_' + v.hostid + '"><i class="fa fa-bar-chart"></i>CPU</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="memory_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Memory</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="process_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Process</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="disk_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Disk</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="traffic_' + v.hostid + '"><i class="fa fa-bar-chart"></i>Traffic</a></li>';
-            tagText2 += '<li><a class="b3" href="#" id="configure_' + v.hostid + '"><i class="fa fa-bar-chart"></i>임계치 설정</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="info_' + v.hostid + '">요약</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="cpu_' + v.hostid + '">CPU</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="memory_' + v.hostid + '">Memory</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="process_' + v.hostid + '">Process</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="disk_' + v.hostid + '">Disk</a></li>';
+            tagText2 += '<li><a class="b3 treeview-menu" href="#" id="traffic_' + v.hostid + '">Traffic</a></li>';
+            //tagText2 += '<li><a class="b3 treeview-menu" href="#" id="configure_' + v.hostid + '">임계치 설정</a></li>';
 
             $("#" + tagId + "_performlist").append(tagText2);
 
@@ -58,7 +58,7 @@ function hostInfoView() {
                 }).then(function(data) {
                     serverCpuSteal = zbxApi.getItem.success(data);
                 }).then(function() {
-                    return zbxApi.serverViewGraphName.get(hostid, "Used memory(%)");
+                    return zbxApi.getItem.get(hostid, "vm.memory.size[100-pavailable]");
                 }).then(function(data) {
                     serverMemoryUse = zbxApi.serverViewGraphName.success(data);
                 }).then(function() {
@@ -68,7 +68,7 @@ function hostInfoView() {
                 }).then(function() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.in[eth0]");
                 }).then(function(data) {
-                    showServerDisk(serverDiskUseRoot, startTime);
+//                    showServerDisk(serverDiskUseRoot, startTime);
                     serverTraInEth0 = zbxApi.serverViewGraph.success(data);
                 }).then(function() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.out[eth0]");
@@ -78,37 +78,18 @@ function hostInfoView() {
                     return zbxApi.serverViewGraph.get(hostid, "net.if.total[eth0]");
                 }).then(function(data) {
                     serverTraTotalEth0 = zbxApi.serverViewGraph.success(data);
-                    showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid);
+                    showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid, serverDiskUseRoot);
 
                     //page reloag
                     $("#reload_serverDetail").click(function() {
                         console.log(">>>>> reload_serverDetail <<<<<");
-                        $(showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime)).click();
+                        $(showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid, serverDiskUseRoot)).click();
                     });
                 });
 
-                processView(hostid, startTime);
+                //processView(hostid, startTime);
 
-                zbxApi.serverViewHost.get(hostid).done(function(data, status, jqXHR) {
-                    var server_host = zbxApi.serverViewHost.success(data);
-                    var serverTitle = '';
-                    var serverIP = '';
-                    var serverOS = '';
-                    var serverName = '';
-                    var serverAgentVersion = '';
-
-                    $.each(server_host.result, function(k, v) {
-                        serverTitle = v.host;
-                        serverIP = v.interfaces[0].ip;
-                        serverOS = v.inventory.os;
-                        serverName = v.name;
-                        serverAgentVersion = zbxSyncApi.allServerViewItem(hostid, "agent.version").lastvalue; //agent.version
-
-                        serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion);
-                    })
-                });
-
-                EventListView(hostid);
+                //EventListView(hostid);
 
                 //page reloag
                 $("#reload_serverOverView").click(function() {

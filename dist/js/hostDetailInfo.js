@@ -1,86 +1,134 @@
-function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid){
+function showDetailInfo(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, serverMemoryUse, serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime, hostid, serverDiskUseRoot){
+	
+
+    $.blockUI(blockUI_opt_all);
+    
+	removeAllChart();
+	$("#hostIdInhostSummary").val(hostid);
     showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal, startTime);
     showServerMemory(serverMemoryUse, startTime);
     showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime);
+    showServerDisk(serverDiskUseRoot, startTime);
+    EventListView(hostid);
+    showHostInfo(hostid);
+    processView(hostid, startTime);
+
+    $.unblockUI(blockUI_opt_all);
 
     // $("#reload_serverDetail").click(function () {
     //     console.log("reload_serverDetail");
     // });
 
-    $("#hostEventDiv").scroll(function() {
-        var div = $("#hostEventDiv");
-        if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
-            console.log(" END SCROLL ");
-            var lastRowIdFrom = $("#hostEventDiv tr:last").attr('id');
-            lastRowIdFrom = lastRowIdFrom - 1;
-            var appendData = '';
-            console.log(" last Row From : " + lastRowIdFrom);
+    
 
-            zbxApi.hostEventViewAppend.get(lastRowIdFrom, hostid).done(function (data, status, jqXHR) {
-                appendData = zbxApi.eventStatusView.success(data);
-                console.log(JSON.stringify(appendData));
-                var eventId = '';
-                var severity = '';
-                var status = '';
-                var lastchange = '';
-                var age = '';
-                var ack = '';
-                var ackTime = '';
-                var host = '';
-                var description = '';
+}
 
-                var eventTable = '';
 
-                eventTable += '<tbody>';
+function showHostInfo(hostid){
+	
+	zbxApi.serverViewHost.get(hostid).done(function(data, status, jqXHR) {
+        var server_host = zbxApi.serverViewHost.success(data);
+        var serverTitle = '';
+        var serverIP = '';
+        var serverOS = '';
+        var serverName = '';
+        var serverAgentVersion = '';
 
-                $.each(appendData.result, function (k, v) {
-                    eventId = v.eventid;
-                    severity = convPriority(v.relatedObject.priority);
-                    status = convStatusEvent(v.value);
-                    lastchange = convTime(v.relatedObject.lastchange);
-                    age = convDeltaTime(v.relatedObject.lastchange);
-                    ack = convAckEvent(v.acknowledged);
-                    if(v.acknowledges[0] == undefined){
-                        ackTime = "-";
-                    } else {
-                        ackTime = convTime(v.acknowledges[0].clock);
-                    }
-                    host = v.hosts[0].name;
-                    description = v.relatedObject.description;
+        $.each(server_host.result, function(k, v) {
+            serverTitle = v.host;
+            serverIP = v.interfaces[0].ip;
+            serverOS = v.inventory.os;
+            serverName = v.name;
+            serverAgentVersion = zbxSyncApi.allServerViewItem(hostid, "agent.version").lastvalue; //agent.version
+            
+            $("#serverInfo").empty();
 
-                    eventTable += "<tr id='" + eventId + "'>";
-                    if(severity == "information") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
-                    } else if(severity == "warning") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
-                    } else if(severity == "average") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
-                    } else if(severity == "high") {
-                        eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
-                    } else {
-                        eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
-                    }
-                    eventTable += "<td width='60' class='line'>" + status + "</td>";
-                    eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
-                    eventTable += "<td width='75' class='line'>" + age + "</td>";
-                    if(ack == "미인지"){
-                        eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
-                    } else if(ack = "인지"){
-                        eventTable += "<td width='69' class='line'>" + ack + "</td>";
-                    }
-                    eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
-                    eventTable += "<td width='100' class='line'>" + host + "</td>";
-                    eventTable += "<td width='auto' class='align_left ponter'>" +
-                        "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
-                        "<span class='smd'>" + description + "</span></a></td>";
-                    eventTable += "</tr>";
-                });
-                eventTable += "</tbody>";
+            var serverInfoTbl = '';
+            serverInfoTbl += "<tr><td class='line-td' width='170'>운영체제</td><td class='line-td br7_rt'>" + serverOS + "</td></tr>";
+            serverInfoTbl += "<tr><td class='line-td' width='170'>서버명</td><td class='line-td br7_rt'>" + serverTitle + "</td></tr>";
+            serverInfoTbl += "<tr><td class='line-td' width='170'>IP주소</td><td class='line-td br7_rt'>" + serverIP + "</td></tr>";
+            serverInfoTbl += "<tr><td class='line-td' width='170'>호스트명</td><td class='line-td br7_rt'>" + serverName + "</td></tr>";
+            serverInfoTbl += "<tr><td class='line-td' width='170'>에이전트</td><td class='line-td br7_rt'>" + serverAgentVersion + "</td></tr>";
+            $("#serverInfo").append(serverInfoTbl);
+            
+        })
+    });
+	
+}
 
-                $("#serverEventList").append(eventTable);
+
+function hostSummaryEventListAppend(){
+		
+	var hostid = $("#hostIdInhostSummary").val();
+    var div = $("#hostSummaryEventTable");
+    if(div[0].scrollHeight - div.scrollTop() == div.outerHeight()) {
+        var lastRowIdFrom = $("#hostSummaryEventTable tr:last").attr('id');
+        lastRowIdFrom = lastRowIdFrom - 1;
+        var appendData = '';
+
+        zbxApi.hostEventViewAppend.get(lastRowIdFrom, hostid).done(function (data, status, jqXHR) {
+            appendData = zbxApi.eventStatusView.success(data);
+            console.log(JSON.stringify(appendData));
+            var eventId = '';
+            var severity = '';
+            var status = '';
+            var lastchange = '';
+            var age = '';
+            var ack = '';
+            var ackTime = '';
+            var host = '';
+            var description = '';
+
+            var eventTable = '';
+            var objectId = '';
+
+            $.each(appendData.result, function (k, v) {
+                eventId = v.eventid;
+                objectId = v.objectId;
+                severity = convPriority(v.relatedObject.priority);
+                status = convStatusEvent(v.value);
+                lastchange = convTime(v.relatedObject.lastchange);
+                age = convDeltaTime(v.relatedObject.lastchange);
+                ack = convAckEvent(v.acknowledged);
+                if(v.acknowledges[0] == undefined){
+                    ackTime = "-";
+                } else {
+                    ackTime = convTime(v.acknowledges[0].clock);
+                }
+                host = v.hosts[0].name;
+                description = v.relatedObject.description;
+
+                eventTable += "<tr id='" + eventId + "'>";
+                if(severity == "information") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#7499FF'>" + severity + "</td>";
+                } else if(severity == "warning") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFC859'>" + severity + "</td>";
+                } else if(severity == "average") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#FFA059'>" + severity + "</td>";
+                } else if(severity == "high") {
+                    eventTable += "<td width='80' class='line c_b1' style='color:#E97659'>" + severity + "</td>";
+                } else {
+                    eventTable += "<td width='80' class='line c_b1'>" + severity + "</td>";
+                }
+                eventTable += "<td width='60' class='line'>" + status + "</td>";
+                eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
+                eventTable += "<td width='75' class='line'>" + age + "</td>";
+                if(ack == "미인지"){
+                    eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
+                } else if(ack = "인지"){
+                	eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
+                }
+                eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
+                eventTable += "<td width='100' class='line'>" + host + "</td>";
+                eventTable += "<td width='auto' class='align_left ponter'>" +
+                    "<a style='width:100%; height:18px; display:inline-block;' title='" + description + "'>" +
+                    "<span class='smd'>" + description + "</span></a></td>";
+                eventTable += "</tr>";
             });
-        }
-    })
+
+            $("#hostSummaryEventListTbody").append(eventTable);
+        });
+    }
 
 }
 
@@ -136,11 +184,11 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         DataObj.name = "CPU 사용량";
         DataObj.data = serverCpuStealArr;
         DataSet.push(DataObj);
-
+        
         hostDetailChartCPU('cpuUse', 'CPU 사용량', DataSet, "%", ['#e85c2a', '#e574ff', '#37d5f2', '#ccaa65']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ reloadChartForCPU(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal); }, 10000));
+    //TIMER_ARR.push(setInterval(function(){ reloadChartForCPU(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverCpuSteal); }, 10000));
 }
 
 function showServerMemory(serverMemoryUse, startTime) {
@@ -161,7 +209,7 @@ function showServerMemory(serverMemoryUse, startTime) {
         hostDetailChartMemory('memoryAll', '전체메모리', DataSet, "%", ['#bebebe']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ reloadChartForMEMORY(serverMemoryUse); }, 10000));
+    //TIMER_ARR.push(setInterval(function(){ reloadChartForMEMORY(serverMemoryUse); }, 10000));
 }
 
 function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0, startTime) {
@@ -207,19 +255,7 @@ function showServerTraffic(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0
         hostDetailChartNetwork('trafficUse', '트래픽 사용량', DataSet, "kbps", ['#e85c2a', '#e574ff', '#37d5f2']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0); }, 10000));
-}
-
-function serverOverViewInfo(serverTitle, serverIP, serverOS, serverName, serverAgentVersion) {
-    $("#serverInfo").empty();
-
-    var serverInfoTbl = '';
-    serverInfoTbl += "<tr><td class='line-td' width='170'>운영체제</td><td class='line-td br7_rt'>" + serverOS + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>서버명</td><td class='line-td br7_rt'>" + serverTitle + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>IP주소</td><td class='line-td br7_rt'>" + serverIP + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>호스트명</td><td class='line-td br7_rt'>" + serverName + "</td></tr>";
-    serverInfoTbl += "<tr><td class='line-td' width='170'>에이전트</td><td class='line-td br7_rt'>" + serverAgentVersion + "</td></tr>";
-    $("#serverInfo").append(serverInfoTbl);
+    //TIMER_ARR.push(setInterval(function(){ reloadChartForNETWORK(serverTraInEth0, serverTraOutEth0, serverTraTotalEth0); }, 10000));
 }
 
 function processView(hostid, startTime) {
@@ -289,7 +325,7 @@ function showServerDisk(serverDiskUseRoot, startTime) {
         hostDetailChartDisk('diskUse', '디스크 사용량', DataSet, "%", ['#fa7796']);
     });
 
-    TIMER_ARR.push(setInterval(function(){ reloadChartForDISK(serverDiskUseRoot); }, 10000));
+    //TIMER_ARR.push(setInterval(function(){ reloadChartForDISK(serverDiskUseRoot); }, 10000));
 }
 
 function EventListView(hostid) { //서버정보요약 - 이벤트목록
@@ -308,8 +344,9 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
         var description = '';
 
         var eventTable = '';
+        var objectId = '';
 
-        eventTable += '<tbody>';
+        eventTable += "<tbody id='hostSummaryEventListTbody'>";
 
         $.each(data_EventList.result, function (k, v) {
             eventId = v.eventid;
@@ -318,6 +355,8 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
             lastchange = convTime(v.relatedObject.lastchange);
             age = convDeltaTime(v.relatedObject.lastchange);
             ack = convAckEvent(v.acknowledged);
+            objectId = v.objectId;
+            
             if(v.acknowledges[0] == undefined){
                 ackTime = "-";
             } else {
@@ -342,9 +381,9 @@ function EventListView(hostid) { //서버정보요약 - 이벤트목록
             eventTable += "<td width='75' class='line'>" + lastchange + "</td>";
             eventTable += "<td width='75' class='line'>" + age + "</td>";
             if(ack == "미인지"){
-                eventTable += "<td width='69' class='line' style='color:red'>" + ack + "</td>";
+                eventTable += "<td width='69' class='line'><a style='color:#c45959' onclick='eventAckDetailView("+ eventId +", "+ objectId + ", this);' href='#none'>" + ack + "</a></td>";
             } else if(ack = "인지"){
-                eventTable += "<td width='69' class='line'>" + ack + "</td>";
+            	eventTable += "<td width='69' class='line'><a style='color:#529238' onclick='eventAckDetailView("+ eventId +", "+ objectId + ");' href='#none'>" + ack + "</a></td>";
             }
             eventTable += "<td width='75' class='line'>" + ackTime + "</td>";
             eventTable += "<td width='100' class='line'>" + host + "</td>";

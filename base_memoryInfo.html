@@ -12,10 +12,12 @@
 	</div>
 
 	<div id='mem_time_content' style="background:#424973; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E; opacity:1;">
+		<strong style="font-size: 18px">시간 입력 </strong><br><br>
 		<input type="number" id="mem_timeInput" placeholder="시간" name="" maxlength="10" value="" class="inpTxt t_left" title="" style="width:300px; border:3px solid #51597E; background: #626992;"/>
-		<span><a onclick="$('#mem_time_content').trigger('close'); javascript:resetMemChartTime();" class="btn">확인</a></span>
-		<span><a onclick="$('#mem_time_content').trigger('close'); return false;" class="btn">취소</a></span>
+		<span><a onclick="$('#mem_time_content').trigger('close'); javascript:resetMemChartTime();" href="#none">확인</a></span>
+		<span><a onclick="$('#mem_time_content').trigger('close'); return false;" href="#none">취소</a></span>
 	</div>
+	
 
 	<!-- event part left -->
 	<div class="content-header">

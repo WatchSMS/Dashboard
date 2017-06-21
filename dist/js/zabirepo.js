@@ -124,6 +124,17 @@ var int = {
                     }
                 }
             });
+            
+            $("#summary_event_content-0").mCustomScrollbar({
+                theme:"light-3",
+                scrollButtons:{enable:true},
+                callbacks: {
+                    onTotalScroll: function(){
+                        console.log(" onTotalScroll ");
+                        hostSummaryEventListAppend();
+                    }
+                }
+            });
 
             $("#dash-event-content-0").mCustomScrollbar({
                 theme:"light-3",
@@ -1334,6 +1345,30 @@ var convDeltaTime = function(lastchange) {
     return deltaDate;
 
 };
+
+
+var convertTime = function(duration){
+	if(duration < 0 ){
+		duration = 10;
+	}
+	//console.log("duration : " + duration);
+	var hour = Math.floor(duration / 3600);
+	var temp = duration%3600;
+	var minute = Math.floor(temp / 60);
+	var sec = Math.floor(temp % 60);
+	var returnVal = "";
+		
+	if(duration >= 3600){
+		returnVal = hour + "시간 " + minute + "분 " + sec + "초";
+	}else if(duration >= 60){
+		returnVal = minute + "분 " + sec + "초";
+	}else{
+		returnVal = sec + "초";
+	}
+	
+	return returnVal;
+}
+
 
 var reloadTimer = function(flag, interval) {
     if (flag === true) {

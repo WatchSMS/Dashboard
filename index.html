@@ -101,7 +101,7 @@
 	&lt;!&ndash; /.login-box &ndash;&gt;
 </div>-->
 
-<body>
+<body class='baseb-custom'>
 <!-- 로그인, 회원가입 s -->
 <div class="wminbase" id="login_box">
 	<!--login_box s- -->
@@ -502,7 +502,7 @@
 
 					<div class="mem">
 						<ul>
-							<li>홍길동님<img src="dist/img/memb_aricon.gif"/></li>
+							<li>Admin님<img src="dist/img/memb_aricon.gif"/></li>
 						</ul>
 						<div id="info01" class="minfo" style="display:none;" onmouseover="info01.style.display=''">
 							<a href="#"><div class="pp1">회원정보수정</div></a>
@@ -528,21 +528,21 @@
 		<!-- end header -->
 
 		<!-- sidebar -->
-		<aside class="main-sidebar-custom">
+		<aside class="main-sidebar">
 			<section class="sidebar" style="height: 100%;">
 				<ul class="sidebar-menu-custom">
 					<li class="header-custom"><span></span></li>
 					<li class="icon01">
 						<a href="#" id="menu_dashboard">
 							<i class="menu-dashboard">
-								<img src="dist/img/menu_icon_01.gif">
+								<img src="dist/img/menu_icon_01_2.gif">
 							</i>
 						</a>
 					</li>
 					<li class="icon02">
 						<a href="#" id="menu_eventList">
 							<i class="menu_event">
-								<img src="dist/img/menu_icon_02.gif">
+								<img src="dist/img/menu_icon_02_2.gif">
 							</i>
 						</a>
 					</li>
@@ -557,22 +557,22 @@
 					<li class="icon03">
 						<a href="#">
 							<i class=menu-server">
-								<img src="dist/img/menu_icon_03.gif">
+								<img src="dist/img/menu_icon_03_2.gif">
 							</i>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="#" id="menu_overview"><i class="fa fa-bar-chart"></i> 개요</a></li>
+							<li><a class="b1" href="#" id="menu_overview"> 개요</a></li>
 							<li>
-								<a href="#" id="menu_serverlist"><i class="fa fa-table"></i> 서버 목록</a>
-								<ul class="treeview-menu" id="serverlist"></ul>
+								<a class="b1" href="#" id="menu_serverlist"> 서버 목록</a>
+								<ul class="treeview-menu menu-open" id="serverlist"></ul>
 							</li>
 						</ul>
 					</li>
-
+<!-- 
 					<li class="treeview">
 						<a href="#">
 							<i class="menu-graphs">
-								<img src="dist/img/menu_icon_04.gif">
+								<img src="dist/img/menu_icon_04_2.gif">
 							</i>
 						</a>
 						<ul class="treeview-menu">
@@ -589,11 +589,13 @@
 					<li>
 						<a href="#" id="menu_setting">
 							<i class="menu-setting">
-								<img src="dist/img/menu_icon_05.gif">
+								<img src="dist/img/menu_icon_05_2.gif">
 							</i>
 						</a>
 					</li>
 				</ul>
+	-->
+			</ul>
 			</section>
 		</aside>
 		<!-- end sidebar -->
@@ -736,7 +738,7 @@
 <script src="dist/js/eventStatusView.js" type="text/javascript"></script>
 
 <script src="plugins/highcharts/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/5.0.7/modules/exporting.js"></script>
 <script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="dist/js/jquery.bpopup.min.js"></script>
 

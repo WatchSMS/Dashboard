@@ -1,20 +1,46 @@
 <section class="content">
 
 	<div id='ackDetailForm' style="background:#323c60; display: none; float:left;margin-left:20px;padding:15px 15px 15px 15px; border:3px solid #51597E;width:40%; opacity:1; height:50%;">
-		<strong style="font-size: 18px">이벤트 인지 확인</strong><strong id="detailProcessTitle" style="font-size: 18px"></strong><br><br>
+		<strong style="font-size: 18px">이벤트 인지 확인</strong><br><br>
 		<section id="in-scl">
+			<div id="ackEventId" style="display:none;"></div>
+			<div id="fromView" style="display:none;"></div>
+			<div id="ackTagId" style="display:none;"></div>
 			<div id="content-1" class="br7 content_in" style="height:80%; background:#323c60; vertical-align:baseline;">
-				메세지<textarea id="ackMsg" rows="7" style="width: 524px; background:#3d476b;" maxlength="255" autofocus="autofocus"></textarea>
-				<table id="childProcTbl" class="table1" style="width:100%;">
+				
+				<table id="ackHistoryTbl" style="width:100%;">
 					<tr>
-						<td>메세지</td>
-						<td></td>
+						<td style="width:5%; font-size:12px; vertical-align:top;">메세지</td>
+						<td style="width:80%;"><textarea id="ackMsg" rows="7" style="width: 524px; background:#3d476b;" maxlength="255" autofocus="autofocus"></textarea></td>
 					</tr>
+					<tr>
+						<td> </td>
+						<td> </td>
+					</tr>
+					<tr>
+						<td style="width:5%; font-size:12px; vertical-align:top;">이력</td>
+						<td style="width:30%;">
+						<table style="width:80%;" class="table1"><!-- style="border: 1px solid #51597e;" -->
+							<thead>
+								<tr>
+									<td style="width: 5%; font-size:12px;">시간</td>
+									<td style="width: 5%; font-size:12px;">유저</td>
+									<td style="width: 5%; font-size:12px;">메세지</td>
+								</tr>
+								
+							</thead>
+							<tbody id="ackHistory">
+								
+							</tbody>
+						</table>
+						</td>
+					</tr>
+					
 				</table>
 			</div>
 		</section>
-		<span><a onclick="$('#ackDetailForm').trigger('close');" href="#none">인지</a></span>
-		<span><a onclick="$('#ackDetailForm').trigger('close'); return false;" href="#none">취소</a></span>
+		<span><a style="font-size:15px;" onclick="$('#ackDetailForm').trigger('close'); addAck();" href="#none">인지</a></span>
+		<span><a style="font-size:15px;" onclick="$('#ackDetailForm').trigger('close'); return false;" href="#none">취소</a></span>
 	</div>
 
 	<div class="content-header">
@@ -27,9 +53,12 @@
 			<table class="table1">
 				<thead>
 				<tr>
-					<td class="r1 line">전체발생</td>
-					<td class="r1 line">1선 처리 전</td>
+					<td class="r1 line">전체 발생</td>
+					<td class="r1 line">1선 처리 전(미인지)</td>
 					<td class="r1">금일 발생 누적 건수</td>
+					<!-- <td class="r1 line">전체발생</td>
+					<td class="r1 line">1선 처리 전</td>
+					<td class="r1">금일 발생 누적 건수</td>  -->
 				</tr>
 				</thead>
 				<tbody>
@@ -60,10 +89,10 @@
 			<table class="table1">
 				<thead>
 				<tr>
-					<td width="40px" class="br7_lt line">no</td>
+					<td width="40px" class="br7_lt line">NO</td>
 					<td width="160px" class="line">서버명</td>
 					<td width="50px" class="line">수치</td>
-					<td width="auto%" class="br7_rt">그래프</td>
+					<td width="auto" class="br7_rt">그래프</td>
 				</tr>
 				</thead>
 			</table>
@@ -71,6 +100,8 @@
 			<section id="in-scl">
 				<div id="content-0" class="br7_b content_in">
 					<table class="table1" style="width:100%;" id="hostEventList">
+					<tbody id='dashboardHostEventTbody'>
+					</tbody>
 						<!--<tbody>
 						<tr class="p1">
 							<td width="48px" class="line">1</td>
@@ -93,6 +124,8 @@
 		<div class="d5">
 			<img src="dist/img/tit_sbl02.gif">
 		</div>
+		<div class="d6">
+		
 
 		<table class="table1">
 			<thead>
@@ -133,6 +166,7 @@
 				</table>
 			</div>
 		</div>
+		</div>
 	</div>
 	<!--이벤트 발생목록 e-->
 
@@ -168,30 +202,26 @@
 		<div class="d4">
 
 			<div class="s1">
-				<li class="p1">
-					<span class="o1"></span>
-					<span class="e1">
-						<a onclick="chartLegendItemClick(0,'chart_dayEvent', this);" href="#none">information</a></span>
-				</li>
+				
 				<li class="p1">
 					<span class="o2"></span>
 					<span class="e1">
-						<a onclick="chartLegendItemClick(0,'chart_dayEvent', this);" href="#none">high</a></span>
+					<a onclick="chartLegendItemClick(0,'chart_dayEvent', this);" href="#none">high</a></span>
 				<li class="p1">
 					<span class="o3"></span>
 					<span class="e1">
-						<a onclick="chartLegendItemClick(1,'chart_dayEvent', this);" href="#none">average</a></span>
+					<a onclick="chartLegendItemClick(1,'chart_dayEvent', this);" href="#none">average</a></span>
 				</li>
 				<li class="p2">
 					<span class="o4"></span>
 					<span class="e1">
-						<a onclick="chartLegendItemClick(2,'chart_dayEvent', this);" href="#none">warning</a></span>
+					<a onclick="chartLegendItemClick(2,'chart_dayEvent', this);" href="#none">warning</a></span>
 				</li>
 				</li>
 				<li class="p1">
 					<span class="o1"></span>
 					<span class="e1">
-						<a onclick="chartLegendItemClick(3,'chart_dayEvent', this);" href="#none">information</a></span>
+					<a onclick="chartLegendItemClick(3,'chart_dayEvent', this);" href="#none">information</a></span>
 				</li>
 			</div>
 

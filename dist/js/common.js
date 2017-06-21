@@ -108,6 +108,7 @@ function chartCall(chartId, title, series, label, enable, colorArr) {
         Highcharts.chart(chartId, {
             colors: colorArr,
             chart: {
+            	renderTo: chartId,
                 backgroundColor: '#424973',
                 zoomType: 'x',
                 height: 200,
@@ -115,6 +116,9 @@ function chartCall(chartId, title, series, label, enable, colorArr) {
                 spacingBottom: 0,
                 spacingLeft: 0,
                 spacingRight: 0
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 //text: title
@@ -217,6 +221,7 @@ function chartCall(chartId, title, series, label, enable, colorArr) {
 
 var chart1, chart2 = null;
 var chart3 = null;
+var chartArr = [];
 
 function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 
@@ -266,6 +271,9 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         }
                     }
                 }
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 text: "",
@@ -323,7 +331,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 1000) + 'kbp';
+                            return Math.round(this.value/1024) + 'Kbps';
                         } else{
                             return this.value + unit;
                         }
@@ -349,7 +357,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                     if(unit == "MB"){
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
                     }else if(unit == "kbps"){
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1000 * 1000)) + 'MB';
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + (this.y /1024).toFixed(2) + 'Kbps';
                     }else{
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
                     }
@@ -373,7 +381,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
         });
 
         Highcharts.Point.prototype.highlight = function (event) {
-            //this.onMouseOver(); // Show the hover marker
+            this.onMouseOver(); // Show the hover marker
             this.series.chart.tooltip.refresh(this); // Show the tooltip
             this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
         };
@@ -381,7 +389,7 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 
 
         Highcharts.Pointer.prototype.reset = function () {
-            return undefined;
+//            return undefined;
         };
     });
 }
@@ -390,11 +398,11 @@ function showBasicLineChart(chartId, chartTitle, dataSet, unit, colorArr){
 function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
 
     Highcharts.Pointer.prototype.reset = function () {
-        return undefined;
+        //return undefined;
     };
 
     Highcharts.Point.prototype.highlight = function (event) {
-        //this.onMouseOver(); // Show the hover marker
+        this.onMouseOver(); // Show the hover marker
         this.series.chart.tooltip.refresh(this); // Show the tooltip
         this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
     };
@@ -415,6 +423,7 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
             },
             colors: colorArr,
             chart: {
+            	renderTo: chartId,
                 backgroundColor: 'transparent',
                 type: 'area',
                 zoomType: 'x',
@@ -443,6 +452,9 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                         }
                     }
                 }
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 text: "",
@@ -495,7 +507,11 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                         color: '#a2adcc'
                     },
                     formatter: function () {
-                        return this.value + unit;
+                    	if(unit == "kbps"){
+                            return Math.round(this.value / 1024) + 'Kbps';
+                        } else{
+                        	return this.value + unit;
+                        }
                     }
                 }
             },
@@ -514,8 +530,11 @@ function showBasicAreaChart(chartId, chartTitle, dataSet, unit, colorArr){
                     if(seconds.length==1){
                         seconds = "0" + seconds;
                     }
-                    return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
-
+                    if(unit == "kbps"){
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + (this.y/1024).toFixed(2) + "Kbps";
+                    }else{
+                    	return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                    }
                 }
             },
             plotOptions: {
@@ -611,6 +630,9 @@ function hostDetailChartMemory(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                 }
             },
+            credits:{
+            	enabled: false
+            },
             title: {
                 text: "",
                 style: {
@@ -667,7 +689,7 @@ function hostDetailChartMemory(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 100) + 'MB';
+                            return Math.round(this.value/1024) + 'MB';
                         } else{
                             return this.value + unit;
                         }
@@ -700,6 +722,7 @@ function hostDetailChartMemory(chartId, chartTitle, dataSet, unit, colorArr){
             },
             plotOptions: {
                 series: {
+                	stickyTracking: false,
                     events: {
                         mouseOver: function(e){
                             GLOBAL_INDEX = this.index;
@@ -773,6 +796,9 @@ function hostDetailChartCPU(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                 }
             },
+            credits:{
+            	enabled: false
+            },
             title: {
                 text: "",
                 style: {
@@ -829,7 +855,7 @@ function hostDetailChartCPU(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 100) + 'MB';
+                            return Math.round(this.value/1024) + 'Kbps';
                         } else{
                             return this.value + unit;
                         }
@@ -862,6 +888,7 @@ function hostDetailChartCPU(chartId, chartTitle, dataSet, unit, colorArr){
             },
             plotOptions: {
                 series: {
+                	stickyTracking: false,
                     events: {
                         mouseOver: function(e){
                             GLOBAL_INDEX = this.index;
@@ -935,6 +962,9 @@ function hostDetailChartDisk(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                 }
             },
+            credits:{
+            	enabled: false
+            },
             title: {
                 text: "",
                 style: {
@@ -991,7 +1021,7 @@ function hostDetailChartDisk(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 100) + 'MB';
+                            return Math.round(this.value/1024) + 'Kbps';
                         } else{
                             return this.value + unit;
                         }
@@ -1024,6 +1054,7 @@ function hostDetailChartDisk(chartId, chartTitle, dataSet, unit, colorArr){
             },
             plotOptions: {
                 series: {
+                	stickyTracking: false,
                     events: {
                         mouseOver: function(e){
                             GLOBAL_INDEX = this.index;
@@ -1097,6 +1128,9 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                     }
                 }
             },
+            credits:{
+            	enabled: false
+            },
             title: {
                 text: "",
                 style: {
@@ -1153,7 +1187,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                         if(unit == "MB"){
                             return Math.round(this.value / (1024 * 1024)) + 'MB';
                         } else if(unit == "kbps"){
-                            return Math.round(this.value / 1000 / 1000) + 'kbp';
+                            return Math.round(this.value/1024) + 'Kbps';
                         } else{
                             return this.value + unit;
                         }
@@ -1179,7 +1213,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
                     if(unit == "MB"){
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
                     }else if(unit == "kbps"){
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.floor(this.y / 1000) + 'Mbps';
+                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + (this.y/1024).toFixed(2) + 'Kbps';
                     }else{
                         return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
                     }
@@ -1188,6 +1222,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
             },
             plotOptions: {
                 series: {
+                	stickyTracking: false,
                     events: {
                         mouseOver: function(e){
                             GLOBAL_INDEX = this.index;
@@ -1216,7 +1251,7 @@ function hostDetailChartNetwork(chartId, chartTitle, dataSet, unit, colorArr){
 
 function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
     $(function () {
-        chart2 = new Highcharts.Chart(chartId, {
+        var tmp_chart = new Highcharts.Chart(chartId, {
             exporting: {
                 buttons: {
                     contextButton: {
@@ -1231,15 +1266,16 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             colors: colorArr,
             chart: {
                 animation: false,
-                backgroundColor: '#424973',
+                backgroundColor: 'transparent',//'#424973',
                 height: 70,
+                renderTo: chartId,
                 //type: 'area'
                 zoomType: 'x',
                 events: {
                     load: function(event) {
                         $("#"+chartId).unblock(blockUI_opt_el);
-                        console.log("loaded");
-                        console.log(Highcharts.charts.length);
+//                        console.log("loaded");
+//                        console.log(Highcharts.charts.length);
                     }
                 },
                 resetZoomButton: {
@@ -1259,6 +1295,9 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         }
                     }
                 }
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 text: "",
@@ -1319,14 +1358,20 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                 min: 0
             },
             tooltip: {
+            	useHTML: true,
+            	hideDelay: 10,
                 formatter: function () {
                     var d2 = new Date(this.x);
                     var hours = "" + d2.getHours();
+                    var beforeHour = "" + (d2.getHours()-1);
                     var minutes = "" + d2.getMinutes();
                     var seconds = "" + d2.getSeconds();
 
                     if(hours.length==1){
                         hours = "0" + hours;
+                    }
+                    if(beforeHour.length == 1){
+                    	beforeHour = "0" + beforeHour;
                     }
                     if(minutes.length==1){
                         minutes = "0" + minutes;
@@ -1335,19 +1380,23 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
                         seconds = "0" + seconds;
                     }
                     if(unit == "MB"){
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
+                        return "<b>시간 : </b>" + beforeHour + ":" + minutes + " ~ " + hours + ":" + minutes + "<br/><b>값 : </b>" + Math.round(this.y / (1024 * 1024)) + 'MB';
                     }else{
-                        return "<b>시간 : </b>" + hours + ":" + minutes + ":" + seconds + "<br/><b>값 : </b>" + this.y + unit;
+                        return "<b>구간 : </b>" + beforeHour + ":" + minutes + " ~ " + hours + ":" + minutes + " <br/><b>이벤트 수 : </b>" + this.y + unit;
                     }
                 }
             },
             plotOptions: {
                 series: {
-                    events: {
-                        mouseOver: function(e){
-                            GLOBAL_INDEX = this.index;
-                        }
-                    },
+                	
+                    stickyTracking: false,
+                    //cursor: 'default'
+                    
+//                    events: {
+//                        mouseOver: function(e){
+//                            GLOBAL_INDEX = this.index;
+//                        }
+//                    },
                     marker: {
                         enabled: false
                     },
@@ -1356,7 +1405,9 @@ function showLineChart(chartId, chartTitle, dataSet, unit, colorArr){
             },
             series: dataSet
         });
-
+        
+        chartArr.push[tmp_chart];
+        console.log(chartArr.length);
         Highcharts.Point.prototype.highlight = function (event) {
             //this.onMouseOver(); // Show the hover marker
             this.series.chart.tooltip.refresh(this); // Show the tooltip
@@ -1379,7 +1430,7 @@ function syncExtremes(e) {
             if(chart.renderTo.id == "chart_eventAck"){
                 return;
             }
-            if (chart !== thisChart) {
+            if(chart !== thisChart){
                 if (chart.xAxis[0].setExtremes) { // It is null while updating
                     chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
                 }
@@ -1399,7 +1450,7 @@ var removeAllChart = function(){
 
     for(var i=0; i<Highcharts.charts.length; ++i){
         if(typeof Highcharts.charts[i] != "undefined"){
-            Highcharts.charts[i].destroy();
+        	Highcharts.charts[i].destroy();
         }
     }
     Highcharts.charts.splice(0);
@@ -1412,7 +1463,7 @@ var callApiForProcessTable = function(hostid){
 
 
 var sortProcess = function(data_topProcess, sortField){
-
+	
     if(data_topProcess.lastclock == "0"){
         return;
     }
@@ -1442,6 +1493,9 @@ var sortProcess = function(data_topProcess, sortField){
             procName = procNameArr[procNameArr.length-1];
         }
         procName = procName.replace(/\:/g, '');
+        if(procName == "postgres" && (sortField == "MEM" || sortField == "PROCESS")){
+        	return true;
+        }
 
         procNameOrderByCpu[k] = procName;
 
@@ -1495,7 +1549,7 @@ var sortProcess = function(data_topProcess, sortField){
 
     // cpu값을 기준으로 객체배열 내림차순 정렬
     procTotalArr.sort(function (a, b) {
-        if(sortField == "CPU"){
+        if(sortField == "CPU" || sortField == "PROCESS"){
             return a.totalCpuVal > b.totalCpuVal ? -1 : a.totalCpuVal < b.totalCpuVal ? 1 : 0;
         }else if(sortField == "MEM"){
             return a.totalMemVal > b.totalMemVal ? -1 : a.totalMemVal < b.totalMemVal ? 1 : 0;
@@ -1597,6 +1651,7 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 
             colors: colorArr,
             chart: {
+            	renderTo: chartId,
                 backgroundColor: 'transparent',
                 type: 'scatter',
                 zoomType: 'xy',
@@ -1617,6 +1672,9 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
                         }
                     }
                 }
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 text: ""
@@ -1758,9 +1816,15 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
                     s += "<b>- Duration : </b>" + duration + "<br/>";
                     s += "<b>- 이벤트명 : </b>" + this.point.description + "<br/>";
                     if(this.point.priority=="Warning"){
-                        s += "<b>- 이벤트 등급 : </b><span style='color:yellow'>" + this.point.priority + "</span></span>";
+                        s += "<b>- 이벤트 등급 : </b><span style='color:#FFC859'>" + this.point.priority + "</span></span>";
                     }else if(this.point.priority=="High"){
+                        s += "<b>- 이벤트 등급 : </b><span style='color:#E97659'>" + this.point.priority + "</span></span>";
+                    }else if(this.point.priority=="Information"){
+                        s += "<b>- 이벤트 등급 : </b><span style='color:#7499FF'>" + this.point.priority + "</span></span>";
+                    }else if(this.point.priority=="Disaster"){
                         s += "<b>- 이벤트 등급 : </b><span style='color:red'>" + this.point.priority + "</span></span>";
+                    }else if(this.point.priority=="Average"){
+                        s += "<b>- 이벤트 등급 : </b><span style='color:#FFA059'>" + this.point.priority + "</span></span>";
                     }
                     return s;
                 }
@@ -1791,6 +1855,10 @@ function showScatterPlotChart(chartId, xAxisMin, dataSet, colorArr){
 //                        headerFormat: '<b>{series.name}</b><br>',
 //                        pointFormat: '{point.x} cm, {point.y} kg'
 //                    }
+                },
+                series: {
+                    stickyTracking: false
+                    //cursor: 'default'
                 }
             },
             series: dataSet
@@ -1817,6 +1885,7 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
             },
             colors: colorArr,
             chart: {
+            	renderTo: chartId,
                 backgroundColor: 'transparent',
                 type: 'area',
                 zoomType: 'x',
@@ -1844,6 +1913,9 @@ function showEventStatChart(chartId, chartTitle, dataSet, unit, colorArr){
                         }
                     }
                 }
+            },
+            credits:{
+            	enabled: false
             },
             title: {
                 text: "",

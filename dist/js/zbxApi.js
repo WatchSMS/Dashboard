@@ -1,4 +1,82 @@
 var zbxApi = {
+	
+	alerthostTrigger: {
+		hostGet: function (hostid, startTime, endTime) {
+			var method = "event.get";
+			var params = {
+	                "output": "extend",
+	                "source": 0,
+	                "time_from": startTime,
+	                "time_end": endTime,
+	                "hostids": hostid,
+	                "countOutput": true,
+	                "selectHosts": "extend"
+	        };
+			return server.sendAjaxRequest(method, params);
+	    },
+	    
+	    success: function (data) {
+	        console.log("dashboardHostEvent : " + data);
+	        console.log(data);
+	        return data;
+	    }
+	},
+
+    /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
+    dashboardHostEvent: {
+    	hostGet: function (beforeTime, endTime) {
+	    	var method = "event.get";
+	        var params = {
+	                "output": [
+	                    "eventid", "objectid", "clock"
+	                ],
+	                "source": 0,
+	                "time_from": beforeTime,
+	                "time_end": endTime,
+	                //"hostids": hostid,
+	                "selectHosts": "extend",
+	                "sortfield": "clock",
+	                "sortorder": "ASC"
+	        };
+	        return server.sendAjaxRequest(method, params);
+    	},
+    
+	    success: function (data) {
+	        console.log("dashboardHostEvent : " + data);
+	        console.log(data);
+	        return data;
+	    }
+    
+    },
+	    
+	Acknowledge: {
+        update: function (eventId,message) {
+            var method = "event.acknowledge";
+            var params = {
+                "eventids": eventId,
+                "message": message
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        get: function(eventId,objectId) {
+        	var method = "event.get";
+        	var params = {
+                    "output": "extend",
+                    "select_acknowledges": "extend",
+                    "eventids": eventId,
+                    "objectids": objectId,
+                    "sortfield": ["clock", "eventid"],
+                    "sortorder": "DESC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        
+        success: function (data) {
+            console.log("Acknowledge : " + data);
+            console.log(data);
+            return data;
+        }
+    },	
 
     getEvent: {
         getByTime: function (startTime) {
@@ -273,11 +351,11 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            $.each(data.result, function (k, v) {
-                console.log(JSON.stringify(v));
-                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
-                //("#infobox_alertTrigger").text(data.result);
-            });
+//            $.each(data.result, function (k, v) {
+//                console.log(JSON.stringify(v));
+//                console.log(v.name + ", " + v.key_ + ", " + v.lastvalue);
+//                //("#infobox_alertTrigger").text(data.result);
+//            });
             return data;
         }
     },
@@ -328,7 +406,7 @@ var zbxApi = {
         get: function (hostid, key_) {
             var method = "item.get";
             var params = {
-                "output": ["key_", "itemid", "lastclock"],
+                "output": ["key_", "itemid", "lastclock", "lastvalue"],
                 "hostids": hostid,
                 "search": {"key_": key_}
                 //"search": {"key_": "net.if.in["}
@@ -472,10 +550,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            //console.log(" 전체 서버 상태 2 / : " + JSON.stringify(data));
-            $.each(data.result, function (k, v) {
-                //console.log(" 전체 서버 상태 2 >> 키 값 : " + v.key_ + ", 마지막 값 : " + v.lastvalue);
-            });
+            
             return data;
         }
     },
@@ -493,8 +568,6 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            $.each(data.result, function (k, v) {
-            });
             return data;
         }
     },
@@ -753,7 +826,7 @@ var zbxApi = {
                 "source": 0,
                 "sortfield": "clock",
                 "sortorder": "DESC",
-                "limit": 10
+                "limit": 6
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -805,7 +878,9 @@ var zbxApi = {
             return data.result;
         }
     },
-
+    
+    
+/*
     unAckknowledgeEvent: {
         get: function () {
             var method = "trigger.get";
@@ -824,20 +899,35 @@ var zbxApi = {
             return data.result;
         }
     },
-
-    /* 대시보드 이벤트 현황 - 금일발생 */
-    todayEvent: {
-        get: function (today_select) {
+    */
+    
+    unAckknowledgeEvent: {
+        get: function (start_time) {
             var method = "event.get";
             var params = {
                 "output": "extend",
-                "select_acknowledges": "extend",
-                "monitored": true,
                 "countOutput": true,
-                "time_from": today_select,
-                "filter": {
-                    "value": 1
-                }
+                "time_from": start_time,
+                "acknowledged": false,
+                "value": 1
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            return data.result;
+        }
+    },
+
+    /* 대시보드 이벤트 현황 - 금일발생 */
+    todayEvent: {
+        get: function (start_time) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                //"select_acknowledges": "extend",
+                "countOutput": true,
+                "time_from": start_time,
+                "value": 1
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -862,8 +952,6 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            $.each(data.result, function (k, v) {
-            });
             return data;
         }
     },
@@ -885,8 +973,6 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            $.each(data.result, function (k, v) {
-            });
             return data;
         }
     },

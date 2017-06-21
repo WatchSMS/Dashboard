@@ -1,4 +1,5 @@
 <section class="content">
+	<div id="hostIdInhostSummary" style="display: none;"></div>
     <div class="content-header">
 
         <div class="d1">
@@ -16,9 +17,9 @@
                             <img src="dist/img/tit_sub_01.gif">
 
                             <li class="p1"><span class="o1 bg14"></span> <span class="e1">
-                                <a onclick="chartLegendItemClick(0,'cpuUse', this);" href="#none">CPU User</a></span></li>
+                                <a onclick="chartLegendItemClick(0,'cpuUse', this);" href="#none">CPU System</a></span></li>
                             <li class="p1"><span class="o1 bg15"></span> <span class="e1">
-                                <a onclick="chartLegendItemClick(1,'cpuUse', this);" href="#none">CPU System</a></span></li>
+                                <a onclick="chartLegendItemClick(1,'cpuUse', this);" href="#none">CPU User</a></span></li>
                             <li class="p1"><span class="o1 bg16"></span> <span class="e1">
                                 <a onclick="chartLegendItemClick(2,'cpuUse', this);" href="#none">CPU IO Wait</a></span></li>
                             <li class="p1"><span class="o1 bg17"></span> <span class="e1">
@@ -171,7 +172,7 @@
                 </thead>
             </table>
 
-            <div class="" style="width: 100%; height: 197px;">
+            <div class="" style="width: 100%; height: 203px;">
                 <table class="table1">
                     <thead>
                     <tr>
@@ -268,8 +269,8 @@
                 </thead>
             </table>
 
-            <section id="in-scl">
-                <div id="hostEventDiv" class="h200 scroll">
+            <section id="hostSummaryEventTable">
+                <div id="summary_event_content-0" class="h200">
                     <table class="table1" style="width:100%" id="serverEventList">
 
                     </table>

@@ -109,7 +109,11 @@ function showCpuUsage(hostid, startTime){
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
 
                 if (point) {
                     point.highlight(e);
@@ -193,7 +197,11 @@ function showCpuLoadAvg(hostid, startTime){
             for (var i = 0; i < Highcharts.charts.length; i = i + 1) {
                 chart = Highcharts.charts[i];
                 event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
+                if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
+                	point = chart.series[0].searchPoint(event, true);
+                }else{
+                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                }
                 if (point) {
                     point.highlight(e);
                 }
@@ -290,8 +298,11 @@ var showProcessTable = function(finalProcArr, topProcessLastTime){
                     procDetailHTML += "</tr>";
                 });
                 procDetailHTML += "</tbody></table>";
+                console.log("pp1");
+                console.log(procDetailHTML);
                 $("#childProcTbl").empty();
                 $("#detailProcessTitle").html($(this).children(":first").children(":first").attr('title'));
+                console.log($(this).children(":first").children(":first").attr('title'));
                 $("#childProcTbl").append(procDetailHTML);
                 $('#cpuChildProcessForm').lightbox_me({
                     centered: true,
