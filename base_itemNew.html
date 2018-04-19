@@ -1,0 +1,66 @@
+<section class="content" xmlns="http://www.w3.org/1999/html">
+    <div id="collectionPopUpAdd" class="popup_itemCollection">
+        <strong class="popup_titleStrong"> 수집항목 </strong><br><br>
+        <table class="table1" id="collectionTableAdd">
+            <tbody id="collectionItemAdd">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="alertPopUp" class="popup_alertInfo">
+    </div>
+
+    <div id="itemInfoNew">
+        <div id="itemInfoTitle" align="left">
+            <h3>아이템
+                <input type="text" id="hostIdInfo" class="input_hostIdText" readonly>
+                <input type="text" id="hostNameInfo_A" class="input_hostNameText" readonly>
+            </h3>
+        </div>
+
+        <div id="itemInfoSummary_New" class="div_itemInfo" align="center">
+            <table id="itemInfoTable">
+            </table>
+        </div>
+
+        <div id="triggerInfoNew">
+            <div id="triggerInfoName" align="left">
+                <h3>트리거</h3>
+            </div>
+
+            <div id="triggerInfoSummary" class="div_triggerInfo" align="center">
+                <table id="thesholdTableAdd" class="table1 table_triggerInfo">
+                    <thead>
+                    <tr>
+                        <!--<th class="text_center" rowspan="2">아이디</th>-->
+                        <th rowspan="2" class="text_center">이름</th>
+                        <th colspan="4" class="text_center">조건식 정보</th>
+                        <th rowspan="2" class="text_center">심각도</th>
+                        <th rowspan="2" class="text_center">상태</th>
+                        <!--<th class="text_center" colspan="2">알림 수신 방법</th>-->
+                        <th rowspan="2" class="text_center"><a onclick='create_TriggerNew()'>추가</a> / 삭제</th>
+                    </tr>
+                    <tr>
+                        <th class="text_center">집계시작(분)</th>
+                        <th class="text_center">기준</th>
+                        <th class="text_center">비교</th>
+                        <th class="text_center">비교값</th>
+                        <!--
+                        <th class="text_center">SMS</th>
+                        <th class="text_center">E-mail</th>
+                        -->
+                    </tr>
+                    </thead>
+                    <tbody id="thesholdTableAdd_tbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="setting_btn_insert" class="div_itemSubmitButton" align="right">
+            <button id="btn_insert" type="button" class="button_short" onclick="create_ItemSubmitBtn()">추가</button>
+            <button id="btn_cancel" type="button" class="button_short" onclick="create_PagebackBtn()">취소</button>
+        </div>
+    </div>
+</section>

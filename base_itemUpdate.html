@@ -1,0 +1,68 @@
+<section class="content">
+
+    <div id="alertPopUp" class="popup_alertInfo">
+    </div>
+
+    <div id="collectionPopUp" class="popup_itemCollection">
+        <strong class="popup_titleStrong"> 수집항목 </strong><br><br>
+        <table class="table1" id="collectionTable">
+            <tbody id="collectionItem">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="itemInfoUpd">
+        <div id="itemInfoTitle_U" align="left">
+            <h3>아이템
+                <input type="text" id="hostIdInfo_U" class="input_hostIdText" readonly >
+                <input type="text" id="hostNameInfo_U" class="input_hostNameText" readonly>
+            </h3>
+        </div>
+
+        <div id="itemInfoSummary_U" class="div_itemInfo" align="center">
+            <table id="itemInfo">
+            </table>
+        </div>
+
+        <div id="triggerInfo_U">
+            <div id="triggerInfoName_U" align="left">
+                <h3>트리거</h3>
+            </div>
+
+            <div id="triggerInfoSummary_U" class="div_triggerInfo" align="center">
+                <table id="triggerThresholdUpdate" class="table1 table_triggerInfo">
+                    <thead>
+                    <tr>
+                        <!--<th class="text_center" rowspan="2">아이디</th>-->
+                        <th class="text_center" rowspan="2">이름</th>
+                        <th class="text_center" colspan="4">조건식 정보</th>
+                        <th class="text_center" rowspan="2">심각도</th>
+                        <th class="text_center" rowspan="2">상태</th>
+                        <!--<th class="text_center" colspan="2">알림 수신 방법</th>-->
+                        <th class="text_center" rowspan="2"><a onclick='update_TriggerNew()'>추가</a> / 삭제</th>
+                    </tr>
+                    <tr>
+                        <th class="text_center">집계시작(분)</th>
+                        <th class="text_center">기준</th>
+                        <th class="text_center">비교</th>
+                        <th class="text_center">비교값</th>
+                        <!--
+                        <th class="text_center">SMS</th>
+                        <th class="text_center">E-mail</th>
+                        -->
+                    </tr>
+                    </thead>
+                    <tbody id="thesholdUpdate_tbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="setting_btn_update" class="div_itemSubmitButton" align="right">
+            <button id="btn_update" type="button" class="button_short" onclick="update_ItemSubmitBtn()">수정</button>
+            <button id="btn_cancel" type="button" class="button_short" onclick="update_Pageback()">취소</button>
+            <button id="btn_delete" type="button" class="button_short" onclick="update_ItemDeleteBtn()">삭제</button>
+        </div>
+    </div>
+</section>
