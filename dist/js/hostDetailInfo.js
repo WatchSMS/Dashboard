@@ -184,7 +184,7 @@ function showsServerCpu(serverCpuSystem, serverCpuUser, serverCpuIoWait, serverC
         DataObj.name = "CPU 사용량";
         DataObj.data = serverCpuStealArr;
         DataSet.push(DataObj);
-        
+
         hostDetailChartCPU('cpuUse', 'CPU 사용량', DataSet, "%", ['#e85c2a', '#e574ff', '#37d5f2', '#ccaa65']);
     });
 
