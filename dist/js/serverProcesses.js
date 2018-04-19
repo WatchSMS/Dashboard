@@ -286,7 +286,7 @@ var generateProcessResource = function(hostid, processName, startTime) {
                 if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
                 	point = chart.series[0].searchPoint(event, true);
                 }else{
-                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
                 }
 
                 if (point) {
@@ -306,7 +306,7 @@ var generateProcessResource = function(hostid, processName, startTime) {
                 if( typeof chart.series[GLOBAL_INDEX] == "undefined"){
                 	point = chart.series[0].searchPoint(event, true);
                 }else{
-                	point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point                	                	
+                point = chart.series[GLOBAL_INDEX].searchPoint(event, true); // Get the hovered point
                 }
 
                 if (point) {
