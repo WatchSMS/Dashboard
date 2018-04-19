@@ -20,14 +20,14 @@ function networkUsageView(hostid, startTime){
     $.each(lastNetworkData.result, function(k, v){
     	nicArr.push(v.key_.substring(v.key_.indexOf("[") + 1, v.key_.indexOf("]")));
     });
-    
+
     console.log("nicArr");
     console.log(nicArr);
     NetworkTableHTML += "<tbody>";
 
     //좌측 network List
     $.each(lastNetworkData.result, function(k, v){
-    	
+        
     	console.log("kkkkkkkkkkkkkkkk");
     	
     	console.log(k);
@@ -62,45 +62,45 @@ function networkUsageView(hostid, startTime){
            
             if(lastNetworkData.result.length == (k+1)){
             	
-	            NetworkTableHTML += "</tbody>";
-	
-	            $("#networkInfoTable").empty();
-	            $("#networkInfoTable").append(NetworkTableHTML);
-	
-	            $("#chart_trafficIo").empty();
-	            $("#chart_trafficTotal").empty();
-	
-	            var $table = $("#networkInfoTable");
-	            $("#networkInfoTable > tbody > tr").eq(0).addClass("selectedNetwork");
+            NetworkTableHTML += "</tbody>";
+
+            $("#networkInfoTable").empty();
+            $("#networkInfoTable").append(NetworkTableHTML);
+
+            $("#chart_trafficIo").empty();
+            $("#chart_trafficTotal").empty();
+
+            var $table = $("#networkInfoTable");
+            $("#networkInfoTable > tbody > tr").eq(0).addClass("selectedNetwork");
 	            //$("#networkInfoTable > tbody > tr").eq(0).css("border","1px #FF5E00 solid");
 	            $("#networkInfoTable > tbody > tr").eq(0).css("background","#7708e1");
-	            
-	            currentNetworkName = $(".selectedNetwork").attr('id');
-	
-	            generateNetworkResource(hostid, currentNetworkName, startTime);
-	
-	            rowClickNetworkEvent($table, hostid, startTime);
-	
-	            // 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
-	            $("#btn_network.btn").off().on('click',function() {
-	                var startTime1 = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
-	                var currentNetworkName = $(".selectedNetwork").attr('id');
-	                removeAllChart();
-	                generateNetworkResource(hostid, currentNetworkName, startTime1);
-	            });
-	
-	            // 시간 수동 입력 버튼 클릭시
-	            $("#btn_network.btn_etc").off().on('click',function() {
-	                $('#selectNetworkTimeInput').val("");
-	                $('#network_InputTimecontent').lightbox_me({
-	                    centered: true,
-	                    closeSelector: ".close",
-	                    onLoad: function() {
-	                        $('#network_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
-	                    },
-	                    overlayCSS:{background: '#474f79', opacity: .8}
-	                });
-	            });
+
+            currentNetworkName = $(".selectedNetwork").attr('id');
+
+            generateNetworkResource(hostid, currentNetworkName, startTime);
+
+            rowClickNetworkEvent($table, hostid, startTime);
+
+            // 시간 버튼 클릭시, 현재 프로세스의 차트를 생성하는 클릭 이벤트 생성
+            $("#btn_network.btn").off().on('click',function() {
+                var startTime1 = Math.round((new Date().getTime() - LONGTIME_ONEHOUR * parseInt(this.value)) / 1000);
+                var currentNetworkName = $(".selectedNetwork").attr('id');
+                removeAllChart();
+                generateNetworkResource(hostid, currentNetworkName, startTime1);
+            });
+
+            // 시간 수동 입력 버튼 클릭시
+            $("#btn_network.btn_etc").off().on('click',function() {
+                $('#selectNetworkTimeInput').val("");
+                $('#network_InputTimecontent').lightbox_me({
+                    centered: true,
+                    closeSelector: ".close",
+                    onLoad: function() {
+                        $('#network_InputTimecontent').find('input:first').focus();    //-- 첫번째 Input Box 에 포커스 주기
+                    },
+                    overlayCSS:{background: '#474f79', opacity: .8}
+                });
+            });
             }
         });
         
@@ -131,7 +131,7 @@ function networkUsageView(hostid, startTime){
 //        NetworkTableHTML += "<div class='mt2 f11'> TX : " + networkItemUsed + " b/s / RX : " + networkItemSize + " b/z</div>";
 //        NetworkTableHTML += "</tr>";
     });
-    
+
 //    NetworkTableHTML += "</tbody>";
 //
 //    $("#networkInfoTable").empty();
