@@ -42,6 +42,15 @@ $(document).ready(function() {
     $("#base_diskInfo").load("base_diskInfo.html"); //디스크 통계
     $("#base_networkInfo").load("base_networkInfo.html"); //네트워크통계
     $("#base_configure").load("base_configure.html"); //네트워크통계
+
+    //2017.12.08 아이템, 트리거 설정
+    $("#base_serverItem").load("base_itemList.html");
+    $("#base_itemNew").load("base_itemNew.html");
+    $("#base_itemUpdate").load("base_itemUpdate.html");
+
+    //2018.04.01
+    $("#base_dashboardEventList").load("base_dashboardEventList.html");
+
 });
 
 var LONGTIME_ONEHOUR = 3600000;
