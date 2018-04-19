@@ -16,9 +16,6 @@ function eventListView(){
 }
 
 var hostIpMap=[];
-
-
-
 function eventList(data){
     var eventListTable = '';
 
@@ -26,107 +23,107 @@ function eventList(data){
     eventListTable += '</tbody>';
     $("#eventStatusTable").empty();
     $("#eventStatusTable").append(eventListTable);
-    
+
     var triggerIdArr = [];
     var hostIdArr = [];
-	var uniqueTriggerIdArr = [];
-	var uniqueHostIdArr = [];
-	var eventMergeArr = [];
-	
-	// 모든 트리거 아이디를 배열에 담는다.
-	$.each(data.result, function (k, v) {
-		triggerIdArr.push(v.relatedObject.triggerid);
-	});
-	
+    var uniqueTriggerIdArr = [];
+    var uniqueHostIdArr = [];
+    var eventMergeArr = [];
+
+    // 모든 트리거 아이디를 배열에 담는다.
+    $.each(data.result, function (k, v) {
+        triggerIdArr.push(v.relatedObject.triggerid);
+    });
+
 //	// 모든 호스트아이디를 배열에 담는다.
 //	$.each(data.result, function (k, v) {
 //		hostIdArr.push(v.relatedObject.hostid);
 //	});
-	
-	// 트리거 아이디 배열의 중복 제거
-	$.each(triggerIdArr, function(k1,v1){
+
+    // 트리거 아이디 배열의 중복 제거
+    $.each(triggerIdArr, function(k1,v1){
         if(uniqueTriggerIdArr.indexOf(v1) == -1){
-        	uniqueTriggerIdArr.push(v1);
+            uniqueTriggerIdArr.push(v1);
         }
     });
-	
+
 //	// 호스트 아이디 배열의 중복 제거
 //	$.each(hostIdArr, function(k1,v1){
 //        if(uniqueHostIdArr.indexOf(v1) == -1){
 //        	uniqueHostIdArr.push(v1);
 //        }
 //    });
-	
-//	
+
+//
 //	 if(hostIpMap[hostid]==null) {
 //         hostIpMap[hostid]=zbxSyncApi.eventStatusHost(hostid).result[0].interfaces[0].ip;
 //     }
-	 
-	 
-	// 트리거 아이디 별 이벤트 분리
-	var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
-	
-	$.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
-		eventArrByTriggerId[k] = new Array();
-		$.each(data.result, function (k1, v1) { //이벤트 배열
-			if(v == v1.relatedObject.triggerid){
-				
-				dataObj = new Object();
-				dataObj.triggerId = v1.relatedObject.triggerid;
-				dataObj.objectId = v1.objectid;
-				dataObj.eventId = v1.eventid;
-				dataObj.severity = convPriority(v1.relatedObject.priority);
-				dataObj.status = convStatusEvent(v1.value);
-				dataObj.ack = convAckEvent(v1.acknowledged);
-				
-				var tmpHostId = v1.hosts[0].hostid;
-				dataObj.hostid = tmpHostId;
-				
-				if(hostIpMap[tmpHostId] == null) {
-			        hostIpMap[tmpHostId]=zbxSyncApi.eventStatusHost(tmpHostId).result[0].interfaces[0].ip;
-			    }
-				dataObj.ip = hostIpMap[tmpHostId];
-				if(v1.acknowledges[0] == undefined){
-					dataObj.ackTime = "-";
-				} else {
-					dataObj.ackTime = convTime(v1.acknowledges[0].clock);
-		        }
-				dataObj.host = v1.hosts[0].name;
-				dataObj.description = v1.relatedObject.description;
-				dataObj.clock = v1.clock;
-				dataObj.duration = 0;
-				
-				eventArrByTriggerId[k].push(dataObj);
-			}
-		});
-	});
-//	console.log(eventArrByTriggerId);
-	
-	// 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
-	$.each(eventArrByTriggerId, function(k,v){
-		var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
-		console.log("previousClock : " + previousClock);
-		
-		$.each(v, function(k1, v1){
-			v1.duration= convertTime(previousClock - parseInt(v1.clock));
-			previousClock = parseInt(v1.clock);
-			eventMergeArr.push(v1);
-			
-		});
-	});
-	//console.log(eventMergeArr);
-	
-	// Merge된 이벤트 배열 clock 순으로 정렬
-	eventMergeArr.sort(function (a, b) {
-           return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+
+
+    // 트리거 아이디 별 이벤트 분리
+    var eventArrByTriggerId = new Array(uniqueTriggerIdArr.size);
+
+    $.each(uniqueTriggerIdArr, function(k, v){ //유니크 트리거 아이디 배열
+        eventArrByTriggerId[k] = new Array();
+        $.each(data.result, function (k1, v1) { //이벤트 배열
+            if(v == v1.relatedObject.triggerid){
+
+                dataObj = new Object();
+                dataObj.triggerId = v1.relatedObject.triggerid;
+                dataObj.objectId = v1.objectid;
+                dataObj.eventId = v1.eventid;
+                dataObj.severity = convPriority(v1.relatedObject.priority);
+                dataObj.status = convStatusEvent(v1.value);
+                dataObj.ack = convAckEvent(v1.acknowledged);
+
+                var tmpHostId = v1.hosts[0].hostid;
+                dataObj.hostid = tmpHostId;
+
+                if(hostIpMap[tmpHostId] == null) {
+                    hostIpMap[tmpHostId]=zbxSyncApi.eventStatusHost(tmpHostId).result[0].interfaces[0].ip;
+                }
+                dataObj.ip = hostIpMap[tmpHostId];
+                if(v1.acknowledges[0] == undefined){
+                    dataObj.ackTime = "-";
+                } else {
+                    dataObj.ackTime = convTime(v1.acknowledges[0].clock);
+                }
+                dataObj.host = v1.hosts[0].name;
+                dataObj.description = v1.relatedObject.description;
+                dataObj.clock = v1.clock;
+                dataObj.duration = 0;
+
+                eventArrByTriggerId[k].push(dataObj);
+            }
+        });
     });
-	//console.log(eventMergeArr);
-	
-	var eventListTable = '';
-	var fromView = "eventView";
-    
-	$.each(eventMergeArr, function (k, v) {
-    	var objectId = v.objectId;
+//	console.log(eventArrByTriggerId);
+
+    // 이벤트 별 지속시간 계산 후, 트리거 아이디로 분리된 이벤트 배열 merge
+    $.each(eventArrByTriggerId, function(k,v){
+        var previousClock = Math.ceil(parseInt(new Date().getTime())/1000);
+        console.log("previousClock : " + previousClock);
+
+        $.each(v, function(k1, v1){
+            v1.duration= convertTime(previousClock - parseInt(v1.clock));
+            previousClock = parseInt(v1.clock);
+            eventMergeArr.push(v1);
+
+        });
+    });
+    //console.log(eventMergeArr);
+
+    // Merge된 이벤트 배열 clock 순으로 정렬
+    eventMergeArr.sort(function (a, b) {
+        return a.clock > b.clock ? -1 : a.clock < b.clock ? 1 : 0;
+    });
+    //console.log(eventMergeArr);
+
+    var eventListTable = '';
+    var fromView = "eventView";
+
+    $.each(eventMergeArr, function (k, v) {
+        var objectId = v.objectId;
         var eventId = v.eventId;
         var severity = v.severity;
         var status = v.status;
@@ -169,7 +166,7 @@ function eventList(data){
         eventListTable += "<td width='100'  class='line'><a href='#none' onclick='moveHostPage("+ hostid + ");'>" + host + "</a></td>";
         eventListTable += "<td width='auto' class='line'  style='text-align: left;'>" + description + "</td>";
         eventListTable += "</tr>";
-        
+
     });
     $("#eventListTable").append(eventListTable);
     $("#serverInfo").empty();
