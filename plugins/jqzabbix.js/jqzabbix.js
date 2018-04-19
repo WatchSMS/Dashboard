@@ -19,216 +19,221 @@
 
 (function($) {
 
-	$.jqzabbix = function(options) {
+    $.jqzabbix = function(options) {
 
-		// initialize options
-		options = $.extend({
-			// default settings
-			url : 'http://zabbix.oplab.co.kr/api_jsonrpc.php',
-			username : 'Admin',
-			password : 'zabbix',
-			basicauth : false,
-			busername : '',
-			bpassword : '',
-			timeout : 100000,
-			limit : 1000,
-		}, options);
+        // initialize options
+        options = $.extend({
+            // default settings
+            url : 'http://zabbix.oplab.co.kr/api_jsonrpc.php',
+            username : 'Admin',
+            password : 'zabbix',
+            basicauth : false,
+            busername : '',
+            bpassword : '',
+            timeout : 100000,
+            limit : 1000,
+        }, options);
 
-		// initialize variables
-		var rpcid = 0;
-		var authid = null;
-		var apiversion = null;
-		var errormsg = null;
+        // initialize variables
+        var rpcid = 0;
+        var authid = null;
+        var apiversion = null;
+        var errormsg = null;
 
-		function createAjaxOption(method, params) {
+        function createAjaxOption(method, params, defaultParam) {
 
-			// check method option
-			if (method === null || typeof method === 'undefined') {
-				return false;
-			}
+        	console.log("defaultParam : " + defaultParam);
 
-			// check params option
-			if (params === null || typeof params === 'undefined') {
-				params = {};
-			}
+            // check method option
+            if (method === null || typeof method === 'undefined') {
+                return false;
+            }
 
-			// default params
-			params = $.extend({
-				extendoutput : true,
-				limit : options.limit
-			}, params);
+            // check params option
+            if (params === null || typeof params === 'undefined') {
+                params = {};
+            }
 
-			// merge params with username and password
-			$.extend(params, {
-				user : options.username,
-				password : options.password
-			});
+            // check defaultParam option
+            if (defaultParam === null || typeof defaultParam === 'undefined') {
 
-			// create sending data
-			var data = {
-				jsonrpc : '2.0',
-				id : ++rpcid,
-				auth : authid,
-				method : method,
-				params : params
-			};
+                // default params
+                params = $.extend({
+                    extendoutput : true,
+                    limit : options.limit
+                }, params);
+
+                // merge params with username and password
+                $.extend(params, {
+                    user : options.username,
+                    password : options.password
+                });
+            }
+
+// create sending data
+            var data = {
+                jsonrpc : '2.0',
+                id : ++rpcid,
+                auth : authid,
+                method : method,
+                params : params
+            };
+
+            console.log("///////// data: " + JSON.stringify(data));
+
+            // create AJAX option
+            var ajaxOption = {
+                contentType : 'application/json-rpc',
+                dataType : 'json',
+                type : 'POST',
+                async : true,
+                cache : false,
+                processData : false,
+                timeout : options.timeout,
+                url : options.url,
+                data : JSON.stringify(data),
+            };
+
+            // if use http basic authentication
+            if (options.basicauth === true) {
+                var base64 = base64encode(options.busername + ':' + options.bpassword);
+                ajaxOption.beforeSend = function(xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + base64);
+                };
+            }
+
+            return ajaxOption;
+        }
+
+        function base64encode(string) {
+
+            var base64list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            var t = '', p = -6, a = 0, i = 0, v = 0, c;
+
+            while ((i < string.length) || (p > -6)) {
+                if (p < 0) {
+                    if (i < string.length) {
+                        c = string.charCodeAt(i++);
+                        v += 8;
+                    } else {
+                        c = 0;
+                    }
+                    a = ((a & 255) << 8) | (c & 255);
+                    p += 8;
+                }
+                t += base64list.charAt((v > 0) ? (a >> p) & 63 : 64);
+                p -= 6;
+                v -= 6;
+            }
+            return t;
+        }
+
+        this.init = function() {
+            rpcid = 0;
+            authid = null;
+            apiversion = null;
+            errormsg = null;
+
+            return true;
+        };
+
+        this.setOptions = function(addoptions) {
+
+            options = $.extend(options, addoptions);
+        };
+
+        this.isError = function() {
+
+            if (errormsg) {
+                return errormsg;
+            } else {
+                return false;
+            }
+        };
 
 
+        this.sendAjaxRequest = function(method, params, defaultParam) {
 
-			// create AJAX option
-			var ajaxOption = {
-				contentType : 'application/json-rpc',
-				dataType : 'json',
-				type : 'POST',
-				async : true,
-				cache : false,
-				processData : false,
-				timeout : options.timeout,
-				url : options.url,
-				data : JSON.stringify(data),
-			};
+            var defer = $.Deferred();
+            var jqXHR = $.ajax(createAjaxOption(method, params, defaultParam));
 
-			// if use http basic authentication
-			if (options.basicauth === true) {
-				var base64 = base64encode(options.busername + ':' + options.bpassword);
-				ajaxOption.beforeSend = function(xhr) {
-					xhr.setRequestHeader("Authorization", "Basic " + base64);
-				};
-			}
+            jqXHR.done(function(data, statusText, jqXHR) {
 
-			return ajaxOption;
-		}
+                if (jqXHR.status == 200) {
+                    if ('error' in data) {
+                        errormsg = "Response Data Error / Response Code: " + jqXHR.status + " / Response Text: " + jqXHR.responseText;
+                        defer.rejectWith(this, arguments);
+                    } else {
+                        // success
+                        defer.resolveWith(this, arguments);
+                    }
+                } else {
+                    errormsg = "Response Code Error / Response Code: " + jqXHR.status + " : " + jqXHR.responseText;
+                    defer.rejectWith(this, arguments);
+                }
 
-		function base64encode(string) {
+            });
 
-			var base64list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-			var t = '', p = -6, a = 0, i = 0, v = 0, c;
+            jqXHR.fail(function(jqXHR, statusText, errorThrown) {
 
-			while ((i < string.length) || (p > -6)) {
-				if (p < 0) {
-					if (i < string.length) {
-						c = string.charCodeAt(i++);
-						v += 8;
-					} else {
-						c = 0;
-					}
-					a = ((a & 255) << 8) | (c & 255);
-					p += 8;
-				}
-				t += base64list.charAt((v > 0) ? (a >> p) & 63 : 64);
-				p -= 6;
-				v -= 6;
-			}
-			return t;
-		}
+                if (jqXHR && statusText) {
+                    errormsg = "Network Error";
+                } else {
+                    errormsg = "Unknown error";
+                }
+                defer.rejectWith(this, arguments);
 
-		this.init = function() {
-			rpcid = 0;
-			authid = null;
-			apiversion = null;
-			errormsg = null;
+            });
 
-			return true;
-		};
+            jqXHR.always(function() {
+                if (errormsg !== null) {
+                    console.log(errormsg);
+                }
+            });
 
-		this.setOptions = function(addoptions) {
+            return $.extend({}, jqXHR, defer.promise());
 
-			options = $.extend(options, addoptions);
-		};
+        };
 
-		this.isError = function() {
+        this.getApiVersion = function() {
 
-			if (errormsg) {
-				return errormsg;
-			} else {
-				return false;
-			}
-		};
+            var method = 'apiinfo.version';
+            var jqXHR = this.sendAjaxRequest(method);
 
+            jqXHR.done(function(data, statusText, jqXHR) {
+                this.apiversion = data.result;
+            });
 
-		this.sendAjaxRequest = function(method, params) {
+            return jqXHR;
+        };
 
-			var defer = $.Deferred();
-			var jqXHR = $.ajax(createAjaxOption(method, params));
+        this.userLogin = function() {
 
-			jqXHR.done(function(data, statusText, jqXHR) {
+            // reset rpcid
+            rpcid = 0;
 
-				if (jqXHR.status == 200) {
-					if ('error' in data) {
-						errormsg = "Response Data Error / Response Code: " + jqXHR.status + " / Response Text: "
-								+ jqXHR.responseText;
-						defer.rejectWith(this, arguments);
-					} else {
-						// success
-						defer.resolveWith(this, arguments);
-					}
-				} else {
-					errormsg = "Response Code Error / Response Code: " + jqXHR.status + " : " + jqXHR.responseText;
-					defer.rejectWith(this, arguments);
-				}
+            // method
+            switch (apiversion) {
+                case '1.0':
+                case '1.1':
+                case '1.2':
+                case '1.3':
+                    var method = 'user.authenticate';
+                    break;
+                default:
+                    var method = 'user.login';
+                    break;
+            }
 
-			});
+            var jqXHR = this.sendAjaxRequest(method);
 
-			jqXHR.fail(function(jqXHR, statusText, errorThrown) {
+            jqXHR.done(function(data, statusText, jqXHR) {
+                authid = data.result;
+            });
 
-				if (jqXHR && statusText) {
-					errormsg = "Network Error";
-				} else {
-					errormsg = "Unknown error";
-				}
-				defer.rejectWith(this, arguments);
+            return jqXHR;
+        };
 
-			});
-
-			jqXHR.always(function() {
-				if (errormsg !== null) {
-					console.log(errormsg);
-				}
-			});
-
-			return $.extend({}, jqXHR, defer.promise());
-
-		};
-
-		this.getApiVersion = function() {
-
-			var method = 'apiinfo.version';
-			var jqXHR = this.sendAjaxRequest(method);
-
-			jqXHR.done(function(data, statusText, jqXHR) {
-				this.apiversion = data.result;
-			});
-
-			return jqXHR;
-		};
-
-		this.userLogin = function() {
-
-			// reset rpcid
-			rpcid = 0;
-
-			// method
-			switch (apiversion) {
-			case '1.0':
-			case '1.1':
-			case '1.2':
-			case '1.3':
-				var method = 'user.authenticate';
-				break;
-			default:
-				var method = 'user.login';
-				break;
-			}
-
-			var jqXHR = this.sendAjaxRequest(method);
-
-			jqXHR.done(function(data, statusText, jqXHR) {
-				authid = data.result;
-			});
-
-			return jqXHR;
-		};
-
-	}; // end plugin
+    }; // end plugin
 })(window.jQuery || window.Zepto); // function($)
 
