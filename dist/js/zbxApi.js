@@ -1,56 +1,56 @@
 var zbxApi = {
-	
-	alerthostTrigger: {
-		hostGet: function (hostid, startTime, endTime) {
-			var method = "event.get";
-			var params = {
-	                "output": "extend",
-	                "source": 0,
-	                "time_from": startTime,
-	                "time_end": endTime,
-	                "hostids": hostid,
-	                "countOutput": true,
-	                "selectHosts": "extend"
-	        };
-			return server.sendAjaxRequest(method, params);
-	    },
-	    
-	    success: function (data) {
-	        console.log("dashboardHostEvent : " + data);
-	        console.log(data);
-	        return data;
-	    }
-	},
+
+    alerthostTrigger: {
+        hostGet: function (hostid, startTime, endTime) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "source": 0,
+                "time_from": startTime,
+                "time_end": endTime,
+                "hostids": hostid,
+                "countOutput": true,
+                "selectHosts": "extend"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+
+        success: function (data) {
+            console.log("dashboardHostEvent : " + data);
+            console.log(data);
+            return data;
+        }
+    },
 
     /* 대시보드 이벤트 현황 - 호스트별 장애 현황 */
     dashboardHostEvent: {
-    	hostGet: function (beforeTime, endTime) {
-	    	var method = "event.get";
-	        var params = {
-	                "output": [
-	                    "eventid", "objectid", "clock"
-	                ],
-	                "source": 0,
-	                "time_from": beforeTime,
-	                "time_end": endTime,
-	                //"hostids": hostid,
-	                "selectHosts": "extend",
-	                "sortfield": "clock",
-	                "sortorder": "ASC"
-	        };
-	        return server.sendAjaxRequest(method, params);
-    	},
-    
-	    success: function (data) {
-	        console.log("dashboardHostEvent : " + data);
-	        console.log(data);
-	        return data;
-	    }
-    
+        hostGet: function (beforeTime, endTime) {
+            var method = "event.get";
+            var params = {
+                "output": [
+                    "eventid", "objectid", "clock"
+                ],
+                "source": 0,
+                "time_from": beforeTime,
+                "time_end": endTime,
+                //"hostids": hostid,
+                "selectHosts": "extend",
+                "sortfield": "clock",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+
+        success: function (data) {
+            console.log("dashboardHostEvent : " + data);
+            console.log(data);
+            return data;
+        }
+
     },
-	    
-	Acknowledge: {
-        update: function (eventId,message) {
+
+    Acknowledge: {
+        update: function (eventId, message) {
             var method = "event.acknowledge";
             var params = {
                 "eventids": eventId,
@@ -58,25 +58,25 @@ var zbxApi = {
             };
             return server.sendAjaxRequest(method, params);
         },
-        get: function(eventId,objectId) {
-        	var method = "event.get";
-        	var params = {
-                    "output": "extend",
-                    "select_acknowledges": "extend",
-                    "eventids": eventId,
-                    "objectids": objectId,
-                    "sortfield": ["clock", "eventid"],
-                    "sortorder": "DESC"
+        get: function (eventId, objectId) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "select_acknowledges": "extend",
+                "eventids": eventId,
+                "objectids": objectId,
+                "sortfield": ["clock", "eventid"],
+                "sortorder": "DESC"
             };
             return server.sendAjaxRequest(method, params);
         },
-        
+
         success: function (data) {
             console.log("Acknowledge : " + data);
             console.log(data);
             return data;
         }
-    },	
+    },
 
     getEvent: {
         getByTime: function (startTime) {
@@ -122,7 +122,7 @@ var zbxApi = {
                 "selectRelatedObject": "extend",
                 "sortfield": ["clock", "eventid"],
                 "sortorder": "ASC",
-                "eventid_from": parseInt(startEventId)+1
+                "eventid_from": parseInt(startEventId) + 1
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -155,7 +155,7 @@ var zbxApi = {
     },
 
     updateTrigger: {
-        update: function (triggerId,expression) {
+        update: function (triggerId, expression) {
             var method = "trigger.update";
             var params = {
                 "triggerid": triggerId,
@@ -187,9 +187,9 @@ var zbxApi = {
     },
 
     getTest1: {
-        get: function (hostid,startTime) {
+        get: function (hostid, startTime) {
 
-            return function aa(){
+            return function aa() {
                 var data_CpuSystem, data_CpuUser, data_CpuIOwait, data_CpuSteal = null;
                 var dataSet = [];
 
@@ -203,44 +203,44 @@ var zbxApi = {
                 var history_CpuIOwait = null;
                 var history_CpuSteal = null;
 
-                zbxApi.getItem.get(hostid,"system.cpu.util[,system]").then(function(data) {
+                zbxApi.getItem.get(hostid, "system.cpu.util[,system]").then(function (data) {
                     data_CpuSystem = zbxApi.getItem.success(data);
                     //console.log("dataItem : " + JSON.stringify(dataItem));
-                }).then(function() {
+                }).then(function () {
                     // for suggest
-                    return zbxApi.getItem.get(hostid,"system.cpu.util[,user]");
-                }).then(function(data) {
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,user]");
+                }).then(function (data) {
                     data_CpuUser = zbxApi.getItem.success(data);
-                }).then(function() {
+                }).then(function () {
                     // for suggest
-                    return zbxApi.getItem.get(hostid,"system.cpu.util[,iowait]");
-                }).then(function(data) {
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,iowait]");
+                }).then(function (data) {
                     data_CpuIOwait = zbxApi.getItem.success(data);
-                }).then(function() {
+                }).then(function () {
                     // for suggest
-                    return zbxApi.getItem.get(hostid,"system.cpu.util[,steal]");
-                }).then(function(data) {
+                    return zbxApi.getItem.get(hostid, "system.cpu.util[,steal]");
+                }).then(function (data) {
                     data_CpuSteal = zbxApi.getItem.success(data);
-                }).then(function() {
+                }).then(function () {
                     return zbxApi.getHistory.get(data_CpuSystem.result[0].itemid, startTime, "0");
-                }).then(function(data) {
+                }).then(function (data) {
                     CpuSystemArr = zbxApi.getHistory.success(data);
-                }).then(function() {
+                }).then(function () {
                     return zbxApi.getHistory.get(data_CpuUser.result[0].itemid, startTime, "0");
-                }).then(function(data) {
+                }).then(function (data) {
 
-                    CpuUserArr= zbxApi.getHistory.success(data);
+                    CpuUserArr = zbxApi.getHistory.success(data);
 
-                }).then(function() {
+                }).then(function () {
                     return zbxApi.getHistory.get(data_CpuIOwait.result[0].itemid, startTime, "0");
-                }).then(function(data) {
+                }).then(function (data) {
 
                     CpuIOwaitArr = zbxApi.getHistory.success(data);
-                }).then(function() {
+                }).then(function () {
                     return zbxApi.getHistory.get(data_CpuSteal.result[0].itemid, startTime, "0");
-                }).then(function(data) {
+                }).then(function (data) {
 
-                    CpuStealArr  = zbxApi.getHistory.success(data);
+                    CpuStealArr = zbxApi.getHistory.success(data);
 
                     dataSet.push(new DataObject('CPU System', CpuSystemArr));
                     dataSet.push(new DataObject('CPU User', CpuUserArr));
@@ -290,7 +290,7 @@ var zbxApi = {
                 "itemids": itemId,
                 "time_from": startTime,
                 //"time_till": till_time,
-                "limit" : 2000
+                "limit": 2000
             };
             return server.sendAjaxRequest(method, params);
         },
@@ -315,36 +315,36 @@ var zbxApi = {
         }
     },
 
-   /* getNetworkHistory: {
-        get: function (itemId, startTime, type) {
-            console.log(itemId);
-            console.log(startTime);
-            console.log(type);
-            var method = "history.get";
-            var params = {
-                "output": "extend",
-                "sortfield": "clock",
-                "sortorder": "ASC",
-                "itemids": itemId,
-                "time_from": startTime,
-                "history": type,
-                //"time_till": till_time,
-                "limit" : 2000
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            console.log("getNetworkHistory data : " + JSON.stringify(data));
-            return data;
-        }
-    },*/
+    /* getNetworkHistory: {
+     get: function (itemId, startTime, type) {
+     console.log(itemId);
+     console.log(startTime);
+     console.log(type);
+     var method = "history.get";
+     var params = {
+     "output": "extend",
+     "sortfield": "clock",
+     "sortorder": "ASC",
+     "itemids": itemId,
+     "time_from": startTime,
+     "history": type,
+     //"time_till": till_time,
+     "limit" : 2000
+     };
+     return server.sendAjaxRequest(method, params);
+     },
+     success: function (data) {
+     console.log("getNetworkHistory data : " + JSON.stringify(data));
+     return data;
+     }
+     },*/
 
     getItem: {
         get: function (hostId, key_) {
             var method = "item.get";
             var params = {
                 // "output" : "extend",
-                "output": ["key_", "name", "lastvalue", "lastclock", "interfaceid","hostid"],
+                "output": ["key_", "name", "lastvalue", "lastclock", "interfaceid", "hostid"],
                 "hostids": hostId,
                 "search": {"key_": key_}
             };
@@ -473,8 +473,8 @@ var zbxApi = {
         }
     },
 
-    serverViewGraph : {
-        get: function(hostid, key_){
+    serverViewGraph: {
+        get: function (hostid, key_) {
             console.log("IN serOvewViewGraph");
             console.log("hostid : " + hostid + " / key : " + key_);
             var method = "item.get";
@@ -495,8 +495,8 @@ var zbxApi = {
         }
     },
 
-    serverViewGraphName : {
-        get: function(hostid, name){
+    serverViewGraphName: {
+        get: function (hostid, name) {
             console.log("IN serOvewViewGraph");
             console.log("hostid : " + hostid + " / name : " + name);
             var method = "item.get";
@@ -550,7 +550,7 @@ var zbxApi = {
             return server.sendAjaxRequest(method, params);
         },
         success: function (data) {
-            
+
             return data;
         }
     },
@@ -878,29 +878,29 @@ var zbxApi = {
             return data.result;
         }
     },
-    
-    
-/*
-    unAckknowledgeEvent: {
-        get: function () {
-            var method = "trigger.get";
-            var params = {
-                "output": "extend",
-                "monitored": true,
-                "countOutput": true,
-                "withLastEventUnacknowledged": true,
-                "filter": {
-                    "value": 1
-                }
-            };
-            return server.sendAjaxRequest(method, params);
-        },
-        success: function (data) {
-            return data.result;
-        }
-    },
-    */
-    
+
+
+    /*
+     unAckknowledgeEvent: {
+     get: function () {
+     var method = "trigger.get";
+     var params = {
+     "output": "extend",
+     "monitored": true,
+     "countOutput": true,
+     "withLastEventUnacknowledged": true,
+     "filter": {
+     "value": 1
+     }
+     };
+     return server.sendAjaxRequest(method, params);
+     },
+     success: function (data) {
+     return data.result;
+     }
+     },
+     */
+
     unAckknowledgeEvent: {
         get: function (start_time) {
             var method = "event.get";
@@ -967,7 +967,7 @@ var zbxApi = {
                 "source": 0,
                 "sortfield": "clock",
                 "sortorder": "DESC",
-                "eventid_till" : lastRowIdFrom,
+                "eventid_till": lastRowIdFrom,
                 "limit": 15
             };
             return server.sendAjaxRequest(method, params);
@@ -989,7 +989,7 @@ var zbxApi = {
                 "hostids": hostid,
                 "sortfield": "clock",
                 "sortorder": "DESC",
-                "eventid_till" : lastRowIdFrom,
+                "eventid_till": lastRowIdFrom,
                 "limit": 15
             };
             return server.sendAjaxRequest(method, params);
@@ -999,5 +999,458 @@ var zbxApi = {
             });
             return data;
         }
+    },
+
+    /* 2017 Item Setting s */
+    hostItemTriggerList: {
+        defaultGet: function (hostid) {
+            var method = "item.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid,
+                "selectApplications": "extend",
+                "selectHosts": "extend",
+                "selectTriggers": "extend",
+                "sortfield": "itemid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        filterGet: function (para_hostId) {
+            var method = "item.get";
+            var params = {
+                "output": "extend",
+                "hostids": para_hostId,
+                "selectApplications": "extend",
+                "selectHosts": "extend",
+                "selectTriggers": "extend",
+                "sortfield": "itemid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        hostInfo: function (hostid) {
+            var method = "host.get";
+            var params = {
+                "output": ["host"],
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            console.log(data);
+            return data;
+        }
+    },
+
+    searchDiv: {
+        hostNameGet: function () {
+            var method = "host.get";
+            var params = {
+                // "output" : "extend",
+                "output": ["host"],
+                "selectInterfaces": ["ip"],
+                "selectInventory": ["name"],
+                "sortfield": "name"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            console.log(data);
+            return data;
+        }
+    },
+
+    ItemDetailInfo: {
+        itemInfoGet: function (itemId, hostid) {
+            var method = "item.get";
+            var params = {
+                "output": "extend",
+                "itemids": itemId,
+                "hostids": hostid,
+                "selectApplications": "extend",
+                "selectTriggers": "extend",
+                "selectItemDiscovery": "extend",
+                "selectHosts": "extend",
+                "selectInterfaces": "extend"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        triggerInfoGet: function (hostid, itemId) {
+            var method = "trigger.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid,
+                "itemids": itemId,
+                "selectHosts": "extend",
+                "selectItems": "extend",
+                "expandExpression": "extend",
+                "sortfield": "triggerid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        UserNameGet: function (actionUserId) {
+            var method = "user.get";
+            var params = {
+                "output": "extend",
+                "filter": {
+                    "userid": actionUserId
+                },
+                "sortfield": "userid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getApplication: function (hostid) {
+            var method = "application.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        itemApplicationGet: function (hostid, itemId) {
+            console.log("itemApplicationGet 123123 : " + hostid + " " + itemId);
+            var method = "application.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid,
+                "itemids": itemId
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            console.log(data);
+            return data;
+        }
+    },
+
+    itemInfoUpdate: {
+        statusUpdateItem: function (itemId, itemStatus) {
+            var method = "item.update";
+            var params = {
+                "itemid": itemId,
+                "status": itemStatus
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        itemUpdate: function (para_itemId, para_itemName, para_updateTime, para_status, applicationList) {
+            console.log("");
+            console.log(" ===== itemUpdate ===== ");
+            var method = "item.update";
+            var params = {
+                "itemid": para_itemId,
+                "name": para_itemName,
+                "delay": para_updateTime,
+                "status": para_status,
+                "applications": applicationList
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        itemDelete: function (itemId) {
+            console.log("");
+            console.log(" 아이템 삭제 ");
+            var method = "item.delete";
+            var params = [itemId];
+            return server.sendAjaxRequest(method, params, false);
+        },
+        success: function (data) {
+            //console.log("getTrigger data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+
+    triggerInfoUpdate: {
+        statusUpdate: function (id, status) {
+            console.log("");
+            console.log(" ===== statusUpdate ===== ");
+            var method = "trigger.update";
+            var params = {
+                "triggerid": id,
+                "status": status
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        triggerUpdate: function (update_triggerId, update_triggerName, update_triggerThreshold, update_triggerStatus, update_triggerSeverity) {
+            console.log("");
+            console.log(" ===== triggerUpdate ===== ");
+            var method = "trigger.update";
+            var params = {
+                "triggerid": update_triggerId,
+                "description": update_triggerName,
+                "expression": update_triggerThreshold,
+                "priority": update_triggerSeverity,
+                "status": update_triggerStatus
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        triggerDelete: function (triggerId) {
+            console.log("");
+            console.log(" ===== triggerDelete ===== ");
+            var method = "trigger.delete";
+            var params = [triggerId];
+            return server.sendAjaxRequest(method, params, false);
+        },
+        triggerAdd: function (add_triggerName, add_triggerThreshold, add_triggerSeverity, add_triggerStatus) {
+            console.log("");
+            console.log(" ===== triggerAdd ===== add_triggerSeverity : " + add_triggerSeverity);
+            var method = "trigger.create";
+            var params = {
+                "description": add_triggerName,
+                "expression": add_triggerThreshold,
+                "priority": add_triggerSeverity,
+                "status": add_triggerStatus
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        triggerCreate: function (create_triggerName, create_triggerThreshold, create_triggerSeverity, create_triggerStatus) {
+            console.log("");
+            console.log(" ===== triggerCreate ===== ");
+            var method = "trigger.create";
+            var params = {
+                "description": create_triggerName,
+                "expression": create_triggerThreshold,
+                "priority": create_triggerSeverity,
+                "status": create_triggerStatus
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        success: function (data) {
+            //console.log("getTrigger data : " + data);
+            //console.log(data);
+            return data;
+        }
+    },
+
+    createItemInfo: {
+        currentItemGet: function () {
+            var method = "item.get";
+            var params = {
+                "output": "itemid",
+                "sortfield": "itemid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        currentTriggerGet: function () {
+            var method = "trigger.get";
+            var params = {
+                "output": "triggerid",
+                "sortfield": "triggerid",
+                "sortorder": "ASC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        itemCreate: function (create_hostId, create_itemName, create_itemKey, create_itemType, create_itemValueType, create_itemInterfaceId, create_itemApplication, create_itemDelay, create_itemStatus) {
+            console.log("");
+            console.log(" ===== itemCreate ===== ");
+            var method = "item.create";
+            var params = {
+                "hostid": create_hostId,
+                "name": create_itemName,
+                "key_": create_itemKey,
+                "type": create_itemType,
+                "value_type": create_itemValueType,
+                "interfaceid": create_itemInterfaceId,
+                "applications": create_itemApplication,
+                "delay": create_itemDelay,
+                "status": create_itemStatus
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        itemCreateLog: function (new_itemName, new_itemCollection, new_itemShell, new_itemDealy, new_itemApplication, new_itemActive, new_createHostId) {
+            console.log("");
+            console.log(" ===== itemCreateLog ===== ");
+            var method = "item.create";
+            var params = {};
+            return server.sendAjaxRequest(method, params);
+        },
+        itemCreateShell: function (new_itemName, new_itemDealy, new_itemApplication, new_itemActive, new_createHostId) {
+            console.log("");
+            console.log(" ===== itemCreateShell ===== ");
+            var method = "item.create";
+            var params = {};
+            return server.sendAjaxRequest(method, params);
+        },
+        applicationCreate: function (new_itemApplication, new_createHostId) {
+            console.log(" new_itemApplication : " + new_itemApplication);
+            console.log(" ===== applicationCreate ===== ");
+            var method = "application.create";
+            var params = {
+                "name": new_itemApplication,
+                "hostid": new_createHostId
+            };
+            return server.sendAjaxRequest(method, params, false);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            console.log(data);
+            return data;
+        }
+    },
+
+    getInfo: {
+        getHost: function (hostid) {
+            var method = "host.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getItem: function (hostid) {
+            var method = "item.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getTrigger: function (hostid) {
+            var method = "trigger.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getApplication: function (hostid) {
+            var method = "application.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        getTemplate: function (hostid) {
+            var method = "template.get";
+            var params = {
+                "output": "extend",
+                "hostids": hostid
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            $.each(data.result, function (k, v) {
+            });
+            console.log(data);
+            return data;
+        }
+    },
+
+    /* 2017 Item Setting e */
+
+    /* 2018.04.01 ~ 2018.06.30 s */
+    dashboardEventDetailList: {
+        weekOccurrenceEventList: function (beforeWeekTime) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "time_from": beforeWeekTime,
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "sortfield": "clock",
+                "sortorder": "DESC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        unknowOccurrenceEventList: function (start_time) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "time_from": start_time,
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "sortfield": "clock",
+                "sortorder": "DESC",
+                "acknowledged": false
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        todayOccurrenceEventList: function (beforeWeekTime) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "time_from": beforeWeekTime,
+                "selectRelatedObject": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "source": 0,
+                "sortfield": "clock",
+                "sortorder": "DESC"
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            return data.result;
+        }
+    },
+
+    selectDateDashboard: {
+        eventStatusAll: function (convertStartDate, convertEndDate) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "countOutput": true,
+                "value": 1,
+                "time_from": convertStartDate,
+                "time_end": convertEndDate
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        eventStatusUnAckknowledge: function (convertStartDate, convertEndDate) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "countOutput": true,
+                "acknowledged": false,
+                "value": 1,
+                "time_from": convertStartDate,
+                "time_end": convertEndDate
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        eventStatusToday: function (convertEndDate) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "countOutput": true,
+                "value": 1,
+                "time_from": convertEndDate
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        eventAckStatus: function (convertStartDate, convertEndDate) {
+            var method = "event.get";
+            var params = {
+                "output": "extend",
+                "select_acknowledges": "extend",
+                "selectHosts": "extend",
+                "selectRelatedObject": "extend",
+                "sortfield": ["clock", "eventid"],
+                "sortorder": "ASC",
+                "time_from": convertStartDate,
+                "time_end": convertEndDate
+            };
+            return server.sendAjaxRequest(method, params);
+        },
+        success: function (data) {
+            return data.result;
+        }
     }
+
+    /* 2018.04.01 ~ 2018.06.30 e */
 };
