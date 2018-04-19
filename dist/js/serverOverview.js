@@ -1,38 +1,79 @@
 /* 전체 서버 상태 2017-01-02 */
 function allServerViewHost(hostid) {
     $.blockUI(blockUI_opt_all);
-    
+
     
     $("[id^=base]").hide();
     $("#base_server").show();
 
     $("#searchText").val("");
     $("#reload_serverOverview").hide();
+    $("#serverList").empty();
 
     var server_data = '';
-    zbxApi.allServerViewHost.get().done(function(data, status, jqXHR) {
+    zbxApi.allServerViewHost.get().done(function (data, status, jqXHR) {
         server_data = zbxApi.allServerViewHost.success(data);
         console.log("-----------------------");
         console.log(server_data);
+
+        var serverLength = server_data.result.length;
+        var serverTable, serverHostId = '';
+        console.log(" serverLength : " + serverLength);
+
+        $.each(server_data.result, function (k, v) {
+            serverHostId = v.hostid;
+
+            serverTable += "<tr id='serverHost_" + serverHostId + "'>";
+            serverTable += "<td id='serverStatus_" + serverHostId + "' width='45' class='line-td'></td>";
+            serverTable += "<td id='serverHostName_" + serverHostId + "' width='188' class='line-td'></td>";
+            serverTable += "<td id='serverIp_" + serverHostId + "' width='122' class='line-td'></td>";
+
+            serverTable += "<td id='serverPerCPU_" + serverHostId + "' width='131' class='line-td' style='cursor:pointer'>" +
+                "<div class='scw'>" +
+                "<div class='mt2 bg8 br3' id='serverPerCPU1_" + serverHostId + "'></div>" +
+                "</div>" +
+                "<div class='fr mt2 mr5 f11' id='serverPerCPU2_" + serverHostId + "'></div></td>";
+
+            serverTable += "<td id='serverPerMEMORY_" + serverHostId + "' width='131' class='line-td' style='cursor:pointer'>" +
+                "<div class='scw'>" +
+                "<div class='mt2 bg8 br3' id='serverPerMEMORY1_" + serverHostId + "'></div>" +
+                "</div>" +
+                "<div class='fr mt2 mr5 f11' id='serverPerMEMORY2_" + serverHostId + "'></div></td>";
+
+            serverTable += "<td id='serverPerDISK_" + serverHostId + "' width='131' class='line-td' style='cursor:pointer'>" +
+                "<div class='scw'>" +
+                "<div class='mt2 bg8 br3' id='serverPerDISK1_" + serverHostId + "'>" +
+                "</div>" +
+                "</div>" +
+                "<div class='fr mt2 mr5 f11' id='serverPerDISK2_" + serverHostId + "'>" +
+                "</div>" +
+                "</td>";
+
+            serverTable += "<td id='serverOS_" + serverHostId + "' width='150' class='line-td'></td>";
+            serverTable += "<td id='serverCPU_" + serverHostId + "' width='117' class='line-td'></td>";
+            serverTable += "<td id='serverRAM_" + serverHostId + "' width='97' class='line-td'></td>";
+
+        });
+        $("#serverList").append(serverTable);
         serverOverView(server_data);
     });
 
 }
 
 function serverOverView2() {
-	
+
 	var hostSet = [];
 	var dataSet = [];
     var dataObj = new Object();
-    
+
 	zbxApi.allServerViewHost.get().then(function(data) {
-       
+
         hostSet = data;
 
     }).then(function() {
-    	
+
     	$.each(hostSet.result, function(k,v){
-        	
+
 
             dataObj = new Object();
             dataObj.host = v.host;
@@ -56,14 +97,14 @@ function serverOverView2() {
             	dataObj.disk = diskData.result[0].lastvalue;
             	dataSet.push(dataObj);
                 //data_loadavg5 = zbxApi.getItem.success(data);
-            });
+        });
         });
         //return zbxApi.getItem.get(hostid,"system.cpu.load[percpu,avg5]");
 
     }).then(function() {
        // return zbxApi.getItem.get(hostid,"system.cpu.load[percpu,avg15]");
     	console.log("job finish");
-    	
+
     })
 }
 
@@ -89,7 +130,7 @@ function serverOverView(server_data) {
     serverOverViewHTML += '</thead>';
     serverOverViewHTML += '<tbody id="hostInfoList">';
 
-    $.each(server_data.result, function(k, v) {
+    $.each(server_data.result, function (k, v) {
         var serverStatus = '';
         var hostid = '';
         var serverName = '';
@@ -208,7 +249,7 @@ function serverOverView(server_data) {
     $("#serverList").empty();
     $("#serverList").append(serverOverViewHTML);
 
-    $.each(server_data.result, function(k, v) {
+    $.each(server_data.result, function (k, v) {
         console.log("IN function");
         hostid = v.hostid;
         var item_id = '';
@@ -218,7 +259,7 @@ function serverOverView(server_data) {
             console.log("IN function Name_");
             item_id = this.id;
             console.log(" this.id : " + item_id);
-            hostid = item_id.substring(item_id.indexOf("_")+1);
+            hostid = item_id.substring(item_id.indexOf("_") + 1);
             $("#serverInfo").empty();
             $("#serverProcessList").empty();
             $("#serverEventList").empty();
@@ -248,7 +289,7 @@ function serverOverView(server_data) {
     });
 
     //page reloag
-    $("#reload_serverOverview").click(function(){
+    $("#reload_serverOverview").click(function () {
         //int.allServerViewHost();
         console.log("reload_serverOverview");
 
@@ -258,7 +299,7 @@ function serverOverView(server_data) {
         var ROW_COUNT = tableDataArr.length;
         //alert("ROW_COUNT : " + ROW_COUNT);
 
-        for(var i=0; i<ROW_COUNT; i++) {
+        for (var i = 0; i < ROW_COUNT; i++) {
             var hostid = tableDataArr[i].hostid;
             try {
                 cpu = zbxSyncApi.allServerViewItemByName(hostid, "CPU idle time").lastvalue;
@@ -307,7 +348,7 @@ function serverOverView(server_data) {
     });
 
     /* 검색 */
-    $("#searchText").keyup(function() {
+    $("#searchText").keyup(function () {
         console.log(" CLICK searchText ");
         searchHostBtn();
     });
@@ -315,7 +356,7 @@ function serverOverView(server_data) {
     $.unblockUI(blockUI_opt_all);
 }
 
-function searchHostBtn(){
+function searchHostBtn() {
     console.log(" CLICK searchHostBtn ");
     //$("#searchText").keyup();
     /*var inputText = $("#searchText").val();
@@ -335,9 +376,9 @@ function searchHostBtn(){
     tr = table.getElementsByTagName("tr");
     console.log(" tr Cnt : " + tr.length);
 
-    for(var i=0; i<tr.length; i++){
+    for (var i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[1];
-        if(td){
+        if (td) {
             if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
                 console.log(" OK ");
